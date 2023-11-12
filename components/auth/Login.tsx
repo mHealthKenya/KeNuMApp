@@ -79,8 +79,7 @@ const LoginComponent = () => {
 
 	return (
 		<SafeAreaView style={globalStyles.container}>
-			<KeyboardAvoidingView
-				behavior={Platform.OS === 'ios' ? 'position' : 'height'}>
+			<KeyboardAvoidingView behavior='position'>
 				<View
 					style={[
 						styles.imageBox,
@@ -176,8 +175,9 @@ const LoginComponent = () => {
 					style={[
 						styles.inner,
 						{
-							height: height * 0.2,
+							height: height * 0.27,
 							justifyContent: 'flex-end',
+							padding: 25,
 						},
 					]}>
 					<View

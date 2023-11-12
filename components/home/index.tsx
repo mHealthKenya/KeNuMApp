@@ -1,17 +1,25 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import globalStyles from '../../styles/global';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useAuth } from '../../providers/auth';
+import globalStyles from '../../styles/global';
+import StudentsModule from './students';
+import PractitionersModule from './practitioner';
+import GeneralModule from './general';
 
 const HomeComponent = () => {
-	const { logout } = useAuth();
+	const { logout, user } = useAuth();
 	return (
-		<View style={[globalStyles.container, globalStyles.center]}>
-			<Text>HomeComponent</Text>
-			<Button mode='contained' onPress={() => logout()}>
-				Logout
-			</Button>
+		<View
+			style={[
+				globalStyles.container,
+				{
+					justifyContent: 'space-evenly',
+				},
+			]}>
+			<StudentsModule />
+			<PractitionersModule />
+			<GeneralModule />
 		</View>
 	);
 };

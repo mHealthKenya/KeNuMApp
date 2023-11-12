@@ -17,6 +17,7 @@ enum Types {
 	Check = 'Check',
 	Uncheck = 'Uncheck',
 	Initial = 'Initial',
+	LoggingOut = 'LoggingOut',
 }
 
 interface Action {
@@ -28,6 +29,7 @@ interface State {
 	isAuthenticated: boolean;
 	isLoading: boolean;
 	user: User | null;
+	isLoggingOut: boolean;
 }
 
 interface Auth {
@@ -36,6 +38,7 @@ interface Auth {
 	isLoading: boolean;
 	isAuthenticated: boolean;
 	user: User | null;
+	isLoggingOut: boolean;
 }
 
 const AuthContext = createContext<Auth>({
@@ -43,6 +46,7 @@ const AuthContext = createContext<Auth>({
 	checkAuth: () => {},
 	isLoading: false,
 	isAuthenticated: false,
+	isLoggingOut: false,
 	user: null,
 });
 
@@ -71,7 +75,14 @@ const reducer = (state: State, { type, payload }: Action): State => {
 				...state,
 				isLoading: false,
 				isAuthenticated: false,
+				isLoggingOut: false,
 				user: null,
+			};
+
+		case Types.LoggingOut:
+			return {
+				...state,
+				isLoggingOut: true,
 			};
 
 		default:
@@ -87,6 +98,7 @@ const reducer = (state: State, { type, payload }: Action): State => {
 const initialState = {
 	isLoading: false,
 	isAuthenticated: false,
+	isLoggingOut: false,
 	user: null,
 };
 
@@ -122,6 +134,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	};
 
 	const logout = async () => {
+		dispatch({ type: Types.LoggingOut });
 		await secureStore.deleteItemAsync('token');
 		dispatch({ type: Types.Uncheck });
 	};
