@@ -1,24 +1,31 @@
+import { yupResolver } from '@hookform/resolvers/yup';
+import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
 	Alert,
 	Image,
 	KeyboardAvoidingView,
-	Platform,
 	StyleSheet,
 	Text,
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import globalStyles from '../../styles/global';
 import { Avatar, Button, TextInput, TextInputProps } from 'react-native-paper';
-import { Controller, useForm } from 'react-hook-form';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import useLogin from '../../services/auth/login';
-import { useError } from '../../providers/error';
 import { useAuth } from '../../providers/auth';
-import { StatusBar } from 'expo-status-bar';
+import { useError } from '../../providers/error';
+import useLogin from '../../services/auth/login';
+import globalStyles from '../../styles/global';
+import {
+	Toast,
+	ToastDescription,
+	ToastTitle,
+	VStack,
+	useToast,
+} from '@gluestack-ui/themed';
+import ToastError from '../shared/ToastError';
 
 export interface Credentials {
 	username: string;
@@ -32,6 +39,8 @@ const validationSchema = Yup.object().shape({
 
 const LoginComponent = () => {
 	const [show, setShow] = useState(false);
+
+	const toast = useToast();
 
 	const toggleShow = () => {
 		setShow((show) => !show);
@@ -67,9 +76,16 @@ const LoginComponent = () => {
 
 	useEffect(() => {
 		if (!!error) {
-			Alert.alert('Error', error, [
-				{ text: 'OK', onPress: () => clearError() },
-			]);
+			toast.show({
+				onCloseComplete() {
+					clearError();
+				},
+
+				render: ({ id }) => {
+					return <ToastError id={id} title='Auth Error' description={error} />;
+				},
+				placement: 'top',
+			});
 		}
 	}, [error]);
 

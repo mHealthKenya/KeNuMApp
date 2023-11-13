@@ -1,15 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { useAuth } from '../../providers/auth';
 
 const More = () => {
-	const router = useRouter();
+	const { logout } = useAuth();
 	return (
 		<View>
-			<Text>More</Text>
-			<Button mode='contained' onPress={() => router.push('/associations')}>
-				Associations
+			<Button
+				mode='contained'
+				onPress={() => logout()}
+				style={{
+					marginHorizontal: 20,
+					marginVertical: 20,
+					borderRadius: 8,
+				}}>
+				Logout
 			</Button>
 		</View>
 	);

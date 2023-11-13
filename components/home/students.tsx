@@ -29,19 +29,25 @@ const StudentsModule = () => {
 				]}>
 				<View
 					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
-					<Icon size={60} source={require('../../assets/images/nurse.png')} />
+					<Icon
+						size={usableWidth * 0.6}
+						source={require('../../assets/images/nurse.png')}
+					/>
 					<Text>Internships</Text>
 				</View>
 				<View
 					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
-					<Icon size={60} source={require('../../assets/images/exams.png')} />
+					<Icon
+						size={usableWidth * 0.6}
+						source={require('../../assets/images/exams.png')}
+					/>
 					<Text>Exams</Text>
 				</View>
 
 				<View
 					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
 					<Icon
-						size={60}
+						size={usableWidth * 0.6}
 						source={require('../../assets/images/register.png')}
 					/>
 					<Text>Registration</Text>

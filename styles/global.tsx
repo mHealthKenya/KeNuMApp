@@ -22,6 +22,10 @@ const globalStyles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
+
+	clearAvatar: {
+		backgroundColor: '#f0f6fb',
+	},
 });
 
 export default globalStyles;

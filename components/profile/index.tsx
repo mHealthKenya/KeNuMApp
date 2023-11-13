@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
 import { Image } from 'expo-image';
 import ProfileItem from './item';
-import { Divider } from 'react-native-paper';
+import { Avatar, Button, Divider } from 'react-native-paper';
+import { primaryColor } from '../../constants/Colors';
 
 interface Profile {
 	title: string;
@@ -42,6 +43,13 @@ const ProfileComponent = () => {
 	const availableWidth = dimension - 30;
 
 	const usableWidth = (availableWidth - 20) / 3;
+
+	const [imageError, setImageError] = useState(false);
+
+	const toggleImageError = () => {
+		setImageError((imageError) => !imageError);
+	};
+
 	return (
 		<View style={{ flex: 1 }}>
 			<View
@@ -52,16 +60,37 @@ const ProfileComponent = () => {
 						height: height * 0.3,
 					},
 				]}>
-				<Image
-					source={{ uri: user?.ProfilePic }}
-					placeholder={blurhash}
-					transition={1000}
-					style={{
-						width: usableWidth * 1.5,
-						height: usableWidth * 1.5,
-						borderRadius: (usableWidth * 1.5) / 2,
-					}}
-				/>
+				{imageError ? (
+					<View
+						style={[
+							globalStyles.column,
+							globalStyles.center,
+							{
+								gap: 10,
+							},
+						]}>
+						<Avatar.Icon
+							icon='cloud-upload-outline'
+							size={usableWidth * 0.7}
+							style={globalStyles.clearAvatar}
+						/>
+						<Button mode='contained' icon='upload' style={styles.button}>
+							Upload Profile Photo
+						</Button>
+					</View>
+				) : (
+					<Image
+						source={{ uri: user?.ProfilePic }}
+						placeholder={blurhash}
+						transition={1000}
+						onError={toggleImageError}
+						style={{
+							width: usableWidth * 1.2,
+							height: usableWidth * 1.2,
+							borderRadius: (usableWidth * 1.2) / 2,
+						}}
+					/>
+				)}
 			</View>
 			<View
 				style={[
@@ -97,5 +126,10 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 24,
 		textTransform: 'capitalize',
+	},
+
+	button: {
+		borderRadius: 8,
+		backgroundColor: primaryColor,
 	},
 });

@@ -4,10 +4,15 @@ import { List } from 'react-native-paper';
 
 const ProfileItem: FC<{ title: string }> = ({ title }) => {
 	return (
-		<List.Item
-			title={title}
-			right={(props) => <List.Icon {...props} icon='chevron-right' />}
-		/>
+		<View
+			style={{
+				margin: 5,
+			}}>
+			<List.Item
+				title={title}
+				right={(props) => <List.Icon {...props} icon='chevron-right' />}
+			/>
+		</View>
 	);
 };
 

@@ -10,9 +10,7 @@ import { ActivityIndicator } from 'react-native-paper';
 const Login = () => {
 	const { isAuthenticated, isLoggingOut } = useAuth();
 
-	console.log({
-		isLoggingOut,
-	});
+	
 
 	const router = useRouter();
 

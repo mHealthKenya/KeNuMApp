@@ -30,7 +30,7 @@ const GeneralModule = () => {
 				]}>
 				<View style={styles.leftContent}>
 					<Icon
-						size={60}
+						size={usableWidth * 0.6}
 						source={require('../../assets/images/knowledge.png')}
 					/>
 					<View
@@ -42,7 +42,10 @@ const GeneralModule = () => {
 				</View>
 				<View style={styles.verticalDivider} />
 				<View style={styles.rightContent}>
-					<Icon size={60} source={require('../../assets/images/fa4q.png')} />
+					<Icon
+						size={usableWidth * 0.6}
+						source={require('../../assets/images/fa4q.png')}
+					/>
 					<View
 						style={{
 							marginVertical: 10,
@@ -58,7 +61,6 @@ const GeneralModule = () => {
 const styles = StyleSheet.create({
 	box: {
 		flexDirection: 'row',
-		alignItems: 'center',
 	},
 	leftContent: {
 		flex: 1,
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
 	rightContent: {
 		flex: 1,
 		marginLeft: 2,
-		justifyContent: 'center',
+		justifyContent: 'space-around',
 		alignItems: 'center',
 	},
 

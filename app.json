@@ -1,6 +1,6 @@
 {
 	"expo": {
-		"name": "KeNuMApp",
+		"name": "KeNuM",
 		"slug": "KeNuMApp",
 		"version": "1.0.0",
 		"orientation": "portrait",
@@ -23,7 +23,8 @@
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
-			}
+			},
+			"package": "com.ikode.KeNuMApp"
 		},
 		"web": {
 			"bundler": "metro",
@@ -33,6 +34,14 @@
 		"plugins": ["expo-router"],
 		"experiments": {
 			"typedRoutes": true
+		},
+		"extra": {
+			"router": {
+				"origin": false
+			},
+			"eas": {
+				"projectId": "f203723c-5920-4a31-90b4-974d06dbedb9"
+			}
 		}
 	}
 }

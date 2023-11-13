@@ -11,6 +11,7 @@ import { User } from '../models/user';
 import * as secureStore from 'expo-secure-store';
 import axios from 'axios';
 import { baseUrl } from '../constants/baseurl';
+import { useQueryClient } from '@tanstack/react-query';
 
 enum Types {
 	Login = 'Login',
@@ -136,6 +137,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	const logout = async () => {
 		dispatch({ type: Types.LoggingOut });
 		await secureStore.deleteItemAsync('token');
+		axios.defaults.headers.common['Authorization'] = '';
 		dispatch({ type: Types.Uncheck });
 	};
 
