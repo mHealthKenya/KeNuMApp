@@ -1,10 +1,10 @@
 import { Redirect, Stack, Tabs } from 'expo-router';
 import React from 'react';
-import { useAuth } from '../../providers/auth';
-import globalStyles from '../../styles/global';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { ActivityIndicator, Icon } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
+import { useAuth } from '../../providers/auth';
+import globalStyles from '../../styles/global';
 
 const AppLayout = () => {
 	const { isAuthenticated, isLoading } = useAuth();

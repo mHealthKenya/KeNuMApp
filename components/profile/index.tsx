@@ -9,26 +9,32 @@ import { primaryColor } from '../../constants/Colors';
 
 interface Profile {
 	title: string;
+	path: any;
 }
 
 const profileItems: Profile[] = [
 	{
 		title: 'Bio Data',
+		path: '/general',
 	},
 	{
 		title: 'Education',
+		path: '/general',
 	},
 
 	{
 		title: 'Registration',
+		path: '/general',
 	},
 
 	{
 		title: 'License',
+		path: '/general',
 	},
 
 	{
 		title: 'CPDs',
+		path: '/general',
 	},
 ];
 
@@ -110,7 +116,7 @@ const ProfileComponent = () => {
 				]}>
 				{profileItems.map((item, index) => (
 					<View key={index}>
-						<ProfileItem title={item.title} />
+						<ProfileItem title={item.title} path={item.path} />
 						{index !== profileItems.length - 1 && <Divider />}
 					</View>
 				))}

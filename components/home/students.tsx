@@ -1,10 +1,18 @@
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import {
+	Pressable,
+	StyleSheet,
+	Text,
+	View,
+	useWindowDimensions,
+} from 'react-native';
 import React from 'react';
 import globalStyles from '../../styles/global';
 import { Icon } from 'react-native-paper';
+import { useAuth } from '../../providers/auth';
 
 const StudentsModule = () => {
 	const { width, height } = useWindowDimensions();
+	const { checkAuth } = useAuth();
 
 	const dimension = Math.min(width, height);
 
@@ -31,18 +39,19 @@ const StudentsModule = () => {
 					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
 					<Icon
 						size={usableWidth * 0.6}
-						source={require('../../assets/images/nurse.png')}
+						source={require('../../assets/images/internsh.png')}
 					/>
 					<Text>Internships</Text>
 				</View>
-				<View
-					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
+				<Pressable
+					style={[styles.square, { width: usableWidth, height: usableWidth }]}
+					onPress={() => checkAuth()}>
 					<Icon
 						size={usableWidth * 0.6}
 						source={require('../../assets/images/exams.png')}
 					/>
 					<Text>Exams</Text>
-				</View>
+				</Pressable>
 
 				<View
 					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
