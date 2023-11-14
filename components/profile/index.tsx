@@ -60,51 +60,51 @@ const ProfileComponent = () => {
 		<View style={{ flex: 1 }}>
 			<View
 				style={[
-					globalStyles.center,
+					styles.center,
+
 					{
 						width: '100%',
+						borderBottomEndRadius: 15,
 						height: height * 0.3,
+						backgroundColor: '#0445b5',
 					},
 				]}>
-				{imageError ? (
-					<View
-						style={[
-							globalStyles.column,
-							globalStyles.center,
-							{
-								gap: 10,
-							},
-						]}>
-						<Avatar.Icon
-							icon='cloud-upload-outline'
-							size={usableWidth * 0.7}
-							style={globalStyles.clearAvatar}
+				<View>
+					{imageError ? (
+						<View
+							style={[
+								globalStyles.column,
+								globalStyles.center,
+								{
+									gap: 10,
+								},
+							]}>
+							<Avatar.Icon
+								icon='cloud-upload-outline'
+								size={usableWidth * 0.7}
+								style={globalStyles.clearAvatar}
+							/>
+							<Button mode='contained' icon='upload' style={styles.button}>
+								Upload Profile Photo
+							</Button>
+						</View>
+					) : (
+						<Image
+							source={{ uri: user?.ProfilePic }}
+							placeholder={blurhash}
+							transition={1000}
+							onError={toggleImageError}
+							style={{
+								width: usableWidth * 1.2,
+								height: usableWidth * 1.2,
+								borderRadius: (usableWidth * 1.2) / 2,
+							}}
 						/>
-						<Button mode='contained' icon='upload' style={styles.button}>
-							Upload Profile Photo
-						</Button>
-					</View>
-				) : (
-					<Image
-						source={{ uri: user?.ProfilePic }}
-						placeholder={blurhash}
-						transition={1000}
-						onError={toggleImageError}
-						style={{
-							width: usableWidth * 1.2,
-							height: usableWidth * 1.2,
-							borderRadius: (usableWidth * 1.2) / 2,
-						}}
-					/>
-				)}
-			</View>
-			<View
-				style={[
-					{
-						height: height * 0.1,
-					},
-				]}>
-				<Text style={styles.titleText}>{user?.Name}</Text>
+					)}
+				</View>
+				<View style={{ marginTop: 10 }}>
+					<Text style={styles.titleText}>{user?.Name}</Text>
+				</View>
 			</View>
 
 			<View
@@ -112,6 +112,7 @@ const ProfileComponent = () => {
 					{
 						height: height * 0.5,
 						flex: 1,
+						marginTop: 5,
 					},
 				]}>
 				{profileItems.map((item, index) => (
@@ -128,10 +129,15 @@ const ProfileComponent = () => {
 export default ProfileComponent;
 
 const styles = StyleSheet.create({
+	center: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 	titleText: {
 		textAlign: 'center',
 		fontSize: 24,
 		textTransform: 'capitalize',
+		color: '#FFF',
 	},
 
 	button: {
