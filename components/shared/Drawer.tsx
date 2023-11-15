@@ -1,17 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import globalStyles from '../../styles/global';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
 	DrawerContentComponentProps,
 	DrawerContentScrollView,
 	DrawerItem,
 	DrawerItemList,
 } from '@react-navigation/drawer';
-import DrawerHeader from './DrawerHeader';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Divider, Icon } from 'react-native-paper';
-import { Image } from 'expo-image';
 import { useAuth } from '../../providers/auth';
+import DrawerHeader from './DrawerHeader';
 
 const CustomDrawer = (props: DrawerContentComponentProps) => {
 	const { user, logout } = useAuth();

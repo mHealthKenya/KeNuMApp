@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
-import { User } from '../../models/user';
-import ProfileHeader from './header';
-import globalStyles from '../../styles/global';
+import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
+import { User } from '../../models/user';
+import globalStyles from '../../styles/global';
+import ProfileHeader from './header';
 
 const CPDsComponent: FC<{ user: User | null }> = ({ user }) => {
 	return (
@@ -25,7 +25,6 @@ const CPDsComponent: FC<{ user: User | null }> = ({ user }) => {
 							<Text style={styles.headerText}>Current Points</Text>
 							<Text style={styles.contentText}>{item?.current_points}</Text>
 						</View>
-						<Divider />
 					</View>
 				))}
 			</View>

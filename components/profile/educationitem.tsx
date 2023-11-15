@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
-import globalStyles from '../../styles/global';
+import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
+import globalStyles from '../../styles/global';
 
 interface Education {
 	cadre_text?: string;
@@ -31,7 +31,6 @@ const EducationItem: FC<{
 						{education?.admission_date?.toLocaleString()}
 					</Text>
 				</View>
-				<Divider />
 			</View>
 		</View>
 	);

@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
-import globalStyles from '../../styles/global';
+import { StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
+import globalStyles from '../../styles/global';
 
 interface License {
 	license_no?: string;
@@ -34,7 +34,6 @@ const LicenseItem: FC<{
 						{license?.to_date?.toLocaleString()}
 					</Text>
 				</View>
-				<Divider />
 			</View>
 		</View>
 	);

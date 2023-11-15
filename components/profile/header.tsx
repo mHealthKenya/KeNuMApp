@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Image } from 'expo-image';
 import React, { FC, useState } from 'react';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Avatar, Button } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
 import { User } from '../../models/user';
 import globalStyles from '../../styles/global';
-import { Avatar, Button } from 'react-native-paper';
-import { Image } from 'expo-image';
 
 const ProfileHeader: FC<{
 	user: User | null;

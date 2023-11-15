@@ -51,6 +51,7 @@ const ProfileComponent = () => {
 						height: height * 0.5,
 						flex: 1,
 						marginTop: 5,
+						justifyContent: 'space-evenly'
 					},
 				]}>
 				{profileItems.map((item, index) => (

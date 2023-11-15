@@ -1,9 +1,9 @@
+import { useToast } from '@gluestack-ui/themed';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
-	Alert,
 	Image,
 	KeyboardAvoidingView,
 	StyleSheet,
@@ -18,13 +18,6 @@ import { useAuth } from '../../providers/auth';
 import { useError } from '../../providers/error';
 import useLogin from '../../services/auth/login';
 import globalStyles from '../../styles/global';
-import {
-	Toast,
-	ToastDescription,
-	ToastTitle,
-	VStack,
-	useToast,
-} from '@gluestack-ui/themed';
 import ToastError from '../shared/ToastError';
 
 export interface Credentials {

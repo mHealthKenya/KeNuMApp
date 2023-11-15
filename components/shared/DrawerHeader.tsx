@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Image } from 'expo-image';
 import React, { useState } from 'react';
-import { useAuth } from '../../providers/auth';
-import globalStyles from '../../styles/global';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
-import { Image } from 'expo-image';
+import { useAuth } from '../../providers/auth';
+import globalStyles from '../../styles/global';
 
 const DrawerHeader = () => {
 	const { height, width } = useWindowDimensions();

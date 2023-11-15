@@ -1,4 +1,5 @@
-import { View, Text } from 'react-native';
+import axios from 'axios';
+import * as secureStore from 'expo-secure-store';
 import React, {
 	FC,
 	ReactNode,
@@ -7,11 +8,8 @@ import React, {
 	useEffect,
 	useReducer,
 } from 'react';
-import { User } from '../models/user';
-import * as secureStore from 'expo-secure-store';
-import axios from 'axios';
 import { baseUrl } from '../constants/baseurl';
-import { useQueryClient } from '@tanstack/react-query';
+import { User } from '../models/user';
 
 enum Types {
 	Login = 'Login',

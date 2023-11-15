@@ -1,7 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import React, { FC } from 'react';
-import { List } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import React, { FC } from 'react';
+import { Pressable } from 'react-native';
+import { List } from 'react-native-paper';
 
 const ProfileItem: FC<{ title: string; path: any }> = ({ title, path }) => {
 	const router = useRouter();
@@ -9,6 +9,7 @@ const ProfileItem: FC<{ title: string; path: any }> = ({ title, path }) => {
 		<Pressable
 			style={{
 				margin: 5,
+				padding: 20,
 			}}
 			onPress={() => router.push(path)}>
 			<List.Item
@@ -20,5 +21,3 @@ const ProfileItem: FC<{ title: string; path: any }> = ({ title, path }) => {
 };
 
 export default ProfileItem;
-
-const styles = StyleSheet.create({});

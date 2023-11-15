@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Text, useWindowDimensions } from 'react-native';
-import { primaryColor } from '../../constants/Colors';
-import globalStyles from '../../styles/global';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Icon } from 'react-native-paper';
+import globalStyles from '../../styles/global';
 
 const PractitionersModule = () => {
 	const { width, height } = useWindowDimensions();

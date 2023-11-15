@@ -1,3 +1,4 @@
+import React from 'react';
 import {
 	Pressable,
 	StyleSheet,
@@ -5,10 +6,9 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import React from 'react';
-import globalStyles from '../../styles/global';
 import { Icon } from 'react-native-paper';
 import { useAuth } from '../../providers/auth';
+import globalStyles from '../../styles/global';
 
 const StudentsModule = () => {
 	const { width, height } = useWindowDimensions();
