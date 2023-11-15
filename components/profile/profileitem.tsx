@@ -1,49 +1,39 @@
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import React, { FC } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { Divider, Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
-import { Icon } from 'react-native-paper';
 
 const ProfileItem: FC<{ title: string; content?: string; icon?: string }> = ({
 	title,
 	content,
 	icon,
 }) => {
-	const { height, width } = useWindowDimensions();
-
-	const dimension = Math.min(width, height);
-
-	const availableWidth = dimension - 20;
 	return (
-		<View
-			style={[
-				globalStyles.row,
-				{
-					justifyContent: 'space-between',
-				},
-			]}>
+		<View>
 			<View
 				style={[
+					globalStyles.column,
 					{
-						width: availableWidth * (1 / 3),
+						justifyContent: 'space-between',
+						padding: 20,
+						gap: 10,
 					},
 				]}>
-				<View style={styles.content}>
-					<View style={globalStyles.row}>
-						<Icon source={icon} size={30} />
-						<Text>{title}</Text>
+				<View>
+					<View>
+						<View style={globalStyles.row}>
+							<Icon source={icon} size={30} />
+							<Text style={styles.headerText}>{title}</Text>
+						</View>
+					</View>
+				</View>
+				<View>
+					<View>
+						<Text style={styles.contentText}>{content}</Text>
 					</View>
 				</View>
 			</View>
-			<View
-				style={[
-					{
-						width: availableWidth * (2 / 3),
-					},
-				]}>
-				<View style={styles.content}>
-					<Text>{content}</Text>
-				</View>
-			</View>
+			<Divider />
 		</View>
 	);
 };
@@ -51,7 +41,15 @@ const ProfileItem: FC<{ title: string; content?: string; icon?: string }> = ({
 export default ProfileItem;
 
 const styles = StyleSheet.create({
-	content: {
-		padding: 10,
+	contentText: {
+		color: '#0445b5',
+		fontSize: 16,
+		textTransform: 'capitalize',
+	},
+
+	headerText: {
+		color: '#959595',
+		fontWeight: 'bold',
+		fontSize: 14,
 	},
 });

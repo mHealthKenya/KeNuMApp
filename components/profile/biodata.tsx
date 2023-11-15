@@ -1,22 +1,28 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { User } from '../../models/user';
-import globalStyles from '../../styles/global';
+import ProfileHeader from './header';
 import ProfileItem from './profileitem';
 
 const BioData: FC<{ user: User | null }> = ({ user }) => {
 	return (
-		<View style={globalStyles.container}>
+		<View style={styles.container}>
+			<ProfileHeader
+				user={user}
+				backgroundColor='#eaf2fa'
+				textColor='#0445b5'
+			/>
 			<View style={styles.spacer}>
 				<View style={styles.card}>
-					<ProfileItem title='Index No' content={user?.IndexNo} />
+					<ProfileItem title='ID Number' content={user?.IdNumber} />
+					<ProfileItem title='Index Number' content={user?.IndexNo} />
+					<ProfileItem
+						title='Gender'
+						content={user?.Gender?.startsWith('M') ? 'Male' : 'Female'}
+					/>
 					<ProfileItem title='Email' content={user?.Email} />
-					<ProfileItem title='Email' content={user?.Email} />
-					<ProfileItem title='Email' content={user?.Email} />
-					<ProfileItem title='Email' content={user?.Email} />
-					<ProfileItem title='Email' content={user?.Email} />
-					<ProfileItem title='Email' content={user?.Email} />
-					<ProfileItem title='Email' content={user?.Email} />
+					<ProfileItem title='Mobile Number' content={user?.MobileNo} />
+					<ProfileItem title='Address' content={user?.Address} />
 				</View>
 			</View>
 		</View>
@@ -26,9 +32,13 @@ const BioData: FC<{ user: User | null }> = ({ user }) => {
 export default BioData;
 
 const styles = StyleSheet.create({
+	container: {
+		backgroundColor: '#eaf2fa',
+		flex: 1,
+	},
 	spacer: {
 		marginVertical: 20,
-        marginHorizontal: 10,
+		marginHorizontal: 10,
 		flex: 1,
 	},
 	card: {

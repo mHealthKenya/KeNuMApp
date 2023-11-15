@@ -1,9 +1,9 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { FC } from 'react';
 import { Pressable } from 'react-native';
 import { Icon } from 'react-native-paper';
 
-const ProfileHeaderLeft = () => {
+const ProfileHeaderLeft: FC<{ color?: string }> = ({ color }) => {
 	const router = useRouter();
 	return (
 		<Pressable
@@ -11,7 +11,7 @@ const ProfileHeaderLeft = () => {
 			style={{
 				justifyContent: 'center',
 			}}>
-			<Icon source='arrow-left' size={30} color='#FFF' />
+			<Icon source='arrow-left' size={30} color={color || '#FFF'} />
 		</Pressable>
 	);
 };

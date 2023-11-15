@@ -1,4 +1,3 @@
-import { View, Text } from 'react-native';
 import React from 'react';
 import BioData from '../../components/profile/biodata';
 import { useAuth } from '../../providers/auth';
