@@ -35,7 +35,7 @@ const CheckInBox = () => {
 					backgroundColor: '#dcf0fa',
 				},
 			]}
-			onPress={() => router.push('/internshipapply')}>
+			onPress={() => router.push('/checkin')}>
 			<View
 				style={[
 					globalStyles.row,

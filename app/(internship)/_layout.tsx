@@ -56,6 +56,22 @@ const InternshipLayout = () => {
 					presentation: 'modal',
 				}}
 			/>
+
+			<Stack.Screen
+				name='checkin'
+				options={{
+					title: 'Internship Checkin',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='verifyotpcheck'
+				options={{
+					headerShown: false,
+					presentation: 'modal',
+				}}
+			/>
 		</Stack>
 	);
 };

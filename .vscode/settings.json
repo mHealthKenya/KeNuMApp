@@ -6,6 +6,7 @@
 		"cpds",
 		"generalskeleton",
 		"Gluestack",
+		"incharge",
 		"internshipapplications",
 		"internshipapply",
 		"internshipcheckinbox",
@@ -17,6 +18,7 @@
 		"logrotationsbox",
 		"nurselarge",
 		"studentsskeleton",
-		"transferbox"
+		"transferbox",
+		"verifyotp"
 	]
 }
