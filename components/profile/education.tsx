@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { User } from '../../models/user';
 import EducationItem from './educationitem';
 import ProfileHeader from './header';
+import { Alert, AlertIcon, AlertText, InfoIcon } from '@gluestack-ui/themed';
+import WarnAlert from '../shared/WarnAlert';
 
 const EducationComponent: FC<{ user: User | null }> = ({ user }) => {
 	return (
@@ -12,11 +14,16 @@ const EducationComponent: FC<{ user: User | null }> = ({ user }) => {
 				backgroundColor='#eaf2fa'
 				textColor='#0445b5'
 			/>
-			{user?.education?.map((item, index) => (
-				<View key={index} style={{ marginHorizontal: 10 }}>
-					<EducationItem education={item} />
-				</View>
-			))}
+
+			{user?.education?.length === 0 ? (
+				<WarnAlert message='No previous education records could be found in your account' />
+			) : (
+				user?.education?.map((item, index) => (
+					<View key={index} style={{ marginHorizontal: 10 }}>
+						<EducationItem education={item} />
+					</View>
+				))
+			)}
 		</ScrollView>
 	);
 };

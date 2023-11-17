@@ -77,6 +77,23 @@ const AppLayout = () => {
 					),
 				}}
 			/>
+
+			<Drawer.Screen
+				name='internship'
+				options={{
+					title: 'Internship',
+					drawerLabel: 'Internship',
+					drawerIcon: () => (
+						<Image
+							source={require('../../assets/images/prof44.png')}
+							style={{
+								width: 25,
+								height: 25,
+							}}
+						/>
+					),
+				}}
+			/>
 		</Drawer>
 	);
 };

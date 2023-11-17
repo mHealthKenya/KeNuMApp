@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { User } from '../../models/user';
 import ProfileHeader from './header';
 import RegistrationItem from './registrationitem';
+import WarnAlert from '../shared/WarnAlert';
 
 const RegistrationComponent: FC<{ user: User | null }> = ({ user }) => {
 	return (
@@ -12,11 +13,15 @@ const RegistrationComponent: FC<{ user: User | null }> = ({ user }) => {
 				backgroundColor='#eaf2fa'
 				textColor='#0445b5'
 			/>
-			{user?.registration?.map((item, index) => (
-				<View key={index} style={{ marginHorizontal: 10 }}>
-					<RegistrationItem registration={item} />
-				</View>
-			))}
+			{user?.registration?.length === 0 ? (
+				<WarnAlert message='No previous registration details could be found in your account' />
+			) : (
+				user?.registration?.map((item, index) => (
+					<View key={index} style={{ marginHorizontal: 10 }}>
+						<RegistrationItem registration={item} />
+					</View>
+				))
+			)}
 		</ScrollView>
 	);
 };

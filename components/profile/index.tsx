@@ -44,14 +44,20 @@ const ProfileComponent = () => {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<ProfileHeader user={user} backgroundColor='#0445b5' textColor='#FFF' />
+			<ProfileHeader
+				user={user}
+				backgroundColor='#0445b5'
+				textColor='#FFF'
+				buttonColor='#FFF'
+				buttonTextColor='#0445b5'
+			/>
 			<View
 				style={[
 					{
 						height: height * 0.5,
 						flex: 1,
 						marginTop: 5,
-						justifyContent: 'space-evenly'
+						justifyContent: 'space-evenly',
 					},
 				]}>
 				{profileItems.map((item, index) => (

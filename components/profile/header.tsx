@@ -10,7 +10,9 @@ const ProfileHeader: FC<{
 	user: User | null;
 	backgroundColor: string;
 	textColor: string;
-}> = ({ user, backgroundColor, textColor }) => {
+	buttonColor?: string;
+	buttonTextColor?: string;
+}> = ({ user, backgroundColor, textColor, buttonColor, buttonTextColor }) => {
 	const { height, width } = useWindowDimensions();
 
 	const dimension = Math.min(width, height);
@@ -54,8 +56,18 @@ const ProfileHeader: FC<{
 							size={usableWidth * 0.7}
 							style={globalStyles.clearAvatar}
 						/>
-						<Button mode='contained' icon='upload' style={styles.button}>
-							Upload Profile Photo
+						<Button
+							mode='contained'
+							icon='upload'
+							style={[
+								styles.button,
+								{
+									backgroundColor: buttonColor || primaryColor,
+								},
+							]}>
+							<Text style={{ color: buttonTextColor || '#FFF' }}>
+								Upload Profile Photo
+							</Text>
 						</Button>
 					</View>
 				) : (
@@ -96,6 +108,5 @@ const styles = StyleSheet.create({
 
 	button: {
 		borderRadius: 8,
-		backgroundColor: primaryColor,
 	},
 });

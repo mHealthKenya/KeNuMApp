@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { User } from '../../models/user';
 import ProfileHeader from './header';
 import LicenseItem from './licenceitem';
+import WarnAlert from '../shared/WarnAlert';
 
 const LicenseComponent: FC<{ user: User | null }> = ({ user }) => {
 	return (
@@ -12,11 +13,15 @@ const LicenseComponent: FC<{ user: User | null }> = ({ user }) => {
 				backgroundColor='#eaf2fa'
 				textColor='#0445b5'
 			/>
-			{user?.license?.map((item, index) => (
-				<View key={index} style={{ marginHorizontal: 10 }}>
-					<LicenseItem license={item} />
-				</View>
-			))}
+			{user?.license?.length === 0 ? (
+				<WarnAlert message='No previous licensing details could be found in your account' />
+			) : (
+				user?.license?.map((item, index) => (
+					<View key={index} style={{ marginHorizontal: 10 }}>
+						<LicenseItem license={item} />
+					</View>
+				))
+			)}
 		</ScrollView>
 	);
 };

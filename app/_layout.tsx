@@ -6,6 +6,7 @@ import React from 'react';
 import AuthProvider from '../providers/auth';
 import ErrorProvider from '../providers/error';
 import { ThemeProvider } from '@rneui/themed';
+import SearchProvider from '../providers/search';
 
 const client = new QueryClient();
 
@@ -16,11 +17,13 @@ const RootLayout = () => {
 				<AuthProvider>
 					<QueryClientProvider client={client}>
 						<ErrorProvider>
-							<Stack
-								screenOptions={{
-									headerShown: false,
-								}}
-							/>
+							<SearchProvider>
+								<Stack
+									screenOptions={{
+										headerShown: false,
+									}}
+								/>
+							</SearchProvider>
 						</ErrorProvider>
 					</QueryClientProvider>
 				</AuthProvider>

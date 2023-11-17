@@ -9,11 +9,13 @@ import {
 import { Icon } from 'react-native-paper';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
+import { useRouter } from 'expo-router';
 
 const StudentsModule = () => {
 	const { width, height } = useWindowDimensions();
 	const { checkAuth } = useAuth();
 
+	const router = useRouter();
 	const dimension = Math.min(width, height);
 
 	const availableWidth = dimension - 30;
@@ -35,14 +37,15 @@ const StudentsModule = () => {
 					globalStyles.row,
 					{ justifyContent: 'space-around' },
 				]}>
-				<View
-					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
+				<Pressable
+					style={[styles.square, { width: usableWidth, height: usableWidth }]}
+					onPress={() => router.push('/internship')}>
 					<Icon
 						size={usableWidth * 0.6}
 						source={require('../../assets/images/internsh.png')}
 					/>
 					<Text>Internships</Text>
-				</View>
+				</Pressable>
 				<Pressable
 					style={[styles.square, { width: usableWidth, height: usableWidth }]}
 					onPress={() => checkAuth()}>
@@ -70,7 +73,7 @@ export default StudentsModule;
 
 const styles = StyleSheet.create({
 	square: {
-		backgroundColor: '#ecefff',
+		backgroundColor: '#eaf2fa',
 		borderRadius: 8,
 		justifyContent: 'space-around',
 		alignItems: 'center',
