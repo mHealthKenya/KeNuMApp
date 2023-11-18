@@ -7,7 +7,7 @@ const Internship = () => {
 	return (
 		<>
 			<InternshipComponent />
-			<StatusBar />
+			<StatusBar style='light' />
 		</>
 	);
 };

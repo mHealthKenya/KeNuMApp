@@ -7,6 +7,9 @@ import AuthProvider from '../providers/auth';
 import ErrorProvider from '../providers/error';
 import { ThemeProvider } from '@rneui/themed';
 import SearchProvider from '../providers/search';
+import RotationAreasProvider from '../providers/rotationareas';
+import RotationCompetenciesProvider from '../providers/rotationcompetencies';
+import CompetencyProvider from '../providers/competency';
 
 const client = new QueryClient();
 
@@ -16,15 +19,21 @@ const RootLayout = () => {
 			<ThemeProvider>
 				<AuthProvider>
 					<QueryClientProvider client={client}>
-						<ErrorProvider>
-							<SearchProvider>
-								<Stack
-									screenOptions={{
-										headerShown: false,
-									}}
-								/>
-							</SearchProvider>
-						</ErrorProvider>
+						<RotationAreasProvider>
+							<RotationCompetenciesProvider>
+								<CompetencyProvider>
+									<ErrorProvider>
+										<SearchProvider>
+											<Stack
+												screenOptions={{
+													headerShown: false,
+												}}
+											/>
+										</SearchProvider>
+									</ErrorProvider>
+								</CompetencyProvider>
+							</RotationCompetenciesProvider>
+						</RotationAreasProvider>
 					</QueryClientProvider>
 				</AuthProvider>
 			</ThemeProvider>

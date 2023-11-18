@@ -33,9 +33,10 @@ const RotationsBox = () => {
 					width: usableWidth,
 					height: height * 0.17,
 					backgroundColor: '#dcf0fa',
+					flex: 1,
 				},
 			]}
-			onPress={() => router.push('/internshipapply')}>
+			onPress={() => router.push('/internshipareas')}>
 			<View
 				style={[
 					globalStyles.row,

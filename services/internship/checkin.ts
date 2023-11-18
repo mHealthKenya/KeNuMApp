@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../providers/auth';
 import { CheckinApp } from '../../models/checkinsuccess';
 
@@ -58,10 +58,14 @@ export const sendOTP = async (data: OTP) => {
 
 const useInternshipCheckin = (successFn: () => void) => {
 	const { user } = useAuth();
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: internshipCheckin,
 
 		onSuccess: async (data) => {
+			queryClient.invalidateQueries({
+				queryKey: ['checkin-hist'],
+			});
 			successFn();
 			await sendOTP({
 				index_id: user?.IndexNo || '',

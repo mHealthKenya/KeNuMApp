@@ -226,7 +226,7 @@ const InternshipApplicationsComponent: FC<{
 				action={{
 					show,
 					toggleShow,
-					item
+					item,
 				}}
 			/>
 			<Searchbar
@@ -258,13 +258,14 @@ const styles = StyleSheet.create({
 	},
 
 	card: {
-		backgroundColor: '#eef4f9',
+		// backgroundColor: '#dcf0fa',
+		backgroundColor: '#FFFF',
 		borderRadius: 10,
 		padding: 10,
-		shadowColor: '#afc4e5',
+		shadowColor: '#b1c4e5',
 		shadowOffset: {
 			width: 0,
-			height: 4,
+			height: 10,
 		},
 		shadowOpacity: 0.9,
 		shadowRadius: 6,

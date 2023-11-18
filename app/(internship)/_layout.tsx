@@ -72,6 +72,78 @@ const InternshipLayout = () => {
 					presentation: 'modal',
 				}}
 			/>
+
+			<Stack.Screen
+				name='internshipareas'
+				options={{
+					title: 'Internship Areas',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='rotationareas'
+				options={{
+					title: 'Rotation Areas',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='competencies'
+				options={{
+					title: 'Rotation Competencies',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='competencyadd'
+				options={{
+					title: 'Record Competency',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='transfer'
+				options={{
+					title: 'Internship Transfer',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='allhistory'
+				options={{
+					title: 'Internship History',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='transferhist'
+				options={{
+					title: 'Transfer History',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='rotationactivities'
+				options={{
+					title: 'Rotation Activities',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='checkins'
+				options={{
+					title: 'Check Ins History',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
 		</Stack>
 	);
 };

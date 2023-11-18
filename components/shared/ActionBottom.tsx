@@ -62,6 +62,8 @@ const ActionBottom: FC<{ action: Action }> = ({
 	const router = useRouter();
 	const handlePay = (item: InternshipApplication | null) => {
 		toggleShow();
+
+		console.log(item);
 		router.push({
 			pathname: '/internshippayhistory',
 			params: {

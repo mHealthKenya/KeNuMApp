@@ -33,6 +33,7 @@ const CheckInBox = () => {
 					width: usableWidth,
 					height: height * 0.17,
 					backgroundColor: '#dcf0fa',
+					flex: 1,
 				},
 			]}
 			onPress={() => router.push('/checkin')}>

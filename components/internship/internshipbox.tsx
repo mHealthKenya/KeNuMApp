@@ -32,6 +32,7 @@ const InternshipBox: FC<{ box: InternBox }> = ({ box }) => {
 					width: usableWidth,
 					height: height * 0.17,
 					backgroundColor: box.backgroundColor,
+					flex: 1,
 				},
 			]}
 			onPress={() => router.push(box.route)}>

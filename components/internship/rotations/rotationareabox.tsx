@@ -1,3 +1,6 @@
+import { ImageSource } from 'expo-image';
+import { useRouter } from 'expo-router';
+import React, { FC } from 'react';
 import {
 	Pressable,
 	StyleSheet,
@@ -5,10 +8,10 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import React, { FC } from 'react';
-import { Image, ImageSource } from 'expo-image';
-import { Divider, Icon } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { ActivityIndicator, Divider, Icon } from 'react-native-paper';
+import { primaryColor } from '../../../constants/Colors';
+import { RotationArea } from '../../../models/rotationareas';
+import useRotationCompetencies from '../../../services/internship/rotationcompetencies';
 import globalStyles from '../../../styles/global';
 
 export interface InternBox {
@@ -19,11 +22,18 @@ export interface InternBox {
 	route: any;
 }
 
-const TransfersBox = () => {
+const RotationAreaBox: FC<{ area: RotationArea }> = ({ area }) => {
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
+
 	const router = useRouter();
+
+	const successFn = () => {
+		router.push('/competencies');
+	};
+
+	const { mutate, isPending } = useRotationCompetencies(successFn);
 
 	return (
 		<Pressable
@@ -33,34 +43,31 @@ const TransfersBox = () => {
 					width: usableWidth,
 					height: height * 0.17,
 					backgroundColor: '#dcf0fa',
-					flex: 1,
 				},
 			]}
-			onPress={() => router.push('/transfer')}>
+			onPress={() =>
+				mutate({
+					rotation_id: area.rotation_id,
+				})
+			}>
 			<View
 				style={[
 					globalStyles.row,
 					{ justifyContent: 'space-between', alignItems: 'center' },
 				]}>
-				<Image
-					source={require('../../../assets/images/transfersmall.png')}
-					style={{
-						width: 60,
-						height: 80,
-					}}
-				/>
 				<View
 					style={[
 						globalStyles.column,
 						{
-							width: usableWidth * 0.6,
+							width: usableWidth * 0.8,
+							justifyContent: 'space-between',
 						},
 					]}>
 					<View
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>Internship transfer</Text>
+						<Text style={styles.titleText}>{area.rotation_area}</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -72,17 +79,21 @@ const TransfersBox = () => {
 							padding: 10,
 						}}>
 						<Text style={styles.contentText}>
-							Apply for a change of internship center
+							Required duration {area.rotation_duration} days
 						</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' />
+				{isPending ? (
+					<ActivityIndicator size={30} color={primaryColor} />
+				) : (
+					<Icon size={30} source='chevron-right' />
+				)}
 			</View>
 		</Pressable>
 	);
 };
 
-export default TransfersBox;
+export default RotationAreaBox;
 
 const styles = StyleSheet.create({
 	box: {

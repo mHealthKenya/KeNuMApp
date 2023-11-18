@@ -1,66 +1,39 @@
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
 import React, { FC } from 'react';
-import { Image, ImageSource } from 'expo-image';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Divider, Icon } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { RotationCompetency } from '../../../models/rotationcompetencies';
 import globalStyles from '../../../styles/global';
 
-export interface InternBox {
-	title: string;
-	content: string;
-	backgroundColor: string;
-	path: ImageSource;
-	route: any;
-}
-
-const TransfersBox = () => {
+const CompetencyInformationBox: FC<{
+	competency?: RotationCompetency | null;
+}> = ({ competency }) => {
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
-	const router = useRouter();
 
 	return (
-		<Pressable
+		<View
 			style={[
 				styles.box,
 				{
 					width: usableWidth,
 					height: height * 0.17,
 					backgroundColor: '#dcf0fa',
-					flex: 1,
 				},
-			]}
-			onPress={() => router.push('/transfer')}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
-				<Image
-					source={require('../../../assets/images/transfersmall.png')}
-					style={{
-						width: 60,
-						height: 80,
-					}}
-				/>
+			]}>
+			<View style={[{ justifyContent: 'space-between', alignItems: 'center' }]}>
 				<View
 					style={[
 						globalStyles.column,
 						{
-							width: usableWidth * 0.6,
+							justifyContent: 'space-between',
 						},
 					]}>
 					<View
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>Internship transfer</Text>
+						<Text style={styles.titleText}>{competency?.competency}</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -72,17 +45,16 @@ const TransfersBox = () => {
 							padding: 10,
 						}}>
 						<Text style={styles.contentText}>
-							Apply for a change of internship center
+							Minimum Requirement {competency?.minimum_requirement} points
 						</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' />
 			</View>
-		</Pressable>
+		</View>
 	);
 };
 
-export default TransfersBox;
+export default CompetencyInformationBox;
 
 const styles = StyleSheet.create({
 	box: {

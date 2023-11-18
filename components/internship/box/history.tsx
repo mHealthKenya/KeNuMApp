@@ -33,9 +33,10 @@ const HistoryBox = () => {
 					width: usableWidth,
 					height: height * 0.17,
 					backgroundColor: '#dcf0fa',
+					flex: 1,
 				},
 			]}
-			onPress={() => router.push('/internshiphistory')}>
+			onPress={() => router.push('/allhistory')}>
 			<View
 				style={[
 					globalStyles.row,
