@@ -2,76 +2,79 @@ import dayjs from 'dayjs';
 import React, { FC } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
-import { CheckIns } from '../../../models/checkins';
-import globalStyles from '../../../styles/global';
+import { ExamResult } from '../../models/results';
+import globalStyles from '../../styles/global';
 
-const CheckinBox: FC<{ checkin: CheckIns }> = ({ checkin }) => {
+const ResultBox: FC<{ result: ExamResult }> = ({ result }) => {
 	return (
 		<View style={styles.card}>
 			<View style={{ padding: 10 }}>
 				<View style={[globalStyles.column, { gap: 10 }]}>
-					<Text style={styles.mutedText}>Internship Center</Text>
-					<Text style={styles.titleText}>{checkin.internship_center}</Text>
+					<Text style={styles.mutedText}>Name</Text>
+					<Text style={styles.titleText}>{result.full_name}</Text>
 					<Divider />
 				</View>
 			</View>
 			<View style={{ padding: 10 }}>
 				<View style={[globalStyles.column, { gap: 10 }]}>
-					<Text style={styles.mutedText}>Nurse In Charge</Text>
-					<Text style={styles.titleText}>{checkin.nurse_officer_incharge}</Text>
-					<Divider />
-				</View>
-			</View>
-
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
-					<Text style={styles.mutedText}>Nurse In Charge Phone</Text>
-					<Text style={styles.titleText}>
-						{checkin.nurse_officer_incharge_mobile}
-					</Text>
+					<Text style={styles.mutedText}>Series</Text>
+					<Text style={styles.titleText}>{result.series}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{ padding: 10 }}>
 				<View style={[globalStyles.column, { gap: 10 }]}>
-					<Text style={styles.mutedText}>Supervisor</Text>
-					<Text style={styles.titleText}>{checkin.supervisor}</Text>
+					<Text style={styles.mutedText}>Training Institution</Text>
+					<Text style={styles.titleText}>{result.training_institution}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{ padding: 10 }}>
 				<View style={[globalStyles.column, { gap: 10 }]}>
-					<Text style={styles.mutedText}>Supervisor Phone</Text>
-					<Text style={styles.titleText}>{checkin.supervisor_mobile}</Text>
+					<Text style={styles.mutedText}>Cadre</Text>
+					<Text style={styles.titleText}>{result.cadre}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{ padding: 10 }}>
 				<View style={[globalStyles.column, { gap: 10 }]}>
-					<Text style={styles.mutedText}>Checkin Date</Text>
-					<Text style={styles.titleText}>
-						{dayjs(new Date(checkin.checkin_date)).format('DD MMMM YYYY ')}
-					</Text>
+					<Text style={styles.mutedText}>Grading Method</Text>
+					<Text style={styles.titleText}>{result.grading_method}</Text>
+					<Divider />
+				</View>
+			</View>
+
+			<View style={{ padding: 10 }}>
+				<View style={[globalStyles.column, { gap: 10 }]}>
+					<Text style={styles.mutedText}>Score Paper One</Text>
+					<Text style={styles.titleText}>{result.score_paper_one}</Text>
+				</View>
+			</View>
+
+			<View style={{ padding: 10 }}>
+				<View style={[globalStyles.column, { gap: 10 }]}>
+					<Text style={styles.mutedText}>Score Paper Two</Text>
+					<Text style={styles.titleText}>{result.score_paper_two}</Text>
 				</View>
 			</View>
 		</View>
 	);
 };
 
-const CheckinHistoryComponent: FC<{
-	checkins: CheckIns[];
+const ExamResultsComponent: FC<{
+	results: ExamResult[];
 	refresh: () => {};
 	isRefetching: boolean;
-}> = ({ checkins, refresh, isRefetching }) => {
+}> = ({ results, refresh, isRefetching }) => {
 	return (
 		<View style={globalStyles.container}>
 			<FlatList
-				data={checkins}
-				renderItem={({ item }) => <CheckinBox checkin={item} />}
-				keyExtractor={(item) => item.checkin_id}
+				data={results}
+				renderItem={({ item }) => <ResultBox result={item} />}
+				keyExtractor={(item, index) => '' + index}
 				onRefresh={refresh}
 				refreshing={isRefetching}
 			/>
@@ -79,7 +82,7 @@ const CheckinHistoryComponent: FC<{
 	);
 };
 
-export default CheckinHistoryComponent;
+export default ExamResultsComponent;
 
 const styles = StyleSheet.create({
 	card: {

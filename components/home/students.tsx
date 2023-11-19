@@ -48,7 +48,7 @@ const StudentsModule = () => {
 				</Pressable>
 				<Pressable
 					style={[styles.square, { width: usableWidth, height: usableWidth }]}
-					onPress={() => checkAuth()}>
+					onPress={() => router.push('/examall')}>
 					<Icon
 						size={usableWidth * 0.6}
 						source={require('../../assets/images/exams.png')}

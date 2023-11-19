@@ -2,32 +2,27 @@ import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { CheckIns } from '../../models/checkins';
+import { ExamCenter } from '../../models/examcenters';
 
-const checkinHistory = async () => {
+const examCenters = async () => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);
 	axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-	const url = baseUrl + 'api/checkin';
+	const url = baseUrl + 'api/exams/centers';
 
 	const config: AxiosRequestConfig = {
 		method: 'GET',
 		url,
 	};
 
-	const response: CheckIns[] = await axios(config).then((res) => res.data);
-
-	response.sort(
-		(a, b) =>
-			new Date(b.checkin_date).getTime() - new Date(a.checkin_date).getTime()
-	);
+	const response: ExamCenter[] = await axios(config).then((res) => res.data);
 
 	return response;
 };
 
-const useCheckins = () =>
+const useExamCenters = () =>
 	useQuery({
-		queryKey: ['checkin-hist'],
-		queryFn: checkinHistory,
+		queryKey: ['exam-centers'],
+		queryFn: examCenters,
 	});
 
-export default useCheckins;
+export default useExamCenters;

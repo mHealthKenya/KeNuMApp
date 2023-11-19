@@ -19,7 +19,7 @@ export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	currency: 'KES',
 });
 
-const InternshipItem: FC<{
+export const InternshipItem: FC<{
 	title: string;
 	content: string;
 	availableWidth: number;
@@ -67,7 +67,7 @@ const InternshipItem: FC<{
 	);
 };
 
-const InternshipItemDouble: FC<{
+export const InternshipItemDouble: FC<{
 	title: string;
 	subtitle: string;
 	subtitle1: string;
