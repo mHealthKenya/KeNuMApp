@@ -1,5 +1,6 @@
 {
 	"cSpell.words": [
+		"actionbottomreg",
 		"Actionsheet",
 		"addcompetency",
 		"addinternshipbox",
@@ -9,6 +10,7 @@
 		"Checkins",
 		"competencyinformationbox",
 		"cpds",
+		"DDTHH",
 		"examall",
 		"examapplications",
 		"examlarge",
@@ -30,6 +32,13 @@
 		"nurselarge",
 		"nursesmall",
 		"payexam",
+		"payreg",
+		"payreghist",
+		"regapplications",
+		"registrationapplication",
+		"registrationapplications",
+		"registrationhome",
+		"registrationprovider",
 		"rotationactivities",
 		"rotationactivity",
 		"rotationareas",

@@ -22,7 +22,7 @@ const history: InternBox[] = [
 	},
 
 	{
-		title: 'Exam Applications',
+		title: 'Exam Applications History',
 		content: 'See how you performed in your previous exams',
 		path: require('../../assets/images/rotations.png'),
 		route: '/examapplications',

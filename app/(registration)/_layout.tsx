@@ -2,7 +2,7 @@ import { Stack } from 'expo-router';
 import React from 'react';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
 
-const ExamsLayout = () => {
+const RegistrationLayout = () => {
 	return (
 		<Stack
 			screenOptions={{
@@ -16,47 +16,30 @@ const ExamsLayout = () => {
 				},
 			}}>
 			<Stack.Screen
-				name='series'
+				name='registrationhome'
 				options={{
-					title: 'Exam Series',
+					title: 'My Registrations',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+			<Stack.Screen
+				name='registrationapplication'
+				options={{
+					title: 'Apply For Registration',
 					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>
 
 			<Stack.Screen
-				name='applyexam'
+				name='registrationapplications'
 				options={{
-					title: 'Exam Application',
+					title: 'Registrations History',
 					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>
 
 			<Stack.Screen
-				name='examapplications'
-				options={{
-					title: 'Exam Applications',
-					headerLeft: () => <ProfileHeaderLeft />,
-				}}
-			/>
-
-			<Stack.Screen
-				name='examall'
-				options={{
-					title: 'My Exams',
-					headerLeft: () => <ProfileHeaderLeft />,
-				}}
-			/>
-
-			<Stack.Screen
-				name='examresults'
-				options={{
-					title: 'My Results',
-					headerLeft: () => <ProfileHeaderLeft />,
-				}}
-			/>
-
-			<Stack.Screen
-				name='payexamhist'
+				name='payreg'
 				options={{
 					headerShown: false,
 					presentation: 'modal',
@@ -64,7 +47,7 @@ const ExamsLayout = () => {
 			/>
 
 			<Stack.Screen
-				name='payexam'
+				name='payreghist'
 				options={{
 					headerShown: false,
 					presentation: 'modal',
@@ -74,4 +57,4 @@ const ExamsLayout = () => {
 	);
 };
 
-export default ExamsLayout;
+export default RegistrationLayout;

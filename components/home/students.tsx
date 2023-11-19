@@ -56,14 +56,15 @@ const StudentsModule = () => {
 					<Text>Exams</Text>
 				</Pressable>
 
-				<View
-					style={[styles.square, { width: usableWidth, height: usableWidth }]}>
+				<Pressable
+					style={[styles.square, { width: usableWidth, height: usableWidth }]}
+					onPress={() => router.push('/registrationhome')}>
 					<Icon
 						size={usableWidth * 0.6}
 						source={require('../../assets/images/register.png')}
 					/>
 					<Text>Registration</Text>
-				</View>
+				</Pressable>
 			</View>
 		</View>
 	);

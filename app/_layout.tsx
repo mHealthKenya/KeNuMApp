@@ -10,6 +10,7 @@ import SearchProvider from '../providers/search';
 import RotationAreasProvider from '../providers/rotationareas';
 import RotationCompetenciesProvider from '../providers/rotationcompetencies';
 import CompetencyProvider from '../providers/competency';
+import RegistrationProvider from '../providers/registrationprovider';
 
 const client = new QueryClient();
 
@@ -22,15 +23,17 @@ const RootLayout = () => {
 						<RotationAreasProvider>
 							<RotationCompetenciesProvider>
 								<CompetencyProvider>
-									<ErrorProvider>
-										<SearchProvider>
-											<Stack
-												screenOptions={{
-													headerShown: false,
-												}}
-											/>
-										</SearchProvider>
-									</ErrorProvider>
+									<RegistrationProvider>
+										<ErrorProvider>
+											<SearchProvider>
+												<Stack
+													screenOptions={{
+														headerShown: false,
+													}}
+												/>
+											</SearchProvider>
+										</ErrorProvider>
+									</RegistrationProvider>
 								</CompetencyProvider>
 							</RotationCompetenciesProvider>
 						</RotationAreasProvider>

@@ -6,12 +6,6 @@ import { Transactions } from '../../enums/transactions';
 const InternshipPayHistory = () => {
 	const { acc_no, amount, subtitle } = useLocalSearchParams();
 
-	const item = useLocalSearchParams();
-
-	console.log({
-		item,
-	});
-
 	return (
 		<PayComponent
 			pay={{

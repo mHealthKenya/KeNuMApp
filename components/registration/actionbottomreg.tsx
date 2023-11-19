@@ -11,21 +11,19 @@ import * as Print from 'expo-print';
 import { useRouter } from 'expo-router';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {
-	InternshipMode
-} from '../../helpers/receiptgenerator';
-import { examReceiptGen } from '../../helpers/receiptgeneratorexam';
-import { ExamApplication } from '../../models/examapplications';
+import { InternshipMode } from '../../helpers/receiptgenerator';
+import { registrationReceiptGen } from '../../helpers/receiptgeneratorregistration';
+import { RegistrationApplication } from '../../models/regapplications';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
 
 interface Action {
 	show: boolean;
 	toggleShow: () => void;
-	item: ExamApplication | null;
+	item: RegistrationApplication | null;
 }
 
-const ActionBottomExam: FC<{ action: Action }> = ({
+const ActionBottomRegistration: FC<{ action: Action }> = ({
 	action: { show, toggleShow, item },
 }) => {
 	const { user } = useAuth();
@@ -34,7 +32,7 @@ const ActionBottomExam: FC<{ action: Action }> = ({
 
 	const print = async () => {
 		await Print.printAsync({
-			html: examReceiptGen(item!, user),
+			html: registrationReceiptGen(item!, user),
 			// printerUrl: selectedPrinter?.url,
 		});
 		toggleShow();
@@ -42,34 +40,18 @@ const ActionBottomExam: FC<{ action: Action }> = ({
 
 	const printReceipt = async () => {
 		await Print.printAsync({
-			html: examReceiptGen(item!, user, InternshipMode.paid),
+			html: registrationReceiptGen(item!, user, InternshipMode.paid),
 			// printerUrl: selectedPrinter?.url,
 		});
 		toggleShow();
 	};
 
-	// const printToFile = async () => {
-	// 	const { uri } = await Print.printToFileAsync({ html: htmlContent });
-	// 	console.log('File has been saved to:', uri);
-	// 	await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-	// };
-
-	// const selectPrinter = async () => {
-	// 	const printer = await Print.selectPrinterAsync(); // iOS only
-	// 	setSelectedPrinter(printer);
-	// };
-
 	const router = useRouter();
-	const handlePay = (item: ExamApplication | null) => {
+	const handlePay = (item: RegistrationApplication | null) => {
 		toggleShow();
 
 		router.push({
-			pathname: '/payexamhist',
-			params: {
-				acc_no: item?.invoice_no || '',
-				amount: item?.balance_due || '',
-				subtitle: item?.exams_series || '',
-			},
+			pathname: '/payreghist',
 		});
 	};
 
@@ -102,7 +84,7 @@ const ActionBottomExam: FC<{ action: Action }> = ({
 						</View>
 
 						<View style={{ justifyContent: 'center' }}>
-							<Text style={styles.text}>Pay For Exam</Text>
+							<Text style={styles.text}>Pay For Registration</Text>
 						</View>
 					</View>
 				</ActionsheetItem>
@@ -163,7 +145,7 @@ const ActionBottomExam: FC<{ action: Action }> = ({
 	);
 };
 
-export default ActionBottomExam;
+export default ActionBottomRegistration;
 
 const styles = StyleSheet.create({
 	text: {
