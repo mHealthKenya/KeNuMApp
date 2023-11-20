@@ -1,7 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import {
+	Pressable,
+	StyleSheet,
+	Text,
+	View,
+	useWindowDimensions,
+} from 'react-native';
 import { Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
+import { useRouter } from 'expo-router';
 
 const GeneralModule = () => {
 	const { width, height } = useWindowDimensions();
@@ -11,6 +18,9 @@ const GeneralModule = () => {
 	const availableWidth = dimension - 30;
 
 	const usableWidth = (availableWidth - 20) / 3;
+
+	const router = useRouter();
+
 	return (
 		<View
 			style={[
@@ -40,7 +50,9 @@ const GeneralModule = () => {
 					</View>
 				</View>
 				<View style={styles.verticalDivider} />
-				<View style={styles.rightContent}>
+				<Pressable
+					style={styles.rightContent}
+					onPress={() => router.push('/allfaqs')}>
 					<Icon
 						size={usableWidth * 0.6}
 						source={require('../../assets/images/fa4q.png')}
@@ -51,7 +63,7 @@ const GeneralModule = () => {
 						}}>
 						<Text>FAQs</Text>
 					</View>
-				</View>
+				</Pressable>
 			</View>
 		</View>
 	);
