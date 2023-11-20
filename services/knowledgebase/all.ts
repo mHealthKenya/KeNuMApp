@@ -2,29 +2,29 @@ import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { FAQ } from '../../models/faqs';
+import { KnowledgeBase } from '../../models/knowledgebase';
 
-const allFAQS = async () => {
+const allKnow = async () => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);
 	axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-	const url = baseUrl + 'api/faqs';
+	const url = baseUrl + 'api/kbase';
 
 	const config: AxiosRequestConfig = {
 		method: 'GET',
 		url,
 	};
 
-	const response: FAQ[] = await axios(config).then((res) => {
+	const response: KnowledgeBase[] = await axios(config).then((res) => {
 		return res.data;
 	});
 
 	return response;
 };
 
-const useAllFAQS = () =>
+const useKnowledge = () =>
 	useQuery({
-		queryKey: ['faqs'],
-		queryFn: allFAQS,
+		queryKey: ['knowledge'],
+		queryFn: allKnow,
 	});
 
-export default useAllFAQS;
+export default useKnowledge;

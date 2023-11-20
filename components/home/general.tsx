@@ -37,7 +37,9 @@ const GeneralModule = () => {
 					styles.inner,
 					{ height: usableWidth * 1.2 },
 				]}>
-				<View style={styles.leftContent}>
+				<Pressable
+					style={styles.leftContent}
+					onPress={() => router.push('/allknowledge')}>
 					<Icon
 						size={usableWidth * 0.6}
 						source={require('../../assets/images/knowledge.png')}
@@ -48,7 +50,7 @@ const GeneralModule = () => {
 						}}>
 						<Text>Knowledge Base</Text>
 					</View>
-				</View>
+				</Pressable>
 				<View style={styles.verticalDivider} />
 				<Pressable
 					style={styles.rightContent}
