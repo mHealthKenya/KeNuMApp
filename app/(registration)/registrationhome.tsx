@@ -1,9 +1,14 @@
-import { View, Text } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import RegHome from '../../components/registration';
 
 const RegistrationHome = () => {
-	return <RegHome />;
+	return (
+		<>
+			<RegHome />
+			<StatusBar style='light' />
+		</>
+	);
 };
 
 export default RegistrationHome;
