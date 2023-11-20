@@ -1,3 +1,6 @@
+import { ImageSource } from 'expo-image';
+import { useRouter } from 'expo-router';
+import React, { FC } from 'react';
 import {
 	Pressable,
 	StyleSheet,
@@ -5,70 +8,51 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import React, { FC } from 'react';
-import { Image, ImageSource } from 'expo-image';
 import { Divider, Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
-import { useRouter } from 'expo-router';
 
-export interface RegBox {
+export interface ContentBox {
 	title: string;
-	content: string;
-	backgroundColor: string;
-	path: ImageSource;
-	route: any;
+	id: string;
 }
 
-const RegistrationBox: FC<{ box: RegBox }> = ({ box }) => {
+const ContentBox: FC<{
+	box: ContentBox;
+	action: (item: ContentBox) => void;
+}> = ({ box, action }) => {
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 	const router = useRouter();
+
 	return (
 		<Pressable
 			style={[
 				styles.box,
 				{
 					width: usableWidth,
-					backgroundColor: box.backgroundColor,
+					backgroundColor: '#dcf0fa',
+					flex: 1,
 				},
 			]}
-			onPress={() => router.push(box.route)}>
+			onPress={() => action(box)}>
 			<View
 				style={[
 					globalStyles.row,
 					{ justifyContent: 'space-between', alignItems: 'center' },
 				]}>
-				<Image
-					source={box.path}
-					style={{
-						width: 60,
-						height: 80,
-					}}
-				/>
 				<View
 					style={[
 						globalStyles.column,
 						{
-							width: usableWidth * 0.6,
+							width: usableWidth * 0.8,
 						},
 					]}>
 					<View
 						style={{
-							paddingHorizontal: 10,
-						}}>
-						<Text style={styles.titleText}>{box.title}</Text>
-						<Divider
-							style={{
-								marginTop: 5,
-							}}
-						/>
-					</View>
-					<View
-						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>{box.content}</Text>
+						<Text style={styles.contentText}>{box.title}</Text>
 					</View>
 				</View>
 				<Icon size={30} source='chevron-right' />
@@ -77,11 +61,12 @@ const RegistrationBox: FC<{ box: RegBox }> = ({ box }) => {
 	);
 };
 
-export default RegistrationBox;
+export default ContentBox;
 
 const styles = StyleSheet.create({
 	box: {
-		margin: 10,
+		marginHorizontal: 10,
+		marginVertical: 3,
 		padding: 20,
 		borderRadius: 10,
 		justifyContent: 'center',
@@ -99,7 +84,9 @@ const styles = StyleSheet.create({
 	},
 
 	contentText: {
-		color: '#74787e',
-		letterSpacing: 1.5,
+		color: 'black',
+		letterSpacing: 2,
+		fontSize: 16,
+		textTransform: 'capitalize',
 	},
 });

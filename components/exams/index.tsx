@@ -33,7 +33,7 @@ const history: InternBox[] = [
 const ExamAllComponent = () => {
 	return (
 		<View style={globalStyles.container}>
-			<View style={[{ flex: 1 }]}>
+			<View style={[{ flex: 0.7 }]}>
 				{history.map((box) => (
 					<InternshipBox box={box} key={box.title} />
 				))}

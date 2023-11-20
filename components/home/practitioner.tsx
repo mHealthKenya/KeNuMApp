@@ -37,7 +37,9 @@ const PractitionersModule = () => {
 					styles.inner,
 					{ height: usableWidth * 1.2 },
 				]}>
-				<View style={styles.leftContent}>
+				<Pressable
+					style={styles.leftContent}
+					onPress={() => router.push('/licencehome')}>
 					<Icon
 						size={usableWidth * 0.6}
 						source={require('../../assets/images/licences.png')}
@@ -48,7 +50,7 @@ const PractitionersModule = () => {
 						}}>
 						<Text>Licences</Text>
 					</View>
-				</View>
+				</Pressable>
 				<View style={styles.verticalDivider} />
 				<Pressable
 					style={styles.rightContent}

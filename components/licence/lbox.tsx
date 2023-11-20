@@ -11,7 +11,7 @@ import { Divider, Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
 import { useRouter } from 'expo-router';
 
-export interface RegBox {
+export interface LicenceBox {
 	title: string;
 	content: string;
 	backgroundColor: string;
@@ -19,7 +19,7 @@ export interface RegBox {
 	route: any;
 }
 
-const RegistrationBox: FC<{ box: RegBox }> = ({ box }) => {
+const LBox: FC<{ box: LicenceBox }> = ({ box }) => {
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
@@ -77,7 +77,7 @@ const RegistrationBox: FC<{ box: RegBox }> = ({ box }) => {
 	);
 };
 
-export default RegistrationBox;
+export default LBox;
 
 const styles = StyleSheet.create({
 	box: {

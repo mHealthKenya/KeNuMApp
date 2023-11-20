@@ -41,6 +41,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const CPDSelfReportingComponent = () => {
+	const currentYear = new Date().getFullYear();
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
@@ -253,6 +254,7 @@ const CPDSelfReportingComponent = () => {
 									date,
 									handleDate,
 								}}
+								minimumDate={new Date(currentYear, 0, 1)}
 							/>
 						)}
 					</View>

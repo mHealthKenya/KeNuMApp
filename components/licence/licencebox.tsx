@@ -1,63 +1,42 @@
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
 import React, { FC } from 'react';
-import { Image, ImageSource } from 'expo-image';
-import { Divider, Icon } from 'react-native-paper';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Divider } from 'react-native-paper';
 import globalStyles from '../../styles/global';
-import { useRouter } from 'expo-router';
 
-export interface RegBox {
+export interface Item {
 	title: string;
-	content: string;
-	backgroundColor: string;
-	path: ImageSource;
-	route: any;
+	id: string;
 }
 
-const RegistrationBox: FC<{ box: RegBox }> = ({ box }) => {
+const LicenceApplyBox: FC<{ county: Item; workstation: Item }> = ({
+	county,
+	workstation,
+}) => {
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
-	const router = useRouter();
+
 	return (
-		<Pressable
+		<View
 			style={[
 				styles.box,
 				{
 					width: usableWidth,
-					backgroundColor: box.backgroundColor,
+					height: height * 0.17,
+					backgroundColor: '#FFF',
 				},
-			]}
-			onPress={() => router.push(box.route)}>
+			]}>
 			<View
 				style={[
 					globalStyles.row,
 					{ justifyContent: 'space-between', alignItems: 'center' },
 				]}>
-				<Image
-					source={box.path}
-					style={{
-						width: 60,
-						height: 80,
-					}}
-				/>
-				<View
-					style={[
-						globalStyles.column,
-						{
-							width: usableWidth * 0.6,
-						},
-					]}>
+				<View style={[globalStyles.column]}>
 					<View
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>{box.title}</Text>
+						<Text style={styles.titleText}>{county.title}</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -68,16 +47,15 @@ const RegistrationBox: FC<{ box: RegBox }> = ({ box }) => {
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>{box.content}</Text>
+						<Text style={styles.contentText}>{workstation.title}</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' />
 			</View>
-		</Pressable>
+		</View>
 	);
 };
 
-export default RegistrationBox;
+export default LicenceApplyBox;
 
 const styles = StyleSheet.create({
 	box: {

@@ -20,8 +20,9 @@ interface CModal {
 	handleDate: ({ type }: any, selectedDate: any) => void;
 }
 
-const DateModal: FC<{ items: CModal }> = ({
+const DateModal: FC<{ items: CModal; minimumDate?: Date }> = ({
 	items: { show, toggleModal, cancelDate, date, handleDate },
+	minimumDate,
 }) => {
 	const ref = useRef(null);
 	return (
@@ -38,7 +39,7 @@ const DateModal: FC<{ items: CModal }> = ({
 							backgroundColor: primaryColor,
 							borderRadius: 10,
 						}}
-						minimumDate={new Date()}
+						minimumDate={minimumDate || new Date()}
 						onChange={handleDate}
 					/>
 				</View>
