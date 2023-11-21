@@ -8,10 +8,13 @@ import { WorkStation } from '../../models/workstations';
 import { useSearch } from '../../providers/search';
 import { Searchbar } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import EmptyList from '../shared/EmptyList';
 
-const WorkStationsComponent: FC<{ workstations: WorkStation[] }> = ({
-	workstations,
-}) => {
+const WorkStationsComponent: FC<{
+	workstations: WorkStation[];
+	refetch: () => void;
+	isRefetching: boolean;
+}> = ({ workstations, isRefetching, refetch }) => {
 	const { handleSearch, search } = useSearch();
 	const { handleWorkStation } = useWorkStationFetched();
 
@@ -53,6 +56,12 @@ const WorkStationsComponent: FC<{ workstations: WorkStation[] }> = ({
 						action={() => handlePress(item)}
 					/>
 				)}
+				keyExtractor={(_, index) => String(index)}
+				onRefresh={refetch}
+				refreshing={isRefetching}
+				ListEmptyComponent={
+					<EmptyList message='Could load workstations. Please check your internet and retry' />
+				}
 			/>
 		</View>
 	);

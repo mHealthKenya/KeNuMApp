@@ -10,7 +10,12 @@ import globalStyles from '../../styles/global';
 
 const LicenceApplications = () => {
 	const { user } = useAuth();
-	const { data = [], isLoading } = useLicenceApplications(user?.id || '');
+	const {
+		data = [],
+		isLoading,
+		isRefetching,
+		refetch,
+	} = useLicenceApplications(user?.id || '');
 
 	if (isLoading) {
 		return (
@@ -22,7 +27,11 @@ const LicenceApplications = () => {
 
 	return (
 		<>
-			<LicenceApplicationsComponent applications={data} />
+			<LicenceApplicationsComponent
+				applications={data}
+				refetch={refetch}
+				isRefetching={isRefetching}
+			/>
 			<StatusBar style='light' />
 		</>
 	);

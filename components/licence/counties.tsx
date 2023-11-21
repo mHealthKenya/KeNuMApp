@@ -8,8 +8,13 @@ import { useRouter } from 'expo-router';
 import { Searchbar } from 'react-native-paper';
 import { useSearch } from '../../providers/search';
 import { StyleSheet } from 'react-native';
+import EmptyList from '../shared/EmptyList';
 
-const CountiesComponent: FC<{ counties: County[] }> = ({ counties }) => {
+const CountiesComponent: FC<{
+	counties: County[];
+	refetch: () => void;
+	isRefetching: boolean;
+}> = ({ counties, refetch, isRefetching }) => {
 	const { handleSearch, search, clearSearch } = useSearch();
 	const { handleCounty } = useWorkStationFetched();
 	const router = useRouter();
@@ -52,6 +57,12 @@ const CountiesComponent: FC<{ counties: County[] }> = ({ counties }) => {
 						action={() => handlePress(item)}
 					/>
 				)}
+				onRefresh={refetch}
+				refreshing={isRefetching}
+				keyExtractor={(_, index) => String(index)}
+				ListEmptyComponent={
+					<EmptyList message='Could load counties. Please check your internet and retry' />
+				}
 			/>
 		</View>
 	);

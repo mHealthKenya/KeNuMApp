@@ -45,7 +45,7 @@ const Application: FC<{
 					availableWidth={availableWidth}
 					title='Date'
 					content={dayjs(new Date(application.application_date)).format(
-						'DD/MM/YYYY'
+						'YYYY-MM-DD'
 					)}
 				/>
 

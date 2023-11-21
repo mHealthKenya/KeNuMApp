@@ -16,6 +16,7 @@ import {
 } from '../internship/history/applications';
 import ActionBottomRegistration from './actionbottomreg';
 import { useRegistrationFetched } from '../../providers/registrationprovider';
+import EmptyList from '../shared/EmptyList';
 
 const Application: FC<{
 	application: RegistrationApplication;
@@ -44,7 +45,7 @@ const Application: FC<{
 					availableWidth={availableWidth}
 					title='Date'
 					content={dayjs(new Date(application.application_date)).format(
-						'DD/MM/YYYY'
+						'YYYY-MM-DD'
 					)}
 				/>
 
@@ -72,7 +73,9 @@ const Application: FC<{
 
 const RegistrationApplicationsComponent: FC<{
 	applications: RegistrationApplication[];
-}> = ({ applications }) => {
+	refetch: () => void;
+	isRefetching: boolean;
+}> = ({ applications, refetch, isRefetching }) => {
 	const [show, setShow] = useState(false);
 
 	const { handleRegistration } = useRegistrationFetched();
@@ -102,6 +105,12 @@ const RegistrationApplicationsComponent: FC<{
 				renderItem={({ item }) => (
 					<Application application={item} action={() => handleItem(item)} />
 				)}
+				keyExtractor={(_, index) => String(index)}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any registration applications in your account' />
+				}
+				onRefresh={refetch}
+				refreshing={isRefetching}
 			/>
 		</View>
 	);

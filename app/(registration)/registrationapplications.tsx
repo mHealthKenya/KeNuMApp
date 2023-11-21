@@ -8,7 +8,12 @@ import useRegistrationApplications from '../../services/registration/application
 import globalStyles from '../../styles/global';
 
 const RegistrationApplications = () => {
-	const { data = [], isLoading } = useRegistrationApplications();
+	const {
+		data = [],
+		isLoading,
+		refetch,
+		isRefetching,
+	} = useRegistrationApplications();
 
 	if (isLoading) {
 		return (
@@ -20,7 +25,11 @@ const RegistrationApplications = () => {
 
 	return (
 		<>
-			<RegistrationApplicationsComponent applications={data} />
+			<RegistrationApplicationsComponent
+				applications={data}
+				refetch={refetch}
+				isRefetching={isRefetching}
+			/>
 			<StatusBar style='light' />
 		</>
 	);

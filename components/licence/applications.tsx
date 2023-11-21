@@ -1,21 +1,22 @@
 import dayjs from 'dayjs';
 import React, { FC, useState } from 'react';
 import {
-    FlatList,
-    Pressable,
-    StyleSheet,
-    View,
-    useWindowDimensions,
+	FlatList,
+	Pressable,
+	StyleSheet,
+	View,
+	useWindowDimensions,
 } from 'react-native';
 import { currencyFormatter } from '../../helpers/currency-formatter';
 import { LicenceApplication } from '../../models/licenceapplications';
 import { useLicenceFetched } from '../../providers/licenceprovider';
 import globalStyles from '../../styles/global';
 import {
-    InternshipItem,
-    InternshipItemDouble,
+	InternshipItem,
+	InternshipItemDouble,
 } from '../internship/history/applications';
 import ActionBottomLicence from './actionbottomlicence';
+import EmptyList from '../shared/EmptyList';
 
 const Application: FC<{
 	application: LicenceApplication;
@@ -78,7 +79,9 @@ const Application: FC<{
 
 const LicenceApplicationsComponent: FC<{
 	applications: LicenceApplication[];
-}> = ({ applications }) => {
+	refetch: () => void;
+	isRefetching: boolean;
+}> = ({ applications, refetch, isRefetching }) => {
 	const [show, setShow] = useState(false);
 
 	const { handleLicence } = useLicenceFetched();
@@ -108,6 +111,12 @@ const LicenceApplicationsComponent: FC<{
 				renderItem={({ item }) => (
 					<Application application={item} action={() => handleItem(item)} />
 				)}
+				onRefresh={refetch}
+				refreshing={isRefetching}
+				keyExtractor={(_, index) => String(index)}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any licence applications in your account' />
+				}
 			/>
 		</View>
 	);

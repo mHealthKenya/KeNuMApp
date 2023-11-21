@@ -1,20 +1,21 @@
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import CheckinHistoryComponent from '../../components/internship/history/checkins';
-import { primaryColor } from '../../constants/Colors';
-import useCheckins from '../../services/internship/checkins';
-import globalStyles from '../../styles/global';
-import useCounties from '../../services/general/counties';
-import CountiesComponent from '../../components/licence/counties';
-import { StatusBar } from 'expo-status-bar';
-import useWorkStations from '../../services/general/workstations';
-import { useWorkStationFetched } from '../../providers/workstations';
 import WorkStationsComponent from '../../components/licence/workstations';
+import { primaryColor } from '../../constants/Colors';
+import { useWorkStationFetched } from '../../providers/workstations';
+import useWorkStations from '../../services/general/workstations';
+import globalStyles from '../../styles/global';
 
 const WorkStations = () => {
 	const { county } = useWorkStationFetched();
-	const { data = [], isLoading } = useWorkStations(county?.id || '');
+	const {
+		data = [],
+		isLoading,
+		isRefetching,
+		refetch,
+	} = useWorkStations(county?.id || '');
 
 	if (isLoading) {
 		return (
@@ -26,7 +27,11 @@ const WorkStations = () => {
 
 	return (
 		<>
-			<WorkStationsComponent workstations={data} />
+			<WorkStationsComponent
+				workstations={data}
+				refetch={refetch}
+				isRefetching={isRefetching}
+			/>
 			<StatusBar style='light' />
 		</>
 	);

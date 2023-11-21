@@ -105,7 +105,7 @@ const AddCheckinComponent = () => {
 	const { mutate, isPending } = useInternshipCheckin(successFn, errorFn);
 
 	const onSubmit = (data: Form) => {
-		const date = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss');
+		const date = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z] ');
 		const internship_id = `${internships![0].internship_id}`;
 		setMobile_no(data.nurse_officer_incharge_mobile);
 		mutate({

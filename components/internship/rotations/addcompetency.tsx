@@ -122,7 +122,7 @@ const AddCompetencyComponent = () => {
 			...data,
 			internship_id: internship![0].internship_id,
 			competency_id: competency?.competency_id || '',
-			activity_date: dayjs(new Date(date)).format('YYYY-MM-DD HH:mm:ss'),
+			activity_date: dayjs(new Date(date)).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),
 		});
 	};
 

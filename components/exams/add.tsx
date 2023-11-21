@@ -17,6 +17,7 @@ import { ExamCenter } from '../../models/examcenters';
 import useExamApply from '../../services/exams/apply';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
+import { useAuth } from '../../providers/auth';
 
 const AddExamComponent: FC<{
 	centers: ExamCenter[];
@@ -68,14 +69,16 @@ const AddExamComponent: FC<{
 
 	const { mutate, isPending } = useExamApply(successFn, errorFn);
 
+	const { user } = useAuth();
+
 	const date = new Date();
 
 	const onSubmit = () => {
 		mutate({
-			index_id: '105501',
+			index_id: user?.id || '',
 			exam_centers: selectedCenter + ',' + selectedReason,
 			student_series_id: '' + student_series_id,
-			application_date: dayjs(date).format('YYYY-MM-DD HH:mm'),
+			application_date: dayjs(date).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),
 		});
 	};
 

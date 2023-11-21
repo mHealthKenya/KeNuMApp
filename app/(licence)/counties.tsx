@@ -1,16 +1,14 @@
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import CheckinHistoryComponent from '../../components/internship/history/checkins';
-import { primaryColor } from '../../constants/Colors';
-import useCheckins from '../../services/internship/checkins';
-import globalStyles from '../../styles/global';
-import useCounties from '../../services/general/counties';
 import CountiesComponent from '../../components/licence/counties';
-import { StatusBar } from 'expo-status-bar';
+import { primaryColor } from '../../constants/Colors';
+import useCounties from '../../services/general/counties';
+import globalStyles from '../../styles/global';
 
 const Counties = () => {
-	const { data = [], isLoading } = useCounties();
+	const { data = [], isLoading, isRefetching, refetch } = useCounties();
 
 	if (isLoading) {
 		return (
@@ -22,7 +20,11 @@ const Counties = () => {
 
 	return (
 		<>
-			<CountiesComponent counties={data} />
+			<CountiesComponent
+				counties={data}
+				isRefetching={isRefetching}
+				refetch={refetch}
+			/>
 			<StatusBar style='light' />
 		</>
 	);

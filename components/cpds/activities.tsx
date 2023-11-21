@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import dayjs from 'dayjs';
+import React, { FC, useMemo } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Divider, Searchbar } from 'react-native-paper';
 import { CPDActivity } from '../../models/activity';
+import { useSearch } from '../../providers/search';
 import globalStyles from '../../styles/global';
-import { Alert, AlertIcon, AlertText } from '@gluestack-ui/themed';
-import { InfoIcon } from '@gluestack-ui/themed';
 import EmptyList from '../shared/EmptyList';
 
 const CPDActivityBox: FC<{ activity: CPDActivity }> = ({ activity }) => {
@@ -24,18 +24,21 @@ const CPDActivityBox: FC<{ activity: CPDActivity }> = ({ activity }) => {
 					<Divider />
 				</View>
 			</View>
-			{/* <View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
-					<Text style={styles.mutedText}>Category</Text>
-					<Text style={styles.titleText}>{activity.activity_category}</Text>
-					<Divider />
-				</View>
-			</View> */}
 
 			<View style={{ padding: 10 }}>
 				<View style={[globalStyles.column, { gap: 10 }]}>
 					<Text style={styles.mutedText}>Location</Text>
 					<Text style={styles.titleText}>{activity.activity_location}</Text>
+					<Divider />
+				</View>
+			</View>
+
+			<View style={{ padding: 10 }}>
+				<View style={[globalStyles.column, { gap: 10 }]}>
+					<Text style={styles.mutedText}>Date</Text>
+					<Text style={styles.titleText}>
+						{dayjs(new Date(activity.activity_date)).format('YYYY-MM-DD')}
+					</Text>
 					<Divider />
 				</View>
 			</View>
@@ -71,10 +74,32 @@ const CPDActivitiesComponent: FC<{
 	refresh: () => {};
 	isRefetching: boolean;
 }> = ({ activities, refresh, isRefetching }) => {
+	const { search, handleSearch } = useSearch();
+
+	const items = useMemo(
+		() =>
+			activities.filter(
+				(item) =>
+					item.activity.toLowerCase().includes(search.toLowerCase()) ||
+					item.activity_location.toLowerCase().includes(search.toLowerCase()) ||
+					dayjs(new Date(item.activity_date))
+						.format('YYYY-MM-DD')
+						.toLowerCase()
+						.includes(search.toLowerCase())
+			),
+		[search, activities]
+	);
+
 	return (
 		<View style={globalStyles.container}>
+			<Searchbar
+				placeholder='Search by activity, location, or date'
+				onChangeText={handleSearch}
+				value={search}
+				style={styles.searchBar}
+			/>
 			<FlatList
-				data={activities}
+				data={items}
 				renderItem={({ item }) => <CPDActivityBox activity={item} />}
 				keyExtractor={(_item, index) => '' + index}
 				onRefresh={refresh}
@@ -117,5 +142,12 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		letterSpacing: 2,
 		textTransform: 'capitalize',
+	},
+
+	searchBar: {
+		backgroundColor: '#dbe6f5',
+		margin: 5,
+		padding: 2,
+		borderRadius: 10,
 	},
 });
