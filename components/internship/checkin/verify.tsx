@@ -1,14 +1,14 @@
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import globalStyles from '../../../styles/global';
-import { Controller, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
+import * as Yup from 'yup';
 import { primaryColor } from '../../../constants/Colors';
 import { useAuth } from '../../../providers/auth';
 import useVerifyOTP from '../../../services/internship/verifyotp';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import globalStyles from '../../../styles/global';
 
 interface Code {
 	code: string;

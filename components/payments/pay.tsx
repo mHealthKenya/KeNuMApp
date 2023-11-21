@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { FC } from 'react';
-import globalStyles from '../../styles/global';
-import { Controller, useForm } from 'react-hook-form';
-import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'expo-router';
+import React, { FC } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
-import { FlatList } from 'react-native';
+import * as Yup from 'yup';
 import { primaryColor } from '../../constants/Colors';
 import useSTK from '../../services/payments/stk';
-import { useRouter } from 'expo-router';
+import globalStyles from '../../styles/global';
 
 interface Pay {
 	amount: number;

@@ -1,3 +1,6 @@
+import { Image, ImageSource } from 'expo-image';
+import { useRouter } from 'expo-router';
+import React, { FC } from 'react';
 import {
 	Pressable,
 	StyleSheet,
@@ -5,11 +8,8 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import React, { FC } from 'react';
-import { Image, ImageSource } from 'expo-image';
 import { Divider, Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
-import { useRouter } from 'expo-router';
 
 export interface LicenceBox {
 	title: string;

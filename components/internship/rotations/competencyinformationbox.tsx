@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { Divider, Icon } from 'react-native-paper';
+import { Divider } from 'react-native-paper';
 import { RotationCompetency } from '../../../models/rotationcompetencies';
 import globalStyles from '../../../styles/global';
 

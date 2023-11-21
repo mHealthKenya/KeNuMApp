@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 import { currencyFormatter } from '../../helpers/currency-formatter';
 import { RegistrationApplication } from '../../models/regapplications';
+import { useRegistrationFetched } from '../../providers/registrationprovider';
 import globalStyles from '../../styles/global';
 import {
 	InternshipItem,
 	InternshipItemDouble,
 } from '../internship/history/applications';
-import ActionBottomRegistration from './actionbottomreg';
-import { useRegistrationFetched } from '../../providers/registrationprovider';
 import EmptyList from '../shared/EmptyList';
+import ActionBottomRegistration from './actionbottomreg';
 
 const Application: FC<{
 	application: RegistrationApplication;

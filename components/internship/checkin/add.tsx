@@ -1,5 +1,8 @@
+import { useToast } from '@gluestack-ui/themed';
 import { yupResolver } from '@hookform/resolvers/yup';
+import dayjs from 'dayjs';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
@@ -13,12 +16,9 @@ import {
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
 import * as Yup from 'yup';
 import { primaryColor } from '../../../constants/Colors';
-import globalStyles from '../../../styles/global';
 import useInternshipApplications from '../../../services/internship/applications';
-import dayjs from 'dayjs';
 import useInternshipCheckin from '../../../services/internship/checkin';
-import { useRouter } from 'expo-router';
-import { useToast } from '@gluestack-ui/themed';
+import globalStyles from '../../../styles/global';
 import ToastError from '../../shared/ToastError';
 
 interface Form {

@@ -1,21 +1,20 @@
+import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
+import React, { FC, useMemo, useState } from 'react';
 import {
 	KeyboardAvoidingView,
 	StyleSheet,
-	Text,
 	View,
-	useWindowDimensions,
+	useWindowDimensions
 } from 'react-native';
-import React, { FC, useMemo, useState } from 'react';
-import globalStyles from '../../styles/global';
-import { Image } from 'expo-image';
-import { Employer } from '../../models/employers';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Button } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
-import LicenceApplyBox, { Item } from './licencebox';
-import useLicenceApply from '../../services/licence/apply';
+import { Employer } from '../../models/employers';
 import { useAuth } from '../../providers/auth';
-import { useRouter } from 'expo-router';
+import useLicenceApply from '../../services/licence/apply';
+import globalStyles from '../../styles/global';
+import LicenceApplyBox, { Item } from './licencebox';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];

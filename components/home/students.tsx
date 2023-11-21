@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
 	Pressable,
@@ -9,7 +10,6 @@ import {
 import { Icon } from 'react-native-paper';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
-import { useRouter } from 'expo-router';
 
 const StudentsModule = () => {
 	const { width, height } = useWindowDimensions();

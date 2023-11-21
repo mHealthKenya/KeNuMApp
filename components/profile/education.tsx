@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { User } from '../../models/user';
+import WarnAlert from '../shared/WarnAlert';
 import EducationItem from './educationitem';
 import ProfileHeader from './header';
-import { Alert, AlertIcon, AlertText, InfoIcon } from '@gluestack-ui/themed';
-import WarnAlert from '../shared/WarnAlert';
 
 const EducationComponent: FC<{ user: User | null }> = ({ user }) => {
 	return (

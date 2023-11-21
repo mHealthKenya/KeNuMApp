@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { Divider, Searchbar } from 'react-native-paper';
 import { InternshipApplication } from '../../../models/internshipapplications';
+import { useInternshipFetched } from '../../../providers/internship';
 import { useSearch } from '../../../providers/search';
 import globalStyles from '../../../styles/global';
 import ActionBottom from '../../shared/ActionBottom';
 import EmptyList from '../../shared/EmptyList';
-import { useInternshipFetched } from '../../../providers/internship';
 
 export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',

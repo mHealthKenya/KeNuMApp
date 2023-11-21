@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet } from 'react-native';
 import React from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useFetchedRotationAreas } from '../../../providers/rotationareas';
 import globalStyles from '../../../styles/global';
-import { FlatList } from 'react-native';
 import RotationAreaBox from './rotationareabox';
 
 const RotationAreasComponent = () => {

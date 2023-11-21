@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import dayjs from 'dayjs';
 import React, { FC } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Divider } from 'react-native-paper';
 import { TransferHist } from '../../../models/transferhist';
 import globalStyles from '../../../styles/global';
-import { Divider } from 'react-native-paper';
-import dayjs from 'dayjs';
-import { FlatList } from 'react-native';
 import EmptyList from '../../shared/EmptyList';
 
 const TransferBox: FC<{ transfer: TransferHist }> = ({ transfer }) => {

@@ -1,7 +1,7 @@
-import { View, Text } from 'react-native';
 import React from 'react';
-import InternshipBox, { InternBox } from '../internshipbox';
+import { View } from 'react-native';
 import globalStyles from '../../../styles/global';
+import InternshipBox, { InternBox } from '../internshipbox';
 
 const history: InternBox[] = [
 	{

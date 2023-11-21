@@ -1,7 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { useQuery } from '@tanstack/react-query';
 import { InternshipArea } from '../../models/internshipareas';
 const internshipAreas = async () => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);

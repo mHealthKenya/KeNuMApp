@@ -1,14 +1,13 @@
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 import React, { FC, useMemo } from 'react';
-import { County } from '../../models/counties';
-import ContentBox from './contentbox';
-import globalStyles from '../../styles/global';
-import { useWorkStationFetched } from '../../providers/workstations';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import { WorkStation } from '../../models/workstations';
 import { useSearch } from '../../providers/search';
-import { Searchbar } from 'react-native-paper';
-import { useRouter } from 'expo-router';
+import { useWorkStationFetched } from '../../providers/workstations';
+import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
+import ContentBox from './contentbox';
 
 const WorkStationsComponent: FC<{
 	workstations: WorkStation[];

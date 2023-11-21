@@ -1,3 +1,5 @@
+import { useRouter } from 'expo-router';
+import React, { FC } from 'react';
 import {
 	FlatList,
 	Pressable,
@@ -6,13 +8,10 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import React, { FC } from 'react';
+import { Icon } from 'react-native-paper';
 import { CPDCategory } from '../../models/cpdcategory';
-import { useRouter } from 'expo-router';
-import { ImageSource } from 'expo-image';
-import globalStyles from '../../styles/global';
-import { Divider, Icon } from 'react-native-paper';
 import { useCPDCategoryFetched } from '../../providers/cpdcategories';
+import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
 
 const Category: FC<{ category: CPDCategory }> = ({ category }) => {

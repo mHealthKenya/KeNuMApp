@@ -1,6 +1,6 @@
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { baseUrl } from '../../constants/baseurl';
-import { useMutation } from '@tanstack/react-query';
 
 const internshipCenters = async () => {
 	const url = baseUrl + 'api/internship/centers';

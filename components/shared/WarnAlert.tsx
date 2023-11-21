@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { FC } from 'react';
 import { Alert, AlertIcon, AlertText, InfoIcon } from '@gluestack-ui/themed';
+import React, { FC } from 'react';
 
 const WarnAlert: FC<{ message: string }> = ({ message }) => {
 	return (

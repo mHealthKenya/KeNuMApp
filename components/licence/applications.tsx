@@ -15,8 +15,8 @@ import {
 	InternshipItem,
 	InternshipItemDouble,
 } from '../internship/history/applications';
-import ActionBottomLicence from './actionbottomlicence';
 import EmptyList from '../shared/EmptyList';
+import ActionBottomLicence from './actionbottomlicence';
 
 const Application: FC<{
 	application: LicenceApplication;

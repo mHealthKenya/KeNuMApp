@@ -1,9 +1,9 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { FC, useMemo, useState } from 'react';
-import globalStyles from '../../styles/global';
-import { FAQ } from '../../models/faqs';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { List, Searchbar } from 'react-native-paper';
+import { FAQ } from '../../models/faqs';
 import { useSearch } from '../../providers/search';
+import globalStyles from '../../styles/global';
 
 const FAQComponent: FC<{ faq: FAQ }> = ({ faq }) => {
 	const [expanded, setExpanded] = useState(false);

@@ -1,3 +1,4 @@
+import { useToast } from '@gluestack-ui/themed';
 import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import { Image } from 'expo-image';
@@ -19,11 +20,10 @@ import { Button, TextInput, TextInputProps } from 'react-native-paper';
 import * as Yup from 'yup';
 import { primaryColor } from '../../constants/Colors';
 import { useAuth } from '../../providers/auth';
+import { useCPDCategoryFetched } from '../../providers/cpdcategories';
+import useSelfReport from '../../services/cpds/self';
 import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
-import useSelfReport from '../../services/cpds/self';
-import { useCPDCategoryFetched } from '../../providers/cpdcategories';
-import { useToast } from '@gluestack-ui/themed';
 import ToastError from '../shared/ToastError';
 
 interface Form {

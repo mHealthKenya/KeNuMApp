@@ -1,8 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
 import { RotationActivity } from '../../models/rotationactivity';
-import { useQuery } from '@tanstack/react-query';
 
 const rotationActivities = async () => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);

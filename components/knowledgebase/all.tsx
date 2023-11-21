@@ -1,10 +1,10 @@
 import React, { FC, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import { KnowledgeBase } from '../../models/knowledgebase';
+import { useSearch } from '../../providers/search';
 import globalStyles from '../../styles/global';
 import KnowledgeBox from './knowbox';
-import { useSearch } from '../../providers/search';
-import { Searchbar } from 'react-native-paper';
 
 const KnowledgeComponent: FC<{
 	items: KnowledgeBase[];

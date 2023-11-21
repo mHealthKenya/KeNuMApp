@@ -2,7 +2,6 @@ import { Image, ImageSource } from 'expo-image';
 import { useRouter } from 'expo-router';
 import React, { FC } from 'react';
 import {
-	FlatList,
 	Pressable,
 	ScrollView,
 	StyleSheet,

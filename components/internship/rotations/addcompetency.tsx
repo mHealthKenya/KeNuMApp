@@ -1,5 +1,9 @@
+import { useToast } from '@gluestack-ui/themed';
+import { yupResolver } from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
 	Keyboard,
 	KeyboardAvoidingView,
@@ -9,19 +13,15 @@ import {
 	View,
 } from 'react-native';
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
-import { useFetchedCompetency } from '../../../providers/competency';
-import globalStyles from '../../../styles/global';
-import DateModal from '../../shared/DateModal';
-import CompetencyInformationBox from './competencyinformationbox';
-import { Controller, useForm } from 'react-hook-form';
 import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useFetchedCompetency } from '../../../providers/competency';
 import useAddCompetency from '../../../services/internship/addcompetency';
 import useInternshipApplications from '../../../services/internship/applications';
-import { useToast } from '@gluestack-ui/themed';
+import globalStyles from '../../../styles/global';
+import DateModal from '../../shared/DateModal';
 import ToastError from '../../shared/ToastError';
 import ToastSuccess from '../../shared/ToastSuccess';
-import { useRouter } from 'expo-router';
+import CompetencyInformationBox from './competencyinformationbox';
 
 interface Activity {
 	activity_notes: string;

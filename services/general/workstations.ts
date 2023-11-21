@@ -1,8 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { useQuery } from '@tanstack/react-query';
-import { County } from '../../models/counties';
 import { WorkStation } from '../../models/workstations';
 
 const workStations = async (id: string) => {

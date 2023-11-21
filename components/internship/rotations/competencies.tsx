@@ -1,7 +1,7 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import globalStyles from '../../../styles/global';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useFetchedCompetencies } from '../../../providers/rotationcompetencies';
+import globalStyles from '../../../styles/global';
 import RotationCompetencyBox from './rotationcompetenciesbox';
 
 const CompetenciesComponent = () => {

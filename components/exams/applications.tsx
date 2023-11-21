@@ -4,9 +4,8 @@ import {
 	FlatList,
 	Pressable,
 	StyleSheet,
-	Text,
 	View,
-	useWindowDimensions,
+	useWindowDimensions
 } from 'react-native';
 import { currencyFormatter } from '../../helpers/currency-formatter';
 import { ExamApplication } from '../../models/examapplications';
@@ -15,8 +14,8 @@ import {
 	InternshipItem,
 	InternshipItemDouble,
 } from '../internship/history/applications';
-import ActionBottomExam from './actionbottomexam';
 import EmptyList from '../shared/EmptyList';
+import ActionBottomExam from './actionbottomexam';
 
 const Application: FC<{
 	application: ExamApplication;

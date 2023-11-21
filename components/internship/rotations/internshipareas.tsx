@@ -1,5 +1,5 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { InternshipArea } from '../../../models/internshipareas';
 import globalStyles from '../../../styles/global';
 import InternshipAreaBox from './internshipareasbox';

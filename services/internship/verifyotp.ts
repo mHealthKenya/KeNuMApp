@@ -1,8 +1,8 @@
+import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
-import { OTP } from './checkin';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { useMutation } from '@tanstack/react-query';
+import { OTP } from './checkin';
 
 const verifyOtp = async (data: OTP) => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);

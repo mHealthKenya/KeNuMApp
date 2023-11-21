@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import {
 	Pressable,
@@ -8,7 +9,6 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
-import { useRouter } from 'expo-router';
 
 const GeneralModule = () => {
 	const { width, height } = useWindowDimensions();

@@ -1,3 +1,4 @@
+import * as WebBrowser from 'expo-web-browser';
 import React, { FC } from 'react';
 import {
 	Pressable,
@@ -7,11 +8,10 @@ import {
 	useWindowDimensions,
 } from 'react-native';
 import { Divider, Icon } from 'react-native-paper';
+import { baseUrl } from '../../constants/baseurl';
 import { KnowledgeBase } from '../../models/knowledgebase';
 import { useKnowledgeFetched } from '../../providers/knowledge';
 import globalStyles from '../../styles/global';
-import * as WebBrowser from 'expo-web-browser';
-import { baseUrl } from '../../constants/baseurl';
 
 export interface KnowBox {
 	title: string;

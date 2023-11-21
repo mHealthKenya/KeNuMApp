@@ -1,28 +1,26 @@
+import { useToast } from '@gluestack-ui/themed';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
 import React, { FC, useMemo, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import {
 	Keyboard,
 	KeyboardAvoidingView,
-	ScrollView,
 	StyleSheet,
 	Text,
 	View,
-	useWindowDimensions,
+	useWindowDimensions
 } from 'react-native';
-import { InternshipCenter } from '../../../models/internshipcenters';
-import { TransferReason } from '../../../models/transferreasons';
-import globalStyles from '../../../styles/global';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
-import { primaryColor } from '../../../constants/Colors';
-import { Image } from 'expo-image';
 import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Controller, useForm } from 'react-hook-form';
-import useInternshipTransfer from '../../../services/internship/transfer';
-import { useAuth } from '../../../providers/auth';
+import { primaryColor } from '../../../constants/Colors';
+import { InternshipCenter } from '../../../models/internshipcenters';
+import { TransferReason } from '../../../models/transferreasons';
 import useInternshipApplications from '../../../services/internship/applications';
-import { useRouter } from 'expo-router';
-import { useToast } from '@gluestack-ui/themed';
+import useInternshipTransfer from '../../../services/internship/transfer';
+import globalStyles from '../../../styles/global';
 import ToastError from '../../shared/ToastError';
 
 interface Transfer {

@@ -1,3 +1,6 @@
+import { Image, ImageSource } from 'expo-image';
+import { useRouter } from 'expo-router';
+import React from 'react';
 import {
 	Pressable,
 	StyleSheet,
@@ -5,10 +8,7 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import React, { FC } from 'react';
-import { Image, ImageSource } from 'expo-image';
 import { Divider, Icon } from 'react-native-paper';
-import { useRouter } from 'expo-router';
 import globalStyles from '../../../styles/global';
 
 export interface InternBox {

@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { User } from '../../models/user';
+import WarnAlert from '../shared/WarnAlert';
 import ProfileHeader from './header';
 import LicenseItem from './licenceitem';
-import WarnAlert from '../shared/WarnAlert';
 
 const LicenseComponent: FC<{ user: User | null }> = ({ user }) => {
 	return (

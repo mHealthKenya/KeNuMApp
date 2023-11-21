@@ -1,14 +1,13 @@
-import { View, Text, FlatList } from 'react-native';
-import React, { FC, useMemo } from 'react';
-import { County } from '../../models/counties';
-import ContentBox from './contentbox';
-import globalStyles from '../../styles/global';
-import { useWorkStationFetched } from '../../providers/workstations';
 import { useRouter } from 'expo-router';
+import React, { FC, useMemo } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Searchbar } from 'react-native-paper';
+import { County } from '../../models/counties';
 import { useSearch } from '../../providers/search';
-import { StyleSheet } from 'react-native';
+import { useWorkStationFetched } from '../../providers/workstations';
+import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
+import ContentBox from './contentbox';
 
 const CountiesComponent: FC<{
 	counties: County[];

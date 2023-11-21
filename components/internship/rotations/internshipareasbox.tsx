@@ -8,10 +8,10 @@ import {
 	useWindowDimensions,
 } from 'react-native';
 import { ActivityIndicator, Icon } from 'react-native-paper';
-import globalStyles from '../../../styles/global';
-import useRotationAreas from '../../../services/internship/rotationareas';
 import { primaryColor } from '../../../constants/Colors';
 import { useFetchedRotationAreas } from '../../../providers/rotationareas';
+import useRotationAreas from '../../../services/internship/rotationareas';
+import globalStyles from '../../../styles/global';
 
 export interface InternShipArea {
 	title: string;
