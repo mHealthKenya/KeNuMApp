@@ -3,6 +3,9 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { CPDActivity } from '../../models/activity';
 import globalStyles from '../../styles/global';
+import { Alert, AlertIcon, AlertText } from '@gluestack-ui/themed';
+import { InfoIcon } from '@gluestack-ui/themed';
+import EmptyList from '../shared/EmptyList';
 
 const CPDActivityBox: FC<{ activity: CPDActivity }> = ({ activity }) => {
 	return (
@@ -76,6 +79,9 @@ const CPDActivitiesComponent: FC<{
 				keyExtractor={(_item, index) => '' + index}
 				onRefresh={refresh}
 				refreshing={isRefetching}
+				ListEmptyComponent={
+					<EmptyList message='No CPD activities found. If you think this is an error, please retry later. If this persists, please contact support.' />
+				}
 			/>
 		</View>
 	);

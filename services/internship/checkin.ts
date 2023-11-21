@@ -56,7 +56,7 @@ export const sendOTP = async (data: OTP) => {
 	});
 };
 
-const useInternshipCheckin = (successFn: () => void) => {
+const useInternshipCheckin = (successFn: () => void, errorFn: () => void) => {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
 	return useMutation({
@@ -73,6 +73,10 @@ const useInternshipCheckin = (successFn: () => void) => {
 				task: 'generate',
 				otp: '',
 			});
+		},
+
+		onError: () => {
+			errorFn();
 		},
 	});
 };

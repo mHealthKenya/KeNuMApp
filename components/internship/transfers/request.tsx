@@ -1,5 +1,6 @@
 import React, { FC, useMemo, useState } from 'react';
 import {
+	Keyboard,
 	KeyboardAvoidingView,
 	ScrollView,
 	StyleSheet,
@@ -21,6 +22,8 @@ import useInternshipTransfer from '../../../services/internship/transfer';
 import { useAuth } from '../../../providers/auth';
 import useInternshipApplications from '../../../services/internship/applications';
 import { useRouter } from 'expo-router';
+import { useToast } from '@gluestack-ui/themed';
+import ToastError from '../../shared/ToastError';
 
 interface Transfer {
 	transfer_request_desc: string;
@@ -34,6 +37,8 @@ const RequestTransferComponent: FC<{
 	centers: InternshipCenter[];
 	reasons: TransferReason[];
 }> = ({ centers, reasons }) => {
+	const toast = useToast();
+
 	const [dropDownCenter, setDropDownCenter] = useState(false);
 	const [dropDownReason, setDropDownReason] = useState(false);
 	const [selectedCenter, setSelectedCenter] = useState(null);
@@ -86,7 +91,24 @@ const RequestTransferComponent: FC<{
 		router.replace('/transferhist');
 	};
 
-	const { mutate, isPending } = useInternshipTransfer(successFn);
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Application Error'
+						description='Could not complete internship transfer. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending } = useInternshipTransfer(successFn, errorFn);
 
 	const { data: internships, isLoading, isError } = useInternshipApplications();
 
@@ -97,6 +119,8 @@ const RequestTransferComponent: FC<{
 			transfer_reason_id: selectedReason || '',
 			internship_id: internships![0].internship_id,
 		});
+
+		Keyboard.dismiss();
 	};
 
 	return (

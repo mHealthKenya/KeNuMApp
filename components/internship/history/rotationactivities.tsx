@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { RotationActivity } from '../../../models/rotationactivity';
 import globalStyles from '../../../styles/global';
+import EmptyList from '../../shared/EmptyList';
 
 const RotationsBox: FC<{ rotation: RotationActivity }> = ({ rotation }) => {
 	return (
@@ -73,6 +74,9 @@ const RotationActivitiesComponent: FC<{
 				keyExtractor={(item) => item.rotation_activity_id}
 				onRefresh={refresh}
 				refreshing={isRefetching}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any internship rotations under your account' />
+				}
 			/>
 		</View>
 	);

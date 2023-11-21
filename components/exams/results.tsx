@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { ExamResult } from '../../models/results';
 import globalStyles from '../../styles/global';
+import EmptyList from '../shared/EmptyList';
 
 const ResultBox: FC<{ result: ExamResult }> = ({ result }) => {
 	return (
@@ -77,6 +78,9 @@ const ExamResultsComponent: FC<{
 				keyExtractor={(item, index) => '' + index}
 				onRefresh={refresh}
 				refreshing={isRefetching}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any exam results in your account.' />
+				}
 			/>
 		</View>
 	);

@@ -26,7 +26,7 @@ const internshipTransfer = async (data: Transfer) => {
 	return response;
 };
 
-const useInternshipTransfer = (successFn: () => void) => {
+const useInternshipTransfer = (successFn: () => void, errorFn: () => void) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: internshipTransfer,
@@ -35,6 +35,10 @@ const useInternshipTransfer = (successFn: () => void) => {
 			queryClient.invalidateQueries({
 				queryKey: ['transfer-hist'],
 			});
+		},
+
+		onError: () => {
+			errorFn();
 		},
 	});
 };

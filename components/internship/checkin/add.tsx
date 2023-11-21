@@ -18,6 +18,8 @@ import useInternshipApplications from '../../../services/internship/applications
 import dayjs from 'dayjs';
 import useInternshipCheckin from '../../../services/internship/checkin';
 import { useRouter } from 'expo-router';
+import { useToast } from '@gluestack-ui/themed';
+import ToastError from '../../shared/ToastError';
 
 interface Form {
 	nurse_officer_incharge: string;
@@ -53,6 +55,8 @@ const AddCheckinComponent = () => {
 		activeOutlineColor: '#0445b5',
 	};
 
+	const toast = useToast();
+
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
@@ -81,7 +85,24 @@ const AddCheckinComponent = () => {
 		});
 	};
 
-	const { mutate, isPending } = useInternshipCheckin(successFn);
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Application Error'
+						description='Could not complete internship checkin. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending } = useInternshipCheckin(successFn, errorFn);
 
 	const onSubmit = (data: Form) => {
 		const date = dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss');

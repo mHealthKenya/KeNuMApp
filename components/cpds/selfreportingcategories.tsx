@@ -13,6 +13,7 @@ import { ImageSource } from 'expo-image';
 import globalStyles from '../../styles/global';
 import { Divider, Icon } from 'react-native-paper';
 import { useCPDCategoryFetched } from '../../providers/cpdcategories';
+import EmptyList from '../shared/EmptyList';
 
 const Category: FC<{ category: CPDCategory }> = ({ category }) => {
 	const { width, height } = useWindowDimensions();
@@ -33,7 +34,7 @@ const Category: FC<{ category: CPDCategory }> = ({ category }) => {
 			style={[
 				styles.box,
 				{
-					width: usableWidth,
+					
 					backgroundColor: '#dcf0fa',
 					flex: 1,
 				},
@@ -76,6 +77,9 @@ const SelfReportingCategoriesComponent: FC<{
 			keyExtractor={(item) => item.category_id}
 			refreshing={isRefreshing}
 			onRefresh={refresh}
+			ListEmptyComponent={
+				<EmptyList message='Could not load CPD categories. Please check your internet connection and try again.' />
+			}
 		/>
 	);
 };
@@ -84,10 +88,9 @@ export default SelfReportingCategoriesComponent;
 
 const styles = StyleSheet.create({
 	box: {
-		margin: 10,
-		padding: 20,
+		margin: 3,
+		padding: 10,
 		borderRadius: 10,
-		justifyContent: 'center',
 	},
 
 	fullSize: {

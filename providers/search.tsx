@@ -9,11 +9,13 @@ import React, {
 interface Search {
 	search: string;
 	handleSearch: (search: string) => void;
+	clearSearch: () => void;
 }
 
 const SearchContext = createContext<Search>({
 	search: '',
 	handleSearch: () => {},
+	clearSearch: () => {},
 });
 
 export const useSearch = () => useContext(SearchContext);
@@ -25,11 +27,16 @@ const SearchProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		setSearch(search);
 	};
 
+	const clearSearch = () => {
+		setSearch('');
+	};
+
 	return (
 		<SearchContext.Provider
 			value={{
 				search,
 				handleSearch,
+				clearSearch,
 			}}>
 			{children}
 		</SearchContext.Provider>

@@ -16,6 +16,7 @@ import {
 	InternshipItemDouble,
 } from '../internship/history/applications';
 import ActionBottomExam from './actionbottomexam';
+import EmptyList from '../shared/EmptyList';
 
 const Application: FC<{
 	application: ExamApplication;
@@ -72,7 +73,9 @@ const Application: FC<{
 
 const ExamApplicationsComponent: FC<{
 	applications: ExamApplication[];
-}> = ({ applications }) => {
+	refetch: () => void;
+	isRefetching: boolean;
+}> = ({ applications, refetch, isRefetching }) => {
 	const [show, setShow] = useState(false);
 
 	const toggleShow = () => {
@@ -99,6 +102,12 @@ const ExamApplicationsComponent: FC<{
 				renderItem={({ item }) => (
 					<Application application={item} action={() => handleItem(item)} />
 				)}
+				keyExtractor={(_, index) => String(index)}
+				onRefresh={refetch}
+				refreshing={isRefetching}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any exam applications for your account' />
+				}
 			/>
 		</View>
 	);

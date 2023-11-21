@@ -18,6 +18,10 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import useAddCompetency from '../../../services/internship/addcompetency';
 import useInternshipApplications from '../../../services/internship/applications';
+import { useToast } from '@gluestack-ui/themed';
+import ToastError from '../../shared/ToastError';
+import ToastSuccess from '../../shared/ToastSuccess';
+import { useRouter } from 'expo-router';
 
 interface Activity {
 	activity_notes: string;
@@ -32,6 +36,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const AddCompetencyComponent = () => {
+	const currentYear = new Date().getFullYear();
 	const { competency } = useFetchedCompetency();
 
 	const [picker, setPicker] = useState(false);
@@ -69,11 +74,48 @@ const AddCompetencyComponent = () => {
 
 	const { data: internship, isLoading } = useInternshipApplications();
 
+	const router = useRouter();
+
 	const successFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastSuccess
+						id={id}
+						title='Competency Recorded'
+						description='Your competency has been successfully recorded'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+
+		router.push('/internship');
 		Keyboard.dismiss();
 	};
 
-	const { mutate, isPending } = useAddCompetency(successFn);
+	const toast = useToast();
+
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Recording Error'
+						description='Could not complete recording your competency. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending } = useAddCompetency(successFn, errorFn);
 
 	const onSubmit = (data: Activity) => {
 		mutate({
@@ -137,6 +179,7 @@ const AddCompetencyComponent = () => {
 								date,
 								handleDate,
 							}}
+							minimumDate={new Date(currentYear, 0, 1)}
 						/>
 					)}
 				</View>

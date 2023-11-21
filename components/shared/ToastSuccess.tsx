@@ -7,7 +7,7 @@ import {
 import React, { FC } from 'react';
 import { useWindowDimensions } from 'react-native';
 
-const ToastError: FC<{ id: any; title: string; description: string }> = ({
+const ToastSuccess: FC<{ id: any; title: string; description: string }> = ({
 	id,
 	title,
 	description,
@@ -17,7 +17,7 @@ const ToastError: FC<{ id: any; title: string; description: string }> = ({
 	return (
 		<Toast
 			nativeID={'toast-' + id}
-			action='error'
+			action='success'
 			variant='accent'
 			style={[
 				{
@@ -32,4 +32,4 @@ const ToastError: FC<{ id: any; title: string; description: string }> = ({
 	);
 };
 
-export default ToastError;
+export default ToastSuccess;

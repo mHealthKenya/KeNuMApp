@@ -38,7 +38,7 @@ const selfReport = async (data: Self) => {
 	return response;
 };
 
-const useSelfReport = (successFn: () => void) => {
+const useSelfReport = (successFn: () => void, errorFn: () => void) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: selfReport,
@@ -50,8 +50,8 @@ const useSelfReport = (successFn: () => void) => {
 			successFn();
 		},
 
-		onError: (error) => {
-			console.log(error);
+		onError: () => {
+			errorFn();
 		},
 	});
 };

@@ -5,6 +5,7 @@ import globalStyles from '../../../styles/global';
 import { Divider } from 'react-native-paper';
 import dayjs from 'dayjs';
 import { FlatList } from 'react-native';
+import EmptyList from '../../shared/EmptyList';
 
 const TransferBox: FC<{ transfer: TransferHist }> = ({ transfer }) => {
 	return (
@@ -67,6 +68,9 @@ const TransferHistComponent: FC<{
 				keyExtractor={(item) => item.transfer_request_id}
 				onRefresh={refresh}
 				refreshing={isRefetching}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any internship transfer requests under your account' />
+				}
 			/>
 		</View>
 	);

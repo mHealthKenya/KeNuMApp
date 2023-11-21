@@ -39,7 +39,7 @@ const internshipApply = async (data: Apply) => {
 	return response;
 };
 
-const useInternshipApply = () => {
+const useInternshipApply = (successFn: () => void, errorFn: () => void) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: internshipApply,
@@ -47,12 +47,11 @@ const useInternshipApply = () => {
 			queryClient.invalidateQueries({
 				queryKey: ['applications'],
 			});
+			successFn();
 		},
 
-		onError: (error: any) => {
-			console.log(error);
-			console.log(JSON.stringify(error?.message));
-			console.log(error?.response?.data);
+		onError: () => {
+			errorFn();
 		},
 	});
 };

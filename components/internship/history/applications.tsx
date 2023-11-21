@@ -13,6 +13,8 @@ import { InternshipApplication } from '../../../models/internshipapplications';
 import { useSearch } from '../../../providers/search';
 import globalStyles from '../../../styles/global';
 import ActionBottom from '../../shared/ActionBottom';
+import EmptyList from '../../shared/EmptyList';
+import { useInternshipFetched } from '../../../providers/internship';
 
 export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',
@@ -197,6 +199,8 @@ const InternshipApplicationsComponent: FC<{
 	refresh: () => void;
 	isRefreshing: boolean;
 }> = ({ applications, refresh, isRefreshing }) => {
+	const { handleApplication } = useInternshipFetched();
+
 	const { search, handleSearch } = useSearch();
 
 	const [show, setShow] = useState(false);
@@ -209,6 +213,7 @@ const InternshipApplicationsComponent: FC<{
 
 	const handleItem = (item: InternshipApplication) => {
 		setItem(item);
+		handleApplication(item);
 		setShow(!show);
 	};
 
@@ -244,6 +249,9 @@ const InternshipApplicationsComponent: FC<{
 				showsVerticalScrollIndicator={false}
 				onRefresh={() => refresh()}
 				refreshing={isRefreshing}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any internship applications in your account' />
+				}
 			/>
 		</View>
 	);

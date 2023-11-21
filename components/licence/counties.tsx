@@ -10,7 +10,7 @@ import { useSearch } from '../../providers/search';
 import { StyleSheet } from 'react-native';
 
 const CountiesComponent: FC<{ counties: County[] }> = ({ counties }) => {
-	const { handleSearch, search } = useSearch();
+	const { handleSearch, search, clearSearch } = useSearch();
 	const { handleCounty } = useWorkStationFetched();
 	const router = useRouter();
 
@@ -19,6 +19,8 @@ const CountiesComponent: FC<{ counties: County[] }> = ({ counties }) => {
 			title: item.County,
 			id: item.id,
 		});
+
+		clearSearch();
 
 		router.push('/workstations');
 	};

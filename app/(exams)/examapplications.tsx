@@ -11,7 +11,12 @@ import globalStyles from '../../styles/global';
 const ExamApplications = () => {
 	const { user } = useAuth();
 
-	const { data = [], isLoading } = useExamApplications(user?.id || '');
+	const {
+		data = [],
+		isLoading,
+		refetch,
+		isRefetching,
+	} = useExamApplications(user?.id || '');
 
 	if (isLoading) {
 		return (
@@ -23,7 +28,11 @@ const ExamApplications = () => {
 
 	return (
 		<>
-			<ExamApplicationsComponent applications={data} />
+			<ExamApplicationsComponent
+				applications={data}
+				refetch={refetch}
+				isRefetching={isRefetching}
+			/>
 			<StatusBar style='light' />
 		</>
 	);

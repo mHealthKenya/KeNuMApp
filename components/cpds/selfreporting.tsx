@@ -23,6 +23,8 @@ import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
 import useSelfReport from '../../services/cpds/self';
 import { useCPDCategoryFetched } from '../../providers/cpdcategories';
+import { useToast } from '@gluestack-ui/themed';
+import ToastError from '../shared/ToastError';
 
 interface Form {
 	event_location: string;
@@ -119,7 +121,26 @@ const CPDSelfReportingComponent = () => {
 		router.replace('/cpdactivities');
 	};
 
-	const { mutate, isPending } = useSelfReport(successFn);
+	const toast = useToast();
+
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Reporting Error'
+						description='Could not CPD self reporting. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending } = useSelfReport(successFn, errorFn);
 
 	const { user } = useAuth();
 

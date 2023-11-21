@@ -14,9 +14,10 @@ import { Button, TextInput, TextInputProps } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
 import useRegistrationApplication from '../../services/registration/apply';
 import { useAuth } from '../../providers/auth';
-import { Alert, AlertIcon, AlertText } from '@gluestack-ui/themed';
+import { Alert, AlertIcon, AlertText, useToast } from '@gluestack-ui/themed';
 import { InfoIcon } from '@gluestack-ui/themed';
 import { useRouter } from 'expo-router';
+import ToastError from '../shared/ToastError';
 
 const RegistrationApplicationComponent = () => {
 	interface UserImage {
@@ -63,11 +64,30 @@ const RegistrationApplicationComponent = () => {
 
 	const router = useRouter();
 
+	const toast = useToast();
+
 	const successFn = () => {
 		router.push('/payreg');
 	};
 
-	const { mutate, isPending } = useRegistrationApplication(successFn);
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Application Error'
+						description='Could not complete registration application. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending } = useRegistrationApplication(successFn, errorFn);
 
 	const { user } = useAuth();
 

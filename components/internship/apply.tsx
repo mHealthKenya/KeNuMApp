@@ -1,8 +1,10 @@
+import { useToast } from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'expo-router';
 import mime from 'mime';
+import React, { FC, useMemo, useState } from 'react';
 import {
 	KeyboardAvoidingView,
 	Platform,
@@ -15,11 +17,11 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
 import { InternshipCenters } from '../../models/internshipcenters';
+import { User } from '../../models/user';
+import useInternshipApply from '../../services/internship/apply';
 import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
-import useInternshipApply from '../../services/internship/apply';
-import { User } from '../../models/user';
-import { useRouter } from 'expo-router';
+import ToastError from '../shared/ToastError';
 
 enum Names {
 	posting_letter = 'posting_letter',
@@ -49,6 +51,8 @@ const InternshipApplyComponent: FC<{
 	const { width, height } = useWindowDimensions();
 
 	const router = useRouter();
+
+	const toast = useToast();
 
 	const dimension = Math.min(width, height);
 
@@ -129,7 +133,31 @@ const InternshipApplyComponent: FC<{
 		[centers]
 	);
 
-	const { mutate, isPending, isSuccess, reset } = useInternshipApply();
+	const successFn = () => {
+		router.push('/internshippay');
+	};
+
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Application Error'
+						description='Could not complete internship application. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending, isSuccess, reset } = useInternshipApply(
+		successFn,
+		errorFn
+	);
 	const handleSubmit = async () => {
 		const degree_cert = images[0];
 
@@ -148,16 +176,6 @@ const InternshipApplyComponent: FC<{
 			education_id: '' + education_id,
 		});
 	};
-
-	useEffect(() => {
-		if (isSuccess) {
-			router.push('/internshippay');
-		}
-
-		return () => {
-			reset();
-		};
-	}, [isSuccess]);
 
 	return (
 		<KeyboardAvoidingView style={[globalStyles.container]} behavior='position'>

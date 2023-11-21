@@ -33,7 +33,10 @@ const registrationApplication = async (data: Registration) => {
 	return response;
 };
 
-const useRegistrationApplication = (successFn: () => void) => {
+const useRegistrationApplication = (
+	successFn: () => void,
+	errorFn: () => void
+) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: registrationApplication,
@@ -45,8 +48,8 @@ const useRegistrationApplication = (successFn: () => void) => {
 			successFn();
 		},
 
-		onError: (error) => {
-			console.log(error);
+		onError: () => {
+			errorFn();
 		},
 	});
 };

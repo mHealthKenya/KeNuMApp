@@ -18,6 +18,7 @@ import {
 import { InternshipApplication } from '../../models/internshipapplications';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
+import { useInternshipFetched } from '../../providers/internship';
 
 interface Action {
 	show: boolean;
@@ -29,6 +30,8 @@ const ActionBottom: FC<{ action: Action }> = ({
 	action: { show, toggleShow, item },
 }) => {
 	const { user } = useAuth();
+
+	const { handleApplication } = useInternshipFetched();
 
 	// const [selectedPrinter, setSelectedPrinter] = useState<Print.Printer>();
 
@@ -62,16 +65,8 @@ const ActionBottom: FC<{ action: Action }> = ({
 	const router = useRouter();
 	const handlePay = (item: InternshipApplication | null) => {
 		toggleShow();
-
-		console.log(item);
-		router.push({
-			pathname: '/internshippayhistory',
-			params: {
-				acc_no: item?.invoice_no || '',
-				amount: item?.balance_due || '',
-				subtitle: item?.internship_center || '',
-			},
-		});
+		handleApplication(item!);
+		router.push('/internshippayhistory');
 	};
 
 	return (

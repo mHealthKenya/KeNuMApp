@@ -10,11 +10,13 @@ import {
 import DropDownPicker from 'react-native-dropdown-picker';
 import { Button } from 'react-native-paper';
 
+import { useToast } from '@gluestack-ui/themed';
+import dayjs from 'dayjs';
 import { primaryColor } from '../../constants/Colors';
 import { ExamCenter } from '../../models/examcenters';
-import globalStyles from '../../styles/global';
 import useExamApply from '../../services/exams/apply';
-import dayjs from 'dayjs';
+import globalStyles from '../../styles/global';
+import ToastError from '../shared/ToastError';
 
 const AddExamComponent: FC<{
 	centers: ExamCenter[];
@@ -41,11 +43,30 @@ const AddExamComponent: FC<{
 
 	const { student_series_id = '' } = useLocalSearchParams();
 
+	const toast = useToast();
+
 	const successFn = () => {
 		router.replace('/payexam');
 	};
 
-	const { mutate, isPending } = useExamApply(successFn);
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Application Error'
+						description='Could not complete exam application. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending } = useExamApply(successFn, errorFn);
 
 	const date = new Date();
 

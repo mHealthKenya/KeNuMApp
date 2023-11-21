@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Divider } from 'react-native-paper';
 import { CheckIns } from '../../../models/checkins';
 import globalStyles from '../../../styles/global';
+import EmptyList from '../../shared/EmptyList';
 
 const CheckinBox: FC<{ checkin: CheckIns }> = ({ checkin }) => {
 	return (
@@ -74,6 +75,9 @@ const CheckinHistoryComponent: FC<{
 				keyExtractor={(item) => item.checkin_id}
 				onRefresh={refresh}
 				refreshing={isRefetching}
+				ListEmptyComponent={
+					<EmptyList message='Could not find any internship checkins in your account' />
+				}
 			/>
 		</View>
 	);

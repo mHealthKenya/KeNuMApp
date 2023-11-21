@@ -26,12 +26,15 @@ const addCompetency = async (data: Competency) => {
 	return response;
 };
 
-const useAddCompetency = (successFn: () => void) => {
+const useAddCompetency = (successFn: () => void, errorFn: () => void) => {
 	return useMutation({
 		mutationFn: addCompetency,
-		onSuccess: (data) => {
-			console.log('success', data);
+		onSuccess: () => {
 			successFn();
+		},
+
+		onError: () => {
+			errorFn();
 		},
 	});
 };
