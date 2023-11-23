@@ -1,15 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 import CPDActivitiesComponent from '../../components/cpds/activities';
-import { primaryColor } from '../../constants/Colors';
+import CenterLoad from '../../components/shared/CenterLoad';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useCPDActivities from '../../services/cpds/activities';
-import globalStyles from '../../styles/global';
-import { useAuth } from '../../providers/auth';
 
 const CPDActivities = () => {
-	const { user } = useAuth();
+	const { data: user, isLoading: loadingUser } = useAuthenticatedUser();
+
 	const {
 		data = [],
 		isLoading,
@@ -17,12 +15,8 @@ const CPDActivities = () => {
 		isRefetching,
 	} = useCPDActivities(user?.id || '');
 
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingUser) {
+		return <CenterLoad />;
 	}
 
 	return (

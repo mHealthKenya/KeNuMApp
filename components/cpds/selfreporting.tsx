@@ -5,7 +5,7 @@ import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import mime from 'mime';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
 	KeyboardAvoidingView,
@@ -19,7 +19,7 @@ import {
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
 import * as Yup from 'yup';
 import { primaryColor } from '../../constants/Colors';
-import { useAuth } from '../../providers/auth';
+import { User } from '../../models/user';
 import { useCPDCategoryFetched } from '../../providers/cpdcategories';
 import useSelfReport from '../../services/cpds/self';
 import globalStyles from '../../styles/global';
@@ -42,7 +42,7 @@ const validationSchema = Yup.object().shape({
 	event_title: Yup.string().required('Event title is required'),
 });
 
-const CPDSelfReportingComponent = () => {
+const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 	const currentYear = new Date().getFullYear();
 	const { width, height } = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
@@ -141,8 +141,6 @@ const CPDSelfReportingComponent = () => {
 	};
 
 	const { mutate, isPending } = useSelfReport(successFn, errorFn);
-
-	const { user } = useAuth();
 
 	const onSubmit = (data: Form) => {
 		mutate({

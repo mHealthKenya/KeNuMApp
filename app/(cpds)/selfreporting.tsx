@@ -1,12 +1,19 @@
-import { View, Text } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import CPDSelfReportingComponent from '../../components/cpds/selfreporting';
-import { StatusBar } from 'expo-status-bar';
+import CenterLoad from '../../components/shared/CenterLoad';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 
 const SelfReporting = () => {
+	const { data: user, isLoading: loadingUser } = useAuthenticatedUser();
+
+	if (loadingUser) {
+		return <CenterLoad />;
+	}
+
 	return (
 		<>
-			<CPDSelfReportingComponent />
+			<CPDSelfReportingComponent user={user!} />
 			<StatusBar style='light' />
 		</>
 	);
