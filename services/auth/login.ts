@@ -5,6 +5,7 @@ import { Credentials } from '../../components/auth/Login';
 import { baseUrl } from '../../constants/baseurl';
 import { useAuth } from '../../providers/auth';
 import { useError } from '../../providers/error';
+import { authenticatedUser } from './authenticated';
 
 const login = async (data: Credentials) => {
 	const url = baseUrl + 'api/auth/login';
@@ -22,8 +23,9 @@ const useLogin = () => {
 		onSuccess: async ({ token }) => {
 			await secureStore.setItemAsync('token', token);
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-			queryClient.invalidateQueries({
+			queryClient.prefetchQuery({
 				queryKey: ['authenticated-user'],
+				queryFn: authenticatedUser,
 			});
 			checkAuth();
 		},

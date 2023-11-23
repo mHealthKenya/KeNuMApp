@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import dayjs from 'dayjs';
 import * as secureStore from 'expo-secure-store';
@@ -32,15 +32,9 @@ const licenceApply = async (data: Apply) => {
 };
 
 const useLicenceApply = (successFn: () => void) => {
-	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: licenceApply,
 		onSuccess: (data) => {
-			console.log(data);
-			// queryClient.invalidateQueries({
-			// 	queryKey: ['exam-applications'],
-			// });
-
 			successFn();
 		},
 	});

@@ -1,8 +1,6 @@
-import { View, Text } from 'react-native';
-import React from 'react';
 import { Stack } from 'expo-router';
+import React from 'react';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
-import { useAuth } from '../../providers/auth';
 import InternshipProvider from '../../providers/internship';
 
 const InternshipLayout = () => {
@@ -19,6 +17,18 @@ const InternshipLayout = () => {
 						color: '#FFF',
 					},
 				}}>
+				<Stack.Screen
+					name='internship'
+					options={{
+						title: 'My Internships',
+						headerLeft: () => <ProfileHeaderLeft />,
+
+						headerTitleStyle: {
+							color: '#eaf2fa',
+						},
+					}}
+				/>
+
 				<Stack.Screen
 					name='internshipapply'
 					options={{

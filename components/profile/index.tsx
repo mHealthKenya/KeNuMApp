@@ -5,6 +5,7 @@ import { primaryColor } from '../../constants/Colors';
 import { useAuth } from '../../providers/auth';
 import ProfileHeader from './header';
 import ProfileItem from './item';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 
 interface Profile {
 	title: string;
@@ -40,12 +41,14 @@ const profileItems: Profile[] = [
 const ProfileComponent = () => {
 	const { user } = useAuth();
 
+	const { data } = useAuthenticatedUser();
+
 	const { height } = useWindowDimensions();
 
 	return (
 		<View style={{ flex: 1 }}>
 			<ProfileHeader
-				user={user}
+				user={data}
 				backgroundColor='#0445b5'
 				textColor='#FFF'
 				buttonColor='#FFF'

@@ -47,6 +47,10 @@ const useSelfReport = (successFn: () => void, errorFn: () => void) => {
 				queryKey: ['cpd-activities', data.message.index_id],
 			});
 
+			queryClient.invalidateQueries({
+				queryKey: ['authenticated-user'],
+			});
+
 			successFn();
 		},
 

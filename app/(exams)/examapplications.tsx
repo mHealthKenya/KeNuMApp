@@ -1,29 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 import ExamApplicationsComponent from '../../components/exams/applications';
-import { primaryColor } from '../../constants/Colors';
-import { useAuth } from '../../providers/auth';
+import CenterLoad from '../../components/shared/CenterLoad';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useExamApplications from '../../services/exams/applications';
-import globalStyles from '../../styles/global';
 
 const ExamApplications = () => {
-	const { user } = useAuth();
+	const { data: user, isLoading: loadingUser } = useAuthenticatedUser();
 
 	const {
 		data = [],
 		isLoading,
 		refetch,
 		isRefetching,
-	} = useExamApplications(user?.id || '');
+	} = useExamApplications(user?.IndexNo || '');
 
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingUser) {
+		return <CenterLoad />;
 	}
 
 	return (

@@ -18,10 +18,12 @@ import { useAuth } from '../../providers/auth';
 import useExamApply from '../../services/exams/apply';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
+import { User } from '../../models/user';
 
 const AddExamComponent: FC<{
 	centers: ExamCenter[];
-}> = ({ centers }) => {
+	user: User | null;
+}> = ({ centers, user }) => {
 	const [dropDownCenter, setDropDownCenter] = useState(false);
 	const [dropDownReason, setDropDownReason] = useState(false);
 	const [selectedCenter, setSelectedCenter] = useState(null);
@@ -69,13 +71,11 @@ const AddExamComponent: FC<{
 
 	const { mutate, isPending } = useExamApply(successFn, errorFn);
 
-	const { user } = useAuth();
-
 	const date = new Date();
 
 	const onSubmit = () => {
 		mutate({
-			index_id: user?.id || '',
+			index_id: user?.IndexNo || '',
 			exam_centers: selectedCenter + ',' + selectedReason,
 			student_series_id: '' + student_series_id,
 			application_date: dayjs(date).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),

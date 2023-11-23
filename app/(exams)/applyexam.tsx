@@ -1,28 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import SeriesComponent from '../../components/exams/series';
-import { primaryColor } from '../../constants/Colors';
-import useExamSeries from '../../services/exams/series';
-import globalStyles from '../../styles/global';
-import useExamCenters from '../../services/exams/centers';
 import AddExamComponent from '../../components/exams/add';
+import CenterLoad from '../../components/shared/CenterLoad';
+import useAuthenticatedUser from '../../services/auth/authenticated';
+import useExamCenters from '../../services/exams/centers';
 
 const ApplyExam = () => {
 	const { data = [], isLoading } = useExamCenters();
+	const { data: user, isLoading: loadingUser } = useAuthenticatedUser();
 
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingUser) {
+		return <CenterLoad />;
 	}
 
 	return (
 		<>
-			<AddExamComponent centers={data} />
+			<AddExamComponent centers={data} user={user!} />
 			<StatusBar style='light' />
 		</>
 	);

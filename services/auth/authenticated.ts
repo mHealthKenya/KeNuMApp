@@ -1,11 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios, { AxiosRequestConfig } from 'axios';
 import { baseUrl } from '../../constants/baseurl';
+import { User } from '../../models/user';
+import * as secureStore from 'expo-secure-store';
 
-const authenticatedUser = async () => {
+export const authenticatedUser = async () => {
+	const token = await secureStore.getItemAsync('token').then((data) => data);
+	axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 	const url = baseUrl + 'api/auth/user';
 
-	const response = await axios.get(url).then((res) => res.data);
+	const config: AxiosRequestConfig = {
+		method: 'GET',
+		url,
+	};
+
+	const response: User = await axios(config).then((res) => res.data);
 
 	return response;
 };

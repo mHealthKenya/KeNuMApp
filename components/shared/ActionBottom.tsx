@@ -51,17 +51,6 @@ const ActionBottom: FC<{ action: Action }> = ({
 		toggleShow();
 	};
 
-	// const printToFile = async () => {
-	// 	const { uri } = await Print.printToFileAsync({ html: htmlContent });
-	// 	console.log('File has been saved to:', uri);
-	// 	await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-	// };
-
-	// const selectPrinter = async () => {
-	// 	const printer = await Print.selectPrinterAsync(); // iOS only
-	// 	setSelectedPrinter(printer);
-	// };
-
 	const router = useRouter();
 	const handlePay = (item: InternshipApplication | null) => {
 		toggleShow();

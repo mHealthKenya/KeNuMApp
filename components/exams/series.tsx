@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Series } from '../../models/series';
 import globalStyles from '../../styles/global';
+import InfoAlert from '../shared/InfoAlert';
 
 export interface InternBox {
 	title: string;
@@ -105,9 +106,14 @@ const SeriesComponent: FC<{ serie: Series[] }> = ({ serie }) => {
 					}}
 				/>
 			</View>
-			{serie?.map((item) => (
-				<SeriesBox series={item} key={item.student_series_id} />
-			))}
+
+			{serie?.length === 0 ? (
+				<InfoAlert message='No active series found in your account' />
+			) : (
+				serie?.map((item) => (
+					<SeriesBox series={item} key={item.student_series_id} />
+				))
+			)}
 		</ScrollView>
 	);
 };

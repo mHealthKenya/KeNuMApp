@@ -52,7 +52,7 @@ export const sendOTP = async (data: OTP) => {
 	};
 
 	return await axios(config).then((res) => {
-		console.log(res.data);
+		return res.data;
 	});
 };
 

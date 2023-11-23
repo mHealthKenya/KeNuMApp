@@ -22,6 +22,7 @@ import useInternshipApply from '../../services/internship/apply';
 import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
 import ToastError from '../shared/ToastError';
+import WarnAlert from '../shared/WarnAlert';
 
 enum Names {
 	posting_letter = 'posting_letter',
@@ -42,6 +43,12 @@ const InternshipApplyComponent: FC<{
 	centers: InternshipCenters;
 	user: User | null;
 }> = ({ centers, user }) => {
+	if (user?.education !== undefined && user?.education?.length <= 0) {
+		return (
+			<WarnAlert message='Could not find any education history in your account' />
+		);
+	}
+
 	const textProps: TextInputProps = {
 		theme,
 		style: styles.input,

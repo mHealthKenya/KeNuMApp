@@ -18,8 +18,8 @@ const RootLayout = () => {
 	return (
 		<GluestackUIProvider config={config}>
 			<ThemeProvider>
-				<AuthProvider>
-					<QueryClientProvider client={client}>
+				<QueryClientProvider client={client}>
+					<AuthProvider>
 						<RotationAreasProvider>
 							<RotationCompetenciesProvider>
 								<CompetencyProvider>
@@ -37,8 +37,8 @@ const RootLayout = () => {
 								</CompetencyProvider>
 							</RotationCompetenciesProvider>
 						</RotationAreasProvider>
-					</QueryClientProvider>
-				</AuthProvider>
+					</AuthProvider>
+				</QueryClientProvider>
 			</ThemeProvider>
 		</GluestackUIProvider>
 	);

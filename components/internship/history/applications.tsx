@@ -1,5 +1,10 @@
+import {
+	BottomSheetModal,
+	BottomSheetModalProvider,
+	BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
 import {
 	FlatList,
 	Pressable,
@@ -13,8 +18,10 @@ import { InternshipApplication } from '../../../models/internshipapplications';
 import { useInternshipFetched } from '../../../providers/internship';
 import { useSearch } from '../../../providers/search';
 import globalStyles from '../../../styles/global';
-import ActionBottom from '../../shared/ActionBottom';
 import EmptyList from '../../shared/EmptyList';
+import DownloadInvoice from './actions/downloadinvoice';
+import DownloadReceipt from './actions/downloadreceipt';
+import PayForApplication from './actions/pay';
 
 export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',
@@ -201,20 +208,26 @@ const InternshipApplicationsComponent: FC<{
 }> = ({ applications, refresh, isRefreshing }) => {
 	const { handleApplication } = useInternshipFetched();
 
+	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+	const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+	const handlePresentModal = useCallback(() => {
+		bottomSheetModalRef.current?.present();
+	}, []);
+
+	const handleSheetChanges = useCallback((index: number) => {
+		console.log('handle sheet changes', index);
+	}, []);
+
 	const { search, handleSearch } = useSearch();
-
-	const [show, setShow] = useState(false);
-
-	const toggleShow = () => {
-		setShow(!show);
-	};
 
 	const [item, setItem] = useState<InternshipApplication | null>(null);
 
 	const handleItem = (item: InternshipApplication) => {
 		setItem(item);
 		handleApplication(item);
-		setShow(!show);
+		handlePresentModal();
 	};
 
 	const filtered = useMemo(
@@ -226,34 +239,48 @@ const InternshipApplicationsComponent: FC<{
 	);
 
 	return (
-		<View style={[globalStyles.container]}>
-			<ActionBottom
-				action={{
-					show,
-					toggleShow,
-					item,
-				}}
-			/>
-			<Searchbar
-				placeholder='Search by internship center'
-				onChangeText={handleSearch}
-				value={search}
-				style={styles.searchBar}
-			/>
-			<FlatList
-				data={filtered}
-				renderItem={({ item }) => (
-					<Application application={item} action={() => handleItem(item)} />
-				)}
-				keyExtractor={(item) => item.internship_id}
-				showsVerticalScrollIndicator={false}
-				onRefresh={() => refresh()}
-				refreshing={isRefreshing}
-				ListEmptyComponent={
-					<EmptyList message='Could not find any internship applications in your account' />
-				}
-			/>
-		</View>
+		<BottomSheetModalProvider>
+			<View style={[globalStyles.container]}>
+				<BottomSheetModal
+					ref={bottomSheetModalRef}
+					index={1}
+					snapPoints={snapPoints}
+					onChange={handleSheetChanges}>
+					<View style={styles.bottomSheet}>
+						<BottomSheetView style={[styles.contentContainer]}>
+							<PayForApplication item={item} />
+						</BottomSheetView>
+
+						<View style={[styles.contentContainer]}>
+							<DownloadInvoice item={item} />
+						</View>
+
+						<BottomSheetView style={[styles.contentContainer]}>
+							<DownloadReceipt item={item} />
+						</BottomSheetView>
+					</View>
+				</BottomSheetModal>
+				<Searchbar
+					placeholder='Search by internship center'
+					onChangeText={handleSearch}
+					value={search}
+					style={styles.searchBar}
+				/>
+				<FlatList
+					data={filtered}
+					renderItem={({ item }) => (
+						<Application application={item} action={() => handleItem(item)} />
+					)}
+					keyExtractor={(item) => item.internship_id}
+					showsVerticalScrollIndicator={false}
+					onRefresh={() => refresh()}
+					refreshing={isRefreshing}
+					ListEmptyComponent={
+						<EmptyList message='Could not find any internship applications in your account' />
+					}
+				/>
+			</View>
+		</BottomSheetModalProvider>
 	);
 };
 
@@ -307,5 +334,16 @@ const styles = StyleSheet.create({
 		margin: 5,
 		padding: 2,
 		borderRadius: 10,
+	},
+
+	bottomSheet: {
+		flex: 1,
+		padding: 10,
+		gap: 10,
+	},
+
+	contentContainer: {
+		flex: 1,
+		justifyContent: 'center',
 	},
 });

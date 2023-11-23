@@ -4,10 +4,10 @@ import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
 import { Series } from '../../models/series';
 
-const examSeries = async () => {
+const examSeries = async (index_id: string) => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);
 	axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-	const url = baseUrl + 'api/exams/series?index_id=105501';
+	const url = baseUrl + 'api/exams/series?index_id=' + index_id;
 
 	const config: AxiosRequestConfig = {
 		method: 'GET',
@@ -19,10 +19,10 @@ const examSeries = async () => {
 	return response;
 };
 
-const useExamSeries = () =>
+const useExamSeries = (index_id: string) =>
 	useQuery({
 		queryKey: ['checkin-hist'],
-		queryFn: examSeries,
+		queryFn: () => examSeries(index_id),
 	});
 
 export default useExamSeries;

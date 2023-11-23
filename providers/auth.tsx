@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import { baseUrl } from '../constants/baseurl';
 import { User } from '../models/user';
+import { useQueryClient } from '@tanstack/react-query';
 
 enum Types {
 	Login = 'Login',
@@ -117,6 +118,8 @@ const getUser = async (token: string) => {
 const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
+	const queryClient = useQueryClient();
+
 	const checkAuth = async () => {
 		dispatch({ type: Types.Initial });
 		const token = await secureStore.getItemAsync('token').then((data) => data);
@@ -137,6 +140,9 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		await secureStore.deleteItemAsync('token');
 		axios.defaults.headers.common['Authorization'] = '';
 		dispatch({ type: Types.Uncheck });
+		queryClient.invalidateQueries({
+			queryKey: ['authenticated-user'],
+		});
 	};
 
 	useEffect(() => {

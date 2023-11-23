@@ -15,7 +15,6 @@ const allEmployers = async () => {
 	};
 
 	const response: Employer[] = await axios(config).then((res) => {
-		console.log(res.data);
 		return res.data;
 	});
 

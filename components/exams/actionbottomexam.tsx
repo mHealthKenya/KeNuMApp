@@ -11,9 +11,7 @@ import * as Print from 'expo-print';
 import { useRouter } from 'expo-router';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import {
-	InternshipMode
-} from '../../helpers/receiptgenerator';
+import { InternshipMode } from '../../helpers/receiptgenerator';
 import { examReceiptGen } from '../../helpers/receiptgeneratorexam';
 import { ExamApplication } from '../../models/examapplications';
 import { useAuth } from '../../providers/auth';
@@ -47,17 +45,6 @@ const ActionBottomExam: FC<{ action: Action }> = ({
 		});
 		toggleShow();
 	};
-
-	// const printToFile = async () => {
-	// 	const { uri } = await Print.printToFileAsync({ html: htmlContent });
-	// 	console.log('File has been saved to:', uri);
-	// 	await shareAsync(uri, { UTI: '.pdf', mimeType: 'application/pdf' });
-	// };
-
-	// const selectPrinter = async () => {
-	// 	const printer = await Print.selectPrinterAsync(); // iOS only
-	// 	setSelectedPrinter(printer);
-	// };
 
 	const router = useRouter();
 	const handlePay = (item: ExamApplication | null) => {

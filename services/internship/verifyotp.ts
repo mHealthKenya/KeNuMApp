@@ -24,12 +24,7 @@ const useVerifyOTP = (successFn: () => void) =>
 	useMutation({
 		mutationFn: verifyOtp,
 		onSuccess: () => {
-			console.log('success');
 			successFn();
-		},
-
-		onError: (error) => {
-			console.log(error);
 		},
 	});
 

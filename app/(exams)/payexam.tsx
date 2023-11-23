@@ -1,24 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 import PayComponent from '../../components/payments/pay';
-import { primaryColor } from '../../constants/Colors';
+import CenterLoad from '../../components/shared/CenterLoad';
 import { Transactions } from '../../enums/transactions';
-import useInternshipApplications from '../../services/internship/applications';
-import globalStyles from '../../styles/global';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useExamApplications from '../../services/exams/applications';
-import { useAuth } from '../../providers/auth';
 
 const PayExam = () => {
-	const { user } = useAuth();
-	const { data, isLoading } = useExamApplications(user?.id || '');
+	const { data: user, isLoading: loadingUser } = useAuthenticatedUser();
+	const { data, isLoading } = useExamApplications(user?.IndexNo || '');
 
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingUser) {
+		return <CenterLoad />;
 	}
 
 	return (
