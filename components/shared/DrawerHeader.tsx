@@ -1,10 +1,11 @@
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
+import { useRouter } from 'expo-router';
 
 const DrawerHeader = () => {
 	const { height, width } = useWindowDimensions();
@@ -21,6 +22,8 @@ const DrawerHeader = () => {
 	const toggleImageError = () => {
 		setImageError((imageError) => !imageError);
 	};
+
+	const router = useRouter();
 
 	const blurhash = 'LSLE1vRj^-xu^,bFE0jb_4t7?]NF';
 	return (
@@ -51,22 +54,24 @@ const DrawerHeader = () => {
 						mode='contained'
 						icon='upload'
 						style={styles.button}
-						onPress={() => logout()}>
+						onPress={() => router.push('/applyprivate')}>
 						<Text style={styles.buttonText}>Upload Profile</Text>
 					</Button>
 				</View>
 			) : (
-				<Image
-					source={{ uri: user?.ProfilePic }}
-					placeholder={blurhash}
-					transition={1000}
-					onError={toggleImageError}
-					style={{
-						width: usableWidth * 1.2,
-						height: usableWidth * 1.2,
-						borderRadius: (usableWidth * 1.2) / 2,
-					}}
-				/>
+				<Pressable onPress={() => router.push('/applyprivate')}>
+					<Image
+						source={{ uri: user?.ProfilePic }}
+						placeholder={blurhash}
+						transition={1000}
+						onError={toggleImageError}
+						style={{
+							width: usableWidth * 1.2,
+							height: usableWidth * 1.2,
+							borderRadius: (usableWidth * 1.2) / 2,
+						}}
+					/>
+				</Pressable>
 			)}
 			<View style={{ marginTop: 10 }}>
 				<Text style={styles.nameText}>{user?.Name}</Text>
