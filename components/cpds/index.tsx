@@ -8,6 +8,15 @@ const CPDHomeComponent = () => {
 		<View style={globalStyles.container}>
 			<CPDBoxComponent
 				box={{
+					title: 'My CPD Events',
+					content: 'See a list of all your CPD events and claim points.',
+					backgroundColor: '#dcf0fa',
+					path: require('../../assets/images/cpdevent.png'),
+					route: '/cpdevents',
+				}}
+			/>
+			<CPDBoxComponent
+				box={{
 					title: 'Self Reporting',
 					content:
 						'Simply upload evidence of your CPD activity and points will be rewarded',

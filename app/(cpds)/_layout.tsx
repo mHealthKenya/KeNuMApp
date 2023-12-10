@@ -48,6 +48,14 @@ const RegistrationLayout = () => {
 						headerLeft: () => <ProfileHeaderLeft />,
 					}}
 				/>
+
+				<Stack.Screen
+					name='cpdevents'
+					options={{
+						title: 'CPD Events',
+						headerLeft: () => <ProfileHeaderLeft />,
+					}}
+				/>
 			</Stack>
 		</CPDCategoriesProvider>
 	);
