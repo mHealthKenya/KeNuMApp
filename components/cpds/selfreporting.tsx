@@ -31,7 +31,7 @@ interface Form {
 	event_title: string;
 }
 
-interface UserImage {
+export interface UserImage {
 	uri: string | null;
 	name: string;
 	type?: string;

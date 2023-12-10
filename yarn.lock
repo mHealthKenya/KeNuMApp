@@ -4954,6 +4954,11 @@ cosmiconfig@^5.0.5, cosmiconfig@^5.1.0:
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
 
+countries-list@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/countries-list/-/countries-list-3.0.6.tgz#eae61674539c2818e282be7b46d0645d96ae5606"
+  integrity sha512-BCJODHTSRMIxS0W80NZw8bC7x6/WS8Tf4FdtFrEbW0FONBbqTAzOrKNG06UEMgLGxOZpOJddiVEdCztKLpmPxA==
+
 create-jest@^29.7.0:
   version "29.7.0"
   resolved "https://registry.yarnpkg.com/create-jest/-/create-jest-29.7.0.tgz#a355c5b3cb1e1af02ba177fe7afd7feee49a5320"
@@ -5749,6 +5754,11 @@ expo-constants@~14.4.2:
   dependencies:
     "@expo/config" "~8.1.0"
     uuid "^3.3.2"
+
+expo-document-picker@~11.5.4:
+  version "11.5.4"
+  resolved "https://registry.yarnpkg.com/expo-document-picker/-/expo-document-picker-11.5.4.tgz#11c274d1a2f4aa1f0ca7c0403ca02017a20d832e"
+  integrity sha512-4lpRixi33kjoQQy9lfrGs48yFRMOgBgdnqjYWVFe85WFy/WkEoFC2E8usxcFdrIigtfy9Z+HY3/je4lHEYqyLg==
 
 expo-file-system@~15.4.0, expo-file-system@~15.4.4:
   version "15.4.4"

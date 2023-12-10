@@ -38,6 +38,13 @@
 				{
 					"photosPermission": "The app accesses your photos to let you upload certificates and CPD evidence."
 				}
+			],
+
+			[
+				"expo-document-picker",
+				{
+					"iCloudContainerEnvironment": "Production"
+				}
 			]
 		],
 		"experiments": {

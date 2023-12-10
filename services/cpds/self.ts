@@ -48,7 +48,7 @@ const useSelfReport = (successFn: () => void, errorFn: () => void) => {
 			});
 
 			queryClient.invalidateQueries({
-				queryKey: ['authenticated-user'],
+				queryKey: ['authenticated-user', data.message.index_id],
 			});
 
 			successFn();

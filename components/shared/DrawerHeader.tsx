@@ -1,6 +1,12 @@
 import { Image } from 'expo-image';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import {
+	Pressable,
+	StyleSheet,
+	Text,
+	View,
+	useWindowDimensions,
+} from 'react-native';
 import { Avatar, Button } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
 import { useAuth } from '../../providers/auth';
@@ -59,7 +65,7 @@ const DrawerHeader = () => {
 					</Button>
 				</View>
 			) : (
-				<Pressable onPress={() => router.push('/applyprivate')}>
+				<Pressable onPress={() => router.push('/applyoutmigration')}>
 					<Image
 						source={{ uri: user?.ProfilePic }}
 						placeholder={blurhash}

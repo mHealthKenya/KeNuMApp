@@ -134,7 +134,7 @@ const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
 							style={[
 								styles.input,
 								{
-									borderColor: dropDown ? '#0445b5' : '#0345B53D',
+									borderColor: dropDownP ? '#0445b5' : '#0345B53D',
 								},
 							]}
 							listMode='SCROLLVIEW'
@@ -161,7 +161,7 @@ const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
 							style={[
 								styles.input,
 								{
-									borderColor: dropDown ? '#0445b5' : '#0345B53D',
+									borderColor: countyDrop ? '#0445b5' : '#0345B53D',
 								},
 							]}
 							listMode='SCROLLVIEW'
