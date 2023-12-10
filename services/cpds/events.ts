@@ -22,7 +22,7 @@ const cpdEvents = async (index_id?: string) => {
 
 const useCPDEvents = (index_id?: string) =>
 	useQuery({
-		queryKey: ['CPDEvents' + index_id],
+		queryKey: ['CPDEvents', index_id],
 		queryFn: () => cpdEvents(index_id),
 		enabled: !!index_id,
 	});

@@ -48,7 +48,7 @@ const ProfileComponent = () => {
 	return (
 		<View style={{ flex: 1 }}>
 			<ProfileHeader
-				user={data}
+				user={data || {}}
 				backgroundColor='#0445b5'
 				textColor='#FFF'
 				buttonColor='#FFF'

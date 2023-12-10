@@ -12,7 +12,7 @@ const CPDEvents = () => {
 		data: events = [],
 		refetch,
 		isRefetching,
-	} = useCPDEvents('4068');
+	} = useCPDEvents(user?.id);
 
 	if (isLoading) {
 		return <CenterLoad />;

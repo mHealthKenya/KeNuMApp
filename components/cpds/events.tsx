@@ -1,15 +1,19 @@
-import { View, Text, useWindowDimensions } from 'react-native';
-import React, { FC, useMemo } from 'react';
-import { CPDEvent } from '../../models/cpdevents';
-import { StyleSheet } from 'react-native';
-import globalStyles from '../../styles/global';
-import { Button, Divider, Icon, Searchbar } from 'react-native-paper';
+import { Badge, BadgeIcon, BadgeText } from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
+import React, { FC, useMemo } from 'react';
+import {
+	FlatList,
+	StyleSheet,
+	Text,
+	View,
+	useWindowDimensions,
+} from 'react-native';
+import { Button, Divider, Icon, Searchbar } from 'react-native-paper';
+import { CPDEvent } from '../../models/cpdevents';
 import { useSearch } from '../../providers/search';
-import { FlatList } from 'react-native';
+import useClaim from '../../services/cpds/claim';
+import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
-import { Alert, BadgeIcon, BadgeText } from '@gluestack-ui/themed';
-import { Badge } from '@gluestack-ui/themed';
 
 interface Item {
 	title: string;
@@ -41,7 +45,19 @@ const Double: FC<{ item: Item }> = ({ item }) => {
 };
 
 const CPDEventBox: FC<{ event: CPDEvent }> = ({ event }) => {
+	const successFn = () => {
+		console.log('success');
+	};
+	const { mutate, isPending } = useClaim(successFn);
 	const { width } = useWindowDimensions();
+
+	const handleSubmit = () => {
+		mutate({
+			event_token: event.event_token,
+			index_id: event.index_id,
+		});
+	};
+
 	return (
 		<View style={styles.card}>
 			<View style={{ padding: 10 }}>
@@ -110,7 +126,11 @@ const CPDEventBox: FC<{ event: CPDEvent }> = ({ event }) => {
 								<View style={[{ gap: 10 }]}>
 									{event.token_redeemed === 'no' ? (
 										<View style={{ height: 'auto' }}>
-											<Button mode='contained' style={styles.button}>
+											<Button
+												mode='contained'
+												style={styles.button}
+												onPress={handleSubmit}
+												loading={isPending}>
 												Claim
 											</Button>
 										</View>
@@ -160,7 +180,7 @@ const CPDEventsComponent: FC<{
 
 	const items = useMemo(
 		() =>
-			events.filter(
+			events?.filter(
 				(item) =>
 					item.activity.toLowerCase().includes(search.toLowerCase()) ||
 					item.event_title.toLowerCase().includes(search.toLowerCase()) ||
