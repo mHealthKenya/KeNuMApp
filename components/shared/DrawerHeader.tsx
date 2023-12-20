@@ -65,7 +65,7 @@ const DrawerHeader = () => {
 					</Button>
 				</View>
 			) : (
-				<Pressable onPress={() => router.push('/applyoutmigration')}>
+				<Pressable onPress={() => router.push('/applyprivate')}>
 					<Image
 						source={{ uri: user?.ProfilePic }}
 						placeholder={blurhash}

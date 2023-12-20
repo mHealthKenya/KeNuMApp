@@ -5,7 +5,7 @@ import { User } from '../../models/user';
 import globalStyles from '../../styles/global';
 import ProfileHeader from './header';
 
-const CPDsComponent: FC<{ user: User | null }> = ({ user }) => {
+const CPDsComponent: FC<{ user: User | undefined }> = ({ user }) => {
 	return (
 		<View style={styles.container}>
 			<ProfileHeader

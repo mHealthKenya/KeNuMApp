@@ -1,5 +1,5 @@
 import { Image, ImageSource } from 'expo-image';
-import { useRouter } from 'expo-router';
+import { Href, useRouter } from 'expo-router';
 import React, { FC } from 'react';
 import {
 	Pressable,
@@ -16,7 +16,7 @@ export interface CPDBox {
 	content: string;
 	backgroundColor: string;
 	path: ImageSource;
-	route: any;
+	route: Href<string>;
 }
 
 const CPDBoxComponent: FC<{ box: CPDBox }> = ({ box }) => {
@@ -45,6 +45,7 @@ const CPDBoxComponent: FC<{ box: CPDBox }> = ({ box }) => {
 					style={{
 						width: 60,
 						height: 80,
+						borderRadius: 40,
 					}}
 				/>
 				<View

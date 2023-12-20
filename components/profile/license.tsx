@@ -5,7 +5,7 @@ import WarnAlert from '../shared/WarnAlert';
 import ProfileHeader from './header';
 import LicenseItem from './licenceitem';
 
-const LicenseComponent: FC<{ user: User | null }> = ({ user }) => {
+const LicenseComponent: FC<{ user: User | undefined }> = ({ user }) => {
 	return (
 		<ScrollView style={styles.container}>
 			<ProfileHeader

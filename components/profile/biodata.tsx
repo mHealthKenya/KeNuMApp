@@ -4,7 +4,7 @@ import { User } from '../../models/user';
 import ProfileHeader from './header';
 import ProfileItem from './profileitem';
 
-const BioData: FC<{ user: User | null }> = ({ user }) => {
+const BioData: FC<{ user: User | undefined }> = ({ user }) => {
 	return (
 		<View style={styles.container}>
 			<ProfileHeader

@@ -132,6 +132,8 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
 		if (user) {
 			dispatch({ type: Types.Check, payload: user });
+		} else {
+			dispatch({ type: Types.Uncheck });
 		}
 	};
 

@@ -5,7 +5,7 @@ import ProfileHeader from './header';
 import RegistrationItem from './registrationitem';
 import WarnAlert from '../shared/WarnAlert';
 
-const RegistrationComponent: FC<{ user: User | null }> = ({ user }) => {
+const RegistrationComponent: FC<{ user: User | undefined }> = ({ user }) => {
 	return (
 		<ScrollView style={styles.container}>
 			<ProfileHeader

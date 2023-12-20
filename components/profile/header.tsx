@@ -7,7 +7,7 @@ import { User } from '../../models/user';
 import globalStyles from '../../styles/global';
 
 const ProfileHeader: FC<{
-	user: User | null;
+	user: User | undefined;
 	backgroundColor: string;
 	textColor: string;
 	buttonColor?: string;

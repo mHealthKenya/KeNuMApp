@@ -5,7 +5,7 @@ import WarnAlert from '../shared/WarnAlert';
 import EducationItem from './educationitem';
 import ProfileHeader from './header';
 
-const EducationComponent: FC<{ user: User | null }> = ({ user }) => {
+const EducationComponent: FC<{ user: User | undefined }> = ({ user }) => {
 	return (
 		<ScrollView style={styles.container}>
 			<ProfileHeader
