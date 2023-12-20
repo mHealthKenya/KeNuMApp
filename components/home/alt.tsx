@@ -1,13 +1,11 @@
 import React from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
-import { useAuth } from '../../providers/auth';
+import Associations from './associations';
 import CPDHome from './cpd';
 import HomeLicenceComponent from './licence';
 import NursesAltComponent from './nursesalt';
-import Associations from './associations';
 
 const AltHome = () => {
-	const { user } = useAuth();
 	const { height, width } = useWindowDimensions();
 	return (
 		<View className='flex flex-1'>

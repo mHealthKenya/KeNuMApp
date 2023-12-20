@@ -1,6 +1,7 @@
 import { Image, ImageSource } from 'expo-image';
+import { Link } from 'expo-router';
 import React, { FC } from 'react';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { Icon } from 'react-native-paper';
 
 interface Item {
@@ -84,15 +85,19 @@ const Associations: FC<{ item: Item }> = ({ item: { width, height } }) => {
 			</View>
 
 			<View className='flex flex-col justify-between p-2'>
-				<AssociationItem
-					item={{
-						width,
-						height,
-						source: require('../../assets/images/kpna.png'),
-						title: 'Kenya Progressive Nurses Association',
-						subtitle: 'Harmony In Nursing the Professional Cure',
-					}}
-				/>
+				<Link asChild href='/kpna'>
+					<Pressable>
+						<AssociationItem
+							item={{
+								width,
+								height,
+								source: require('../../assets/images/kpna.png'),
+								title: 'Kenya Progressive Nurses Association',
+								subtitle: 'Harmony In Nursing the Professional Cure',
+							}}
+						/>
+					</Pressable>
+				</Link>
 
 				<AssociationItem
 					item={{
@@ -120,5 +125,3 @@ const Associations: FC<{ item: Item }> = ({ item: { width, height } }) => {
 };
 
 export default Associations;
-
-
