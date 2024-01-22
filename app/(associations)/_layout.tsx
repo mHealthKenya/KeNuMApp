@@ -22,6 +22,20 @@ const StudentsLayout = () => {
 					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>
+			<Stack.Screen
+				name='mak'
+				options={{
+					title: 'MAK',
+					headerLeft: () => <ProfileHeaderLeft color='#000'/>,
+					headerStyle: {
+						backgroundColor: '#069C54',
+					},
+	
+					headerTitleStyle: {
+						color: '#000',
+					},
+				}}
+			/>
 		</Stack>
 	);
 };

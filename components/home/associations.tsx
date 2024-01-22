@@ -99,16 +99,21 @@ const Associations: FC<{ item: Item }> = ({ item: { width, height } }) => {
 					</Pressable>
 				</Link>
 
-				<AssociationItem
-					item={{
-						width,
-						height,
-						source: require('../../assets/images/mak.jpg'),
-						title: 'Midwives Association of Kenya',
-						subtitle:
-							'Revitalising the midwifery and its future profession in the country',
-					}}
-				/>
+				<Link asChild href='/mak'>
+					<Pressable>
+						<AssociationItem
+							item={{
+								width,
+								height,
+								source: require('../../assets/images/mak.jpg'),
+								title: 'Midwives Association of Kenya',
+								subtitle:
+									'Revitalising the midwifery and its future profession in the country',
+							}}
+						/>
+						</Pressable>
+					</Link>
+				
 
 				<AssociationItem
 					item={{
