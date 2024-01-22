@@ -63,24 +63,36 @@ const CPDHome: FC<{ width: number; height: number }> = ({ width, height }) => {
 
 					<View
 						style={{
-							height: 'auto',
+								height: 'auto',
 						}}
 						className='my-2'>
 						<Text
-							className='tracking-widest font-bold text-md'
-							style={{
-								color: '#3b763d',
-							}}>
-							You have attained{' '}
-							<Text className='font-extrabold'>
-								{user?.cpd?.length ? user?.cpd[0].current_points : 0}
-							</Text>{' '}
-							of the required{' '}
-							<Text className='font-extrabold'>
-								{user?.cpd?.length ? user?.cpd[0].cpd_requirement : 20}
-							</Text>
+								className='tracking-widest font-bold text-md'
+								style={{
+										color:
+												user?.cpd?.length &&
+												user?.cpd[0]?.current_points &&
+												typeof user?.cpd[0].current_points === 'number' &&
+												user?.cpd[0].current_points < 20
+														? 'red'
+														: '#3b763d',
+								}}>
+								You have attained{' '}
+								<Text className='font-extrabold'>
+										{user?.cpd?.length && typeof user?.cpd[0]?.current_points === 'number'
+												? user?.cpd[0].current_points
+												: 0}
+								</Text>{' '}
+								of the required{' '}
+								<Text className='font-extrabold'>
+										{user?.cpd?.length && typeof user?.cpd[0]?.cpd_requirement === 'number'
+												? user?.cpd[0].cpd_requirement
+												: 20}
+								</Text>
 						</Text>
-					</View>
+				</View>
+
+
 				</View>
 				<View
 					className='p-2 flex-row gap-2 mb-3'
