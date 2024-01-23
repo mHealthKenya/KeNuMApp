@@ -86,7 +86,7 @@ const ContentBox: FC<{ content: Content }> = ({ content }) => {
           <Text
             className="uppercase font-bold tracking-wide text-base my-4"
             style={{
-              color: "#fff",
+              color: "#000",
             }}
           >
             {content.title}
@@ -342,7 +342,7 @@ const NNAKComponent = () => {
                       "Advancing Modern Nursing practices through research",
                     description:
                       "The Association partners with various research organizations to conduct clinical research with the aim of generating evidence-based Nursing Practices. We have sponsored annual Scientific Conferences for members with abstracts to present, share and exchange knowledge from research and build upon the gaps identified.",
-                    icon: "chess-knight",
+                    icon: "feature-search-outline",
                   }}
                 />
                 <JoinBox
