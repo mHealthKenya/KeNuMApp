@@ -7,19 +7,19 @@ const StudentsLayout = () => {
 		<Stack
 			screenOptions={{
 				headerTitleAlign: 'center',
-				headerStyle: {
-					backgroundColor: '#3c6470',
-				},
-
-				headerTitleStyle: {
-					color: '#FFF',
-				},
 			}}>
 			<Stack.Screen
 				name='kpna'
 				options={{
 					title: 'KPNA',
 					headerLeft: () => <ProfileHeaderLeft />,
+					headerStyle: {
+						backgroundColor: '#3c6470',
+					},
+
+					headerTitleStyle: {
+						color: '#FFF',
+					},
 				}}
 			/>
 		</Stack>

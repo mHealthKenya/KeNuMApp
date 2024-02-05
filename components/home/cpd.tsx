@@ -69,7 +69,13 @@ const CPDHome: FC<{ width: number; height: number }> = ({ width, height }) => {
 						<Text
 							className='tracking-widest font-bold text-md'
 							style={{
-								color: '#3b763d',
+								color:
+									user &&
+									user?.cpd &&
+									Number(user?.cpd[0]?.current_points!) >
+										Number(user?.cpd[0]?.cpd_requirement!)
+										? '#3b763d'
+										: '#D6512C',
 							}}>
 							You have attained{' '}
 							<Text className='font-extrabold'>

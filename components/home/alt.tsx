@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View, useWindowDimensions } from 'react-native';
 import Associations from './associations';
 import CPDHome from './cpd';
-import HomeLicenceComponent from './licence';
+import HomeLicenceComponent from './licence/licence';
 import NursesAltComponent from './nursesalt';
+import { useAuth } from '../../providers/auth';
+import InvalidLicenceComponent from './licence/invalid';
+import dayjs, { Dayjs } from 'dayjs';
 
 const AltHome = () => {
 	const { height, width } = useWindowDimensions();
+	const { user } = useAuth();
+
+	const [endDate, setEndDate] = useState<Dayjs>();
+
+	useEffect(() => {
+		const endDate = user?.license?.length
+			? dayjs(new Date(user?.license[0].to_date || ''))
+			: dayjs(new Date());
+
+		setEndDate(endDate);
+	}, []);
+
+	const currentDate = dayjs(new Date());
 	return (
 		<View className='flex flex-1'>
 			<ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
-				<HomeLicenceComponent width={width} height={height} />
+				{endDate && currentDate > endDate ? (
+					<InvalidLicenceComponent width={width} height={height} />
+				) : (
+					<HomeLicenceComponent width={width} height={height} />
+				)}
 				<CPDHome width={width} height={height} />
 				<NursesAltComponent
 					item={{
