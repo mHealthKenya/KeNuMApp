@@ -63,7 +63,7 @@ const CPDHome: FC<{ width: number; height: number }> = ({ width, height }) => {
 
 					<View
 						style={{
-							height: 'auto',
+								height: 'auto',
 						}}
 						className='my-2'>
 						<Text
@@ -86,7 +86,9 @@ const CPDHome: FC<{ width: number; height: number }> = ({ width, height }) => {
 								{user?.cpd?.length ? user?.cpd[0].cpd_requirement : 20}
 							</Text>
 						</Text>
-					</View>
+				</View>
+
+
 				</View>
 				<View
 					className='p-2 flex-row gap-2 mb-3'
