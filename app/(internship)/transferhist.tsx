@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native';
 import React from 'react';
-import useTransferHist from '../../services/internship/transferhistory';
-import globalStyles from '../../styles/global';
-import { primaryColor } from '../../constants/Colors';
+import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import TransferHistComponent from '../../components/internship/history/transfer';
+import { primaryColor } from '../../constants/Colors';
+import useTransferHist from '../../services/internship/transferhistory';
+import globalStyles from '../../styles/global';
 
 const TransferHistory = () => {
 	const { data = [], isLoading, refetch, isRefetching } = useTransferHist();

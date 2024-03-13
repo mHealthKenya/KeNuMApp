@@ -1,10 +1,12 @@
 import React from 'react';
 import PayComponent from '../../components/payments/pay';
-import { Transactions } from '../../enums/transactions';
-import { useRegistrationFetched } from '../../providers/registrationprovider';
+import {Transactions} from '../../enums/transactions';
+import {useRegistrationFetched} from '../../providers/registrationprovider';
+import {useAtom} from 'jotai';
+import {registrationAtom} from '../../atoms/registration';
 
 const PayRegHist = () => {
-	const { registration } = useRegistrationFetched();
+	const [registration, _] = useAtom(registrationAtom);
 
 	return (
 		<PayComponent

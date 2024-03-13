@@ -58,16 +58,16 @@ const ExamsLayout = () => {
 			<Stack.Screen
 				name='payexamhist'
 				options={{
-					headerShown: false,
-					presentation: 'modal',
+					title: "Pay For Exam",
+					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>
 
 			<Stack.Screen
 				name='payexam'
 				options={{
-					headerShown: false,
-					presentation: 'modal',
+					title: "Pay For Exam",
+					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>
 		</Stack>

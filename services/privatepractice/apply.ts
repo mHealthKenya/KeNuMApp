@@ -3,6 +3,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
 import dayjs from 'dayjs';
+import { useRouter } from 'expo-router';
+import { useAuth } from '../../providers/auth';
 interface Apply {
     "index_id": string
     "proposed_practice_id": string
@@ -32,14 +34,21 @@ const privatePracticeApply = async (data: Apply) => {
     return response;
 }
 
-const usePrivatePracticeApply = () => useMutation({
-    mutationFn: privatePracticeApply,
-    onSuccess: (data) => {
-        console.log(data);
-    },
-    onError: (err) => {
-        console.log(err);
-    }
-})
+const usePrivatePracticeApply = () => {
+    const router = useRouter()
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: privatePracticeApply,
+        onSuccess: (data) => {
+            router.push('/privateapplications')
+            queryClient.invalidateQueries({
+                queryKey: ['private-applications', data?.message?.index_id],
+            });
+        },
+        onError: (err) => {
+            console.log(err);
+        }
+    })
+}
 
 export default usePrivatePracticeApply;

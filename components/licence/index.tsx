@@ -18,7 +18,7 @@ const LicenceHomeComponent = () => {
 
 			<LBox
 				box={{
-					title: 'Registration Renewal Applications History',
+					title: 'Licence Applications History',
 					content:
 						'View a history of all your licence applications, pay for applications, and download licence invoices and receipts',
 					backgroundColor: '#dcf0fa',

@@ -16,9 +16,31 @@ const PrivatePracticeLayout = () => {
 				},
 			}}>
 			<Stack.Screen
-				name='applyprivate'
+				name='privatepracticelanding'
 				options={{
 					title: 'Private Practice',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+			<Stack.Screen
+				name='applyprivate'
+				options={{
+					title: 'Private Practice Application',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+			<Stack.Screen
+				name='privateapplications'
+				options={{
+					title: 'Private Practice History',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='paypractice'
+				options={{
+					title: 'Private Practice Payment',
 					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>

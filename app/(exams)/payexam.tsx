@@ -6,8 +6,8 @@ import useAuthenticatedUser from '../../services/auth/authenticated';
 import useExamApplications from '../../services/exams/applications';
 
 const PayExam = () => {
-	const { data: user, isLoading: loadingUser } = useAuthenticatedUser();
-	const { data, isLoading } = useExamApplications(user?.IndexNo || '');
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
+	const {data, isLoading} = useExamApplications(user?.IndexNo || '');
 
 	if (isLoading || loadingUser) {
 		return <CenterLoad />;

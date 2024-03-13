@@ -1,17 +1,15 @@
 import { Redirect } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import React from 'react';
-import { Image, View, useWindowDimensions } from 'react-native';
-import { ActivityIndicator, Divider, Icon } from 'react-native-paper';
+import { Image, View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import CustomDrawer from '../../components/shared/Drawer';
 import { primaryColor } from '../../constants/Colors';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
-import CustomDrawer from '../../components/shared/Drawer';
 
 const AppLayout = () => {
 	const { isAuthenticated, isLoading } = useAuth();
-
-	const { height } = useWindowDimensions();
 
 	if (isLoading) {
 		return (

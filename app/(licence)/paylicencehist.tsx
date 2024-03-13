@@ -1,11 +1,11 @@
+import {useAtom} from 'jotai';
 import React from 'react';
+import {licenceApplicationAtom} from '../../atoms/licence';
 import PayComponent from '../../components/payments/pay';
-import { Transactions } from '../../enums/transactions';
-import { useRegistrationFetched } from '../../providers/registrationprovider';
-import { useLicenceFetched } from '../../providers/licenceprovider';
+import {Transactions} from '../../enums/transactions';
 
 const PayLicenceHist = () => {
-	const { licence } = useLicenceFetched();
+	const [licence, _] = useAtom(licenceApplicationAtom);
 
 	return (
 		<PayComponent

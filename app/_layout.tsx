@@ -1,11 +1,11 @@
-import { config } from '@gluestack-ui/config';
-import { GluestackUIProvider } from '@gluestack-ui/themed';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Slot, Stack } from 'expo-router';
-import React, { useEffect } from 'react';
+import {config} from '@gluestack-ui/config';
+import {GluestackUIProvider} from '@gluestack-ui/themed';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {Slot, Stack} from 'expo-router';
+import React, {useEffect} from 'react';
 import AuthProvider from '../providers/auth';
 import ErrorProvider from '../providers/error';
-import { ThemeProvider } from '@rneui/themed';
+import {ThemeProvider} from '@rneui/themed';
 import SearchProvider from '../providers/search';
 import RotationAreasProvider from '../providers/rotationareas';
 import RotationCompetenciesProvider from '../providers/rotationcompetencies';

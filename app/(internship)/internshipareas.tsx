@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native';
 import React from 'react';
+import { View } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import InternshipAreasComponent from '../../components/internship/rotations/internshipareas';
+import { primaryColor } from '../../constants/Colors';
 import useInternshipAreas from '../../services/internship/internshipareas';
 import globalStyles from '../../styles/global';
-import { ActivityIndicator } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
-import InternshipAreasComponent from '../../components/internship/rotations/internshipareas';
 
 const InternshipAreas = () => {
 	const { data: areas = [], isLoading } = useInternshipAreas();

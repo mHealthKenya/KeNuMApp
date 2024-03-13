@@ -99,7 +99,7 @@ const ApplyPrivateComponent: FC<{ counties: County[], proposed?: ProposedPractic
 
 	const handleSubmit = () => {
 		mutate({
-			index_id: user?.IndexNo || '',
+			index_id: user?.id || '',
     		proposed_practice_id: practiceProposed || '',
     		practice_mode_id: practiceMode || "",
     		county_id: county || '',

@@ -34,7 +34,7 @@ const ProfessionalComponent = () => {
 						'Apply for private practice, view applications history, and pay for private practice licence.',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/private.png'),
-					route: '/applyprivate',
+					route: '/privatepracticelanding',
 				}}
 			/>
 

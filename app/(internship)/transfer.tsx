@@ -1,11 +1,11 @@
-import { View, Text } from 'react-native';
 import React, { useEffect } from 'react';
-import useTransferReasons from '../../services/internship/transferreasons';
-import useInternshipCenters from '../../services/internship/centers';
-import globalStyles from '../../styles/global';
-import { primaryColor } from '../../constants/Colors';
+import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import RequestTransferComponent from '../../components/internship/transfers/request';
+import { primaryColor } from '../../constants/Colors';
+import useInternshipCenters from '../../services/internship/centers';
+import useTransferReasons from '../../services/internship/transferreasons';
+import globalStyles from '../../styles/global';
 
 const Transfer = () => {
 	const { data: reasons = [], isLoading: reasonsLoading } =

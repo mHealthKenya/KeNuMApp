@@ -12,18 +12,20 @@ import { useRouter } from 'expo-router';
 import React, { FC } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { InternshipMode } from '../../helpers/receiptgenerator';
-import { registrationReceiptGen } from '../../helpers/receiptgeneratorregistration';
-import { RegistrationApplication } from '../../models/regapplications';
+import { licenceReceiptGen } from '../../helpers/receiptgeneratorlicence';
+import { LicenceApplication } from '../../models/licenceapplications';
 import { useAuth } from '../../providers/auth';
 import globalStyles from '../../styles/global';
+import { PracticeApplication } from '../../models/privatepractice';
+import { privateReceiptGen } from '../../helpers/receiptgenprivate';
 
 interface Action {
 	show: boolean;
 	toggleShow: () => void;
-	item: RegistrationApplication | null;
+	item: PracticeApplication | null;
 }
 
-const ActionBottomRegistration: FC<{ action: Action }> = ({
+const ActionBottomLicence: FC<{ action: Action }> = ({
 	action: { show, toggleShow, item },
 }) => {
 	const { user } = useAuth();
@@ -32,7 +34,7 @@ const ActionBottomRegistration: FC<{ action: Action }> = ({
 
 	const print = async () => {
 		await Print.printAsync({
-			html: registrationReceiptGen(item!, user),
+			html: privateReceiptGen(item!, user),
 			// printerUrl: selectedPrinter?.url,
 		});
 		toggleShow();
@@ -40,18 +42,18 @@ const ActionBottomRegistration: FC<{ action: Action }> = ({
 
 	const printReceipt = async () => {
 		await Print.printAsync({
-			html: registrationReceiptGen(item!, user, InternshipMode.paid),
+			html: privateReceiptGen(item!, user, InternshipMode.paid),
 			// printerUrl: selectedPrinter?.url,
 		});
 		toggleShow();
 	};
 
 	const router = useRouter();
-	const handlePay = (item: RegistrationApplication | null) => {
+	const handlePay = (item: PracticeApplication | null) => {
 		toggleShow();
 
 		router.push({
-			pathname: '/payreghist',
+			pathname: '/paypractice',
 		});
 	};
 
@@ -84,7 +86,7 @@ const ActionBottomRegistration: FC<{ action: Action }> = ({
 						</View>
 
 						<View style={{ justifyContent: 'center' }}>
-							<Text style={styles.text}>Pay For Registration</Text>
+							<Text style={styles.text}>Pay For Licence</Text>
 						</View>
 					</View>
 				</ActionsheetItem>
@@ -145,7 +147,7 @@ const ActionBottomRegistration: FC<{ action: Action }> = ({
 	);
 };
 
-export default ActionBottomRegistration;
+export default ActionBottomLicence;
 
 const styles = StyleSheet.create({
 	text: {

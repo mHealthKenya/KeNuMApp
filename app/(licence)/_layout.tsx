@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import {Stack} from 'expo-router';
 import React from 'react';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
 import WorkStationProvider from '../../providers/workstations';
@@ -62,16 +62,16 @@ const LicenceLayout = () => {
 					<Stack.Screen
 						name='paylicence'
 						options={{
-							headerShown: false,
-							presentation: 'modal',
+							title: 'Pay For Licence',
+							headerLeft: () => <ProfileHeaderLeft />,
 						}}
 					/>
 
 					<Stack.Screen
 						name='paylicencehist'
 						options={{
-							headerShown: false,
-							presentation: 'modal',
+							title: 'Pay For Licence',
+							headerLeft: () => <ProfileHeaderLeft />,
 						}}
 					/>
 				</Stack>

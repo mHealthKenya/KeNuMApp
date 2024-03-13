@@ -1,27 +1,23 @@
+import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
 import dayjs from 'dayjs';
-import React, { FC, useState } from 'react';
-import {
-	FlatList,
-	Pressable,
-	StyleSheet,
-	View,
-	useWindowDimensions
-} from 'react-native';
-import { currencyFormatter } from '../../helpers/currency-formatter';
-import { ExamApplication } from '../../models/examapplications';
+import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
+import {FlatList, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {currencyFormatter} from '../../helpers/currency-formatter';
+import {ExamApplication} from '../../models/examapplications';
 import globalStyles from '../../styles/global';
-import {
-	InternshipItem,
-	InternshipItemDouble,
-} from '../internship/history/applications';
+import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
 import EmptyList from '../shared/EmptyList';
-import ActionBottomExam from './actionbottomexam';
+import {useAtom} from 'jotai';
+import {examAtom} from '../../atoms/exam';
+import PayForApplication from './actions/pay';
+import DownloadInvoice from './actions/downloadinvoice';
+import DownloadReceipt from './actions/downloadreceipt';
 
 const Application: FC<{
 	application: ExamApplication;
 	action: (application: ExamApplication) => void;
-}> = ({ application, action }) => {
-	const { height, width } = useWindowDimensions();
+}> = ({application, action}) => {
+	const {height, width} = useWindowDimensions();
 
 	const dimension = Math.min(width, height);
 
@@ -29,23 +25,13 @@ const Application: FC<{
 	return (
 		<Pressable style={[styles.card]} onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				<InternshipItem
-					availableWidth={availableWidth}
-					title='Exam Series'
-					content={application.exams_series}
-				/>
-				<InternshipItem
-					availableWidth={availableWidth}
-					title='Cadre'
-					content={application.cadre}
-				/>
+				<InternshipItem availableWidth={availableWidth} title='Exam Series' content={application.exams_series} />
+				<InternshipItem availableWidth={availableWidth} title='Cadre' content={application.cadre} />
 
 				<InternshipItem
 					availableWidth={availableWidth}
 					title='Date'
-					content={dayjs(new Date(application.application_date)).format(
-						'YYYY-MM-DD'
-					)}
+					content={dayjs(new Date(application.application_date)).format('YYYY-MM-DD')}
 				/>
 
 				<InternshipItemDouble
@@ -74,41 +60,55 @@ const ExamApplicationsComponent: FC<{
 	applications: ExamApplication[];
 	refetch: () => void;
 	isRefetching: boolean;
-}> = ({ applications, refetch, isRefetching }) => {
+}> = ({applications, refetch, isRefetching}) => {
 	const [show, setShow] = useState(false);
 
-	const toggleShow = () => {
-		setShow(!show);
-	};
+	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-	const [item, setItem] = useState<ExamApplication | null>(null);
+	const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+	const handlePresentModal = useCallback(() => {
+		bottomSheetModalRef.current?.present();
+	}, []);
+
+	const handleSheetChanges = useCallback((index: number) => {
+		console.log('handle sheet changes', index);
+	}, []);
+
+	const [item, setItem] = useAtom(examAtom);
 
 	const handleItem = (item: ExamApplication) => {
 		setItem(item);
-		setShow(!show);
+		handlePresentModal();
 	};
 	return (
-		<View style={globalStyles.container}>
-			<ActionBottomExam
-				action={{
-					show,
-					toggleShow,
-					item,
-				}}
-			/>
-			<FlatList
-				data={applications}
-				renderItem={({ item }) => (
-					<Application application={item} action={() => handleItem(item)} />
-				)}
-				keyExtractor={(_, index) => String(index)}
-				onRefresh={refetch}
-				refreshing={isRefetching}
-				ListEmptyComponent={
-					<EmptyList message='Could not find any exam applications for your account' />
-				}
-			/>
-		</View>
+		<BottomSheetModalProvider>
+			<View style={globalStyles.container}>
+				<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
+					<View style={styles.bottomSheet}>
+						<BottomSheetView style={[styles.contentContainer]}>
+							<PayForApplication item={item} />
+						</BottomSheetView>
+
+						<View style={[styles.contentContainer]}>
+							<DownloadInvoice item={item} />
+						</View>
+
+						<BottomSheetView style={[styles.contentContainer]}>
+							<DownloadReceipt item={item} />
+						</BottomSheetView>
+					</View>
+				</BottomSheetModal>
+				<FlatList
+					data={applications}
+					renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+					keyExtractor={(_, index) => String(index)}
+					onRefresh={refetch}
+					refreshing={isRefetching}
+					ListEmptyComponent={<EmptyList message='Could not find any exam applications for your account' />}
+				/>
+			</View>
+		</BottomSheetModalProvider>
 	);
 };
 
@@ -142,5 +142,16 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		letterSpacing: 2,
 		textTransform: 'capitalize',
+	},
+
+	bottomSheet: {
+		flex: 1,
+		padding: 10,
+		gap: 10,
+	},
+
+	contentContainer: {
+		flex: 1,
+		justifyContent: 'center',
 	},
 });

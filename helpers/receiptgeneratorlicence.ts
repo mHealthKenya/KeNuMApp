@@ -201,7 +201,7 @@ export const licenceReceiptGen = (
 
             <br>
             <p class="text-center">
-               All the best in your exams
+               All the best in your practice
             </p>
 
         </body>

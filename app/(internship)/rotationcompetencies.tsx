@@ -1,23 +1,21 @@
-import { View, Text } from 'react-native';
 import React from 'react';
-import useInternshipAreas from '../../services/internship/internshipareas';
-import globalStyles from '../../styles/global';
+import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { primaryColor } from '../../constants/Colors';
-import InternshipAreasComponent from '../../components/internship/rotations/internshipareas';
 import useRotationCompetencies from '../../services/internship/rotationcompetencies';
+import globalStyles from '../../styles/global';
 
 const RotationCompetencies = () => {
-	const { data: areas = [], isLoading } = useRotationCompetencies();
+	const {data: areas = [], isPending} = useRotationCompetencies(() => {});
 
-	if (isLoading) {
+	if (isPending) {
 		return (
 			<View style={[globalStyles.container, globalStyles.center]}>
 				<ActivityIndicator size='large' color={primaryColor} />
 			</View>
 		);
 	}
-	return <InternshipAreasComponent areas={areas} />;
+	return <></>
 };
 
 export default RotationCompetencies;
