@@ -9,6 +9,12 @@ import globalStyles from '../../styles/global';
 import ApplyOutComponent from '../../components/outmigration/apply';
 import { countries } from 'countries-list';
 import useAuthenticatedUser from '../../services/auth/authenticated';
+import useEmploymentStatus from '../../services/outmigration/employementstatus';
+import useEmploymentPeriod from '../../services/outmigration/employmentperiod';
+import useMaritalStatus from '../../services/outmigration/maritalstatus';
+import useOutMigrationReason from '../../services/outmigration/reason';
+import usePlanToReturn from '../../services/outmigration/plantoreturn';
+import useWorkStations from '../../services/general/workstations';
 
 export interface DropDownItem {
 	label: string;
@@ -29,7 +35,15 @@ const OutMigrationApply = () => {
 	}, []);
 
 	const { data: counties = [], isLoading } = useCounties();
-	if (isLoading) {
+	const {data: employementstatus, isLoading: loadingStatus, } = useEmploymentStatus();
+	const {data: employmentperiod, isLoading: loadingPeriod,} = useEmploymentPeriod();
+	const { data: maritalstatus, isLoading: loadingMarital,} = useMaritalStatus();
+	const { data: outmigratereturn, isLoading: loadingReturn,} = usePlanToReturn();
+	const {data: outmigrateReason, isLoading: loadingReason,} = useOutMigrationReason();
+	const {data: workstations, isLoading: loadingWorkStation,} = useWorkStations();
+
+
+	if (isLoading || loadingStatus || loadingPeriod || loadingMarital || loadingReason || loadingReturn) {
 		return (
 			<View style={[globalStyles.container, globalStyles.center]}>
 				<ActivityIndicator size='large' color={primaryColor} />
@@ -42,6 +56,11 @@ const OutMigrationApply = () => {
 				counties={counties}
 				countries={names}
 				user={user || {}}
+				employmentStatus={employementstatus}
+				employmentPeriod={employmentperiod}
+				marital_status={maritalstatus}
+				planToReturn={outmigratereturn}
+				reasonToApply={outmigrateReason}
 			/>
 			<StatusBar style='light' />
 		</>

@@ -29,6 +29,20 @@ import {
 import { truncateText } from '../../helpers/truncate';
 import { County } from '../../models/counties';
 import { User } from '../../models/user';
+import useEmploymentStatus from '../../services/outmigration/employementstatus';
+import { EmploymentStatus } from '../../models/employmentstatus';
+import { EmploymentPeriod } from '../../models/employmentperiod';
+import { MaritalStatus } from '../../models/maritalstatus';
+import { PlanToReturn } from '../../models/plantoreturn';
+import { OutMigrationReason } from '../../models/outmigration_reason';
+import useApplyOutMigration from '../../services/outmigration/apply';
+import { useRouter } from 'expo-router';
+import { useToast } from '@gluestack-ui/themed';
+import ToastError from '../shared/ToastError';
+import dayjs from 'dayjs';
+import { WorkStation } from '../../models/workstations';
+import * as ImagePicker from 'expo-image-picker';
+import mime from 'mime';
 
 const theme = {
 	roundness: 12,
@@ -38,7 +52,13 @@ const ApplyOutComponent: FC<{
 	counties: County[];
 	countries: DropDownItem[];
 	user: User;
-}> = ({ counties, countries, user }) => {
+	employmentStatus: EmploymentStatus | undefined;
+	employmentPeriod: EmploymentPeriod | undefined;
+	marital_status: MaritalStatus | undefined;
+	planToReturn: PlanToReturn | undefined;
+	reasonToApply: OutMigrationReason | undefined;
+	workstations: WorkStation[] | undefined;
+}> = ({ counties, countries, user, employmentStatus, employmentPeriod, marital_status, planToReturn, reasonToApply, workstations }) => {
 	const education = useMemo(
 		() =>
 			user?.education?.map((item) => ({
@@ -57,19 +77,74 @@ const ApplyOutComponent: FC<{
 		[counties]
 	);
 
+
+
+	const employementstatusData  = useMemo(() => {
+  
+    return employmentStatus?.employment_status?.map((item) => ({
+        label: item.status,
+        value: item.id,
+    }));
+}, [employmentStatus]);
+
+	const employmentPeriodData = useMemo(() => {
+		return employmentPeriod?.employment_periods?.map((item) => ({
+			label: item.period,
+			value: item.id,
+		}));
+	}, [employmentPeriod])
+
+	const maritalStatusData = useMemo(() => {
+		return marital_status?.marital_status_types.map((items) => ({
+			label: items.marital_status_type,
+      value: items.id,
+		}))
+	}, [marital_status])
+
+	const planToReturnData = useMemo(() => {
+		return planToReturn?.planning_to_return?.map((item) => ({
+      label: item.type,
+      value: item.id,
+    }))
+	}, [planToReturn])
+
+	const reasonToApplyData = useMemo(() => {
+		return reasonToApply?.outmigration_reasons?.map((item) => ({
+      label: item.reason,
+      value: item.id,
+    }))
+	}, [reasonToApply])
+
+	const workstationData = useMemo(() => {
+		return workstations?.map((item) => ({
+      label: item.workstation,
+      value: item.id,
+    }))
+	}, [workstations])
+
+
+
+
 	// const [county, setCounty] = useState(null);
 	const [selectedFile, setSelectedFile] =
 		useState<DocumentPicker.DocumentPickerResult>();
 	const [maritalStatus, setMaritalStatus] = useState(null);
 	const [outReasons, setOutReasons] = useState(null);
 	const [statusE, setStatusE] = useState(null);
+	const [dependants, setDependants] = useState('');
 	const [employersE, setEmployersE] = useState(null);
 	const [stationType, setStationType] = useState(null);
+	const [workstation, setWorkstation] = useState(null);
 	const [employPeriod, setEmployPeriod] = useState(null);
 	const [nursePeriod, setNursePeriod] = useState(null);
 	const [outCountry, setOutCountry] = useState(null);
 	const [returnValue, setReturnValue] = useState(null);
 	const [educVal, setEducVal] = useState<string[] | null>(null);
+
+	const [department, setDepartment] = useState('')
+	const [currentPosition, setCurrentPosition] = useState('')
+
+
 	const [dropMarital, setDropMarital] = useState(false);
 	// const [countyDrop, setCountyDrop] = useState(false);
 	const [reasonsDrop, setReasonsDrop] = useState(false);
@@ -98,6 +173,97 @@ const ApplyOutComponent: FC<{
 
 	const { height } = useWindowDimensions();
 
+	const router = useRouter();
+	const toast = useToast();
+
+	const successFn = () => {
+		router.replace('/');
+	};
+
+	const errorFn = () => {
+		toast.show({
+			onCloseComplete() {},
+			duration: 5000,
+			render: ({ id }) => {
+				return (
+					<ToastError
+						id={id}
+						title='Application Error'
+						description='Could not complete exam application. Please retry later'
+					/>
+				);
+			},
+			placement: 'top',
+		});
+	};
+
+	const { mutate, isPending } = useApplyOutMigration(successFn, errorFn);
+
+	const [images, setImages] = useState<{ uri: string; name: string; type: string }[]>([]);
+
+  const pickImage = async (name: string) => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const index = images.findIndex((item) => item.name === name);
+
+        if (index !== -1) {
+          const updatedImages = [...images];
+          updatedImages[index] = {
+            uri: 'file:///' + result.assets[0].uri.split('file:/').join(''),
+            name,
+            type: mime.getType(result.assets[0].uri) || '',
+          };
+
+          setImages(updatedImages);
+        } else {
+          setImages([
+            ...images,
+            {
+              name,
+              uri: 'file:///' + result.assets[0].uri.split('file:/').join(''),
+              type: mime.getType(result.assets[0].uri) || '',
+            },
+          ]);
+        }
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+    }
+  };
+
+	
+
+	const onSubmit = () => {
+		
+		console.log({
+				index_id: user?.IndexNo || '',
+				country_id: outCountry,
+				application_date: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),
+				marital_status: maritalStatus,
+				dependants: dependants,
+				employment_status: employmentStatus,
+				current_employer: employersE,
+				workstation_type: stationType,
+				workstation_id: '',
+				workstation_name: "",
+				department: department,
+				current_position: currentPosition,
+				experience_years: nursePeriod,
+				duration_current_employer: employPeriod,
+				planning_return: returnValue,
+				form_attached: '',
+				outmigration_reason: outReasons,
+				verification_cadres: educVal
+		});
+};
+
 	return (
 		<View
 			style={{
@@ -115,7 +281,7 @@ const ApplyOutComponent: FC<{
 							height: dropMarital ? height * 0.22 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={marital || []}
+							items={maritalStatusData ? maritalStatusData : []}
 							value={maritalStatus}
 							setValue={setMaritalStatus}
 							multiple={false}
@@ -142,7 +308,7 @@ const ApplyOutComponent: FC<{
 							height: reasonsDrop ? height * 0.3 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={reasons || []}
+							items={reasonToApplyData ? reasonToApplyData : []}
 							value={outReasons}
 							setValue={setOutReasons}
 							multiple={false}
@@ -176,6 +342,8 @@ const ApplyOutComponent: FC<{
 							}
 							mode='outlined'
 							{...textInputProps}
+							value={dependants}
+							onChangeText={setDependants}
 						/>
 					</View>
 
@@ -185,7 +353,7 @@ const ApplyOutComponent: FC<{
 							height: statusDrop ? height * 0.28 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={status || []}
+							items={employementstatusData ? employementstatusData : []}
 							value={statusE}
 							setValue={setStatusE}
 							multiple={false}
@@ -262,17 +430,25 @@ const ApplyOutComponent: FC<{
 					</View>
 
 					<View className='p-2'>
-						<TextInput
-							label={
-								<Text
-									style={{
-										color: '#0000004F',
-									}}>
-									Work Station
-								</Text>
-							}
-							mode='outlined'
-							{...textInputProps}
+					<DropDownPicker
+							items={workstationData ? workstationData : []}
+							value={workstation}
+							setValue={setWorkstation}
+							multiple={false}
+							open={dropMarital}
+							placeholder='WorkStation'
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							setOpen={setDropMarital}
+							style={[
+								styles.input,
+								{
+									borderColor: dropMarital ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
 						/>
 					</View>
 
@@ -288,6 +464,8 @@ const ApplyOutComponent: FC<{
 							}
 							mode='outlined'
 							{...textInputProps}
+							value={department}
+							onChangeText={setDepartment}
 						/>
 					</View>
 
@@ -303,6 +481,8 @@ const ApplyOutComponent: FC<{
 							}
 							mode='outlined'
 							{...textInputProps}
+							value={currentPosition}
+							onChangeText={setCurrentPosition}
 						/>
 					</View>
 
@@ -312,7 +492,7 @@ const ApplyOutComponent: FC<{
 							height: periodDrop ? height * 0.3 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={period || []}
+							items={employmentPeriodData ? employmentPeriodData : []}
 							value={employPeriod}
 							setValue={setEmployPeriod}
 							multiple={false}
@@ -394,7 +574,7 @@ const ApplyOutComponent: FC<{
 							height: returnDrop ? height * 0.22 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={returning || []}
+							items={planToReturnData ? planToReturnData : []}
 							value={returnValue}
 							setValue={setReturnValue}
 							multiple={false}

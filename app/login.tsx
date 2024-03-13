@@ -15,7 +15,7 @@ const Login = () => {
 	const router = useRouter();
 
 	useFocusEffect(() => {
-		if (isAuthenticated) {
+		if (!isAuthenticated) {
 			router.replace('/');
 		}
 	});
