@@ -143,7 +143,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 	const { mutate, isPending } = useSelfReport(successFn, errorFn);
 
 	const onSubmit = (data: Form) => {
-		mutate({
+		console.log({
 			...data,
 			event_date: dayjs(new Date(date)).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),
 			cpd_evidence: image,

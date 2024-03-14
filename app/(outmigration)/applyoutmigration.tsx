@@ -18,6 +18,7 @@ import { useAtom } from 'jotai';
 import { countAtom } from '../../atoms/county';
 import useGetCountries from '../../services/general/countries';
 import useWorkStationsTypes from '../../services/general/workstationtype';
+import useEmployers from '../../services/licence/employers';
 
 
 const OutMigrationApply = () => {
@@ -35,6 +36,7 @@ const OutMigrationApply = () => {
 	const {data: outmigrateReason, isLoading: loadingReason,} = useOutMigrationReason();
 	const {data: workstations = [], isLoading: loadingWorkStation,} = useWorkStations(selectedCounty);
 	const { data: workstationstypes, isLoading: loadingWorkStationTypes} = useWorkStationsTypes();
+	const { data: employers = [], isLoading: loadingEmployers} = useEmployers();
 
 
 	if (isLoading || loadingStatus || loadingPeriod || loadingMarital || loadingReason || loadingReturn || loadingCountry || loadingWorkStationTypes ) {
@@ -58,6 +60,7 @@ const OutMigrationApply = () => {
 				planToReturn={outmigratereturn}
 				reasonToApply={outmigrateReason}
 				workstationType={workstationstypes}
+				employers={employers}
 			/>
 			<StatusBar style='light' />
 		</>

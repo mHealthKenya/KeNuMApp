@@ -9,20 +9,20 @@ const OutMigrationHomeComponent = () => {
 			<OutBoxComponent
 				box={{
 					title: 'Apply Out-Migration',
-					content: 'See a list of all your CPD events and claim points.',
+					content: 'Apply for Out-Migrations in feww steps',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/cpdevent.png'),
-					route: '/cpdevents',
+					route: '/applyoutmigration',
 				}}
 			/>
 			<OutBoxComponent
 				box={{
 					title: 'Out-Migration History',
 					content:
-						'Simply upload evidence of your CPD activity and points will be rewarded',
+						'View All Out-Migrations Application History',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/cpdbooksmall.png'),
-					route: '/cpdcategories',
+					route: '/outmigrationhistory',
 				}}
 			/>
 		</View>

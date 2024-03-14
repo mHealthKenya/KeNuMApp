@@ -1,4 +1,4 @@
-import * as DocumentPicker from 'expo-document-picker';
+// import * as DocumentPicker from 'expo-document-picker';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
 	KeyboardAvoidingView,
@@ -9,6 +9,7 @@ import {
 	useWindowDimensions,
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as DocumentPicker from 'expo-document-picker';
 import {
 	ActivityIndicator,
 	Button,
@@ -18,17 +19,11 @@ import {
 	TextInputProps,
 } from 'react-native-paper';
 import {
-	employers,
-	marital,
 	period,
-	reasons,
-	returning,
-	status,
 } from '../../data/outmigration';
 import { truncateText } from '../../helpers/truncate';
 import { County } from '../../models/counties';
 import { User } from '../../models/user';
-import useEmploymentStatus from '../../services/outmigration/employementstatus';
 import { EmploymentStatus } from '../../models/employmentstatus';
 import { EmploymentPeriod } from '../../models/employmentperiod';
 import { MaritalStatus } from '../../models/maritalstatus';
@@ -38,17 +33,13 @@ import useApplyOutMigration from '../../services/outmigration/apply';
 import { useRouter } from 'expo-router';
 import { useToast } from '@gluestack-ui/themed';
 import ToastError from '../shared/ToastError';
-import dayjs from 'dayjs';
 import { WorkStation } from '../../models/workstations';
-import * as ImagePicker from 'expo-image-picker';
-import mime from 'mime';
 import { useAtom } from 'jotai';
 import { countAtom } from '../../atoms/county';
 import { workStationAtom } from '../../atoms/workstation';
-import { Countries, Country } from '../../models/countries';
-// import { WorkStationTypes } from '../../models/workStationTypes';
+import {  Country } from '../../models/countries';
 import { WorkStationTypes } from '../../models/workStationTypes';
-// import DocumentPicker from 'react-native-document-picker';
+import { Employer } from '../../models/employers';
 
 const theme = {
 	roundness: 12,
@@ -66,8 +57,38 @@ const ApplyOutComponent: FC<{
 	reasonToApply: OutMigrationReason | undefined;
 	workstations: WorkStation[];
 	loadingStations?: boolean,
-}> = ({ counties, countries, user, employmentStatus, employmentPeriod, marital_status, planToReturn, reasonToApply, workstations, loadingStations, workstationType }) => {
+	employers: Employer[]
+}> = ({ counties, countries, user, employmentStatus, employmentPeriod, marital_status, planToReturn, reasonToApply, workstations, loadingStations, workstationType, employers }) => {
 	const [educVal, setEducVal] = useState<string[] | null>(null);
+
+	const [station, setStation] = useState('')
+	const [county, setCounty] = useState(null);
+	const [maritalStatus, setMaritalStatus] = useState(null);
+	const [outReasons, setOutReasons] = useState(null);
+	const [statusE, setStatusE] = useState(null);
+	const [dependants, setDependants] = useState('');
+	const [employersE, setEmployersE] = useState(null);
+	const [stationType, setStationType] = useState(null);
+	const [employPeriod, setEmployPeriod] = useState(null);
+	const [nursePeriod, setNursePeriod] = useState(null);
+	const [outCountry, setOutCountry] = useState(null);
+	const [returnValue, setReturnValue] = useState(null);
+	
+
+	const [department, setDepartment] = useState('')
+	const [currentPosition, setCurrentPosition] = useState('')
+
+
+	const [dropMarital, setDropMarital] = useState(false);
+	const [reasonsDrop, setReasonsDrop] = useState(false);
+	const [statusDrop, setStatusDrop] = useState(false);
+	const [employDrop, setEmployDrop] = useState(false);
+	const [stationDrop, setStationDrop] = useState(false);
+	const [periodDrop, setPeriodDrop] = useState(false);
+	const [nurseDrop, setNurseDrop] = useState(false);
+	const [countryDrop, setCountryDrop] = useState(false);
+	const [returnDrop, setReturnDrop] = useState(false);
+	const [educDrop, setEducDrop] = useState(false);
 
 	const education = useMemo(
 		() =>
@@ -101,8 +122,6 @@ const ApplyOutComponent: FC<{
       value: item.id,
     }))
 	}, [workstationType])
-
-	
 
 
 	const employementstatusData  = useMemo(() => {
@@ -148,43 +167,12 @@ const ApplyOutComponent: FC<{
 		}))
 	}, [workstations])
 
-	
-
-
-
-	// const [county, setCounty] = useState(null);
-	const [station, setStation] = useState('')
-	const [county, setCounty] = useState(null);
-	const [selectedFile, setSelectedFile] =
-		useState<DocumentPicker.DocumentPickerResult>();
-	const [maritalStatus, setMaritalStatus] = useState(null);
-	const [outReasons, setOutReasons] = useState(null);
-	const [statusE, setStatusE] = useState(null);
-	const [dependants, setDependants] = useState('');
-	const [employersE, setEmployersE] = useState(null);
-	const [stationType, setStationType] = useState(null);
-	// const [workstation, setWorkstation] = useState(null);
-	const [employPeriod, setEmployPeriod] = useState(null);
-	const [nursePeriod, setNursePeriod] = useState(null);
-	const [outCountry, setOutCountry] = useState(null);
-	const [returnValue, setReturnValue] = useState(null);
-	
-
-	const [department, setDepartment] = useState('')
-	const [currentPosition, setCurrentPosition] = useState('')
-
-
-	const [dropMarital, setDropMarital] = useState(false);
-	// const [countyDrop, setCountyDrop] = useState(false);
-	const [reasonsDrop, setReasonsDrop] = useState(false);
-	const [statusDrop, setStatusDrop] = useState(false);
-	const [employDrop, setEmployDrop] = useState(false);
-	const [stationDrop, setStationDrop] = useState(false);
-	const [periodDrop, setPeriodDrop] = useState(false);
-	const [nurseDrop, setNurseDrop] = useState(false);
-	const [countryDrop, setCountryDrop] = useState(false);
-	const [returnDrop, setReturnDrop] = useState(false);
-	const [educDrop, setEducDrop] = useState(false);
+	const employerData = useMemo(() => {
+		return employers?.map((item) => ({
+      label: item.employer,
+      value: item.id,
+    }))
+	}, [employers])
 
 
 	const textInputProps: TextInputProps = {
@@ -222,37 +210,25 @@ const ApplyOutComponent: FC<{
 
 	const { mutate, isPending } = useApplyOutMigration(successFn, errorFn);
 
-	interface UserDocument {
-		uri: string | null;
-		name: string;
-		type?: string;
-	}
-	
-	const [document, setDocument] = useState<UserDocument>();
+	const [selectedFile, setSelectedFile] = useState<DocumentPicker.DocumentPickerResult | null>(null);
 
-  const pickPDF = async (name: string) => {
+  const pickDocument = async () => {
     try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: 'application/pdf', // Specify the MIME type for PDF files
+      const res = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf',
       });
-
-      if (result.type === 'success' && result.uri) {
-        const item: UserDocument = {
-          uri: result.uri,
-          name: result.name || name, // Use the picked file's name if available, otherwise use the provided name
-          type: 'application/pdf', // MIME type for PDF files
-        };
-
-        // Set the picked PDF document
-        setDocument(item);
+      setSelectedFile(res);
+			console.log('File content:', res.uri)
+    } catch (err) {
+      if (err) {
+        console.log('User cancelled the picker');
       } else {
-        console.log('Document picking cancelled or failed');
+        console.log('Error occurred while picking the document', err);
       }
-    } catch (error) {
-      console.error('Error picking PDF:', error);
     }
   };
 
+	
 
 	const [_, setSelectedCounty] = useAtom(countAtom)
 	const [stationName, setStationName] = useAtom(workStationAtom)
@@ -293,7 +269,7 @@ const ApplyOutComponent: FC<{
 				experience_years: nursePeriod || '',
 				duration_current_employer: employPeriod || '',
 				planning_return: returnValue || '',
-				form_attached :document,
+				form_attached : selectedFile.uri ? selectedFile.uri : null,
 				outmigration_reason: outReasons || '',
 				verification_cadres: verificationCadres,
 		});
@@ -416,7 +392,7 @@ const ApplyOutComponent: FC<{
 							height: employDrop ? height * 0.28 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={employers || []}
+							items={employerData || []}
 							value={employersE}
 							setValue={setEmployersE}
 							multiple={false}
@@ -665,7 +641,7 @@ const ApplyOutComponent: FC<{
 
 					<View className='p-2'>
 						<View>
-							<Pressable onPress={() => pickPDF('verification_form')}>
+							<Pressable onPress={() => pickDocument()}>
 								<TextInput
 									label={
 										selectedFile?.assets
@@ -678,7 +654,7 @@ const ApplyOutComponent: FC<{
 									left={<TextInput.Icon icon='subtitles' />}
 									mode='outlined'
 									editable={false}
-									onPressIn={() => pickPDF('verification_form')}
+									onPressIn={() => pickDocument()}
 									{...textInputProps}
 								/>
 							</Pressable>

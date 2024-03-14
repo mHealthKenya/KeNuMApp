@@ -23,7 +23,7 @@ const ProfessionalComponent = () => {
 						'Apply for licences, view applications history, pay for licence, and download licences.',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/licencelarge.png'),
-					route: '/cpdcategories',
+					route: '/licencehome',
 				}}
 			/>
 
@@ -45,7 +45,7 @@ const ProfessionalComponent = () => {
 						'Apply for migration, view applications history, pay for outmigration.',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/outmigration.png'),
-					route: '/applyoutmigration',
+					route: '/outmigrationhome',
 				}}
 			/>
 		</View>
