@@ -1,5 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
 	KeyboardAvoidingView,
 	Pressable,
@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {
+	ActivityIndicator,
 	Button,
 	Icon,
 	Text,
 	TextInput,
 	TextInputProps,
 } from 'react-native-paper';
-import { DropDownItem } from '../../app/(outmigration)/applyoutmigration';
 import {
 	employers,
 	marital,
@@ -24,7 +24,6 @@ import {
 	reasons,
 	returning,
 	status,
-	workstationType,
 } from '../../data/outmigration';
 import { truncateText } from '../../helpers/truncate';
 import { County } from '../../models/counties';
@@ -43,6 +42,13 @@ import dayjs from 'dayjs';
 import { WorkStation } from '../../models/workstations';
 import * as ImagePicker from 'expo-image-picker';
 import mime from 'mime';
+import { useAtom } from 'jotai';
+import { countAtom } from '../../atoms/county';
+import { workStationAtom } from '../../atoms/workstation';
+import { Countries, Country } from '../../models/countries';
+// import { WorkStationTypes } from '../../models/workStationTypes';
+import { WorkStationTypes } from '../../models/workStationTypes';
+// import DocumentPicker from 'react-native-document-picker';
 
 const theme = {
 	roundness: 12,
@@ -50,20 +56,24 @@ const theme = {
 
 const ApplyOutComponent: FC<{
 	counties: County[];
-	countries: DropDownItem[];
+	countries: Country[] ;
+	workstationType: WorkStationTypes | undefined
 	user: User;
 	employmentStatus: EmploymentStatus | undefined;
 	employmentPeriod: EmploymentPeriod | undefined;
 	marital_status: MaritalStatus | undefined;
 	planToReturn: PlanToReturn | undefined;
 	reasonToApply: OutMigrationReason | undefined;
-	workstations: WorkStation[] | undefined;
-}> = ({ counties, countries, user, employmentStatus, employmentPeriod, marital_status, planToReturn, reasonToApply, workstations }) => {
+	workstations: WorkStation[];
+	loadingStations?: boolean,
+}> = ({ counties, countries, user, employmentStatus, employmentPeriod, marital_status, planToReturn, reasonToApply, workstations, loadingStations, workstationType }) => {
+	const [educVal, setEducVal] = useState<string[] | null>(null);
+
 	const education = useMemo(
 		() =>
 			user?.education?.map((item) => ({
 				label: item?.cadre_text,
-				value: item?.cadre_text,
+				value: item?.education_id
 			})),
 		[user]
 	);
@@ -77,6 +87,22 @@ const ApplyOutComponent: FC<{
 		[counties]
 	);
 
+	const countryData = useMemo(() => {
+		return countries.map((item) => ({
+			label: item.country,
+			value: item.id,
+		}))
+	}, [countries])
+
+	
+	const workStationTypeData = useMemo(() => {
+		return workstationType?.workstation_types?.map((item: any) => ({
+      label: item.type,
+      value: item.id,
+    }))
+	}, [workstationType])
+
+	
 
 
 	const employementstatusData  = useMemo(() => {
@@ -117,15 +143,18 @@ const ApplyOutComponent: FC<{
 
 	const workstationData = useMemo(() => {
 		return workstations?.map((item) => ({
-      label: item.workstation,
+			label: item.workstation,
       value: item.id,
-    }))
+		}))
 	}, [workstations])
 
+	
 
 
 
 	// const [county, setCounty] = useState(null);
+	const [station, setStation] = useState('')
+	const [county, setCounty] = useState(null);
 	const [selectedFile, setSelectedFile] =
 		useState<DocumentPicker.DocumentPickerResult>();
 	const [maritalStatus, setMaritalStatus] = useState(null);
@@ -134,12 +163,12 @@ const ApplyOutComponent: FC<{
 	const [dependants, setDependants] = useState('');
 	const [employersE, setEmployersE] = useState(null);
 	const [stationType, setStationType] = useState(null);
-	const [workstation, setWorkstation] = useState(null);
+	// const [workstation, setWorkstation] = useState(null);
 	const [employPeriod, setEmployPeriod] = useState(null);
 	const [nursePeriod, setNursePeriod] = useState(null);
 	const [outCountry, setOutCountry] = useState(null);
 	const [returnValue, setReturnValue] = useState(null);
-	const [educVal, setEducVal] = useState<string[] | null>(null);
+	
 
 	const [department, setDepartment] = useState('')
 	const [currentPosition, setCurrentPosition] = useState('')
@@ -157,12 +186,6 @@ const ApplyOutComponent: FC<{
 	const [returnDrop, setReturnDrop] = useState(false);
 	const [educDrop, setEducDrop] = useState(false);
 
-	const pickDocument = async () => {
-		let result = await DocumentPicker.getDocumentAsync({
-			type: 'application/pdf',
-		});
-		setSelectedFile(result);
-	};
 
 	const textInputProps: TextInputProps = {
 		theme: theme,
@@ -199,69 +222,82 @@ const ApplyOutComponent: FC<{
 
 	const { mutate, isPending } = useApplyOutMigration(successFn, errorFn);
 
-	const [images, setImages] = useState<{ uri: string; name: string; type: string }[]>([]);
+	interface UserDocument {
+		uri: string | null;
+		name: string;
+		type?: string;
+	}
+	
+	const [document, setDocument] = useState<UserDocument>();
 
-  const pickImage = async (name: string) => {
+  const pickPDF = async (name: string) => {
     try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/pdf', // Specify the MIME type for PDF files
       });
 
-      if (!result.canceled) {
-        const index = images.findIndex((item) => item.name === name);
+      if (result.type === 'success' && result.uri) {
+        const item: UserDocument = {
+          uri: result.uri,
+          name: result.name || name, // Use the picked file's name if available, otherwise use the provided name
+          type: 'application/pdf', // MIME type for PDF files
+        };
 
-        if (index !== -1) {
-          const updatedImages = [...images];
-          updatedImages[index] = {
-            uri: 'file:///' + result.assets[0].uri.split('file:/').join(''),
-            name,
-            type: mime.getType(result.assets[0].uri) || '',
-          };
-
-          setImages(updatedImages);
-        } else {
-          setImages([
-            ...images,
-            {
-              name,
-              uri: 'file:///' + result.assets[0].uri.split('file:/').join(''),
-              type: mime.getType(result.assets[0].uri) || '',
-            },
-          ]);
-        }
+        // Set the picked PDF document
+        setDocument(item);
+      } else {
+        console.log('Document picking cancelled or failed');
       }
     } catch (error) {
-      console.error('Error picking image:', error);
+      console.error('Error picking PDF:', error);
     }
   };
 
-	
+
+	const [_, setSelectedCounty] = useAtom(countAtom)
+	const [stationName, setStationName] = useAtom(workStationAtom)
+
+	useEffect(() => {
+		setSelectedCounty(county || '')
+
+		const filtered = workstations.find(item => item.id === station)
+
+
+		if (filtered) {
+			setStationName(filtered.workstation)
+		}
+
+	}, [county, workstations])
+
 
 	const onSubmit = () => {
 		
-		console.log({
-				index_id: user?.IndexNo || '',
-				country_id: outCountry,
-				application_date: dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),
-				marital_status: maritalStatus,
+		const verificationCadres = educVal ? educVal.join(', ') : '';
+		const currentDate = new Date();
+		const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}T${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}Z`;
+
+
+		mutate({
+				index_id: user?.id || '',
+				country_id: outCountry || '',
+				application_date: formattedDate,
+				marital_status: maritalStatus || '',
 				dependants: dependants,
-				employment_status: employmentStatus,
-				current_employer: employersE,
-				workstation_type: stationType,
-				workstation_id: '',
-				workstation_name: "",
+				employment_status: statusE || '',
+				current_employer: employersE || '',
+				workstation_type: stationType || '',
+				workstation_id: station,
+				workstation_name: stationName,
 				department: department,
 				current_position: currentPosition,
-				experience_years: nursePeriod,
-				duration_current_employer: employPeriod,
-				planning_return: returnValue,
-				form_attached: '',
-				outmigration_reason: outReasons,
-				verification_cadres: educVal
+				experience_years: nursePeriod || '',
+				duration_current_employer: employPeriod || '',
+				planning_return: returnValue || '',
+				form_attached :document,
+				outmigration_reason: outReasons || '',
+				verification_cadres: verificationCadres,
 		});
+		
 };
 
 	return (
@@ -407,7 +443,7 @@ const ApplyOutComponent: FC<{
 							height: stationDrop ? height * 0.22 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={workstationType || []}
+							items={workStationTypeData || []}
 							value={stationType}
 							setValue={setStationType}
 							multiple={false}
@@ -429,28 +465,60 @@ const ApplyOutComponent: FC<{
 						/>
 					</View>
 
-					<View className='p-2'>
-					<DropDownPicker
-							items={workstationData ? workstationData : []}
-							value={workstation}
-							setValue={setWorkstation}
-							multiple={false}
-							open={dropMarital}
-							placeholder='WorkStation'
-							placeholderStyle={{
-								fontSize: 16,
-								color: '#7b7e81',
-							}}
-							setOpen={setDropMarital}
-							style={[
-								styles.input,
-								{
-									borderColor: dropMarital ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-						/>
+					<View
+							className='p-2'
+							style={{
+								height: countryDrop ? height * 0.3 : height * 0.07,
+							}}>
+							<DropDownPicker
+								items={actual || []}
+								value={county}
+								setValue={setCounty}
+								multiple={false}
+								open={countryDrop}
+								placeholder='Select County'
+								searchable
+								placeholderStyle={{
+									fontSize: 16,
+									color: '#7b7e81',
+								}}
+								setOpen={setCountryDrop}
+								style={[
+									styles.input,
+									{
+										borderColor: countryDrop ? '#0445b5' : '#0345B53D',
+									},
+								]}
+								listMode='SCROLLVIEW'
+							/>
 					</View>
+
+					
+						{loadingStations ? <ActivityIndicator /> :
+						<View className='p-2'>
+						<DropDownPicker
+						items={workstationData ? workstationData : []}
+						value={station}
+						setValue={setStation}
+						multiple={false}
+						open={dropMarital}
+						placeholder='Work Station'
+						placeholderStyle={{
+							fontSize: 16,
+							color: '#7b7e81',
+						}}
+						setOpen={setDropMarital}
+						style={[
+							styles.input,
+							{
+								borderColor: dropMarital ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						listMode='SCROLLVIEW'
+					/>
+					</View>} 
+					
+					
 
 					<View className='p-2'>
 						<TextInput
@@ -546,7 +614,7 @@ const ApplyOutComponent: FC<{
 							height: countryDrop ? height * 0.3 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={countries || []}
+							items={countryData || []}
 							value={outCountry}
 							setValue={setOutCountry}
 							multiple={false}
@@ -597,7 +665,7 @@ const ApplyOutComponent: FC<{
 
 					<View className='p-2'>
 						<View>
-							<Pressable onPress={() => pickDocument()}>
+							<Pressable onPress={() => pickPDF('verification_form')}>
 								<TextInput
 									label={
 										selectedFile?.assets
@@ -610,7 +678,7 @@ const ApplyOutComponent: FC<{
 									left={<TextInput.Icon icon='subtitles' />}
 									mode='outlined'
 									editable={false}
-									onPressIn={() => pickDocument()}
+									onPressIn={() => pickPDF('verification_form')}
 									{...textInputProps}
 								/>
 							</Pressable>
@@ -646,7 +714,7 @@ const ApplyOutComponent: FC<{
 
 					<View className='p-2'>
 						{educVal?.map((item) => (
-							<View className='flex flex-row space-x-3'>
+							<View className='flex flex-row space-x-3' key={item}>
 								<View className='justify-center'>
 									<Icon source='check-circle' size={25} color='green' />
 								</View>
@@ -659,7 +727,7 @@ const ApplyOutComponent: FC<{
 					</View>
 
 					<View className='p-2'>
-						<Button mode='contained' style={styles.button}>
+						<Button mode='contained' style={styles.button} onPress={onSubmit} loading={isPending}>
 							Submit Application
 						</Button>
 					</View>

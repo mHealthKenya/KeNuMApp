@@ -64,9 +64,9 @@
       "router": {
         "origin": false
       }
-//      "eas": {
-//        "projectId": "f203723c-5920-4a31-90b4-974d06dbedb9"
-//      }
+      // "eas": {
+        // "projectId": "f203723c-5920-4a31-90b4-974d06dbedb9"
+      // }
     },
     "runtimeVersion": {
       "policy": "appVersion"

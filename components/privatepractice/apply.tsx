@@ -5,42 +5,30 @@ import {
 	useWindowDimensions,
 	KeyboardAvoidingView,
 	ScrollView,
+	ActivityIndicator,
 } from 'react-native';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Button, TextInput, TextInputProps } from 'react-native-paper';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { County } from '../../models/counties';
 import { Image } from 'expo-image';
+import { ProposedPractice } from '../../models/proposedprcactice';
+import { PracticeMode } from '../../models/practicemode';
+import { WorkStation } from '../../models/workstations';
+import { useAtom } from 'jotai';
+import { countAtom } from '../../atoms/county';
+import usePrivatePracticeApply from '../../services/privatepractice/apply';
+import { User } from '../../models/user';
+import { workStationAtom } from '../../atoms/workstation';
 
 const theme = {
 	roundness: 12,
 };
 
-const proposed = [
-	{
-		label: 'Own Behalf/Self',
-		value: 'Own Behalf/Self',
-	},
 
-	{
-		label: 'Employed',
-		value: 'Employed',
-	},
-];
 
-const mode = [
-	{
-		label: 'Full Time',
-		value: 'Full Time',
-	},
 
-	{
-		label: 'Part Time',
-		value: 'Part Time',
-	},
-];
-
-const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
+const ApplyPrivateComponent: FC<{ counties: County[], proposed?: ProposedPractice, modes?:PracticeMode, stations: WorkStation[], loadingStations?: boolean, user: User }> = ({ counties, proposed, modes, stations, loadingStations, user }) => {
 	const actual = useMemo(
 		() =>
 			counties.map((item) => ({
@@ -49,18 +37,78 @@ const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
 			})),
 		[counties]
 	);
+
+	const workStations = useMemo(() => stations.map(item => ({
+		label: item.workstation,
+				value: item.id,
+	})), [stations])
+
+
+	
+	
+
+	const proposedPractice = useMemo(() => proposed?.proposed_practice_types?.map(item => ({
+		label: item.proposed_practice_type,
+		value: item.id
+	})), [proposed])
+	
+
+	const practicalMode = useMemo(() => modes?.practice_modes?.map(item => ({
+		label: item.practice_mode,
+		value: item.id
+	})), [modes])
+
 	const [county, setCounty] = useState(null);
 	const [practiceProposed, setPracticeProposed] = useState(null);
 	const [practiceMode, setPracticeMode] = useState(null);
+	const [station, setStation] = useState(null)
 	const [dropDown, setDropDown] = useState(false);
 	const [dropDownP, setDropDownP] = useState(false);
 	const [countyDrop, setCountyDrop] = useState(false);
+	const [stationDrop, setStationDrop] = useState(false)
+	const [town, setTown] = useState('')
 	const textInputProps: TextInputProps = {
 		theme: theme,
 		style: styles.input,
 		outlineColor: '#0345B53D',
 		activeOutlineColor: '#0445b5',
 	};
+
+	const [_, setSelectedCounty] = useAtom(countAtom)
+	const [stationName, setStationName] = useAtom(workStationAtom)
+
+	const handleTown = (text: string) => {
+		setTown(text)
+	}
+
+	useEffect(() => {
+		setSelectedCounty(county || '')
+
+		const filtered = stations.find(item => item.id === station)
+
+
+		if (filtered) {
+			setStationName(filtered.workstation)
+		}
+
+
+	}, [county, station])
+
+
+	const { mutate, isPending } = usePrivatePracticeApply()
+
+	const handleSubmit = () => {
+		mutate({
+			index_id: user?.IndexNo || '',
+    		proposed_practice_id: practiceProposed || '',
+    		practice_mode_id: practiceMode || "",
+    		county_id: county || '',
+    		town,
+			workstation_id: station || '',
+			workstation_name: stationName
+		})
+	}
+
 
 	const { height, width } = useWindowDimensions();
 	return (
@@ -94,7 +142,7 @@ const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
 							height: dropDown ? height * 0.2 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={proposed || []}
+							items={proposedPractice || []}
 							value={practiceProposed}
 							setValue={setPracticeProposed}
 							multiple={false}
@@ -120,7 +168,7 @@ const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
 							height: dropDownP ? height * 0.2 : height * 0.07,
 						}}>
 						<DropDownPicker
-							items={mode || []}
+							items={ practicalMode|| []}
 							value={practiceMode}
 							setValue={setPracticeMode}
 							multiple={false}
@@ -140,47 +188,65 @@ const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
 							listMode='SCROLLVIEW'
 						/>
 					</View>
-					<View
-						className='p-2'
-						style={{
-							height: countyDrop ? height * 0.3 : height * 0.07,
-						}}>
-						<DropDownPicker
-							items={actual || []}
-							value={county}
-							setValue={setCounty}
-							multiple={false}
-							open={countyDrop}
-							placeholder='Select County'
-							searchable
-							placeholderStyle={{
-								fontSize: 16,
-								color: '#7b7e81',
-							}}
-							setOpen={setCountyDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: countyDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-						/>
+					
+						<View
+							className='p-2'
+							style={{
+								height: countyDrop ? height * 0.3 : height * 0.07,
+							}}>
+							<DropDownPicker
+								items={actual || []}
+								value={county}
+								setValue={setCounty}
+								multiple={false}
+								open={countyDrop}
+								placeholder='Select County'
+								searchable
+								placeholderStyle={{
+									fontSize: 16,
+									color: '#7b7e81',
+								}}
+								setOpen={setCountyDrop}
+								style={[
+									styles.input,
+									{
+										borderColor: countyDrop ? '#0445b5' : '#0345B53D',
+									},
+								]}
+								listMode='SCROLLVIEW'
+							/>
 					</View>
-					<View className='p-2'>
-						<TextInput
-							label={
-								<Text
-									style={{
-										color: '#0000004F',
-									}}>
-									Workstation / Facility
-								</Text>
-							}
-							mode='outlined'
-							{...textInputProps}
-						/>
-					</View>
+					
+					{loadingStations ? <ActivityIndicator /> :
+						<View
+							className='p-2'
+							style={{
+								height: stationDrop ? height * 0.3 : height * 0.07,
+							}}>
+							<DropDownPicker
+								items={workStations || []}
+								value={station}
+								setValue={setStation}
+								multiple={false}
+								open={stationDrop}
+								placeholder='Select Workstation'
+								searchable
+								placeholderStyle={{
+									fontSize: 16,
+									color: '#7b7e81',
+								}}
+								setOpen={setStationDrop}
+								style={[
+									styles.input,
+									{
+										borderColor: stationDrop ? '#0445b5' : '#0345B53D',
+									},
+								]}
+								disabled={!county || loadingStations}
+								listMode='SCROLLVIEW'
+							/>
+						</View>}
+					
 					<View className='p-2'>
 						<TextInput
 							label={
@@ -191,12 +257,13 @@ const ApplyPrivateComponent: FC<{ counties: County[] }> = ({ counties }) => {
 									Town / Market
 								</Text>
 							}
+							onChangeText={handleTown}
 							mode='outlined'
 							{...textInputProps}
 						/>
 					</View>
 					<View className='p-2'>
-						<Button mode='contained' style={styles.button}>
+						<Button mode='contained' style={styles.button} onPress={handleSubmit} loading={isPending}>
 							Submit Application
 						</Button>
 					</View>

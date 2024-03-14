@@ -1,7 +1,7 @@
 export interface OutMigrationApplication {
   index_id:                  string;
   country_id:                string;
-  application_date:          Date;
+  application_date:          any;
   marital_status:            string;
   dependants:                string;
   employment_status:         string;
@@ -14,7 +14,7 @@ export interface OutMigrationApplication {
   experience_years:          string;
   duration_current_employer: string;
   planning_return:           string;
-  form_attached:             string;
+  form_attached:             any;
   outmigration_reason:       string;
   verification_cadres:       string;
 }

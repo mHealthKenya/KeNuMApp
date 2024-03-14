@@ -161,7 +161,7 @@ export const employers: DropDownItem[] = [
 	},
 ];
 
-export const workstationType: DropDownItem[] = [
+export const workstationType: any = [
 	{
 		label: 'Health Facility',
 		value: 'Health Facility',
