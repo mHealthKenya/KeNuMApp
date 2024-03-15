@@ -26,6 +26,9 @@ const registrationApplication = async (data: Registration) => {
 		method: 'POST',
 		url,
 		data: formData,
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
 	};
 
 	const response = await axios(config).then((res) => res.data);

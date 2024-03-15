@@ -29,6 +29,9 @@ const selfReport = async (data: Self) => {
 
 	const config: AxiosRequestConfig = {
 		method: 'POST',
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
 		url,
 		data: form,
 	};
@@ -54,7 +57,8 @@ const useSelfReport = (successFn: () => void, errorFn: () => void) => {
 			successFn();
 		},
 
-		onError: () => {
+		onError: (err) => {
+			console.log(err);
 			errorFn();
 		},
 	});

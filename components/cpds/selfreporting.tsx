@@ -1,26 +1,18 @@
-import { useToast } from '@gluestack-ui/themed';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {useToast} from '@gluestack-ui/themed';
+import {yupResolver} from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-import { useRouter } from 'expo-router';
+import {useRouter} from 'expo-router';
 import mime from 'mime';
-import React, { FC, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import {
-	KeyboardAvoidingView,
-	Platform,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Button, TextInput, TextInputProps } from 'react-native-paper';
+import React, {FC, useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import * as Yup from 'yup';
-import { primaryColor } from '../../constants/Colors';
-import { User } from '../../models/user';
-import { useCPDCategoryFetched } from '../../providers/cpdcategories';
+import {primaryColor} from '../../constants/Colors';
+import {User} from '../../models/user';
+import {useCPDCategoryFetched} from '../../providers/cpdcategories';
 import useSelfReport from '../../services/cpds/self';
 import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
@@ -42,15 +34,15 @@ const validationSchema = Yup.object().shape({
 	event_title: Yup.string().required('Event title is required'),
 });
 
-const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
+const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 	const currentYear = new Date().getFullYear();
-	const { width, height } = useWindowDimensions();
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
-	const { category_id } = useCPDCategoryFetched();
+	const {category_id} = useCPDCategoryFetched();
 
-	const [image, setImage] = useState<UserImage>();
+	const [image, setImage] = useState<any>();
 
 	const theme = {
 		roundness: 10,
@@ -71,7 +63,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 		setPicker(!picker);
 	};
 
-	const handleDate = ({ type }: any, selectedDate: any) => {
+	const handleDate = ({type}: any, selectedDate: any) => {
 		if (type === 'set') {
 			setDate(selectedDate);
 
@@ -109,7 +101,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 
 	const {
 		control,
-		formState: { errors },
+		formState: {errors},
 		handleSubmit,
 	} = useForm<Form>({
 		resolver: yupResolver(validationSchema),
@@ -127,20 +119,16 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 		toast.show({
 			onCloseComplete() {},
 			duration: 5000,
-			render: ({ id }) => {
+			render: ({id}) => {
 				return (
-					<ToastError
-						id={id}
-						title='Reporting Error'
-						description='Could not CPD self reporting. Please retry later'
-					/>
+					<ToastError id={id} title='Reporting Error' description='Could not CPD self reporting. Please retry later' />
 				);
 			},
 			placement: 'top',
 		});
 	};
 
-	const { mutate, isPending } = useSelfReport(successFn, errorFn);
+	const {mutate, isPending} = useSelfReport(successFn, errorFn);
 
 	const onSubmit = (data: Form) => {
 		mutate({
@@ -171,7 +159,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 					/>
 				</View>
 
-				<View style={{ height: height * 0.6 }}>
+				<View style={{height: height * 0.6}}>
 					<View style={[styles.container]}>
 						<Pressable onPress={() => pickImage('cpd_evidence')}>
 							<TextInput
@@ -204,7 +192,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 							rules={{
 								required: true,
 							}}
-							render={({ field: { onChange, onBlur, value } }) => (
+							render={({field: {onChange, onBlur, value}}) => (
 								<TextInput
 									label='Event Title'
 									left={<TextInput.Icon icon='doctor' />}
@@ -218,11 +206,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 							)}
 							name='event_title'
 						/>
-						{!!errors?.event_title?.message && (
-							<Text style={styles.errorText}>
-								{errors?.event_title?.message}
-							</Text>
-						)}
+						{!!errors?.event_title?.message && <Text style={styles.errorText}>{errors?.event_title?.message}</Text>}
 					</View>
 					<View style={styles.container}>
 						<Controller
@@ -230,7 +214,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 							rules={{
 								required: true,
 							}}
-							render={({ field: { onChange, onBlur, value } }) => (
+							render={({field: {onChange, onBlur, value}}) => (
 								<TextInput
 									mode='outlined'
 									label='Event Location'
@@ -245,11 +229,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 							name='event_location'
 						/>
 
-						{!!errors?.event_location?.message && (
-							<Text style={styles.errorText}>
-								{errors?.event_location?.message}
-							</Text>
-						)}
+						{!!errors?.event_location?.message && <Text style={styles.errorText}>{errors?.event_location?.message}</Text>}
 					</View>
 					<View style={styles.container}>
 						<Pressable onPress={togglePicker}>
@@ -278,11 +258,7 @@ const CPDSelfReportingComponent: FC<{ user: User | null }> = ({ user }) => {
 						)}
 					</View>
 					<View style={[styles.container]}>
-						<Button
-							style={styles.button}
-							mode='contained'
-							onPress={handleSubmit(onSubmit)}
-							loading={isPending}>
+						<Button style={styles.button} mode='contained' onPress={handleSubmit(onSubmit)} loading={isPending}>
 							Report
 						</Button>
 					</View>

@@ -1,10 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
-import * as secureStore from 'expo-secure-store';
-import { baseUrl } from '../../constants/baseurl';
 import dayjs from 'dayjs';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../../providers/auth';
+import * as secureStore from 'expo-secure-store';
+import { baseUrl } from '../../constants/baseurl';
 interface Apply {
     "index_id": string
     "proposed_practice_id": string
