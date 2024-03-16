@@ -143,7 +143,11 @@ const OutmigrationStepComponent = () => {
 			current_position: employmentDetails?.current_position || '',
 			dependants: personalDetails?.dependants || '',
 			department: employmentDetails?.department || '',
-			form_attached: outmigration?.form_attached || null,
+			form_attached: {
+				name: selectedFile?.assets![0].name || '',
+				uri: selectedFile?.assets![0].uri || '',
+				type: selectedFile?.assets![0].mimeType || '',
+			},
 			workstation_type: employmentDetails?.workstation_type || '',
 			workstation_id: employmentDetails?.workstation_id || '',
 			workstation_name: employmentDetails?.workstation_name || '',
@@ -155,9 +159,9 @@ const OutmigrationStepComponent = () => {
 		});
 
 		setSubmit(false);
-		setPersonalDetails(null);
-		setEmploymentDetails(null);
-		setOutmigration(null);
+		// setPersonalDetails(null);
+		// setEmploymentDetails(null);
+		// setOutmigration(null);
 	};
 
 	useEffect(() => {
