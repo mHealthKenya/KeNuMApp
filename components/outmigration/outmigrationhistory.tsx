@@ -168,19 +168,27 @@ const Application: FC<{
 				/>
 				<OutMigrationItem
 					availableWidth={availableWidth}
+					title='Cadre'
+					content={application.verification_cadres}
+				/>
+				<OutMigrationItem
+					availableWidth={availableWidth}
+					title='Application Date'
+					content={dayjs(new Date(application.application_date)).format(
+						'DD/MM/YYYY'
+					)}
+				/>
+				<OutMigrationItem
+					availableWidth={availableWidth}
+					title='Tracking  Number'
+					content={application.tracking_number || 'Unavailable'}
+				/>
+				<OutMigrationItem
+					availableWidth={availableWidth}
 					title='Status'
 					content={application.application_status}
 				/>
-				{/* <OutMigrationItemDouble
-					title='Date'
-					subtitle='Start Date'
-					content={dayjs(new Date(application.start_date)).format('DD/MM/YYYY')}
-					subtitle1='Application Date'
-					content1={dayjs(new Date(application.application_date)).format(
-						'DD/MM/YYYY'
-					)}
-					availableWidth={availableWidth}
-				/> */}
+				
 
 				<OutMigrationItemDouble
 					title='Invoice'
