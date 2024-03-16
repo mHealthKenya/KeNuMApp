@@ -259,11 +259,7 @@ const Application: FC<{
 					title='Country'
 					content={application.country_name}
 				/>
-				<OutMigrationItem
-					availableWidth={availableWidth}
-					title='Cadre'
-					content={application.verification_cadres}
-				/>
+			
 				<OutMigrationItenAccordion availableWidth={availableWidth} title='Cadre'
 					content={application.verification_cadres} desc={application.verification_cadres} />
 				<OutMigrationItem
