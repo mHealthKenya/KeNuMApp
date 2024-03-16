@@ -84,10 +84,10 @@ const PersonalDetailsComponent = () => {
 		<View className='flex flex-1'>
 			<View className='mx-5'>
 				<KeyboardAvoidingView behavior='position'>
-					<View className='p-2'>
+					<View className='p-2 items-center'>
 						<Text>Step 1 of 3</Text>
 					</View>
-					<View className='p-2 mb-4'>
+					<View className='p-2 mb-4 items-center'>
 						<ProgressTrack progress={1 / 3} />
 					</View>
 					<View

@@ -194,10 +194,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 					style={{
 						paddingBottom: 20,
 					}}>
-					<View className='p-2'>
+					<View className='p-2 items-center'>
 						<Text>Step 2 of 3</Text>
 					</View>
-					<View className='p-2 mb-4'>
+					<View className='p-2 mb-4 items-center'>
 						<ProgressTrack progress={2 / 3} />
 					</View>
 
