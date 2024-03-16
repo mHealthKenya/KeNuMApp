@@ -48,6 +48,22 @@ const result = contentArr.map(item => {
     return initials;
 });
 
+const extractor = (t: string) => {
+	let name = ''
+	const item = t.split(', ');
+	for(const i of item){
+		name += i.charAt(0).toUpperCase();
+	}
+	return name
+}
+
+const list = contentArr.map((item) => {
+	return {
+		item,
+		short: extractor(content)
+	}
+})
+
   const handlePress = (id: string) => {setExpanded(id); setShow(!show)}
 	return (
 		<>
@@ -81,25 +97,22 @@ const result = contentArr.map(item => {
 				</View>
 				<View style={stylesAccordion.container}>
 				<List.Section style={stylesAccordion.section}>
-  {result.map((item, index) => {
+  {list.map((item, index) => {
     return (
       <List.Accordion
         key={index}
-        title={item}
-        expanded={item === expanded && show}
-        onPress={() => handlePress(item)}
+        title={item.short}
+        expanded={item.short === expanded && show}
+        onPress={() => handlePress(item.item)}
         style={stylesAccordion.accordion}
         titleStyle={stylesAccordion.accordionTitle}
       >
-        {contentArr.map((desc, index) => {
-          return (
             <List.Item
-              title={desc}
+              title={item.item}
               titleStyle={stylesAccordion.itemTitle}
               key={index}
             />
-          )
-        })}
+          
       </List.Accordion>
     )
   })}
