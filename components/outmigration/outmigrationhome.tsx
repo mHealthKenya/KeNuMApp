@@ -11,7 +11,7 @@ const OutMigrationHomeComponent = () => {
 					title: 'Apply Out-Migration',
 					content: 'Apply for Out-Migrations in feww steps',
 					backgroundColor: '#dcf0fa',
-					path: require('../../assets/images/cpdevent.png'),
+					path: require('../../assets/images/abroad.png'),
 					route: '/applyoutmigration',
 				}}
 			/>
@@ -21,7 +21,7 @@ const OutMigrationHomeComponent = () => {
 					content:
 						'View All Out-Migrations Application History',
 					backgroundColor: '#dcf0fa',
-					path: require('../../assets/images/cpdbooksmall.png'),
+					path: require('../../assets/images/clock.png'),
 					route: '/outmigrationhistory',
 				}}
 			/>

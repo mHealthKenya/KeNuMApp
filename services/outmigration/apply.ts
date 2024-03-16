@@ -41,7 +41,7 @@ const applyOutMigration = async (data: OutMigrationApplication) => {
 	};
 
 	const response = await axios(config).then((res) => res.data);
-
+  console.log(`Response: ${response.data}`);
 	return response;
 }
 
@@ -49,9 +49,11 @@ const useApplyOutMigration = (successFn: () => void, errorFn: () => void) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: applyOutMigration,
-    onSuccess: () => {
+    onSuccess: (data: any) => {
+      console.log(data)
       queryClient.invalidateQueries({
         queryKey: ['outmigration-applications'],
+        
       });
       successFn();
     },
