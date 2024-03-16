@@ -13,7 +13,7 @@ import {
 	View,
 	useWindowDimensions,
 } from 'react-native';
-import { Divider, Searchbar } from 'react-native-paper';
+import { Divider, List, Searchbar } from 'react-native-paper';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
@@ -30,6 +30,90 @@ export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',
 	currency: 'KES',
 });
+
+export const OutMigrationItenAccordion: FC<{
+	title: string;
+	content: string;
+	desc: string;
+	availableWidth: number;
+}> = ({ title, content, desc, availableWidth }) => {
+	const [expanded, setExpanded] = useState('');
+	const [show, setShow] = useState(false);
+
+	const contentSrc = content
+const contentArr = contentSrc.split(',');
+
+const result = contentArr.map(item => {
+    const initials = item.split(' ').map(word => word.charAt(0)).join('');
+    return initials;
+});
+
+  const handlePress = (id: string) => {setExpanded(id); setShow(!show)}
+	return (
+		<>
+		<View>
+			<View
+				style={[
+					globalStyles.row,
+					{
+						justifyContent: 'space-between',
+						padding: 10,
+					},
+				]}>
+					<View
+					style={[
+						globalStyles.row,
+						{
+							width: availableWidth * 0.25,
+							justifyContent: 'space-between',
+							padding: 10,
+						},
+					]}>
+					<View style={{ justifyContent: 'center' }}>
+						<Text style={[styles.itemText, styles.titleText]}>{title}</Text>
+					</View>
+					<Divider
+						style={{
+							width: 1,
+							height: '100%',
+						}}
+					/>
+				</View>
+				<View style={stylesAccordion.container}>
+				<List.Section style={stylesAccordion.section}>
+  {result.map((item, index) => {
+    return (
+      <List.Accordion
+        key={index}
+        title={item}
+        expanded={item === expanded && show}
+        onPress={() => handlePress(item)}
+        style={stylesAccordion.accordion}
+        titleStyle={stylesAccordion.accordionTitle}
+      >
+        {contentArr.map((desc, index) => {
+          return (
+            <List.Item
+              title={desc}
+              titleStyle={stylesAccordion.itemTitle}
+              key={index}
+            />
+          )
+        })}
+      </List.Accordion>
+    )
+  })}
+</List.Section>
+
+    </View>
+					</View>
+				</View>
+		
+		</>
+		)
+
+		
+}
 
 export const OutMigrationItem: FC<{
 	title: string;
@@ -171,9 +255,11 @@ const Application: FC<{
 					title='Cadre'
 					content={application.verification_cadres}
 				/>
+				<OutMigrationItenAccordion availableWidth={availableWidth} title='Cadre'
+					content={application.verification_cadres} desc={application.verification_cadres} />
 				<OutMigrationItem
 					availableWidth={availableWidth}
-					title='Application Date'
+					title='Date'
 					content={dayjs(new Date(application.application_date)).format(
 						'DD/MM/YYYY'
 					)}
@@ -299,6 +385,8 @@ const OutMigrationHistoryComponent: FC<{
 
 export default OutMigrationHistoryComponent;
 
+
+
 const styles = StyleSheet.create({
 	box: {
 		padding: 20,
@@ -360,3 +448,26 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 });
+
+
+const stylesAccordion = StyleSheet.create({
+	container: {
+	  flex: 1,
+	  backgroundColor: 'white',
+	},
+	section: {
+	  marginBottom: 10,
+	},
+	accordion: {
+	  backgroundColor: 'white',
+	},
+	accordionTitle: {
+	  fontSize: 16, 
+	  fontWeight: 'normal', 
+	},
+	itemTitle: {
+		letterSpacing: 1.5,
+		textTransform: 'capitalize',
+		fontSize: 16,
+	},
+  });
