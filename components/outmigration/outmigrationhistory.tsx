@@ -43,14 +43,10 @@ export const OutMigrationItenAccordion: FC<{
 	const contentSrc = content
 const contentArr = contentSrc.split(',');
 
-const result = contentArr.map(item => {
-    const initials = item.split(' ').map(word => word.charAt(0)).join('');
-    return initials;
-});
 
 const extractor = (t: string) => {
 	let name = ''
-	const item = t.split(', ');
+	const item = t.split(' ');
 	for(const i of item){
 		name += i.charAt(0).toUpperCase();
 	}
@@ -60,7 +56,7 @@ const extractor = (t: string) => {
 const list = contentArr.map((item) => {
 	return {
 		item,
-		short: extractor(content)
+		short: extractor(item)
 	}
 })
 
@@ -103,7 +99,7 @@ const list = contentArr.map((item) => {
         key={index}
         title={item.short}
         expanded={item.short === expanded && show}
-        onPress={() => handlePress(item.item)}
+        onPress={() => handlePress(item.short)}
         style={stylesAccordion.accordion}
         titleStyle={stylesAccordion.accordionTitle}
       >
