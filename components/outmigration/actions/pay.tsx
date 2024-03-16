@@ -22,7 +22,7 @@ const PayForApplication: FC<{
 	const handlePay = async (item: OutmigrationApplicationHistory | null) => {
 		await handleMigrate(item!);
 		await dismiss();
-		router.push('/outmigrationhome');
+		router.push('/payoutmigrate');
 	};
 
 	return (
@@ -51,7 +51,7 @@ const PayForApplication: FC<{
 			</View>
 
 			<View style={{ justifyContent: 'center' }}>
-				<Text style={styles.text}>Pay For Internship</Text>
+				<Text style={styles.text}>Pay For Out Migration</Text>
 			</View>
 		</Pressable>
 	);

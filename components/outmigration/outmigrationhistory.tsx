@@ -266,7 +266,7 @@ const OutMigrationHistoryComponent: FC<{
 					</View>
 				</BottomSheetModal>
 				<Searchbar
-					placeholder='Search by internship center'
+					placeholder='Search by Country'
 					onChangeText={handleSearch}
 					value={search}
 					style={styles.searchBar}

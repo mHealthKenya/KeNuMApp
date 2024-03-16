@@ -18,10 +18,34 @@ const OutMigrationLayout = () => {
 			<Stack.Screen
 				name='applyoutmigration'
 				options={{
+					title: 'Out Migration Apply',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='outmigrationhome'
+				options={{
 					title: 'Out Migration',
 					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>
+
+			<Stack.Screen
+				name='outmigrationhistory'
+				options={{
+					title: 'Out-Migration History',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+			<Stack.Screen
+				name='payoutmigrate'
+				options={{
+					title: 'Out-Migration Payment',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+			
 		</Stack>
 	);
 };

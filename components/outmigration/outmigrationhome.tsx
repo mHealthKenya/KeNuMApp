@@ -9,7 +9,7 @@ const OutMigrationHomeComponent = () => {
 			<OutBoxComponent
 				box={{
 					title: 'Apply Out-Migration',
-					content: 'Apply for Out-Migrations in feww steps',
+					content: 'Apply for Out-Migrations in a few steps',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/abroad.png'),
 					route: '/applyoutmigration',
