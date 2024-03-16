@@ -1,23 +1,16 @@
-import { useToast } from '@gluestack-ui/themed';
+import {useToast} from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-import { useRouter } from 'expo-router';
+import {useRouter} from 'expo-router';
 import mime from 'mime';
-import React, { FC, useMemo, useState } from 'react';
-import {
-	KeyboardAvoidingView,
-	Platform,
-	Pressable,
-	StyleSheet,
-	View,
-	useWindowDimensions,
-} from 'react-native';
+import React, {FC, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Button, TextInput, TextInputProps } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
-import { InternshipCenters } from '../../models/internshipcenters';
-import { User } from '../../models/user';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import {primaryColor} from '../../constants/Colors';
+import {InternshipCenters} from '../../models/internshipcenters';
+import {User} from '../../models/user';
 import useInternshipApply from '../../services/internship/apply';
 import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
@@ -42,11 +35,9 @@ const theme = {
 const InternshipApplyComponent: FC<{
 	centers: InternshipCenters;
 	user: User | null;
-}> = ({ centers, user }) => {
+}> = ({centers, user}) => {
 	if (user?.education !== undefined && user?.education?.length <= 0) {
-		return (
-			<WarnAlert message='Could not find any education history in your account' />
-		);
+		return <WarnAlert message='Could not find any education history in your account' />;
 	}
 
 	const textProps: TextInputProps = {
@@ -55,7 +46,7 @@ const InternshipApplyComponent: FC<{
 		outlineColor: '#f9f9f9',
 		activeOutlineColor: '#0445b5',
 	};
-	const { width, height } = useWindowDimensions();
+	const {width, height} = useWindowDimensions();
 
 	const router = useRouter();
 
@@ -81,7 +72,7 @@ const InternshipApplyComponent: FC<{
 
 	const [images, setImages] = useState<UserImage[]>([]);
 
-	const handleDate = ({ type }: any, selectedDate: any) => {
+	const handleDate = ({type}: any, selectedDate: any) => {
 		if (type === 'set') {
 			setDate(selectedDate);
 
@@ -141,14 +132,14 @@ const InternshipApplyComponent: FC<{
 	);
 
 	const successFn = () => {
-		router.push('/internshippay');
+		router.push('/internshiphistory');
 	};
 
 	const errorFn = () => {
 		toast.show({
 			onCloseComplete() {},
 			duration: 5000,
-			render: ({ id }) => {
+			render: ({id}) => {
 				return (
 					<ToastError
 						id={id}
@@ -161,19 +152,13 @@ const InternshipApplyComponent: FC<{
 		});
 	};
 
-	const { mutate, isPending, isSuccess, reset } = useInternshipApply(
-		successFn,
-		errorFn
-	);
+	const {mutate, isPending, isSuccess, reset} = useInternshipApply(successFn, errorFn);
 	const handleSubmit = async () => {
 		const degree_cert = images[0];
 
 		const posting_letter = images[1];
 
-		const education_id =
-			user?.education !== undefined
-				? user?.education[user?.education.length - 1].education_id
-				: '';
+		const education_id = user?.education !== undefined ? user?.education[user?.education.length - 1].education_id : '';
 
 		mutate({
 			start_date: dayjs(date).format('YYYY-MM-DD'),
@@ -238,11 +223,7 @@ const InternshipApplyComponent: FC<{
 								onPress={() => pickImage(Names.posting_letter)}
 								icon={() => (
 									<Image
-										source={
-											images?.filter(
-												(item) => item.name === Names.posting_letter
-											)[0]?.uri || ''
-										}
+										source={images?.filter((item) => item.name === Names.posting_letter)[0]?.uri || ''}
 										style={{
 											width: 50,
 											height: 50,
@@ -267,11 +248,7 @@ const InternshipApplyComponent: FC<{
 								onPress={() => pickImage(Names.degree_cert)}
 								icon={() => (
 									<Image
-										source={
-											images?.filter(
-												(item) => item.name === Names.degree_cert
-											)[0]?.uri || ''
-										}
+										source={images?.filter((item) => item.name === Names.degree_cert)[0]?.uri || ''}
 										style={{
 											width: 50,
 											height: 50,
@@ -311,11 +288,7 @@ const InternshipApplyComponent: FC<{
 					/>
 				)}
 
-				<Button
-					mode='contained'
-					style={styles.button}
-					onPress={handleSubmit}
-					loading={isPending}>
+				<Button mode='contained' style={styles.button} onPress={handleSubmit} loading={isPending}>
 					Apply
 				</Button>
 			</View>

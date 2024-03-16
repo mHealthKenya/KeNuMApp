@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import {Stack} from 'expo-router';
 import React from 'react';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
 
@@ -19,6 +19,30 @@ const OutMigrationLayout = () => {
 				name='applyoutmigration'
 				options={{
 					title: 'Out Migration',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='personaldetails'
+				options={{
+					title: 'Personal Details',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='employmentdetails'
+				options={{
+					title: 'Employment Details',
+					headerLeft: () => <ProfileHeaderLeft />,
+				}}
+			/>
+
+			<Stack.Screen
+				name='outmigrationdetails'
+				options={{
+					title: 'Outmigration Details',
 					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>

@@ -1,14 +1,8 @@
-import { Image, ImageSource } from 'expo-image';
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Divider, Icon } from 'react-native-paper';
+import {Image, ImageSource} from 'expo-image';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Divider, Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
 
 export interface LicenceBox {
@@ -17,13 +11,21 @@ export interface LicenceBox {
 	backgroundColor: string;
 	path: ImageSource;
 	route: any;
+	action?: () => void;
 }
 
-const LBox: FC<{ box: LicenceBox }> = ({ box }) => {
-	const { width, height } = useWindowDimensions();
+const LBox: FC<{box: LicenceBox}> = ({box}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 	const router = useRouter();
+
+	const handlePress = () => {
+		if (box.action) {
+			box.action();
+		}
+		router.push(box.route);
+	};
 	return (
 		<Pressable
 			style={[
@@ -33,12 +35,8 @@ const LBox: FC<{ box: LicenceBox }> = ({ box }) => {
 					backgroundColor: box.backgroundColor,
 				},
 			]}
-			onPress={() => router.push(box.route)}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			onPress={() => handlePress()}>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<Image
 					source={box.path}
 					style={{

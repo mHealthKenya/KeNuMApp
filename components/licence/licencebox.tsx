@@ -1,20 +1,20 @@
-import React, { FC } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { Divider } from 'react-native-paper';
+import React, {FC} from 'react';
+import {StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Divider} from 'react-native-paper';
 import globalStyles from '../../styles/global';
+import {useAtom} from 'jotai';
+import {diasporaAtom} from '../../atoms/diaporaatom';
 
 export interface Item {
 	title: string;
 	id: string;
 }
 
-const LicenceApplyBox: FC<{ county: Item; workstation: Item }> = ({
-	county,
-	workstation,
-}) => {
-	const { width, height } = useWindowDimensions();
+const LicenceApplyBox: FC<{county: Item; workstation: Item}> = ({county, workstation}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
+	const [diaspora, _] = useAtom(diasporaAtom);
 
 	return (
 		<View
@@ -26,17 +26,13 @@ const LicenceApplyBox: FC<{ county: Item; workstation: Item }> = ({
 					backgroundColor: '#FFF',
 				},
 			]}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View style={[globalStyles.column]}>
 					<View
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>{county.title}</Text>
+						<Text style={styles.titleText}>{diaspora ? 'Diaspora' : county.title}</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -47,7 +43,7 @@ const LicenceApplyBox: FC<{ county: Item; workstation: Item }> = ({
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>{workstation.title}</Text>
+						<Text style={styles.contentText}>{diaspora ? 'Out country application' : workstation.title}</Text>
 					</View>
 				</View>
 			</View>

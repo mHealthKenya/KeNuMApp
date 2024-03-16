@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import {View} from 'react-native';
 import globalStyles from '../../styles/global';
 import CPDBoxComponent from '../cpds/cpdbox';
 
@@ -9,8 +9,7 @@ const ProfessionalComponent = () => {
 			<CPDBoxComponent
 				box={{
 					title: 'CPDs',
-					content:
-						'Self report CPDs, claim points and view self reporting history',
+					content: 'Self report CPDs, claim points and view self reporting history',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/cpdbooksmall.png'),
 					route: '/cpdhome',
@@ -19,19 +18,17 @@ const ProfessionalComponent = () => {
 			<CPDBoxComponent
 				box={{
 					title: 'Licence Renewal',
-					content:
-						'Apply for licences, view applications history, pay for licence, and download licences.',
+					content: 'Apply for licences, view applications history, pay for licence, and download licences.',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/licencelarge.png'),
-					route: '/cpdcategories',
+					route: '/licencehome',
 				}}
 			/>
 
 			<CPDBoxComponent
 				box={{
 					title: 'Private Practice',
-					content:
-						'Apply for private practice, view applications history, and pay for private practice licence.',
+					content: 'Apply for private practice, view applications history, and pay for private practice licence.',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/private.png'),
 					route: '/privatepracticelanding',
@@ -41,11 +38,10 @@ const ProfessionalComponent = () => {
 			<CPDBoxComponent
 				box={{
 					title: 'Out Migration',
-					content:
-						'Apply for migration, view applications history, pay for outmigration.',
+					content: 'Apply for migration, view applications history, pay for outmigration.',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/outmigration.png'),
-					route: '/applyoutmigration',
+					route: '/personaldetails',
 				}}
 			/>
 		</View>

@@ -26,7 +26,9 @@ const licenceApply = async (data: Apply) => {
 		},
 	};
 
-	const response = await axios(config).then((res) => res.data);
+	const response = await axios(config).then((res) => res.data)
+
+
 
 	return response;
 };
@@ -36,6 +38,10 @@ const useLicenceApply = (successFn: () => void) => {
 		mutationFn: licenceApply,
 		onSuccess: (data) => {
 			successFn();
+		},
+
+		onError: (err) => {
+			console.log(err?.message);
 		},
 	});
 };

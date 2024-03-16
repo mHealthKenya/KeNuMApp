@@ -1,19 +1,18 @@
 import dayjs from 'dayjs';
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
-import {currencyFormatter} from '../../helpers/currency-formatter';
-import {LicenceApplication} from '../../models/licenceapplications';
-import {useLicenceFetched} from '../../providers/licenceprovider';
+import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { currencyFormatter } from '../../helpers/currency-formatter';
+import { LicenceApplication } from '../../models/licenceapplications';
 import globalStyles from '../../styles/global';
-import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
+import { InternshipItem, InternshipItemDouble } from '../internship/history/applications';
 import EmptyList from '../shared/EmptyList';
 // import ActionBottomLicence from './actionbottomlicence';
-import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
-import PayForApplication from './actions/pay';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import { useAtom } from 'jotai';
+import { licenceApplicationAtom } from '../../atoms/licence';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
-import {useAtom} from 'jotai';
-import {licenceApplicationAtom} from '../../atoms/licence';
+import PayForApplication from './actions/pay';
 
 const Application: FC<{
 	application: LicenceApplication;
@@ -27,10 +26,14 @@ const Application: FC<{
 	return (
 		<Pressable style={[styles.card]} onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				<InternshipItem availableWidth={availableWidth} title='County' content={application.County} />
+				{application?.workstation_name !== 'DIASPORA' && (
+					<InternshipItem availableWidth={availableWidth} title='County' content={application.County} />
+				)}
 				<InternshipItem availableWidth={availableWidth} title='Station' content={application.workstation_name} />
 
-				<InternshipItem availableWidth={availableWidth} title='Employer' content={application.employer} />
+				{application?.workstation_name !== 'DIASPORA' && (
+					<InternshipItem availableWidth={availableWidth} title='Employer' content={application.employer} />
+				)}‚
 
 				<InternshipItem
 					availableWidth={availableWidth}

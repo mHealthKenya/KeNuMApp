@@ -1,22 +1,16 @@
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import React, { useState } from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import React, {useState} from 'react';
 import globalStyles from '../../styles/global';
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import mime from 'mime';
-import { Button, TextInput, TextInputProps } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import {primaryColor} from '../../constants/Colors';
 import useRegistrationApplication from '../../services/registration/apply';
-import { useAuth } from '../../providers/auth';
-import { Alert, AlertIcon, AlertText, useToast } from '@gluestack-ui/themed';
-import { InfoIcon } from '@gluestack-ui/themed';
-import { useRouter } from 'expo-router';
+import {useAuth} from '../../providers/auth';
+import {Alert, AlertIcon, AlertText, useToast} from '@gluestack-ui/themed';
+import {InfoIcon} from '@gluestack-ui/themed';
+import {useRouter} from 'expo-router';
 import ToastError from '../shared/ToastError';
 
 const RegistrationApplicationComponent = () => {
@@ -26,7 +20,7 @@ const RegistrationApplicationComponent = () => {
 		type?: string;
 	}
 
-	const { width, height } = useWindowDimensions();
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
@@ -67,14 +61,14 @@ const RegistrationApplicationComponent = () => {
 	const toast = useToast();
 
 	const successFn = () => {
-		router.push('/payreg');
+		router.push('/registrationapplications');
 	};
 
 	const errorFn = () => {
 		toast.show({
 			onCloseComplete() {},
 			duration: 5000,
-			render: ({ id }) => {
+			render: ({id}) => {
 				return (
 					<ToastError
 						id={id}
@@ -87,14 +81,13 @@ const RegistrationApplicationComponent = () => {
 		});
 	};
 
-	const { mutate, isPending } = useRegistrationApplication(successFn, errorFn);
+	const {mutate, isPending} = useRegistrationApplication(successFn, errorFn);
 
-	const { user } = useAuth();
+	const {user} = useAuth();
 
 	const handleSubmit = () => {
 		if (user?.education !== undefined) {
-			const education_id =
-				user?.education[user.education?.length - 1].education_id;
+			const education_id = user?.education[user.education?.length - 1].education_id;
 			mutate({
 				education_id: education_id || '',
 				current_passport: image,
@@ -124,8 +117,7 @@ const RegistrationApplicationComponent = () => {
 					<Alert>
 						<AlertIcon as={InfoIcon} mr='$3' />
 						<AlertText>
-							We could not find an eduction registered under your account.
-							Please complete and pass an exam then retry
+							We could not find an eduction registered under your account. Please complete and pass an exam then retry
 						</AlertText>
 					</Alert>
 				</View>
@@ -158,11 +150,7 @@ const RegistrationApplicationComponent = () => {
 						</Pressable>
 					</View>
 					<View style={[styles.container]}>
-						<Button
-							style={styles.button}
-							mode='contained'
-							loading={isPending}
-							onPress={handleSubmit}>
+						<Button style={styles.button} mode='contained' loading={isPending} onPress={handleSubmit}>
 							Register
 						</Button>
 					</View>

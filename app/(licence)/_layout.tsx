@@ -60,9 +60,9 @@ const LicenceLayout = () => {
 					/>
 
 					<Stack.Screen
-						name='paylicence'
+						name='licencecountry'
 						options={{
-							title: 'Pay For Licence',
+							title: 'Region',
 							headerLeft: () => <ProfileHeaderLeft />,
 						}}
 					/>

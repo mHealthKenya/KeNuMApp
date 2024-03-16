@@ -12,7 +12,7 @@ const LicenceHomeComponent = () => {
 					content: 'Complete your annual licence renewal',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/licencesmall.png'),
-					route: '/counties',
+					route: '/licencecountry',
 				}}
 			/>
 

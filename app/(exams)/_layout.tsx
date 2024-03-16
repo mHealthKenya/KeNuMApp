@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import {Stack} from 'expo-router';
 import React from 'react';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
 
@@ -58,15 +58,7 @@ const ExamsLayout = () => {
 			<Stack.Screen
 				name='payexamhist'
 				options={{
-					title: "Pay For Exam",
-					headerLeft: () => <ProfileHeaderLeft />,
-				}}
-			/>
-
-			<Stack.Screen
-				name='payexam'
-				options={{
-					title: "Pay For Exam",
+					title: 'Pay For Exam',
 					headerLeft: () => <ProfileHeaderLeft />,
 				}}
 			/>

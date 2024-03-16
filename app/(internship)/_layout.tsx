@@ -54,14 +54,6 @@ const InternshipLayout = () => {
 				/>
 
 				<Stack.Screen
-					name='internshippay'
-					options={{
-						title: 'Pay For Internship',
-						headerLeft: () => <ProfileHeaderLeft />,
-					}}
-				/>
-
-				<Stack.Screen
 					name='internshippayhistory'
 					options={{
 						title: 'Pay For Internship',

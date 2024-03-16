@@ -49,7 +49,7 @@ const AddExamComponent: FC<{
 	const toast = useToast();
 
 	const successFn = () => {
-		router.replace('/payexam');
+		router.push('/examapplications');
 	};
 
 	const errorFn = () => {

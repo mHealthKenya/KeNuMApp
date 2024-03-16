@@ -39,14 +39,6 @@ const RegistrationLayout = () => {
 			/>
 
 			<Stack.Screen
-				name='payreg'
-				options={{
-					title: 'Pay For Registration',
-					headerLeft: () => <ProfileHeaderLeft />,
-				}}
-			/>
-
-			<Stack.Screen
 				name='payreghist'
 				options={{
 					title: 'Pay For Registration',

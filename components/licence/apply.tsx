@@ -1,33 +1,32 @@
-import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
-import React, { FC, useMemo, useState } from 'react';
-import {
-	KeyboardAvoidingView,
-	StyleSheet,
-	View,
-	useWindowDimensions
-} from 'react-native';
+import {Image} from 'expo-image';
+import {useRouter} from 'expo-router';
+import React, {FC, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Button } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
-import { Employer } from '../../models/employers';
-import { useAuth } from '../../providers/auth';
+import {Button} from 'react-native-paper';
+import {primaryColor} from '../../constants/Colors';
+import {Employer} from '../../models/employers';
+import {useAuth} from '../../providers/auth';
 import useLicenceApply from '../../services/licence/apply';
 import globalStyles from '../../styles/global';
-import LicenceApplyBox, { Item } from './licencebox';
+import LicenceApplyBox, {Item} from './licencebox';
+import {diasporaAtom} from '../../atoms/diaporaatom';
+import {useAtom} from 'jotai';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
 	county: Item;
 	workstation: Item;
-}> = ({ employers, county, workstation }) => {
-	const { width, height } = useWindowDimensions();
+}> = ({employers, county, workstation}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
 	const [selected, setSelected] = useState(null);
 
 	const [dropDown, setDropDown] = useState(false);
+
+	const [diaspora, _] = useAtom(diasporaAtom);
 
 	const items = useMemo(
 		() =>
@@ -41,12 +40,12 @@ const LicenceApplicationComponent: FC<{
 	const router = useRouter();
 
 	const successFn = () => {
-		router.push('/paylicence');
+		router.push('/licenceapplications');
 	};
 
-	const { mutate, isPending } = useLicenceApply(successFn);
+	const {mutate, isPending} = useLicenceApply(successFn);
 
-	const { user } = useAuth();
+	const {user} = useAuth();
 
 	const handleSubmit = () => {
 		mutate({
@@ -54,7 +53,7 @@ const LicenceApplicationComponent: FC<{
 			workstation_id: workstation.id,
 			county_id: county.id,
 			workstation_name: workstation.title,
-			employer_id: '' + selected,
+			employer_id: !diaspora ? '' + selected : '1',
 		});
 	};
 
@@ -91,31 +90,29 @@ const LicenceApplicationComponent: FC<{
 							gap: 10,
 						},
 					]}>
-					<DropDownPicker
-						items={items || []}
-						value={selected}
-						setValue={setSelected}
-						multiple={false}
-						open={dropDown}
-						placeholder='Select an employer'
-						placeholderStyle={{
-							fontSize: 16,
-						}}
-						searchable
-						setOpen={setDropDown}
-						style={[
-							styles.input,
-							{
-								borderColor: dropDown ? '#0445b5' : '#f9f9f9',
-							},
-						]}
-					/>
+					{!diaspora && (
+						<DropDownPicker
+							items={items || []}
+							value={selected}
+							setValue={setSelected}
+							multiple={false}
+							open={dropDown}
+							placeholder='Select an employer'
+							placeholderStyle={{
+								fontSize: 16,
+							}}
+							searchable
+							setOpen={setDropDown}
+							style={[
+								styles.input,
+								{
+									borderColor: dropDown ? '#0445b5' : '#f9f9f9',
+								},
+							]}
+						/>
+					)}
 
-					<Button
-						mode='contained'
-						style={styles.button}
-						loading={isPending}
-						onPress={handleSubmit}>
+					<Button mode='contained' style={styles.button} loading={isPending} onPress={handleSubmit}>
 						Apply
 					</Button>
 				</View>
