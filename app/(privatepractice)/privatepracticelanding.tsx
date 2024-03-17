@@ -1,13 +1,14 @@
-import { View, Text, SafeAreaView } from 'react-native'
-import React from 'react'
-import PrivatePracticeHome from '../../components/privatepractice'
+import {StatusBar} from 'expo-status-bar';
+import React from 'react';
+import PrivatePracticeHome from '../../components/privatepractice';
 
 const PrivatePracticeLanding = () => {
-  return (
-      <SafeAreaView>
-          <PrivatePracticeHome />
-   </SafeAreaView>
-  )
-}
+	return (
+		<>
+			<PrivatePracticeHome />
+			<StatusBar style='light' />
+		</>
+	);
+};
 
-export default PrivatePracticeLanding
+export default PrivatePracticeLanding;

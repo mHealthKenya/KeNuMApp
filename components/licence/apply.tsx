@@ -1,7 +1,7 @@
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import React, {FC, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
@@ -59,64 +59,65 @@ const LicenceApplicationComponent: FC<{
 
 	return (
 		<View style={globalStyles.container}>
-			<KeyboardAvoidingView behavior='position'>
-				<View
-					style={[
-						styles.center,
-						{
-							height: height * 0.4,
-						},
-					]}>
-					<Image
-						source={require('../../assets/images/licencelarge.png')}
-						style={{
-							height: height * 0.36,
-							width: (usableWidth * 5) / 6,
-						}}
-					/>
-				</View>
-				<View
-					style={{
-						height: height * 0.2,
-					}}>
-					<LicenceApplyBox county={county} workstation={workstation} />
-				</View>
-
-				<View
-					style={[
-						styles.box,
-						{
-							height: height * 0.35,
-							gap: 10,
-						},
-					]}>
-					{!diaspora && (
-						<DropDownPicker
-							items={items || []}
-							value={selected}
-							setValue={setSelected}
-							multiple={false}
-							open={dropDown}
-							placeholder='Select an employer'
-							placeholderStyle={{
-								fontSize: 16,
+			<View className='p-3'>
+				<KeyboardAvoidingView behavior='position'>
+					<View
+						style={[
+							styles.center,
+							{
+								height: height * 0.4,
+							},
+						]}>
+						<Image
+							source={require('../../assets/images/licencelarge.png')}
+							style={{
+								height: height * 0.36,
+								width: (usableWidth * 5) / 6,
 							}}
-							searchable
-							setOpen={setDropDown}
-							style={[
-								styles.input,
-								{
-									borderColor: dropDown ? '#0445b5' : '#f9f9f9',
-								},
-							]}
 						/>
-					)}
+					</View>
+					<View
+						style={{
+							height: height * 0.2,
+						}}>
+						<LicenceApplyBox county={county} workstation={workstation} />
+					</View>
 
-					<Button mode='contained' style={styles.button} loading={isPending} onPress={handleSubmit}>
-						Apply
-					</Button>
-				</View>
-			</KeyboardAvoidingView>
+					<View
+						style={[
+							styles.box,
+							{
+								height: height * 0.35,
+								gap: 10,
+							},
+						]}>
+						{!diaspora && (
+							<DropDownPicker
+								items={items || []}
+								value={selected}
+								setValue={setSelected}
+								multiple={false}
+								open={dropDown}
+								placeholder='Select an employer'
+								placeholderStyle={{
+									fontSize: 16,
+								}}
+								searchable
+								setOpen={setDropDown}
+							/>
+						)}
+
+						<Button
+							mode='contained'
+							style={!selected ? styles.disabled : styles.button}
+							loading={isPending}
+							onPress={handleSubmit}
+							disabled={!selected}>
+							Apply
+						</Button>
+					</View>
+				</KeyboardAvoidingView>
+			</View>
 		</View>
 	);
 };
@@ -140,5 +141,19 @@ const styles = StyleSheet.create({
 	button: {
 		borderRadius: 5,
 		backgroundColor: primaryColor,
+	},
+
+	licence: {
+		...Platform.select({
+			ios: {
+				zIndex: 1000,
+			},
+		}),
+	},
+
+	disabled: {
+		backgroundColor: '#bbbbbb',
+		borderRadius: 12,
+		padding: 3,
 	},
 });
