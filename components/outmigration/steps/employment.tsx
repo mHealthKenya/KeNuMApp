@@ -1,6 +1,14 @@
 import {useAtom} from 'jotai';
 import React, {FC, useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator, KeyboardAvoidingView, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {
+	ActivityIndicator,
+	KeyboardAvoidingView,
+	Platform,
+	ScrollView,
+	StyleSheet,
+	View,
+	useWindowDimensions,
+} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, Text, TextInput, TextInputProps} from 'react-native-paper';
 import {DropDownItem} from '../../../app/(outmigration)/applyoutmigration';
@@ -188,12 +196,13 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 			style={{
 				flex: 1,
 			}}>
-			<KeyboardAvoidingView behavior='height'>
+			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
 				<ScrollView
 					nestedScrollEnabled={true}
 					style={{
 						paddingBottom: 20,
-					}}>
+					}}
+					className='p-3'>
 					<View className='p-2 items-center'>
 						<Text>Step 2 of 3</Text>
 					</View>
@@ -201,17 +210,14 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 						<ProgressTrack progress={2 / 3} />
 					</View>
 
-					<View
-						className='p-2'
-						style={{
-							height: statusDrop ? height * 0.28 : height * 0.07,
-						}}>
+					<View className='p-2' style={styles.employment}>
 						<DropDownPicker
 							items={employmentStatus || []}
 							value={statusE}
 							setValue={setStatusE}
 							multiple={false}
 							open={statusDrop}
+							zIndex={7000}
 							placeholder='Employment Status'
 							placeholderStyle={{
 								fontSize: 16,
@@ -228,16 +234,13 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 						/>
 					</View>
 
-					<View
-						className='p-2'
-						style={{
-							height: employDrop ? height * 0.3 : height * 0.07,
-						}}>
+					<View className='p-2' style={styles.employer}>
 						<DropDownPicker
 							items={allEmployers || []}
 							value={employersE}
 							setValue={setEmployersE}
 							multiple={false}
+							zIndex={6000}
 							open={employDrop}
 							placeholder='Current Employer'
 							placeholderStyle={{
@@ -255,17 +258,14 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 						/>
 					</View>
 
-					<View
-						className='p-2'
-						style={{
-							height: stationDrop ? height * 0.17 : height * 0.07,
-						}}>
+					<View className='p-2' style={styles.type}>
 						<DropDownPicker
 							items={stationTypes || []}
 							value={stationType}
 							setValue={setStationType}
 							multiple={false}
 							open={stationDrop}
+							zIndex={5000}
 							placeholder='Work Station Type'
 							placeholderStyle={{
 								fontSize: 16,
@@ -282,16 +282,13 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 						/>
 					</View>
 
-					<View
-						className='p-2'
-						style={{
-							height: countyDrop ? height * 0.3 : height * 0.07,
-						}}>
+					<View className='p-2' style={styles.county}>
 						<DropDownPicker
 							items={allCounties || []}
 							value={county}
 							searchable
 							setValue={setCounty}
+							zIndex={4000}
 							multiple={false}
 							open={countyDrop}
 							placeholder='Select County'
@@ -313,15 +310,12 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 					{loadingWorkStations ? <ActivityIndicator /> : null}
 
 					{workStations ? (
-						<View
-							className='p-2'
-							style={{
-								height: countyStationDrop ? height * 0.3 : height * 0.07,
-							}}>
+						<View className='p-2' style={styles.county}>
 							<DropDownPicker
 								items={countyWorkStations || []}
 								value={station}
 								searchable
+								zIndex={3000}
 								setValue={setStation}
 								multiple={false}
 								open={countyStationDrop}
@@ -341,6 +335,54 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							/>
 						</View>
 					) : null}
+
+					<View className='p-2' style={styles.periodE}>
+						<DropDownPicker
+							items={allPeriods || []}
+							value={employPeriod}
+							setValue={setEmployPeriod}
+							multiple={false}
+							open={periodDrop}
+							zIndex={2000}
+							placeholder='Period With Current Employer'
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							setOpen={setPeriodDrop}
+							style={[
+								styles.input,
+								{
+									borderColor: periodDrop ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
+						/>
+					</View>
+
+					<View className='p-2' style={styles.periodN}>
+						<DropDownPicker
+							items={allPeriods || []}
+							value={nursePeriod}
+							setValue={setNursePeriod}
+							multiple={false}
+							open={nurseDrop}
+							zIndex={1000}
+							placeholder='Period Working As A Nurse'
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							setOpen={setNurseDrop}
+							style={[
+								styles.input,
+								{
+									borderColor: nurseDrop ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
+						/>
+					</View>
 
 					<View className='p-2'>
 						<TextInput
@@ -376,60 +418,6 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 						/>
 					</View>
 
-					<View
-						className='p-2'
-						style={{
-							height: periodDrop ? height * 0.3 : height * 0.07,
-						}}>
-						<DropDownPicker
-							items={allPeriods || []}
-							value={employPeriod}
-							setValue={setEmployPeriod}
-							multiple={false}
-							open={periodDrop}
-							placeholder='Period With Current Employer'
-							placeholderStyle={{
-								fontSize: 16,
-								color: '#7b7e81',
-							}}
-							setOpen={setPeriodDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: periodDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-						/>
-					</View>
-
-					<View
-						className='p-2'
-						style={{
-							height: nurseDrop ? height * 0.3 : height * 0.07,
-						}}>
-						<DropDownPicker
-							items={allPeriods || []}
-							value={nursePeriod}
-							setValue={setNursePeriod}
-							multiple={false}
-							open={nurseDrop}
-							placeholder='Period Working As A Nurse'
-							placeholderStyle={{
-								fontSize: 16,
-								color: '#7b7e81',
-							}}
-							setOpen={setNurseDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: nurseDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-						/>
-					</View>
-
 					<View className='p-2'>
 						<Button
 							mode='contained'
@@ -459,6 +447,62 @@ const styles = StyleSheet.create({
 		backgroundColor: '#bbbbbb',
 		borderRadius: 12,
 		padding: 3,
+	},
+
+	employment: {
+		...Platform.select({
+			ios: {
+				zIndex: 7000,
+			},
+		}),
+	},
+
+	employer: {
+		...Platform.select({
+			ios: {
+				zIndex: 6000,
+			},
+		}),
+	},
+
+	type: {
+		...Platform.select({
+			ios: {
+				zIndex: 5000,
+			},
+		}),
+	},
+
+	county: {
+		...Platform.select({
+			ios: {
+				zIndex: 4000,
+			},
+		}),
+	},
+
+	station: {
+		...Platform.select({
+			ios: {
+				zIndex: 3000,
+			},
+		}),
+	},
+
+	periodE: {
+		...Platform.select({
+			ios: {
+				zIndex: 2000,
+			},
+		}),
+	},
+
+	periodN: {
+		...Platform.select({
+			ios: {
+				zIndex: 1000,
+			},
+		}),
 	},
 });
 export default EmploymentDetailsComponent;

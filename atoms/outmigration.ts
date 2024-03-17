@@ -1,5 +1,6 @@
 import { atom } from "jotai"
 import * as DocumentPicker from 'expo-document-picker';
+import { OutmigrationApplication } from "../models/outmigrations";
 
 interface Outmigration {
     outmigration_reason: string
@@ -10,3 +11,5 @@ interface Outmigration {
 }
 
 export const outmigrationAtom = atom<Outmigration | null>(null)
+
+export const outmigrationGenAtom = atom<OutmigrationApplication | undefined>(undefined)

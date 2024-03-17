@@ -4,4 +4,5 @@ export enum Transactions {
 	Registration = 'Registration',
 	Licence = 'Licence',
 	PrivatePractice = 'Private Practice',
+	Outmigration = 'Outmigration',
 }

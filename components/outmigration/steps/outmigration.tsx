@@ -1,6 +1,6 @@
 import * as DocumentPicker from 'expo-document-picker';
 import React, {useEffect, useMemo, useState} from 'react';
-import {Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, Icon, TextInput, TextInputProps} from 'react-native-paper';
 import useAuthenticatedUser from '../../../services/auth/authenticated';
@@ -14,6 +14,8 @@ import {outmigrationAtom} from '../../../atoms/outmigration';
 import {personalDetailsAtom} from '../../../atoms/personaldetails';
 import {employmentAtom} from '../../../atoms/employment';
 import useOutmigrationApply from '../../../services/outmigration/apply';
+import {useRouter} from 'expo-router';
+import {Platform} from 'react-native';
 
 const theme = {
 	roundness: 12,
@@ -26,6 +28,8 @@ const OutmigrationStepComponent = () => {
 		outlineColor: '#0345B53D',
 		activeOutlineColor: '#0445b5',
 	};
+
+	const router = useRouter();
 
 	const [outmigration, setOutmigration] = useAtom(outmigrationAtom);
 	const {height} = useWindowDimensions();
@@ -53,7 +57,10 @@ const OutmigrationStepComponent = () => {
 	const [submit, setSubmit] = useState(false);
 
 	const successFn = () => {
-		console.log('success');
+		setPersonalDetails(null);
+		setEmploymentDetails(null);
+		setOutmigration(null);
+		router.push('/outmigrationhist');
 	};
 
 	const errorFn = () => {
@@ -159,9 +166,6 @@ const OutmigrationStepComponent = () => {
 		});
 
 		setSubmit(false);
-		// setPersonalDetails(null);
-		// setEmploymentDetails(null);
-		// setOutmigration(null);
 	};
 
 	useEffect(() => {
@@ -173,6 +177,14 @@ const OutmigrationStepComponent = () => {
 			setSubmit(false);
 		};
 	}, [submit]);
+
+	if (loadingCountries || loadingReasons || loadingReturning) {
+		return (
+			<View className='flex flex-1 justify-center items-center'>
+				<ActivityIndicator />
+			</View>
+		);
+	}
 
 	return (
 		<View
@@ -190,131 +202,123 @@ const OutmigrationStepComponent = () => {
 				<View className='p-2 mb-4 items-center'>
 					<ProgressTrack progress={3 / 3} />
 				</View>
-				<View
-					className='p-2'
-					style={{
-						height: reasonsDrop ? height * 0.3 : height * 0.07,
-					}}>
-					<DropDownPicker
-						items={outmigrationReasons || []}
-						value={outReasons}
-						setValue={setOutReasons}
-						multiple={false}
-						open={reasonsDrop}
-						placeholder='Outmigration Reason'
-						searchable
-						placeholderStyle={{
-							fontSize: 16,
-							color: '#7b7e81',
-						}}
-						setOpen={setReasonsDrop}
-						style={[
-							styles.input,
-							{
-								borderColor: reasonsDrop ? '#0445b5' : '#0345B53D',
-							},
-						]}
-						listMode='SCROLLVIEW'
-					/>
-				</View>
+				<View className='p-3'>
+					<View className='p-2' style={styles.outmigration}>
+						<DropDownPicker
+							items={outmigrationReasons || []}
+							value={outReasons}
+							setValue={setOutReasons}
+							multiple={false}
+							zIndex={4000}
+							open={reasonsDrop}
+							placeholder='Outmigration Reason'
+							searchable
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							scrollViewProps={{
+								nestedScrollEnabled: true,
+							}}
+							setOpen={setReasonsDrop}
+							style={[
+								styles.input,
+								{
+									borderColor: reasonsDrop ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
+						/>
+					</View>
 
-				<View
-					className='p-2'
-					style={{
-						height: countryDrop ? height * 0.3 : height * 0.07,
-					}}>
-					<DropDownPicker
-						items={allCountries || []}
-						value={outCountry}
-						setValue={setOutCountry}
-						multiple={false}
-						open={countryDrop}
-						placeholder='Outmigration Country'
-						searchable
-						placeholderStyle={{
-							fontSize: 16,
-							color: '#7b7e81',
-						}}
-						setOpen={setCountryDrop}
-						style={[
-							styles.input,
-							{
-								borderColor: countryDrop ? '#0445b5' : '#0345B53D',
-							},
-						]}
-						listMode='SCROLLVIEW'
-					/>
-				</View>
+					<View className='p-2' style={styles.country}>
+						<DropDownPicker
+							items={allCountries || []}
+							value={outCountry}
+							setValue={setOutCountry}
+							multiple={false}
+							zIndex={3000}
+							open={countryDrop}
+							placeholder='Outmigration Country'
+							searchable
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							setOpen={setCountryDrop}
+							style={[
+								styles.input,
+								{
+									borderColor: countryDrop ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
+						/>
+					</View>
 
-				<View
-					className='p-2'
-					style={{
-						height: returnDrop ? height * 0.22 : height * 0.07,
-					}}>
-					<DropDownPicker
-						items={planningToReturn || []}
-						value={returnValue}
-						setValue={setReturnValue}
-						multiple={false}
-						open={returnDrop}
-						placeholder='Planning To Return'
-						placeholderStyle={{
-							fontSize: 16,
-							color: '#7b7e81',
-						}}
-						setOpen={setReturnDrop}
-						style={[
-							styles.input,
-							{
-								borderColor: returnDrop ? '#0445b5' : '#0345B53D',
-							},
-						]}
-						listMode='SCROLLVIEW'
-					/>
-				</View>
-				<View
-					className='p-2'
-					style={{
-						height: educDrop ? height * 0.28 : height * 0.07,
-					}}>
-					<DropDownPicker
-						items={education || []}
-						value={educVal}
-						setValue={setEducVal}
-						multiple={true}
-						open={educDrop}
-						placeholder='Cadres To Verify'
-						placeholderStyle={{
-							fontSize: 16,
-							color: '#7b7e81',
-						}}
-						setOpen={setEducDrop}
-						style={[
-							styles.input,
-							{
-								borderColor: educDrop ? '#0445b5' : '#0345B53D',
-							},
-						]}
-						listMode='SCROLLVIEW'
-					/>
-				</View>
+					<View className='p-2' style={styles.return}>
+						<DropDownPicker
+							items={planningToReturn || []}
+							value={returnValue}
+							setValue={setReturnValue}
+							multiple={false}
+							zIndex={2000}
+							open={returnDrop}
+							placeholder='Planning To Return'
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							setOpen={setReturnDrop}
+							style={[
+								styles.input,
+								{
+									borderColor: returnDrop ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
+						/>
+					</View>
 
-				<View className='p-2'>
-					{educVal?.map((item) => (
-						<View className='flex flex-row space-x-3' key={item}>
-							<View className='justify-center'>
-								<Icon source='check-circle' size={25} color='green' />
+					<View className='p-2' style={styles.cadre}>
+						<DropDownPicker
+							items={education || []}
+							value={educVal}
+							setValue={setEducVal}
+							multiple={true}
+							zIndex={1000}
+							open={educDrop}
+							placeholder='Cadres To Verify'
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							setOpen={setEducDrop}
+							style={[
+								styles.input,
+								{
+									borderColor: educDrop ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
+						/>
+					</View>
+
+					<View className='p-2'>
+						{educVal?.map((item) => (
+							<View className='flex flex-row space-x-3' key={item}>
+								<View className='justify-center'>
+									<Icon source='check-circle' size={25} color='green' />
+								</View>
+
+								<View className='justify-center'>
+									<Text className='tracking-widest p-2'>{item}</Text>
+								</View>
 							</View>
+						))}
+					</View>
 
-							<View className='justify-center'>
-								<Text className='tracking-widest p-2'>{item}</Text>
-							</View>
-						</View>
-					))}
-				</View>
-
-				<View className='p-2'>
-					<View>
+					<View className='p-2'>
 						<Pressable onPress={() => pickDocument()}>
 							<TextInput
 								label={
@@ -333,16 +337,16 @@ const OutmigrationStepComponent = () => {
 							/>
 						</Pressable>
 					</View>
-				</View>
-				<View className='p-2'>
-					<Button
-						mode='contained'
-						style={disabled ? styles.disabled : styles.button}
-						disabled={disabled}
-						onPress={handleNext}
-						loading={isPending}>
-						Submit Application
-					</Button>
+					<View className='p-2'>
+						<Button
+							mode='contained'
+							style={disabled ? styles.disabled : styles.button}
+							disabled={disabled}
+							onPress={handleNext}
+							loading={isPending}>
+							Submit Application
+						</Button>
+					</View>
 				</View>
 			</ScrollView>
 		</View>
@@ -363,6 +367,38 @@ const styles = StyleSheet.create({
 		backgroundColor: '#bbbbbb',
 		borderRadius: 12,
 		padding: 3,
+	},
+
+	outmigration: {
+		...Platform.select({
+			ios: {
+				zIndex: 4000,
+			},
+		}),
+	},
+
+	country: {
+		...Platform.select({
+			ios: {
+				zIndex: 3000,
+			},
+		}),
+	},
+
+	return: {
+		...Platform.select({
+			ios: {
+				zIndex: 2000,
+			},
+		}),
+	},
+
+	cadre: {
+		...Platform.select({
+			ios: {
+				zIndex: 1000,
+			},
+		}),
 	},
 });
 

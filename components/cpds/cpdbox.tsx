@@ -1,14 +1,8 @@
-import { Image, ImageSource } from 'expo-image';
-import { Href, useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Divider, Icon } from 'react-native-paper';
+import {Image, ImageSource} from 'expo-image';
+import {Href, useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Divider, Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
 
 export interface CPDBox {
@@ -19,8 +13,8 @@ export interface CPDBox {
 	route: Href<string>;
 }
 
-const CPDBoxComponent: FC<{ box: CPDBox }> = ({ box }) => {
-	const { width, height } = useWindowDimensions();
+const CPDBoxComponent: FC<{box: CPDBox}> = ({box}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 	const router = useRouter();
@@ -30,16 +24,13 @@ const CPDBoxComponent: FC<{ box: CPDBox }> = ({ box }) => {
 				styles.box,
 				{
 					width: usableWidth,
-					height: height * 0.17,
+
 					backgroundColor: box.backgroundColor,
 				},
 			]}
-			onPress={() => router.push(box.route)}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			onPress={() => router.push(box.route)}
+			>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<Image
 					source={box.path}
 					style={{

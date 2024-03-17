@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
 	headerText: {
 		fontSize: 35,
 		fontWeight: 'bold',
-		textAlign: 'center',
 		letterSpacing: 2,
 		textTransform: 'capitalize',
 	},

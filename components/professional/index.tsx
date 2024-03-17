@@ -41,7 +41,7 @@ const ProfessionalComponent = () => {
 					content: 'Apply for migration, view applications history, pay for outmigration.',
 					backgroundColor: '#dcf0fa',
 					path: require('../../assets/images/outmigration.png'),
-					route: '/personaldetails',
+					route: '/outmigrationhome',
 				}}
 			/>
 		</View>

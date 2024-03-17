@@ -9,6 +9,7 @@ import {useAtom} from 'jotai';
 import {personalDetailsAtom} from '../../../atoms/personaldetails';
 import {MaritalStatus} from '../../../models/maritalstatus';
 import {useRouter} from 'expo-router';
+import {Platform} from 'react-native';
 
 const PersonalDetailsComponent = () => {
 	const theme = {
@@ -92,14 +93,13 @@ const PersonalDetailsComponent = () => {
 					</View>
 					<View
 						className='p-2 flex flex-grow'
-						style={{
-							height: dropMarital ? height * 0.22 : height * 0.07,
-						}}>
+						style={styles.status}>
 						<DropDownPicker
 							items={marital || []}
 							value={maritalStatus}
 							setValue={setMaritalStatus}
 							multiple={false}
+							zIndex={1000}
 							open={dropMarital}
 							placeholder='Marital Status'
 							placeholderStyle={{
@@ -161,6 +161,14 @@ const styles = StyleSheet.create({
 		backgroundColor: '#bbbbbb',
 		borderRadius: 12,
 		padding: 3,
+	},
+
+	status: {
+		...Platform.select({
+			ios: {
+				zIndex: 1000,
+			},
+		}),
 	},
 });
 
