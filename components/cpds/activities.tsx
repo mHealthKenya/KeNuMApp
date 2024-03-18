@@ -1,66 +1,65 @@
+import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
-import React, { FC, useMemo } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Divider, Searchbar } from 'react-native-paper';
-import { CPDActivity } from '../../models/activity';
-import { useSearch } from '../../providers/search';
+import React, {FC, useMemo} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Divider, Searchbar} from 'react-native-paper';
+import {CPDActivity} from '../../models/activity';
+import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
 
-const CPDActivityBox: FC<{ activity: CPDActivity }> = ({ activity }) => {
+const CPDActivityBox: FC<{activity: CPDActivity}> = ({activity}) => {
 	return (
 		<View style={styles.card}>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Activity</Text>
 					<Text style={styles.titleText}>{activity.activity}</Text>
 					<Divider />
 				</View>
 			</View>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Provider</Text>
 					<Text style={styles.titleText}>{activity.provider}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Location</Text>
 					<Text style={styles.titleText}>{activity.activity_location}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Date</Text>
-					<Text style={styles.titleText}>
-						{dayjs(new Date(activity.activity_date)).format('YYYY-MM-DD')}
-					</Text>
+					<Text style={styles.titleText}>{dayjs(new Date(activity.activity_date)).format('YYYY-MM-DD')}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Approval Status</Text>
 					<Text style={styles.titleText}>{activity.approval_status}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Approval Comments</Text>
 					<Text style={styles.titleText}>{activity.approval_comments}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Points Earned</Text>
 					<Text style={styles.titleText}>{activity.points_earned}</Text>
 				</View>
@@ -73,8 +72,8 @@ const CPDActivitiesComponent: FC<{
 	activities: CPDActivity[];
 	refresh: () => {};
 	isRefetching: boolean;
-}> = ({ activities, refresh, isRefetching }) => {
-	const { search, handleSearch } = useSearch();
+}> = ({activities, refresh, isRefetching}) => {
+	const {search, handleSearch} = useSearch();
 
 	const items = useMemo(
 		() =>
@@ -82,10 +81,7 @@ const CPDActivitiesComponent: FC<{
 				(item) =>
 					item.activity.toLowerCase().includes(search.toLowerCase()) ||
 					item.activity_location.toLowerCase().includes(search.toLowerCase()) ||
-					dayjs(new Date(item.activity_date))
-						.format('YYYY-MM-DD')
-						.toLowerCase()
-						.includes(search.toLowerCase())
+					dayjs(new Date(item.activity_date)).format('YYYY-MM-DD').toLowerCase().includes(search.toLowerCase())
 			),
 		[search, activities]
 	);
@@ -98,15 +94,20 @@ const CPDActivitiesComponent: FC<{
 				value={search}
 				style={styles.searchBar}
 			/>
-			<FlatList
+			<FlashList
+				renderItem={({item}) => {
+					return <CPDActivityBox activity={item} />;
+				}}
+				getItemType={(item) => {
+					return item.activity;
+				}}
 				data={items}
-				renderItem={({ item }) => <CPDActivityBox activity={item} />}
-				keyExtractor={(_item, index) => '' + index}
-				onRefresh={refresh}
 				refreshing={isRefetching}
+				onRefresh={refresh}
 				ListEmptyComponent={
 					<EmptyList message='No CPD activities found. If you think this is an error, please retry later. If this persists, please contact support.' />
 				}
+				estimatedItemSize={150}
 			/>
 		</View>
 	);

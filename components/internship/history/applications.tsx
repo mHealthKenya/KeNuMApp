@@ -1,7 +1,8 @@
 import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
+import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import {Divider, Searchbar} from 'react-native-paper';
 import {InternshipApplication} from '../../../models/internshipapplications';
 import {useInternshipFetched} from '../../../providers/internship';
@@ -11,6 +12,7 @@ import EmptyList from '../../shared/EmptyList';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',
@@ -215,40 +217,43 @@ const InternshipApplicationsComponent: FC<{
 	);
 
 	return (
-		<BottomSheetModalProvider>
-			<View style={[globalStyles.container]}>
-				<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
-					<View style={styles.bottomSheet}>
-						<BottomSheetView style={[styles.contentContainer]}>
-							<PayForApplication item={item} />
-						</BottomSheetView>
+		<GestureHandlerRootView style={{flex: 1}}>
+			<BottomSheetModalProvider>
+				<View style={[globalStyles.container]}>
+					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
+						<View style={styles.bottomSheet}>
+							<BottomSheetView style={[styles.contentContainer]}>
+								<PayForApplication item={item} />
+							</BottomSheetView>
 
-						<View style={[styles.contentContainer]}>
-							<DownloadInvoice item={item} />
+							<View style={[styles.contentContainer]}>
+								<DownloadInvoice item={item} />
+							</View>
+
+							<BottomSheetView style={[styles.contentContainer]}>
+								<DownloadReceipt item={item} />
+							</BottomSheetView>
 						</View>
-
-						<BottomSheetView style={[styles.contentContainer]}>
-							<DownloadReceipt item={item} />
-						</BottomSheetView>
-					</View>
-				</BottomSheetModal>
-				<Searchbar
-					placeholder='Search by internship center'
-					onChangeText={handleSearch}
-					value={search}
-					style={styles.searchBar}
-				/>
-				<FlatList
-					data={filtered}
-					renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
-					keyExtractor={(item) => item.internship_id}
-					showsVerticalScrollIndicator={false}
-					onRefresh={() => refresh()}
-					refreshing={isRefreshing}
-					ListEmptyComponent={<EmptyList message='Could not find any internship applications in your account' />}
-				/>
-			</View>
-		</BottomSheetModalProvider>
+					</BottomSheetModal>
+					<Searchbar
+						placeholder='Search by internship center'
+						onChangeText={handleSearch}
+						value={search}
+						style={styles.searchBar}
+					/>
+					<FlashList
+						data={filtered}
+						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						keyExtractor={(item) => item.internship_id}
+						showsVerticalScrollIndicator={false}
+						onRefresh={() => refresh()}
+						refreshing={isRefreshing}
+						estimatedItemSize={150}
+						ListEmptyComponent={<EmptyList message='Could not find any internship applications in your account' />}
+					/>
+				</View>
+			</BottomSheetModalProvider>
+		</GestureHandlerRootView>
 	);
 };
 

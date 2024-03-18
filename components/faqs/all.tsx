@@ -1,11 +1,12 @@
-import React, { FC, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { List, Searchbar } from 'react-native-paper';
-import { FAQ } from '../../models/faqs';
-import { useSearch } from '../../providers/search';
+import {FlashList} from '@shopify/flash-list';
+import React, {FC, useMemo, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {List, Searchbar} from 'react-native-paper';
+import {FAQ} from '../../models/faqs';
+import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 
-const FAQComponent: FC<{ faq: FAQ }> = ({ faq }) => {
+const FAQComponent: FC<{faq: FAQ}> = ({faq}) => {
 	const [expanded, setExpanded] = useState(false);
 
 	const handleExpanded = () => {
@@ -57,8 +58,8 @@ const AllFAQsComponent: FC<{
 	faqs: FAQ[];
 	refetch: () => void;
 	isRefetching: boolean;
-}> = ({ faqs, refetch, isRefetching }) => {
-	const { search, handleSearch } = useSearch();
+}> = ({faqs, refetch, isRefetching}) => {
+	const {search, handleSearch} = useSearch();
 
 	const items = useMemo(
 		() =>
@@ -72,18 +73,14 @@ const AllFAQsComponent: FC<{
 
 	return (
 		<View style={globalStyles.container}>
-			<Searchbar
-				placeholder='Start typing...'
-				onChangeText={handleSearch}
-				value={search}
-				style={styles.searchBar}
-			/>
-			<FlatList
+			<Searchbar placeholder='Start typing...' onChangeText={handleSearch} value={search} style={styles.searchBar} />
+			<FlashList
 				data={items}
-				renderItem={({ item }) => <FAQComponent faq={item} />}
+				renderItem={({item}) => <FAQComponent faq={item} />}
 				keyExtractor={(item) => '' + item.id}
 				onRefresh={refetch}
 				refreshing={isRefetching}
+				estimatedItemSize={150}
 			/>
 		</View>
 	);

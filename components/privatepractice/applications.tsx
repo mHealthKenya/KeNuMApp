@@ -1,17 +1,19 @@
-import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
+import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
-import { useAtom } from 'jotai';
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { privatePractice } from '../../atoms/privatepractice';
-import { currencyFormatter } from '../../helpers/currency-formatter';
-import { PracticeApplication } from '../../models/privatepractice';
+import {useAtom} from 'jotai';
+import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {privatePractice} from '../../atoms/privatepractice';
+import {currencyFormatter} from '../../helpers/currency-formatter';
+import {PracticeApplication} from '../../models/privatepractice';
 import globalStyles from '../../styles/global';
-import { InternshipItem, InternshipItemDouble } from '../internship/history/applications';
+import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
 import EmptyList from '../shared/EmptyList';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const Application: FC<{
 	application: PracticeApplication;
@@ -85,33 +87,36 @@ const PrivatePracticeApplicationsComponent: FC<{
 		console.log('handle sheet changes', index);
 	}, []);
 	return (
-		<BottomSheetModalProvider>
-			<View style={globalStyles.container}>
-				<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
-					<View style={styles.bottomSheet}>
-						<BottomSheetView style={[styles.contentContainer]}>
-							<PayForApplication item={item || null} />
-						</BottomSheetView>
+		<GestureHandlerRootView style={{flex: 1}}>
+			<BottomSheetModalProvider>
+				<View style={globalStyles.container}>
+					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
+						<View style={styles.bottomSheet}>
+							<BottomSheetView style={[styles.contentContainer]}>
+								<PayForApplication item={item || null} />
+							</BottomSheetView>
 
-						<View style={[styles.contentContainer]}>
-							<DownloadInvoice item={item || null} />
+							<View style={[styles.contentContainer]}>
+								<DownloadInvoice item={item || null} />
+							</View>
+
+							<BottomSheetView style={[styles.contentContainer]}>
+								<DownloadReceipt item={item || null} />
+							</BottomSheetView>
 						</View>
-
-						<BottomSheetView style={[styles.contentContainer]}>
-							<DownloadReceipt item={item || null} />
-						</BottomSheetView>
-					</View>
-				</BottomSheetModal>
-				<FlatList
-					data={applications}
-					renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
-					onRefresh={refetch}
-					refreshing={isRefetching}
-					keyExtractor={(_, index) => String(index)}
-					ListEmptyComponent={<EmptyList message='Could not find any private practice applications in your account' />}
-				/>
-			</View>
-		</BottomSheetModalProvider>
+					</BottomSheetModal>
+					<FlashList
+						data={applications}
+						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						onRefresh={refetch}
+						refreshing={isRefetching}
+						keyExtractor={(_, index) => String(index)}
+						estimatedItemSize={150}
+						ListEmptyComponent={<EmptyList message='Could not find any private practice applications in your account' />}
+					/>
+				</View>
+			</BottomSheetModalProvider>
+		</GestureHandlerRootView>
 	);
 };
 

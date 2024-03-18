@@ -1,16 +1,18 @@
+import {FlashList} from '@shopify/flash-list';
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { useFetchedCompetencies } from '../../../providers/rotationcompetencies';
+import {StyleSheet, View} from 'react-native';
+import {useFetchedCompetencies} from '../../../providers/rotationcompetencies';
 import globalStyles from '../../../styles/global';
 import RotationCompetencyBox from './rotationcompetenciesbox';
 
 const CompetenciesComponent = () => {
-	const { competencies } = useFetchedCompetencies();
+	const {competencies} = useFetchedCompetencies();
 	return (
 		<View style={globalStyles.container}>
-			<FlatList
+			<FlashList
 				data={competencies?.rotation_competencies || []}
-				renderItem={({ item }) => <RotationCompetencyBox competency={item} />}
+				estimatedItemSize={150}
+				renderItem={({item}) => <RotationCompetencyBox competency={item} />}
 			/>
 		</View>
 	);

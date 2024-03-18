@@ -1,61 +1,58 @@
+import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
-import React, { FC } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Divider } from 'react-native-paper';
-import { CheckIns } from '../../../models/checkins';
+import React, {FC} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Divider} from 'react-native-paper';
+import {CheckIns} from '../../../models/checkins';
 import globalStyles from '../../../styles/global';
 import EmptyList from '../../shared/EmptyList';
 
-const CheckinBox: FC<{ checkin: CheckIns }> = ({ checkin }) => {
+const CheckinBox: FC<{checkin: CheckIns}> = ({checkin}) => {
 	return (
 		<View style={styles.card}>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Internship Center</Text>
 					<Text style={styles.titleText}>{checkin.internship_center}</Text>
 					<Divider />
 				</View>
 			</View>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Nurse In Charge</Text>
 					<Text style={styles.titleText}>{checkin.nurse_officer_incharge}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Nurse In Charge Phone</Text>
-					<Text style={styles.titleText}>
-						{checkin.nurse_officer_incharge_mobile}
-					</Text>
+					<Text style={styles.titleText}>{checkin.nurse_officer_incharge_mobile}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Supervisor</Text>
 					<Text style={styles.titleText}>{checkin.supervisor}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Supervisor Phone</Text>
 					<Text style={styles.titleText}>{checkin.supervisor_mobile}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Checkin Date</Text>
-					<Text style={styles.titleText}>
-						{dayjs(new Date(checkin.checkin_date)).format('DD MMMM YYYY ')}
-					</Text>
+					<Text style={styles.titleText}>{dayjs(new Date(checkin.checkin_date)).format('DD MMMM YYYY ')}</Text>
 				</View>
 			</View>
 		</View>
@@ -66,18 +63,17 @@ const CheckinHistoryComponent: FC<{
 	checkins: CheckIns[];
 	refresh: () => {};
 	isRefetching: boolean;
-}> = ({ checkins, refresh, isRefetching }) => {
+}> = ({checkins, refresh, isRefetching}) => {
 	return (
 		<View style={globalStyles.container}>
-			<FlatList
+			<FlashList
 				data={checkins}
-				renderItem={({ item }) => <CheckinBox checkin={item} />}
+				renderItem={({item}) => <CheckinBox checkin={item} />}
 				keyExtractor={(item) => item.checkin_id}
 				onRefresh={refresh}
 				refreshing={isRefetching}
-				ListEmptyComponent={
-					<EmptyList message='Could not find any internship checkins in your account' />
-				}
+				ListEmptyComponent={<EmptyList message='Could not find any internship checkins in your account' />}
+				estimatedItemSize={150}
 			/>
 		</View>
 	);

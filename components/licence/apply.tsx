@@ -109,10 +109,10 @@ const LicenceApplicationComponent: FC<{
 
 						<Button
 							mode='contained'
-							style={!selected ? styles.disabled : styles.button}
+							style={!selected && !diaspora ? styles.disabled : styles.button}
 							loading={isPending}
 							onPress={handleSubmit}
-							disabled={!selected}>
+							disabled={!selected && !diaspora}>
 							Apply
 						</Button>
 					</View>

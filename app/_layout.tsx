@@ -12,6 +12,7 @@ import RotationCompetenciesProvider from '../providers/rotationcompetencies';
 import CompetencyProvider from '../providers/competency';
 import RegistrationProvider from '../providers/registrationprovider';
 import * as Updates from 'expo-updates';
+import '../global.css';
 
 const client = new QueryClient();
 

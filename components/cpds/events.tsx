@@ -1,16 +1,11 @@
-import { Badge, BadgeIcon, BadgeText } from '@gluestack-ui/themed';
+import {Badge, BadgeIcon, BadgeText} from '@gluestack-ui/themed';
+import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
-import React, { FC, useMemo } from 'react';
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Button, Divider, Icon, Searchbar } from 'react-native-paper';
-import { CPDEvent } from '../../models/cpdevents';
-import { useSearch } from '../../providers/search';
+import React, {FC, useMemo} from 'react';
+import {StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Button, Divider, Icon, Searchbar} from 'react-native-paper';
+import {CPDEvent} from '../../models/cpdevents';
+import {useSearch} from '../../providers/search';
 import useClaim from '../../services/cpds/claim';
 import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
@@ -22,19 +17,19 @@ interface Item {
 	value1: string;
 }
 
-const Double: FC<{ item: Item }> = ({ item }) => {
-	const { width } = useWindowDimensions();
+const Double: FC<{item: Item}> = ({item}) => {
+	const {width} = useWindowDimensions();
 	return (
 		<>
 			<View className='flex flex-row justify-between'>
-				<View style={{ width: width * 0.46 }}>
-					<View style={[globalStyles.column, { gap: 10 }]}>
+				<View style={{width: width * 0.46}}>
+					<View style={[globalStyles.column, {gap: 10}]}>
 						<Text style={styles.mutedText}>{item.title}</Text>
 						<Text style={styles.titleText}>{item.value}</Text>
 					</View>
 				</View>
-				<View style={{ width: width * 0.46 }}>
-					<View style={[globalStyles.column, { gap: 10 }]}>
+				<View style={{width: width * 0.46}}>
+					<View style={[globalStyles.column, {gap: 10}]}>
 						<Text style={styles.mutedText}>{item.title1}</Text>
 						<Text style={styles.titleText}>{item.value1}</Text>
 					</View>
@@ -44,12 +39,12 @@ const Double: FC<{ item: Item }> = ({ item }) => {
 	);
 };
 
-const CPDEventBox: FC<{ event: CPDEvent }> = ({ event }) => {
+const CPDEventBox: FC<{event: CPDEvent}> = ({event}) => {
 	const successFn = () => {
 		console.log('success');
 	};
-	const { mutate, isPending } = useClaim(successFn);
-	const { width } = useWindowDimensions();
+	const {mutate, isPending} = useClaim(successFn);
+	const {width} = useWindowDimensions();
 
 	const handleSubmit = () => {
 		mutate({
@@ -60,46 +55,46 @@ const CPDEventBox: FC<{ event: CPDEvent }> = ({ event }) => {
 
 	return (
 		<View style={styles.card}>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Event</Text>
 					<Text style={styles.titleText}>{event.event_title}</Text>
 					<Divider />
 				</View>
 			</View>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Provider</Text>
 					<Text style={styles.titleText}>{event.provider}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Category</Text>
 					<Text style={styles.titleText}>{event.category}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Activity</Text>
 					<Text style={styles.titleText}>{event.activity}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Delivery Mode</Text>
 					<Text style={[styles.titleText]}>{event.delivery_mode}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10, gap: 10 }}>
+			<View style={{padding: 10, gap: 10}}>
 				<Double
 					item={{
 						title: 'Start Date',
@@ -113,24 +108,20 @@ const CPDEventBox: FC<{ event: CPDEvent }> = ({ event }) => {
 			</View>
 
 			{event.attended_event === 'yes' && (
-				<View style={{ padding: 10 }}>
-					<View style={[globalStyles.column, { gap: 10 }]}>
+				<View style={{padding: 10}}>
+					<View style={[globalStyles.column, {gap: 10}]}>
 						<View className='flex flex-row justify-between'>
-							<View style={{ width: width * 0.46 }}>
-								<View style={[globalStyles.column, { gap: 10 }]}>
+							<View style={{width: width * 0.46}}>
+								<View style={[globalStyles.column, {gap: 10}]}>
 									<Text style={styles.mutedText}>Event Code</Text>
 									<Text style={[styles.titleText]}>{event.event_token}</Text>
 								</View>
 							</View>
-							<View style={{ width: width * 0.46 }}>
-								<View style={[{ gap: 10 }]}>
+							<View style={{width: width * 0.46}}>
+								<View style={[{gap: 10}]}>
 									{event.token_redeemed === 'no' ? (
-										<View style={{ height: 'auto' }}>
-											<Button
-												mode='contained'
-												style={styles.button}
-												onPress={handleSubmit}
-												loading={isPending}>
+										<View style={{height: 'auto'}}>
+											<Button mode='contained' style={styles.button} onPress={handleSubmit} loading={isPending}>
 												Claim
 											</Button>
 										</View>
@@ -140,23 +131,9 @@ const CPDEventBox: FC<{ event: CPDEvent }> = ({ event }) => {
 												width: width * 0.42,
 												gap: 5,
 											}}>
-											<Badge
-												size='lg'
-												variant='solid'
-												action='success'
-												ml='$1'
-												p='$2'>
+											<Badge size='lg' variant='solid' action='success' ml='$1' p='$2'>
 												<BadgeText>Points Awarded</BadgeText>
-												<BadgeIcon
-													as={() => (
-														<Icon
-															source='check-decagram-outline'
-															size={20}
-															color='green'
-														/>
-													)}
-													ml='$1'
-												/>
+												<BadgeIcon as={() => <Icon source='check-decagram-outline' size={20} color='green' />} ml='$1' />
 											</Badge>
 										</View>
 									)}
@@ -175,8 +152,8 @@ const CPDEventsComponent: FC<{
 	events: CPDEvent[];
 	refresh: () => void;
 	isRefetching: boolean;
-}> = ({ events, refresh, isRefetching }) => {
-	const { search, handleSearch } = useSearch();
+}> = ({events, refresh, isRefetching}) => {
+	const {search, handleSearch} = useSearch();
 
 	const items = useMemo(
 		() =>
@@ -184,10 +161,7 @@ const CPDEventsComponent: FC<{
 				(item) =>
 					item.activity.toLowerCase().includes(search.toLowerCase()) ||
 					item.event_title.toLowerCase().includes(search.toLowerCase()) ||
-					dayjs(new Date(item.event_start_date))
-						.format('YYYY-MM-DD')
-						.toLowerCase()
-						.includes(search.toLowerCase())
+					dayjs(new Date(item.event_start_date)).format('YYYY-MM-DD').toLowerCase().includes(search.toLowerCase())
 			),
 		[search, events]
 	);
@@ -200,15 +174,16 @@ const CPDEventsComponent: FC<{
 				style={styles.searchBar}
 			/>
 
-			<FlatList
+			<FlashList
 				data={items}
-				renderItem={({ item }) => <CPDEventBox event={item} />}
+				renderItem={({item}) => <CPDEventBox event={item} />}
 				keyExtractor={(_item, index) => '' + index}
 				onRefresh={refresh}
 				refreshing={isRefetching}
 				ListEmptyComponent={
 					<EmptyList message='No CPD events found. If you think this is an error, please retry later. If this persists, please contact support.' />
 				}
+				estimatedItemSize={150}
 			/>
 		</View>
 	);

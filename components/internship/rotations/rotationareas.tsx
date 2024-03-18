@@ -1,16 +1,18 @@
+import {FlashList} from '@shopify/flash-list';
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { useFetchedRotationAreas } from '../../../providers/rotationareas';
+import {StyleSheet, View} from 'react-native';
+import {useFetchedRotationAreas} from '../../../providers/rotationareas';
 import globalStyles from '../../../styles/global';
 import RotationAreaBox from './rotationareabox';
 
 const RotationAreasComponent = () => {
-	const { areas } = useFetchedRotationAreas();
+	const {areas} = useFetchedRotationAreas();
 	return (
 		<View style={globalStyles.container}>
-			<FlatList
+			<FlashList
 				data={areas?.rotation_areas || []}
-				renderItem={({ item }) => <RotationAreaBox area={item} />}
+				estimatedItemSize={150}
+				renderItem={({item}) => <RotationAreaBox area={item} />}
 			/>
 		</View>
 	);

@@ -1,8 +1,9 @@
-import React, { FC, useMemo } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import { KnowledgeBase } from '../../models/knowledgebase';
-import { useSearch } from '../../providers/search';
+import {FlashList} from '@shopify/flash-list';
+import React, {FC, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Searchbar} from 'react-native-paper';
+import {KnowledgeBase} from '../../models/knowledgebase';
+import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 import KnowledgeBox from './knowbox';
 
@@ -10,8 +11,8 @@ const KnowledgeComponent: FC<{
 	items: KnowledgeBase[];
 	refetch: () => void;
 	isRefetching: boolean;
-}> = ({ items, refetch, isRefetching }) => {
-	const { search, handleSearch } = useSearch();
+}> = ({items, refetch, isRefetching}) => {
+	const {search, handleSearch} = useSearch();
 
 	const filtered = useMemo(
 		() =>
@@ -24,18 +25,14 @@ const KnowledgeComponent: FC<{
 	);
 	return (
 		<View style={globalStyles.container}>
-			<Searchbar
-				placeholder='Start typing...'
-				onChangeText={handleSearch}
-				value={search}
-				style={styles.searchBar}
-			/>
-			<FlatList
+			<Searchbar placeholder='Start typing...' onChangeText={handleSearch} value={search} style={styles.searchBar} />
+			<FlashList
 				data={filtered}
-				renderItem={({ item }) => <KnowledgeBox box={item} />}
+				renderItem={({item}) => <KnowledgeBox box={item} />}
 				keyExtractor={(_, index) => String(index)}
 				onRefresh={refetch}
 				refreshing={isRefetching}
+				estimatedItemSize={150}
 			/>
 		</View>
 	);

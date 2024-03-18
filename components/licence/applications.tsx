@@ -1,18 +1,20 @@
 import dayjs from 'dayjs';
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
-import { currencyFormatter } from '../../helpers/currency-formatter';
-import { LicenceApplication } from '../../models/licenceapplications';
+import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {currencyFormatter} from '../../helpers/currency-formatter';
+import {LicenceApplication} from '../../models/licenceapplications';
 import globalStyles from '../../styles/global';
-import { InternshipItem, InternshipItemDouble } from '../internship/history/applications';
+import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
 import EmptyList from '../shared/EmptyList';
 // import ActionBottomLicence from './actionbottomlicence';
-import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
-import { useAtom } from 'jotai';
-import { licenceApplicationAtom } from '../../atoms/licence';
+import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
+import {FlashList} from '@shopify/flash-list';
+import {useAtom} from 'jotai';
+import {licenceApplicationAtom} from '../../atoms/licence';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const Application: FC<{
 	application: LicenceApplication;
@@ -33,7 +35,7 @@ const Application: FC<{
 
 				{application?.workstation_name !== 'DIASPORA' && (
 					<InternshipItem availableWidth={availableWidth} title='Employer' content={application.employer} />
-				)}‚
+				)}
 
 				<InternshipItem
 					availableWidth={availableWidth}
@@ -91,33 +93,36 @@ const LicenceApplicationsComponent: FC<{
 	}, []);
 
 	return (
-		<BottomSheetModalProvider>
-			<View style={globalStyles.container}>
-				<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
-					<View style={styles.bottomSheet}>
-						<BottomSheetView style={[styles.contentContainer]}>
-							<PayForApplication item={item || null} />
-						</BottomSheetView>
+		<GestureHandlerRootView style={{flex: 1}}>
+			<BottomSheetModalProvider>
+				<View style={globalStyles.container}>
+					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
+						<View style={styles.bottomSheet}>
+							<BottomSheetView style={[styles.contentContainer]}>
+								<PayForApplication item={item || null} />
+							</BottomSheetView>
 
-						<View style={[styles.contentContainer]}>
-							<DownloadInvoice item={item || null} />
+							<View style={[styles.contentContainer]}>
+								<DownloadInvoice item={item || null} />
+							</View>
+
+							<BottomSheetView style={[styles.contentContainer]}>
+								<DownloadReceipt item={item || null} />
+							</BottomSheetView>
 						</View>
-
-						<BottomSheetView style={[styles.contentContainer]}>
-							<DownloadReceipt item={item || null} />
-						</BottomSheetView>
-					</View>
-				</BottomSheetModal>
-				<FlatList
-					data={applications}
-					renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
-					onRefresh={refetch}
-					refreshing={isRefetching}
-					keyExtractor={(_, index) => String(index)}
-					ListEmptyComponent={<EmptyList message='Could not find any licence applications in your account' />}
-				/>
-			</View>
-		</BottomSheetModalProvider>
+					</BottomSheetModal>
+					<FlashList
+						data={applications}
+						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						onRefresh={refetch}
+						refreshing={isRefetching}
+						keyExtractor={(_, index) => String(index)}
+						estimatedItemSize={150}
+						ListEmptyComponent={<EmptyList message='Could not find any licence applications in your account' />}
+					/>
+				</View>
+			</BottomSheetModalProvider>
+		</GestureHandlerRootView>
 	);
 };
 

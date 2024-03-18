@@ -1,13 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import {StatusBar} from 'expo-status-bar';
+import React, {useEffect, useState} from 'react';
+import {View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 import ApplyPrivateComponent from '../../components/privatepractice/apply';
-import { primaryColor } from '../../constants/Colors';
+import {primaryColor} from '../../constants/Colors';
 import useCounties from '../../services/general/counties';
 import globalStyles from '../../styles/global';
 import ApplyOutComponent from '../../components/outmigration/apply';
-import { countries } from 'countries-list';
+import {countries} from 'countries-list';
 import useAuthenticatedUser from '../../services/auth/authenticated';
 
 export interface DropDownItem {
@@ -16,7 +16,7 @@ export interface DropDownItem {
 }
 
 const OutMigrationApply = () => {
-	const { data: user } = useAuthenticatedUser();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 	const [names, setNames] = useState<DropDownItem[]>([]);
 
 	useEffect(() => {
@@ -28,8 +28,8 @@ const OutMigrationApply = () => {
 		setNames(item);
 	}, []);
 
-	const { data: counties = [], isLoading } = useCounties();
-	if (isLoading) {
+	const {data: counties = [], isLoading} = useCounties();
+	if (isLoading || loadingUser) {
 		return (
 			<View style={[globalStyles.container, globalStyles.center]}>
 				<ActivityIndicator size='large' color={primaryColor} />
@@ -38,11 +38,7 @@ const OutMigrationApply = () => {
 	}
 	return (
 		<>
-			<ApplyOutComponent
-				counties={counties}
-				countries={names}
-				user={user || {}}
-			/>
+			<ApplyOutComponent counties={counties} countries={names} user={user || {}} />
 			<StatusBar style='light' />
 		</>
 	);

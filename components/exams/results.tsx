@@ -1,61 +1,62 @@
-import React, { FC } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Divider } from 'react-native-paper';
-import { ExamResult } from '../../models/results';
+import {FlashList} from '@shopify/flash-list';
+import React, {FC} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Divider} from 'react-native-paper';
+import {ExamResult} from '../../models/results';
 import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
 
-const ResultBox: FC<{ result: ExamResult }> = ({ result }) => {
+const ResultBox: FC<{result: ExamResult}> = ({result}) => {
 	return (
 		<View style={styles.card}>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Name</Text>
 					<Text style={styles.titleText}>{result.full_name}</Text>
 					<Divider />
 				</View>
 			</View>
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Series</Text>
 					<Text style={styles.titleText}>{result.series}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Training Institution</Text>
 					<Text style={styles.titleText}>{result.training_institution}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Cadre</Text>
 					<Text style={styles.titleText}>{result.cadre}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Grading Method</Text>
 					<Text style={styles.titleText}>{result.grading_method}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Score Paper One</Text>
 					<Text style={styles.titleText}>{result.score_paper_one}</Text>
 				</View>
 			</View>
 
-			<View style={{ padding: 10 }}>
-				<View style={[globalStyles.column, { gap: 10 }]}>
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Score Paper Two</Text>
 					<Text style={styles.titleText}>{result.score_paper_two}</Text>
 				</View>
@@ -68,18 +69,17 @@ const ExamResultsComponent: FC<{
 	results: ExamResult[];
 	refresh: () => {};
 	isRefetching: boolean;
-}> = ({ results, refresh, isRefetching }) => {
+}> = ({results, refresh, isRefetching}) => {
 	return (
 		<View style={globalStyles.container}>
-			<FlatList
+			<FlashList
 				data={results}
-				renderItem={({ item }) => <ResultBox result={item} />}
+				renderItem={({item}) => <ResultBox result={item} />}
 				keyExtractor={(item, index) => '' + index}
 				onRefresh={refresh}
 				refreshing={isRefetching}
-				ListEmptyComponent={
-					<EmptyList message='Could not find any exam results in your account.' />
-				}
+				ListEmptyComponent={<EmptyList message='Could not find any exam results in your account.' />}
+				estimatedItemSize={150}
 			/>
 		</View>
 	);

@@ -1,25 +1,19 @@
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	FlatList,
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Icon } from 'react-native-paper';
-import { CPDCategory } from '../../models/cpdcategory';
-import { useCPDCategoryFetched } from '../../providers/cpdcategories';
+import {FlashList} from '@shopify/flash-list';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Icon} from 'react-native-paper';
+import {CPDCategory} from '../../models/cpdcategory';
+import {useCPDCategoryFetched} from '../../providers/cpdcategories';
 import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
 
-const Category: FC<{ category: CPDCategory }> = ({ category }) => {
-	const { width, height } = useWindowDimensions();
+const Category: FC<{category: CPDCategory}> = ({category}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
-	const { handleCategoryId } = useCPDCategoryFetched();
+	const {handleCategoryId} = useCPDCategoryFetched();
 
 	const router = useRouter();
 
@@ -33,17 +27,12 @@ const Category: FC<{ category: CPDCategory }> = ({ category }) => {
 			style={[
 				styles.box,
 				{
-					
 					backgroundColor: '#dcf0fa',
 					flex: 1,
 				},
 			]}
 			onPress={() => handlePush(category)}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
 						globalStyles.column,
@@ -68,17 +57,18 @@ const SelfReportingCategoriesComponent: FC<{
 	categories: CPDCategory[];
 	refresh: () => void;
 	isRefreshing: boolean;
-}> = ({ categories, refresh, isRefreshing }) => {
+}> = ({categories, refresh, isRefreshing}) => {
 	return (
-		<FlatList
+		<FlashList
 			data={categories}
-			renderItem={({ item }) => <Category category={item} />}
+			renderItem={({item}) => <Category category={item} />}
 			keyExtractor={(item) => item.category_id}
 			refreshing={isRefreshing}
 			onRefresh={refresh}
 			ListEmptyComponent={
 				<EmptyList message='Could not load CPD categories. Please check your internet connection and try again.' />
 			}
+			estimatedItemSize={150}
 		/>
 	);
 };
