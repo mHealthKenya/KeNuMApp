@@ -73,14 +73,6 @@ const PersonalDetailsComponent = () => {
 		[status]
 	);
 
-	if (isLoading) {
-		return (
-			<View className='flex flex-1 justify-center items-center'>
-				<ActivityIndicator />
-			</View>
-		);
-	}
-
 	return (
 		<View className='flex flex-1'>
 			<View className='mx-5'>
@@ -91,9 +83,7 @@ const PersonalDetailsComponent = () => {
 					<View className='p-2 mb-4 items-center'>
 						<ProgressTrack progress={1 / 3} />
 					</View>
-					<View
-						className='p-2 flex flex-grow'
-						style={styles.status}>
+					<View className='p-2 flex flex-grow' style={styles.status}>
 						<DropDownPicker
 							items={marital || []}
 							value={maritalStatus}
@@ -114,6 +104,7 @@ const PersonalDetailsComponent = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={isLoading}
 						/>
 					</View>
 					<View className='p-2'>

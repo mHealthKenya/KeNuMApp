@@ -1,27 +1,25 @@
-import {useAtom} from 'jotai';
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import { useRouter } from 'expo-router';
+import { useAtom } from 'jotai';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
-	ActivityIndicator,
 	KeyboardAvoidingView,
 	Platform,
 	ScrollView,
 	StyleSheet,
 	View,
-	useWindowDimensions,
+	useWindowDimensions
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Button, Text, TextInput, TextInputProps} from 'react-native-paper';
-import {DropDownItem} from '../../../app/(outmigration)/applyoutmigration';
-import {employmentAtom} from '../../../atoms/employment';
-import {period} from '../../../data/outmigration';
+import { Button, Text, TextInput, TextInputProps } from 'react-native-paper';
+import { DropDownItem } from '../../../app/(outmigration)/applyoutmigration';
+import { employmentAtom } from '../../../atoms/employment';
+import useCounties from '../../../services/general/counties';
+import useWorkStations from '../../../services/general/workstations';
 import useEmployers from '../../../services/licence/employers';
+import useEmploymentPeriods from '../../../services/outmigration/employmentperiods';
 import useEmploymentStatus from '../../../services/outmigration/employmentstatus';
 import useWorkStationTypes from '../../../services/outmigration/workstations';
 import ProgressTrack from '../../shared/Progress';
-import useCounties from '../../../services/general/counties';
-import useWorkStations from '../../../services/general/workstations';
-import useEmploymentPeriods from '../../../services/outmigration/employmentperiods';
-import {useRouter} from 'expo-router';
 
 const theme = {
 	roundness: 12,
@@ -183,13 +181,13 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 		router.push('/outmigrationdetails');
 	};
 
-	if (loadingStatus || loadingCounties || loadingEmployers || loadingPeriods || loadingWorkStationTypes) {
-		return (
-			<View className='flex flex-1 justify-center items-center'>
-				<ActivityIndicator />
-			</View>
-		);
-	}
+	// if (loadingStatus || loadingCounties || loadingEmployers || loadingPeriods || loadingWorkStationTypes) {
+	// 	return (
+	// 		<View className='flex flex-1 justify-center items-center'>
+	// 			<ActivityIndicator />
+	// 		</View>
+	// 	);
+	// }
 
 	return (
 		<View
@@ -230,6 +228,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 									borderColor: statusDrop ? '#0445b5' : '#0345B53D',
 								},
 							]}
+							loading={loadingStatus}
 							listMode='SCROLLVIEW'
 						/>
 					</View>
@@ -255,6 +254,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingEmployers}
 						/>
 					</View>
 
@@ -279,6 +279,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingWorkStationTypes}
 						/>
 					</View>
 
@@ -304,37 +305,37 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingCounties}
 						/>
 					</View>
 
-					{loadingWorkStations ? <ActivityIndicator /> : null}
+					{/* {loadingWorkStations ? <ActivityIndicator /> : null} */}
 
-					{workStations ? (
-						<View className='p-2' style={styles.county}>
-							<DropDownPicker
-								items={countyWorkStations || []}
-								value={station}
-								searchable
-								zIndex={3000}
-								setValue={setStation}
-								multiple={false}
-								open={countyStationDrop}
-								placeholder='Select Work Station'
-								placeholderStyle={{
-									fontSize: 16,
-									color: '#7b7e81',
-								}}
-								setOpen={setCountyStationDrop}
-								style={[
-									styles.input,
-									{
-										borderColor: stationDrop ? '#0445b5' : '#0345B53D',
-									},
-								]}
-								listMode='SCROLLVIEW'
-							/>
-						</View>
-					) : null}
+					<View className='p-2' style={styles.station}>
+						<DropDownPicker
+							items={countyWorkStations || []}
+							value={station}
+							searchable
+							zIndex={3000}
+							setValue={setStation}
+							multiple={false}
+							open={countyStationDrop}
+							placeholder='Select Work Station'
+							placeholderStyle={{
+								fontSize: 16,
+								color: '#7b7e81',
+							}}
+							setOpen={setCountyStationDrop}
+							style={[
+								styles.input,
+								{
+									borderColor: stationDrop ? '#0445b5' : '#0345B53D',
+								},
+							]}
+							listMode='SCROLLVIEW'
+							loading={loadingWorkStations}
+						/>
+					</View>
 
 					<View className='p-2' style={styles.periodE}>
 						<DropDownPicker
@@ -357,6 +358,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingPeriods}
 						/>
 					</View>
 
@@ -381,6 +383,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingPeriods}
 						/>
 					</View>
 

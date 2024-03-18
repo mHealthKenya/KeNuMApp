@@ -32,7 +32,6 @@ const OutmigrationStepComponent = () => {
 	const router = useRouter();
 
 	const [outmigration, setOutmigration] = useAtom(outmigrationAtom);
-	const {height} = useWindowDimensions();
 	const {data: countries, isLoading: loadingCountries} = useCountries();
 	const {data: reasons, isLoading: loadingReasons} = useOutmigrationReasons();
 	const {data: returning, isLoading: loadingReturning} = usePlanningToReturn();
@@ -178,14 +177,6 @@ const OutmigrationStepComponent = () => {
 		};
 	}, [submit]);
 
-	if (loadingCountries || loadingReasons || loadingReturning) {
-		return (
-			<View className='flex flex-1 justify-center items-center'>
-				<ActivityIndicator />
-			</View>
-		);
-	}
-
 	return (
 		<View
 			style={{
@@ -228,6 +219,7 @@ const OutmigrationStepComponent = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingReasons}
 						/>
 					</View>
 
@@ -253,6 +245,7 @@ const OutmigrationStepComponent = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingCountries}
 						/>
 					</View>
 
@@ -277,6 +270,7 @@ const OutmigrationStepComponent = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={loadingReturning}
 						/>
 					</View>
 
@@ -301,6 +295,7 @@ const OutmigrationStepComponent = () => {
 								},
 							]}
 							listMode='SCROLLVIEW'
+							loading={isLoading}
 						/>
 					</View>
 
