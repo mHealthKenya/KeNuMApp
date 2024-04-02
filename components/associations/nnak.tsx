@@ -33,7 +33,7 @@ const chapters = [
 	'7. Disaster and Emergency Chapter',
 	'8. Pediatric Nurses Chapter',
 	'9. Registered Nurse Anaesthetists Chapter',
-	'10. Eastern Central Southern African College of Nursing(ECSACON)',
+	'10.ECSACON',
 	'11. Infection Control Nurses Chapter',
 	'12. Leadership for Change (LFC) Chapter',
 	'13. Private Nurse Practitioners Chapter',
