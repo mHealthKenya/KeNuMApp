@@ -1,8 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
+import {ScrollView, View} from 'react-native';
 import globalStyles from '../../styles/global';
 import InternshipBox from '../internship/internshipbox';
-import { InternBox } from './series';
+import {InternBox} from './series';
 
 const history: InternBox[] = [
 	{
@@ -33,11 +33,11 @@ const history: InternBox[] = [
 const ExamAllComponent = () => {
 	return (
 		<View style={globalStyles.container}>
-			<View style={[{ flex: 0.7 }]}>
+			<ScrollView style={[{flex: 0.7}]}>
 				{history.map((box) => (
 					<InternshipBox box={box} key={box.title} />
 				))}
-			</View>
+			</ScrollView>
 		</View>
 	);
 };

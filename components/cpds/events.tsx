@@ -9,6 +9,9 @@ import {useSearch} from '../../providers/search';
 import useClaim from '../../services/cpds/claim';
 import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
+import AccordionShared from '../shared/Accordion';
+import {truncateText} from '../../helpers/truncate';
+import {DateFormat} from '../../enums/date';
 
 interface Item {
 	title: string;
@@ -54,7 +57,7 @@ const CPDEventBox: FC<{event: CPDEvent}> = ({event}) => {
 	};
 
 	return (
-		<View style={styles.card}>
+		<View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Event</Text>
@@ -161,7 +164,7 @@ const CPDEventsComponent: FC<{
 				(item) =>
 					item.activity.toLowerCase().includes(search.toLowerCase()) ||
 					item.event_title.toLowerCase().includes(search.toLowerCase()) ||
-					dayjs(new Date(item.event_start_date)).format('YYYY-MM-DD').toLowerCase().includes(search.toLowerCase())
+					dayjs(new Date(item.event_start_date)).format(DateFormat.WITH_DAY).toLowerCase().includes(search.toLowerCase())
 			),
 		[search, events]
 	);
@@ -176,7 +179,11 @@ const CPDEventsComponent: FC<{
 
 			<FlashList
 				data={items}
-				renderItem={({item}) => <CPDEventBox event={item} />}
+				renderItem={({item}) => (
+					<AccordionShared title={<Title item={item} />}>
+						<CPDEventBox event={item} />
+					</AccordionShared>
+				)}
 				keyExtractor={(_item, index) => '' + index}
 				onRefresh={refresh}
 				refreshing={isRefetching}
@@ -185,6 +192,24 @@ const CPDEventsComponent: FC<{
 				}
 				estimatedItemSize={150}
 			/>
+		</View>
+	);
+};
+
+const Title: FC<{item: CPDEvent}> = ({item}) => {
+	return (
+		<View className='flex flex-col gap-1'>
+			<View className='w-full flex'>
+				<Text>
+					{truncateText({
+						text: item.activity,
+						length: 50,
+					})}
+				</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='font-extralight italic'>{dayjs(new Date(item.event_start_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
 		</View>
 	);
 };

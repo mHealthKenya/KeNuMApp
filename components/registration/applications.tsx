@@ -3,7 +3,7 @@ import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
 import {registrationAtom} from '../../atoms/registration';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {RegistrationApplication} from '../../models/regapplications';
@@ -14,6 +14,7 @@ import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import AccordionShared from '../shared/Accordion';
 
 const Application: FC<{
 	application: RegistrationApplication;
@@ -25,7 +26,7 @@ const Application: FC<{
 
 	const availableWidth = dimension - 20;
 	return (
-		<Pressable style={[styles.card]} onPress={() => action(application)}>
+		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
 				<InternshipItem availableWidth={availableWidth} title='Cadre' content={application.cadre_desc} />
 				<InternshipItem availableWidth={availableWidth} title='Status' content={application.application_status} />
@@ -63,8 +64,6 @@ const RegistrationApplicationsComponent: FC<{
 	refetch: () => void;
 	isRefetching: boolean;
 }> = ({applications, refetch, isRefetching}) => {
-	const [show, setShow] = useState(false);
-
 	const [item, setItem] = useAtom(registrationAtom);
 
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -104,7 +103,11 @@ const RegistrationApplicationsComponent: FC<{
 					</BottomSheetModal>
 					<FlashList
 						data={applications}
-						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						renderItem={({item}) => (
+							<AccordionShared title={<Title item={item} />}>
+								<Application application={item} action={() => handleItem(item)} />
+							</AccordionShared>
+						)}
 						keyExtractor={(_, index) => String(index)}
 						ListEmptyComponent={<EmptyList message='Could not find any registration applications in your account' />}
 						estimatedItemSize={150}
@@ -118,6 +121,19 @@ const RegistrationApplicationsComponent: FC<{
 };
 
 export default RegistrationApplicationsComponent;
+
+const Title: FC<{item: RegistrationApplication}> = ({item}) => {
+	return (
+		<View className='flex flex-col justify-between gap-2'>
+			<View className='w-full overflow-auto'>
+				<Text className='tracking-wide capitalize'>{item.cadre_desc}</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='italic font-extralight'>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	card: {

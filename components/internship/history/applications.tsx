@@ -13,6 +13,7 @@ import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import AccordionShared from '../../shared/Accordion';
 
 export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',
@@ -147,7 +148,7 @@ const Application: FC<{
 
 	const availableWidth = dimension - 20;
 	return (
-		<Pressable style={[styles.card]} onPress={() => action(application)}>
+		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
 				<InternshipItem availableWidth={availableWidth} title='Center' content={application.internship_center} />
 				<InternshipItem availableWidth={availableWidth} title='Cadre' content={application.cadre_desc} />
@@ -243,7 +244,11 @@ const InternshipApplicationsComponent: FC<{
 					/>
 					<FlashList
 						data={filtered}
-						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						renderItem={({item}) => (
+							<AccordionShared title={<Title item={item} />}>
+								<Application application={item} action={() => handleItem(item)} />
+							</AccordionShared>
+						)}
 						keyExtractor={(item) => item.internship_id}
 						showsVerticalScrollIndicator={false}
 						onRefresh={() => refresh()}
@@ -258,6 +263,19 @@ const InternshipApplicationsComponent: FC<{
 };
 
 export default InternshipApplicationsComponent;
+
+const Title: FC<{item: InternshipApplication}> = ({item}) => {
+	return (
+		<View className='flex flex-col justify-between gap-2'>
+			<View className='w-full overflow-auto'>
+				<Text className='tracking-wide'>{item.internship_center}</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='italic font-extralight'>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	box: {

@@ -1,27 +1,24 @@
-import { Image } from 'expo-image';
-import React, { useState } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Avatar, Button } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
-import { useAuth } from '../../providers/auth';
+import {Image} from 'expo-image';
+import React, {useState} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Avatar, Button} from 'react-native-paper';
+import {primaryColor} from '../../constants/Colors';
+import {useAuth} from '../../providers/auth';
 import globalStyles from '../../styles/global';
-import { useRouter } from 'expo-router';
+import {useRouter} from 'expo-router';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 
 const DrawerHeader = () => {
-	const { height, width } = useWindowDimensions();
+	const {height, width} = useWindowDimensions();
 
 	const dimension = Math.min(width, height);
 
 	const availableWidth = dimension - 30;
 
 	const usableWidth = (availableWidth - 20) / 3;
-	const { user, logout } = useAuth();
+	const {user, logout} = useAuth();
+
+	const {data, isPending} = useAuthenticatedUser();
 
 	const [imageError, setImageError] = useState(false);
 
@@ -42,7 +39,7 @@ const DrawerHeader = () => {
 					borderBottomRightRadius: 10,
 				},
 			]}>
-			{imageError ? (
+			{imageError && !isPending ? (
 				<View
 					style={[
 						globalStyles.column,
@@ -51,35 +48,30 @@ const DrawerHeader = () => {
 							gap: 10,
 						},
 					]}>
-					<Avatar.Icon
-						icon='cloud-upload-outline'
-						size={usableWidth * 0.7}
-						style={globalStyles.clearAvatar}
-					/>
-					<Button
-						mode='contained'
-						icon='upload'
-						style={styles.button}
-						onPress={() => router.push('/applyprivate')}>
+					<Button mode='contained' icon='upload' style={styles.button} onPress={() => router.push('/profile')}>
 						<Text style={styles.buttonText}>Upload Profile</Text>
 					</Button>
 				</View>
 			) : (
-				<Pressable onPress={() => router.push('/applyprivate')}>
-					<Image
-						source={{ uri: user?.ProfilePic }}
-						placeholder={blurhash}
-						transition={1000}
-						onError={toggleImageError}
-						style={{
-							width: usableWidth * 1.2,
-							height: usableWidth * 1.2,
-							borderRadius: (usableWidth * 1.2) / 2,
-						}}
-					/>
+				<Pressable onPress={() => router.push('/profile')}>
+					{!isPending ? (
+						<Image
+							source={{uri: data?.ProfilePic}}
+							placeholder={blurhash}
+							transition={1000}
+							onError={toggleImageError}
+							style={{
+								width: usableWidth * 1.2,
+								height: usableWidth * 1.2,
+								borderRadius: (usableWidth * 1.2) / 2,
+							}}
+						/>
+					) : (
+						<Avatar.Icon icon='cloud-upload-outline' size={usableWidth * 0.7} style={globalStyles.clearAvatar} />
+					)}
 				</Pressable>
 			)}
-			<View style={{ marginTop: 10 }}>
+			<View style={{marginTop: 10}}>
 				<Text style={styles.nameText}>{user?.Name}</Text>
 			</View>
 		</View>

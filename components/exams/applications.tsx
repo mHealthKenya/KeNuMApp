@@ -3,7 +3,7 @@ import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
 import {examAtom} from '../../atoms/exam';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {ExamApplication} from '../../models/examapplications';
@@ -13,7 +13,10 @@ import EmptyList from '../shared/EmptyList';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import AccordionShared from '../shared/Accordion';
+import {useSearch} from '../../providers/search';
+import {Searchbar} from 'react-native-paper';
 
 const Application: FC<{
 	application: ExamApplication;
@@ -25,7 +28,7 @@ const Application: FC<{
 
 	const availableWidth = dimension - 20;
 	return (
-		<Pressable style={[styles.card]} onPress={() => action(application)}>
+		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
 				<InternshipItem availableWidth={availableWidth} title='Exam Series' content={application.exams_series} />
 				<InternshipItem availableWidth={availableWidth} title='Cadre' content={application.cadre} />
@@ -63,10 +66,9 @@ const ExamApplicationsComponent: FC<{
 	refetch: () => void;
 	isRefetching: boolean;
 }> = ({applications, refetch, isRefetching}) => {
-	const [show, setShow] = useState(false);
-
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
+	const {search, handleSearch} = useSearch();
 	const snapPoints = useMemo(() => ['25%', '50%'], []);
 
 	const handlePresentModal = useCallback(() => {
@@ -79,6 +81,16 @@ const ExamApplicationsComponent: FC<{
 
 	const [item, setItem] = useAtom(examAtom);
 
+	const items = useMemo(
+		() =>
+			applications.filter(
+				(item) =>
+					item.cadre.toLowerCase().includes(search.toLowerCase()) ||
+					item.exams_series.toLowerCase().includes(search.toLowerCase())
+			),
+		[search, applications]
+	);
+
 	const handleItem = (item: ExamApplication) => {
 		setItem(item);
 		handlePresentModal();
@@ -87,6 +99,12 @@ const ExamApplicationsComponent: FC<{
 		<GestureHandlerRootView style={{flex: 1}}>
 			<BottomSheetModalProvider>
 				<View style={globalStyles.container}>
+					<Searchbar
+						placeholder='Search by cadre or exam series'
+						onChangeText={handleSearch}
+						value={search}
+						style={styles.searchBar}
+					/>
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
 						<View style={styles.bottomSheet}>
 							<BottomSheetView style={[styles.contentContainer]}>
@@ -103,8 +121,12 @@ const ExamApplicationsComponent: FC<{
 						</View>
 					</BottomSheetModal>
 					<FlashList
-						data={applications}
-						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						data={items}
+						renderItem={({item}) => (
+							<AccordionShared title={<Title item={item} />}>
+								<Application application={item} action={() => handleItem(item)} />
+							</AccordionShared>
+						)}
 						keyExtractor={(_, index) => String(index)}
 						onRefresh={refetch}
 						refreshing={isRefetching}
@@ -118,6 +140,19 @@ const ExamApplicationsComponent: FC<{
 };
 
 export default ExamApplicationsComponent;
+
+const Title: FC<{item: ExamApplication}> = ({item}) => {
+	return (
+		<View className='flex flex-col gap-1'>
+			<View className='w-full overflow-auto'>
+				<Text className='tracking-wide'>{item.cadre}</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='italic font-extralight'>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	card: {
@@ -158,5 +193,12 @@ const styles = StyleSheet.create({
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'center',
+	},
+
+	searchBar: {
+		backgroundColor: '#dbe6f5',
+		margin: 5,
+		padding: 2,
+		borderRadius: 10,
 	},
 });

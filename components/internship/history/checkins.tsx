@@ -1,15 +1,18 @@
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Divider} from 'react-native-paper';
+import {Divider, Searchbar} from 'react-native-paper';
 import {CheckIns} from '../../../models/checkins';
 import globalStyles from '../../../styles/global';
 import EmptyList from '../../shared/EmptyList';
+import AccordionShared from '../../shared/Accordion';
+import {useSearch} from '../../../providers/search';
+import {DateFormat} from '../../../enums/date';
 
 const CheckinBox: FC<{checkin: CheckIns}> = ({checkin}) => {
 	return (
-		<View style={styles.card}>
+		<View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Internship Center</Text>
@@ -64,11 +67,33 @@ const CheckinHistoryComponent: FC<{
 	refresh: () => {};
 	isRefetching: boolean;
 }> = ({checkins, refresh, isRefetching}) => {
+	const {search, handleSearch} = useSearch();
+
+	const items = useMemo(
+		() =>
+			checkins.filter(
+				(item) =>
+					item.internship_center.toLowerCase().includes(search.toLowerCase()) ||
+					dayjs(new Date(item.checkin_date)).format(DateFormat.WITH_DAY).toLowerCase().includes(search.toLowerCase())
+			),
+		[checkins, search]
+	);
+
 	return (
 		<View style={globalStyles.container}>
+			<Searchbar
+				placeholder='Search by internship center or date'
+				onChangeText={handleSearch}
+				value={search}
+				style={styles.searchBar}
+			/>
 			<FlashList
-				data={checkins}
-				renderItem={({item}) => <CheckinBox checkin={item} />}
+				data={items}
+				renderItem={({item}) => (
+					<AccordionShared title={<Title item={item} />}>
+						<CheckinBox checkin={item} />
+					</AccordionShared>
+				)}
 				keyExtractor={(item) => item.checkin_id}
 				onRefresh={refresh}
 				refreshing={isRefetching}
@@ -80,6 +105,19 @@ const CheckinHistoryComponent: FC<{
 };
 
 export default CheckinHistoryComponent;
+
+const Title: FC<{item: CheckIns}> = ({item}) => {
+	return (
+		<View className='flex flex-col justify-between gap-2'>
+			<View className='w-full overflow-auto'>
+				<Text className='tracking-wide'>{item.internship_center}</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='italic font-extralight'>{dayjs(new Date(item.checkin_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	card: {
@@ -109,5 +147,12 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		letterSpacing: 2,
 		textTransform: 'capitalize',
+	},
+
+	searchBar: {
+		backgroundColor: '#dbe6f5',
+		margin: 5,
+		padding: 2,
+		borderRadius: 10,
 	},
 });

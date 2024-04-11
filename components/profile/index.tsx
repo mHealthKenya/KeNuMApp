@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
-import { Divider } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
-import { useAuth } from '../../providers/auth';
+import {ScrollView, View, useWindowDimensions} from 'react-native';
+import {ActivityIndicator, Divider} from 'react-native-paper';
+import {useAuth} from '../../providers/auth';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import ProfileHeader from './header';
 import ProfileItem from './item';
-import useAuthenticatedUser from '../../services/auth/authenticated';
+import {primaryColor} from '../../constants/Colors';
+import globalStyles from '../../styles/global';
 
 interface Profile {
 	title: string;
@@ -39,57 +40,47 @@ const profileItems: Profile[] = [
 ];
 
 const ProfileComponent = () => {
-	const { user } = useAuth();
+	const {data, isLoading} = useAuthenticatedUser();
 
-	const { data } = useAuthenticatedUser();
+	const {height} = useWindowDimensions();
 
-	const { height } = useWindowDimensions();
+	if (isLoading) {
+		return (
+			<View style={[globalStyles.container, globalStyles.center]}>
+				<ActivityIndicator size='large' color={primaryColor} />
+			</View>
+		);
+	}
 
 	return (
-		<View style={{ flex: 1 }}>
-			<ProfileHeader
-				user={data || {}}
-				backgroundColor='#0445b5'
-				textColor='#FFF'
-				buttonColor='#FFF'
-				buttonTextColor='#0445b5'
-			/>
-			<View
-				style={[
-					{
-						height: height * 0.5,
-						flex: 1,
-						marginTop: 5,
-						justifyContent: 'space-evenly',
-					},
-				]}>
-				{profileItems.map((item, index) => (
-					<View key={index}>
-						<ProfileItem title={item.title} path={item.path} />
-						{index !== profileItems.length - 1 && <Divider />}
-					</View>
-				))}
-			</View>
+		<View style={{flex: 1}}>
+			<ScrollView style={{flex: 1}}>
+				<ProfileHeader
+					user={data}
+					backgroundColor='#0445b5'
+					textColor='#FFF'
+					buttonColor='#FFF'
+					buttonTextColor='#0445b5'
+				/>
+				<View
+					style={[
+						{
+							height: height * 0.5,
+							flex: 1,
+							marginTop: 5,
+							justifyContent: 'space-evenly',
+						},
+					]}>
+					{profileItems.map((item, index) => (
+						<View key={index}>
+							<ProfileItem title={item.title} path={item.path} />
+							{index !== profileItems.length - 1 && <Divider />}
+						</View>
+					))}
+				</View>
+			</ScrollView>
 		</View>
 	);
 };
 
 export default ProfileComponent;
-
-const styles = StyleSheet.create({
-	center: {
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	titleText: {
-		textAlign: 'center',
-		fontSize: 24,
-		textTransform: 'capitalize',
-		color: '#FFF',
-	},
-
-	button: {
-		borderRadius: 8,
-		backgroundColor: primaryColor,
-	},
-});

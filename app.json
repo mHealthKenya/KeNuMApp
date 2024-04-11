@@ -19,7 +19,8 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ikode.KeNuMApp"
     },
     "android": {
       "adaptiveIcon": {

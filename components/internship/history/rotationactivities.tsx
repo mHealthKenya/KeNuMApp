@@ -1,15 +1,18 @@
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {Divider} from 'react-native-paper';
+import {Divider, Searchbar} from 'react-native-paper';
 import {RotationActivity} from '../../../models/rotationactivity';
 import globalStyles from '../../../styles/global';
 import EmptyList from '../../shared/EmptyList';
+import AccordionShared from '../../shared/Accordion';
+import {useSearch} from '../../../providers/search';
+import {DateFormat} from '../../../enums/date';
 
 const RotationsBox: FC<{rotation: RotationActivity}> = ({rotation}) => {
 	return (
-		<View style={styles.card}>
+		<View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Internship Center</Text>
@@ -65,11 +68,34 @@ const RotationActivitiesComponent: FC<{
 	refresh: () => {};
 	isRefetching: boolean;
 }> = ({rotation, refresh, isRefetching}) => {
+	const {search, handleSearch} = useSearch();
+
+	const items = useMemo(
+		() =>
+			rotation.filter(
+				(item) =>
+					item.rotation_area.toLowerCase().includes(search.toLowerCase()) ||
+					item.activity_notes.toLowerCase().includes(search.toLowerCase()) ||
+					dayjs(new Date(item.activity_date)).format(DateFormat.WITH_DAY).toLowerCase().includes(search.toLowerCase())
+			),
+		[rotation, search]
+	);
+
 	return (
 		<View style={globalStyles.container}>
+			<Searchbar
+				placeholder='Search by notes, rotation area, or date'
+				onChangeText={handleSearch}
+				value={search}
+				style={styles.searchBar}
+			/>
 			<FlashList
-				data={rotation}
-				renderItem={({item}) => <RotationsBox rotation={item} />}
+				data={items}
+				renderItem={({item}) => (
+					<AccordionShared title={<Title item={item} />}>
+						<RotationsBox rotation={item} />
+					</AccordionShared>
+				)}
 				keyExtractor={(item) => item.rotation_activity_id}
 				onRefresh={refresh}
 				refreshing={isRefetching}
@@ -81,6 +107,19 @@ const RotationActivitiesComponent: FC<{
 };
 
 export default RotationActivitiesComponent;
+
+const Title: FC<{item: RotationActivity}> = ({item}) => {
+	return (
+		<View className='flex flex-col justify-between gap-2'>
+			<View className='w-full overflow-auto'>
+				<Text className='tracking-wide'>{item.rotation_area}</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='italic font-extralight'>{dayjs(new Date(item.activity_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	card: {
@@ -110,5 +149,12 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		letterSpacing: 2,
 		textTransform: 'capitalize',
+	},
+
+	searchBar: {
+		backgroundColor: '#dbe6f5',
+		margin: 5,
+		padding: 2,
+		borderRadius: 10,
 	},
 });

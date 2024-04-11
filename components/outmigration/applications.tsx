@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
 import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
-import {Divider, List} from 'react-native-paper';
+import {Divider, List, Searchbar} from 'react-native-paper';
 import {outmigrationGenAtom} from '../../atoms/outmigration';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {OutmigrationApplication} from '../../models/outmigrations';
@@ -15,6 +15,8 @@ import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import AccordionShared from '../shared/Accordion';
+import {useSearch} from '../../providers/search';
 
 const extractor = (t: string) => {
 	let name = '';
@@ -126,7 +128,7 @@ const Application: FC<{
 	const availableWidth = dimension - 20;
 
 	return (
-		<Pressable style={[styles.card]} onPress={() => action(application)}>
+		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
 				<InternshipItem availableWidth={availableWidth} title='Country' content={application.country_name} />
 
@@ -175,6 +177,8 @@ const OutmigrationApplicationsComponent: FC<{
 
 	const snapPoints = useMemo(() => ['25%', '50%'], []);
 
+	const {search, handleSearch} = useSearch();
+
 	const handlePresentModal = useCallback(() => {
 		bottomSheetModalRef.current?.present();
 	}, []);
@@ -188,8 +192,20 @@ const OutmigrationApplicationsComponent: FC<{
 	const handleSheetChanges = useCallback((index: number) => {
 		console.log('handle sheet changes', index);
 	}, []);
+
+	const items = useMemo(
+		() => applications.filter((item) => item.country_name.toLowerCase().includes(search.toLowerCase())),
+		[search, applications]
+	);
+
 	return (
 		<GestureHandlerRootView style={{flex: 1}}>
+			<Searchbar
+				placeholder='Search by country name'
+				onChangeText={handleSearch}
+				value={search}
+				style={styles.searchBar}
+			/>
 			<BottomSheetModalProvider>
 				<View style={globalStyles.container}>
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
@@ -208,8 +224,12 @@ const OutmigrationApplicationsComponent: FC<{
 						</View>
 					</BottomSheetModal>
 					<FlashList
-						data={applications}
-						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						data={items}
+						renderItem={({item}) => (
+							<AccordionShared title={<Title item={item} />}>
+								<Application application={item} action={() => handleItem(item)} />
+							</AccordionShared>
+						)}
 						onRefresh={refetch}
 						refreshing={isRefetching}
 						keyExtractor={(_, index) => String(index)}
@@ -223,6 +243,19 @@ const OutmigrationApplicationsComponent: FC<{
 };
 
 export default OutmigrationApplicationsComponent;
+
+const Title: FC<{item: OutmigrationApplication}> = ({item}) => {
+	return (
+		<View className='flex flex-col gap-1'>
+			<View className='w-full'>
+				<Text className='truncate'>{item.country_name}</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='font-extralight italic'>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	card: {
@@ -273,5 +306,12 @@ const styles = StyleSheet.create({
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'center',
+	},
+
+	searchBar: {
+		backgroundColor: '#dbe6f5',
+		margin: 5,
+		padding: 2,
+		borderRadius: 10,
 	},
 });

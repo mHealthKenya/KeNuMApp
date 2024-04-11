@@ -3,7 +3,7 @@ import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
 import {privatePractice} from '../../atoms/privatepractice';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {PracticeApplication} from '../../models/privatepractice';
@@ -14,6 +14,10 @@ import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import AccordionShared from '../shared/Accordion';
+import {useSearch} from '../../providers/search';
+import {DateFormat} from '../../enums/date';
+import {Searchbar} from 'react-native-paper';
 
 const Application: FC<{
 	application: PracticeApplication;
@@ -25,7 +29,7 @@ const Application: FC<{
 
 	const availableWidth = dimension - 20;
 	return (
-		<Pressable style={[styles.card]} onPress={() => action(application)}>
+		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
 				<InternshipItem availableWidth={availableWidth} title='Practice' content={application.proposed_practice} />
 				<InternshipItem availableWidth={availableWidth} title='Practice Mode' content={application.practice_mode} />
@@ -86,8 +90,27 @@ const PrivatePracticeApplicationsComponent: FC<{
 	const handleSheetChanges = useCallback((index: number) => {
 		console.log('handle sheet changes', index);
 	}, []);
+
+	const {search, handleSearch} = useSearch();
+
+	const items = useMemo(
+		() =>
+			applications.filter(
+				(item) =>
+					item.workstation_name.toLowerCase().includes(search.toLowerCase()) ||
+					dayjs(item.renewal_date).format(DateFormat.WITH_DAY).includes(search.toLowerCase())
+			),
+		[search, applications]
+	);
+
 	return (
 		<GestureHandlerRootView style={{flex: 1}}>
+			<Searchbar
+				placeholder='Search by workstation or date'
+				onChangeText={handleSearch}
+				value={search}
+				style={styles.searchBar}
+			/>
 			<BottomSheetModalProvider>
 				<View style={globalStyles.container}>
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
@@ -106,8 +129,12 @@ const PrivatePracticeApplicationsComponent: FC<{
 						</View>
 					</BottomSheetModal>
 					<FlashList
-						data={applications}
-						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						data={items}
+						renderItem={({item}) => (
+							<AccordionShared title={<Title item={item} />}>
+								<Application application={item} action={() => handleItem(item)} />
+							</AccordionShared>
+						)}
 						onRefresh={refetch}
 						refreshing={isRefetching}
 						keyExtractor={(_, index) => String(index)}
@@ -121,6 +148,19 @@ const PrivatePracticeApplicationsComponent: FC<{
 };
 
 export default PrivatePracticeApplicationsComponent;
+
+const Title: FC<{item: PracticeApplication}> = ({item}) => {
+	return (
+		<View className='flex flex-col'>
+			<View className='w-full'>
+				<Text className='truncate'>{item.workstation_name}</Text>
+			</View>
+			<View className='w-full '>
+				<Text className='font-extralight italic'>{dayjs(new Date(item.renewal_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	card: {
@@ -161,5 +201,12 @@ const styles = StyleSheet.create({
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'center',
+	},
+
+	searchBar: {
+		backgroundColor: '#dbe6f5',
+		margin: 5,
+		padding: 2,
+		borderRadius: 10,
 	},
 });

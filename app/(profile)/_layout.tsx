@@ -1,11 +1,11 @@
-import { View, Text } from 'react-native';
+import {View, Text} from 'react-native';
 import React from 'react';
-import { Stack } from 'expo-router';
+import {Stack} from 'expo-router';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
-import { useAuth } from '../../providers/auth';
+import {useAuth} from '../../providers/auth';
 
 const ProfileLayout = () => {
-	const { user } = useAuth();
+	const {user} = useAuth();
 	return (
 		<Stack
 			screenOptions={{
@@ -82,6 +82,21 @@ const ProfileLayout = () => {
 				name='cpds'
 				options={{
 					title: `CPD Points`,
+					headerLeft: () => <ProfileHeaderLeft color='#0445b5' />,
+					headerStyle: {
+						backgroundColor: '#eaf2fa',
+					},
+
+					headerTitleStyle: {
+						color: '#0445b5',
+					},
+				}}
+			/>
+
+			<Stack.Screen
+				name='updateprofile'
+				options={{
+					title: `Update Profile`,
 					headerLeft: () => <ProfileHeaderLeft color='#0445b5' />,
 					headerStyle: {
 						backgroundColor: '#eaf2fa',

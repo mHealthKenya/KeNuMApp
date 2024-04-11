@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import globalStyles from '../../styles/global';
 import ApplyBox from './box/apply';
 import CheckInBox from './box/checkin';
@@ -10,13 +10,13 @@ import TransfersBox from './box/transfers';
 const InternshipComponent = () => {
 	return (
 		<View style={[globalStyles.container]}>
-			<View style={[{ flex: 1 }]}>
+			<ScrollView style={[{flex: 1}]}>
 				<ApplyBox />
 				<CheckInBox />
 				<RotationsBox />
 				<TransfersBox />
 				<HistoryBox />
-			</View>
+			</ScrollView>
 		</View>
 	);
 };

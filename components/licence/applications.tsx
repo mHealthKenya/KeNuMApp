@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {LicenceApplication} from '../../models/licenceapplications';
 import globalStyles from '../../styles/global';
@@ -15,6 +15,10 @@ import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import AccordionShared from '../shared/Accordion';
+import {useSearch} from '../../providers/search';
+import {DateFormat} from '../../enums/date';
+import {Searchbar} from 'react-native-paper';
 
 const Application: FC<{
 	application: LicenceApplication;
@@ -26,7 +30,7 @@ const Application: FC<{
 
 	const availableWidth = dimension - 20;
 	return (
-		<Pressable style={[styles.card]} onPress={() => action(application)}>
+		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
 				{application?.workstation_name !== 'DIASPORA' && (
 					<InternshipItem availableWidth={availableWidth} title='County' content={application.County} />
@@ -40,7 +44,7 @@ const Application: FC<{
 				<InternshipItem
 					availableWidth={availableWidth}
 					title='Date'
-					content={dayjs(new Date(application.renewal_date)).format('DD/MM/YYYY')}
+					content={dayjs(new Date(application.renewal_date)).format(DateFormat.WITH_DAY)}
 				/>
 
 				<InternshipItemDouble
@@ -92,8 +96,27 @@ const LicenceApplicationsComponent: FC<{
 		console.log('handle sheet changes', index);
 	}, []);
 
+	const {search, handleSearch} = useSearch();
+
+	const items = useMemo(
+		() =>
+			applications.filter(
+				(item) =>
+					item.workstation_name.toLowerCase().includes(search.toLowerCase()) ||
+					item.employer.toLowerCase().includes(search.toLowerCase()) ||
+					dayjs(new Date(item.renewal_date)).format(DateFormat.WITH_DAY).toLowerCase().includes(search.toLowerCase())
+			),
+		[search, applications]
+	);
+
 	return (
 		<GestureHandlerRootView style={{flex: 1}}>
+			<Searchbar
+				placeholder='Search by workstation employer or date'
+				onChangeText={handleSearch}
+				value={search}
+				style={styles.searchBar}
+			/>
 			<BottomSheetModalProvider>
 				<View style={globalStyles.container}>
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
@@ -112,8 +135,12 @@ const LicenceApplicationsComponent: FC<{
 						</View>
 					</BottomSheetModal>
 					<FlashList
-						data={applications}
-						renderItem={({item}) => <Application application={item} action={() => handleItem(item)} />}
+						data={items}
+						renderItem={({item}) => (
+							<AccordionShared title={<Title item={item} />}>
+								<Application application={item} action={() => handleItem(item)} />
+							</AccordionShared>
+						)}
 						onRefresh={refetch}
 						refreshing={isRefetching}
 						keyExtractor={(_, index) => String(index)}
@@ -123,6 +150,19 @@ const LicenceApplicationsComponent: FC<{
 				</View>
 			</BottomSheetModalProvider>
 		</GestureHandlerRootView>
+	);
+};
+
+const Title: FC<{item: LicenceApplication}> = ({item}) => {
+	return (
+		<View className='flex flex-col gap-1'>
+			<View className='w-full'>
+				<Text className='truncate'>{item.workstation_name}</Text>
+			</View>
+			<View className='w-full'>
+				<Text className='font-extralight italic'>{dayjs(new Date(item.renewal_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
 	);
 };
 
@@ -167,5 +207,12 @@ const styles = StyleSheet.create({
 	contentContainer: {
 		flex: 1,
 		justifyContent: 'center',
+	},
+
+	searchBar: {
+		backgroundColor: '#dbe6f5',
+		margin: 5,
+		padding: 2,
+		borderRadius: 10,
 	},
 });

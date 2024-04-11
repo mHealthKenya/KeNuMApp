@@ -7,10 +7,13 @@ import {CPDActivity} from '../../models/activity';
 import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
+import AccordionShared from '../shared/Accordion';
+import {truncateText} from '../../helpers/truncate';
+import {DateFormat} from '../../enums/date';
 
 const CPDActivityBox: FC<{activity: CPDActivity}> = ({activity}) => {
 	return (
-		<View style={styles.card}>
+		<View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
 					<Text style={styles.mutedText}>Activity</Text>
@@ -81,7 +84,7 @@ const CPDActivitiesComponent: FC<{
 				(item) =>
 					item.activity.toLowerCase().includes(search.toLowerCase()) ||
 					item.activity_location.toLowerCase().includes(search.toLowerCase()) ||
-					dayjs(new Date(item.activity_date)).format('YYYY-MM-DD').toLowerCase().includes(search.toLowerCase())
+					dayjs(new Date(item.activity_date)).format(DateFormat.WITH_DAY).toLowerCase().includes(search.toLowerCase())
 			),
 		[search, activities]
 	);
@@ -89,14 +92,18 @@ const CPDActivitiesComponent: FC<{
 	return (
 		<View style={globalStyles.container}>
 			<Searchbar
-				placeholder='Search by activity, location, or date'
+				placeholder='Search by activity location or date'
 				onChangeText={handleSearch}
 				value={search}
 				style={styles.searchBar}
 			/>
 			<FlashList
 				renderItem={({item}) => {
-					return <CPDActivityBox activity={item} />;
+					return (
+						<AccordionShared title={<Title item={item} />}>
+							<CPDActivityBox activity={item} />
+						</AccordionShared>
+					);
 				}}
 				getItemType={(item) => {
 					return item.activity;
@@ -114,6 +121,24 @@ const CPDActivitiesComponent: FC<{
 };
 
 export default CPDActivitiesComponent;
+
+const Title: FC<{item: CPDActivity}> = ({item}) => {
+	return (
+		<View className='flex flex-col gap-1'>
+			<View className='w-full flex'>
+				<Text>
+					{truncateText({
+						text: item.activity,
+						length: 50,
+					})}
+				</Text>
+			</View>
+			<View className='w-full '>
+				<Text className='font-extralight italic'>{dayjs(new Date(item.activity_date)).format('ddd DD MMM YYYY')}</Text>
+			</View>
+		</View>
+	);
+};
 
 const styles = StyleSheet.create({
 	card: {

@@ -13,8 +13,18 @@ import CompetencyProvider from '../providers/competency';
 import RegistrationProvider from '../providers/registrationprovider';
 import * as Updates from 'expo-updates';
 import '../global.css';
+import '@tamagui/core/reset.css';
+import {TamaguiProvider, createTamagui} from '@tamagui/core';
+import {config as tconfig} from '@tamagui/config/v3';
+
+const tamaguiConfig = createTamagui(tconfig);
 
 const client = new QueryClient();
+
+type Conf = typeof tamaguiConfig;
+declare module '@tamagui/core' {
+	interface TamaguiCustomConfig extends Conf {}
+}
 
 const RootLayout = () => {
 	async function onFetchUpdateAsync() {
@@ -37,29 +47,31 @@ const RootLayout = () => {
 
 	return (
 		<GluestackUIProvider config={config}>
-			<ThemeProvider>
-				<QueryClientProvider client={client}>
-					<AuthProvider>
-						<RotationAreasProvider>
-							<RotationCompetenciesProvider>
-								<CompetencyProvider>
-									<RegistrationProvider>
-										<ErrorProvider>
-											<SearchProvider>
-												<Stack
-													screenOptions={{
-														headerShown: false,
-													}}
-												/>
-											</SearchProvider>
-										</ErrorProvider>
-									</RegistrationProvider>
-								</CompetencyProvider>
-							</RotationCompetenciesProvider>
-						</RotationAreasProvider>
-					</AuthProvider>
-				</QueryClientProvider>
-			</ThemeProvider>
+			<TamaguiProvider config={tamaguiConfig}>
+				<ThemeProvider>
+					<QueryClientProvider client={client}>
+						<AuthProvider>
+							<RotationAreasProvider>
+								<RotationCompetenciesProvider>
+									<CompetencyProvider>
+										<RegistrationProvider>
+											<ErrorProvider>
+												<SearchProvider>
+													<Stack
+														screenOptions={{
+															headerShown: false,
+														}}
+													/>
+												</SearchProvider>
+											</ErrorProvider>
+										</RegistrationProvider>
+									</CompetencyProvider>
+								</RotationCompetenciesProvider>
+							</RotationAreasProvider>
+						</AuthProvider>
+					</QueryClientProvider>
+				</ThemeProvider>
+			</TamaguiProvider>
 		</GluestackUIProvider>
 	);
 };
