@@ -1,23 +1,23 @@
 import { User } from '../models/user';
 import dayjs from 'dayjs';
-export const licenceGenerator = (user: User | null) => {
+export const licenceGenerator = async (user: User | null) => {
 	let cadres = '';
 	const licenceNo = user?.license?.length
 		? user?.license?.sort(
-				(a, b) =>
-					new Date(b?.to_date || '').getTime() -
-					new Date(a.to_date || '').getTime()
-		  )[0].license_no
+			(a, b) =>
+				new Date(b?.to_date || '').getTime() -
+				new Date(a.to_date || '').getTime()
+		)[0].license_no
 		: 'Invalid';
 
 	const validDate = user?.license?.length
 		? dayjs(
-				user?.license?.sort(
-					(a, b) =>
-						new Date(b?.to_date || '').getTime() -
-						new Date(a.to_date || '').getTime()
-				)[0].to_date
-		  ).format('YYYY-MM-DD')
+			user?.license?.sort(
+				(a, b) =>
+					new Date(b?.to_date || '').getTime() -
+					new Date(a.to_date || '').getTime()
+			)[0].to_date
+		).format('YYYY-MM-DD')
 		: 'Invalid';
 
 	const registrations = user?.registration;
@@ -31,7 +31,7 @@ export const licenceGenerator = (user: User | null) => {
 	}
 
 	const html = `<!DOCTYPE html>
-<!-- Created by pdf2htmlEX (https://github.com/pdf2htmlEX/pdf2htmlEX) -->
+<!-- Created by Joel Wekesa -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="utf-8"/>

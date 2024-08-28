@@ -1,34 +1,13 @@
 import * as DocumentPicker from 'expo-document-picker';
-import React, { FC, useMemo, useState } from 'react';
-import {
-	KeyboardAvoidingView,
-	Pressable,
-	ScrollView,
-	StyleSheet,
-	View,
-	useWindowDimensions,
-} from 'react-native';
+import React, {FC, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {
-	Button,
-	Icon,
-	Text,
-	TextInput,
-	TextInputProps,
-} from 'react-native-paper';
-import { DropDownItem } from '../../app/(outmigration)/applyoutmigration';
-import {
-	employers,
-	marital,
-	period,
-	reasons,
-	returning,
-	status,
-	workstationType,
-} from '../../data/outmigration';
-import { truncateText } from '../../helpers/truncate';
-import { County } from '../../models/counties';
-import { User } from '../../models/user';
+import {Button, Icon, Text, TextInput, TextInputProps} from 'react-native-paper';
+import {DropDownItem} from '../../app/(outmigration)/applyoutmigration';
+import {employers, marital, period, reasons, returning, status, workstationType} from '../../data/outmigration';
+import {truncateText} from '../../helpers/truncate';
+import {County} from '../../models/counties';
+import {User} from '../../models/user';
 
 const theme = {
 	roundness: 12,
@@ -38,7 +17,7 @@ const ApplyOutComponent: FC<{
 	counties: County[];
 	countries: DropDownItem[];
 	user: User;
-}> = ({ counties, countries, user }) => {
+}> = ({counties, countries, user}) => {
 	const education = useMemo(
 		() =>
 			user?.education?.map((item) => ({
@@ -58,8 +37,7 @@ const ApplyOutComponent: FC<{
 	);
 
 	// const [county, setCounty] = useState(null);
-	const [selectedFile, setSelectedFile] =
-		useState<DocumentPicker.DocumentPickerResult>();
+	const [selectedFile, setSelectedFile] = useState<DocumentPicker.DocumentPickerResult>();
 	const [maritalStatus, setMaritalStatus] = useState(null);
 	const [outReasons, setOutReasons] = useState(null);
 	const [statusE, setStatusE] = useState(null);
@@ -83,9 +61,7 @@ const ApplyOutComponent: FC<{
 	const [educDrop, setEducDrop] = useState(false);
 
 	const pickDocument = async () => {
-		let result = await DocumentPicker.getDocumentAsync({
-			type: 'application/pdf',
-		});
+		let result = await DocumentPicker.getDocumentAsync();
 		setSelectedFile(result);
 	};
 
@@ -96,7 +72,7 @@ const ApplyOutComponent: FC<{
 		activeOutlineColor: '#0445b5',
 	};
 
-	const { height } = useWindowDimensions();
+	const {height} = useWindowDimensions();
 
 	return (
 		<View

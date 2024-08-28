@@ -7,7 +7,7 @@ import { RegistrationApplication } from '../../models/regapplications';
 const registrationApplications = async () => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);
 	axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-	const url = baseUrl + 'api/auth/registration/applications';
+	const url = baseUrl + 'api/auth/registration/applications/test';
 
 	const config: AxiosRequestConfig = {
 		method: 'GET',

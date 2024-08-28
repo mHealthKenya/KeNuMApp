@@ -50,7 +50,11 @@ const useInternshipApply = (successFn: () => void, errorFn: () => void) => {
 			successFn();
 		},
 
-		onError: () => {
+		onError: (error) => {
+
+			console.log({
+				error: JSON.stringify(error),
+			})
 			errorFn();
 		},
 	});

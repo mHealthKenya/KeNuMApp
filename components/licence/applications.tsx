@@ -50,18 +50,18 @@ const Application: FC<{
 				<InternshipItemDouble
 					title='Invoice'
 					subtitle='Invoice Number'
-					content={application.invoice_no}
+					content={application.invoice_details.invoice_number}
 					subtitle1='Amount'
-					content1={currencyFormatter.format(+application.amount_due)}
+					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
 					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
 					title='Amount'
 					subtitle='Amount Paid'
-					content={currencyFormatter.format(+application.amount_paid)}
+					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
 					subtitle1='Balance Due'
-					content1={currencyFormatter.format(+application.balance_due)}
+					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
 					availableWidth={availableWidth}
 				/>
 			</View>
@@ -98,15 +98,21 @@ const LicenceApplicationsComponent: FC<{
 
 	const {search, handleSearch} = useSearch();
 
+	const sortedApplications = applications.sort((a, b) => {
+		return new Date(b.renewal_date).getTime() - new Date(a.renewal_date).getTime();
+	});
+
+	const latestApplicationId = sortedApplications[0]?.application_id;
+
 	const items = useMemo(
 		() =>
-			applications.filter(
+			sortedApplications.filter(
 				(item) =>
 					item.workstation_name.toLowerCase().includes(search.toLowerCase()) ||
 					item.employer.toLowerCase().includes(search.toLowerCase()) ||
 					dayjs(new Date(item.renewal_date)).format(DateFormat.WITH_DAY).toLowerCase().includes(search.toLowerCase())
 			),
-		[search, applications]
+		[search, sortedApplications]
 	);
 
 	return (
@@ -121,9 +127,11 @@ const LicenceApplicationsComponent: FC<{
 				<View style={globalStyles.container}>
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
 						<View style={styles.bottomSheet}>
-							<BottomSheetView style={[styles.contentContainer]}>
-								<PayForApplication item={item || null} />
-							</BottomSheetView>
+							{item?.application_id === latestApplicationId && (
+								<BottomSheetView style={[styles.contentContainer]}>
+									<PayForApplication item={item || null} />
+								</BottomSheetView>
+							)}
 
 							<View style={[styles.contentContainer]}>
 								<DownloadInvoice item={item || null} />

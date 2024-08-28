@@ -1,21 +1,16 @@
 import dayjs from 'dayjs';
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 import * as Print from 'expo-print';
-import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button, Divider } from 'react-native-paper';
-import { licenceGenerator } from '../../../helpers/licencegenerator';
-import { useAuth } from '../../../providers/auth';
+import React, {FC} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Button, Divider} from 'react-native-paper';
+import {licenceGenerator} from '../../../helpers/licencegenerator';
+import {useAuth} from '../../../providers/auth';
 
-const HomeLicenceComponent: FC<{ width: number; height: number }> = ({
-	width,
-	height,
-}) => {
-	const { user } = useAuth();
+const HomeLicenceComponent: FC<{width: number; height: number}> = ({width, height}) => {
+	const {user} = useAuth();
 
-	const endDate = user?.license?.length
-		? dayjs(new Date(user?.license[0].to_date || ''))
-		: dayjs(new Date());
+	const endDate = user?.license?.length ? dayjs(new Date(user?.license[0].to_date || '')) : dayjs(new Date());
 
 	const currentDate = dayjs(new Date());
 
@@ -24,8 +19,10 @@ const HomeLicenceComponent: FC<{ width: number; height: number }> = ({
 	const usableWidth = width - 4;
 
 	const printLicence = async () => {
+		const html = await licenceGenerator(user);
+
 		await Print.printAsync({
-			html: licenceGenerator(user),
+			html,
 			// printerUrl: selectedPrinter?.url,
 		}).catch(() => {
 			return;
@@ -96,11 +93,7 @@ const HomeLicenceComponent: FC<{ width: number; height: number }> = ({
 				style={{
 					height: 'auto',
 				}}>
-				<Button
-					mode='contained'
-					style={styles.button}
-					icon='download'
-					onPress={async () => await printLicence()}>
+				<Button mode='contained' style={styles.button} icon='download' onPress={async () => await printLicence()}>
 					Download Licence
 				</Button>
 			</View>

@@ -1,15 +1,16 @@
-import { Redirect } from 'expo-router';
-import { Drawer } from 'expo-router/drawer';
+import {Redirect} from 'expo-router';
+import {Drawer} from 'expo-router/drawer';
 import React from 'react';
-import { Image, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import {Image, View} from 'react-native';
+import {ActivityIndicator, Avatar} from 'react-native-paper';
 import CustomDrawer from '../../components/shared/Drawer';
-import { primaryColor } from '../../constants/Colors';
-import { useAuth } from '../../providers/auth';
+import {primaryColor} from '../../constants/Colors';
+import {useAuth} from '../../providers/auth';
 import globalStyles from '../../styles/global';
+import {DrawerToggleButton} from '@react-navigation/drawer';
 
 const AppLayout = () => {
-	const { isAuthenticated, isLoading } = useAuth();
+	const {isAuthenticated, isLoading} = useAuth();
 
 	if (isLoading) {
 		return (
@@ -32,9 +33,7 @@ const AppLayout = () => {
 					backgroundColor: '#0445b5',
 				},
 
-				drawerStyle: {
-					backgroundColor: '#eaf2fa',
-				},
+				drawerIcon: () => <DrawerToggleButton tintColor='#FFF' />,
 
 				headerTintColor: '#FFF',
 

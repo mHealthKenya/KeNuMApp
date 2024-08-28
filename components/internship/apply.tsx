@@ -1,14 +1,14 @@
 import {useToast} from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
+import * as DocumentPicker from 'expo-document-picker';
 import {Image} from 'expo-image';
-import * as ImagePicker from 'expo-image-picker';
 import {useRouter} from 'expo-router';
-import mime from 'mime';
 import React, {FC, useMemo, useState} from 'react';
 import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import {Button, Icon, TextInput, TextInputProps} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
+import {truncateText} from '../../helpers/truncate';
 import {InternshipCenters} from '../../models/internshipcenters';
 import {User} from '../../models/user';
 import useInternshipApply from '../../services/internship/apply';
@@ -16,11 +16,7 @@ import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
 import ToastError from '../shared/ToastError';
 import WarnAlert from '../shared/WarnAlert';
-
-enum Names {
-	posting_letter = 'posting_letter',
-	degree_cert = 'degree_cert',
-}
+import {Text} from 'react-native';
 
 interface UserImage {
 	uri: string | null;
@@ -70,7 +66,9 @@ const InternshipApplyComponent: FC<{
 
 	const [selected, setSelected] = useState(null);
 
-	const [images, setImages] = useState<UserImage[]>([]);
+	const [selectedFile, setSelectedFile] = useState<DocumentPicker.DocumentPickerResult>();
+
+	const [selectedDegree, setSelectedDegree] = useState<DocumentPicker.DocumentPickerResult>();
 
 	const handleDate = ({type}: any, selectedDate: any) => {
 		if (type === 'set') {
@@ -89,37 +87,20 @@ const InternshipApplyComponent: FC<{
 		setDate(new Date());
 	};
 
-	const pickImage = async (name: string) => {
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			aspect: [4, 3],
-			quality: 1,
+	const pickDegree = async () => {
+		let result = await DocumentPicker.getDocumentAsync({
+			multiple: false,
+			type: ['application/pdf'],
 		});
+		setSelectedDegree(result);
+	};
 
-		if (!result.canceled) {
-			const index = images.findIndex((item) => item.name === name);
-
-			if (index !== -1) {
-				const nList = [...images];
-				nList[index] = {
-					uri: 'file:///' + result.assets[0].uri.split('file:/').join(''),
-					name,
-					type: mime.getType(result.assets[0].uri) || '',
-				};
-
-				setImages(nList);
-			} else {
-				setImages([
-					...images,
-					{
-						name,
-						uri: 'file:///' + result.assets[0].uri.split('file:/').join(''),
-						type: mime.getType(result.assets[0].uri) || '',
-					},
-				]);
-			}
-		}
+	const pickPostingLetter = async () => {
+		let result = await DocumentPicker.getDocumentAsync({
+			multiple: false,
+			type: ['application/pdf'],
+		});
+		setSelectedFile(result);
 	};
 
 	const items = useMemo(
@@ -152,11 +133,19 @@ const InternshipApplyComponent: FC<{
 		});
 	};
 
-	const {mutate, isPending, isSuccess, reset} = useInternshipApply(successFn, errorFn);
+	const {mutate, isPending} = useInternshipApply(successFn, errorFn);
 	const handleSubmit = async () => {
-		const degree_cert = images[0];
+		const degree_cert = {
+			name: selectedDegree?.assets![0].name || '',
+			uri: selectedDegree?.assets![0].uri || '',
+			type: selectedDegree?.assets![0].mimeType || '',
+		};
 
-		const posting_letter = images[1];
+		const posting_letter = {
+			name: selectedFile?.assets![0].name || '',
+			uri: selectedFile?.assets![0].uri || '',
+			type: selectedFile?.assets![0].mimeType || '',
+		};
 
 		const education_id = user?.education !== undefined ? user?.education[user?.education.length - 1].education_id : '';
 
@@ -187,6 +176,15 @@ const InternshipApplyComponent: FC<{
 					}}
 				/>
 			</View>
+			<View className='flex px-10 py-2'>
+				<View className='flex flex-row gap-1 items-center bg-slate-200 rounded-lg p-1 justify-center'>
+					<Text>Upload required documents</Text>
+					<View className='bg-red-500 rounded-lg p-1'>
+						<Text className='text-white'>in PDF format only</Text>
+					</View>
+				</View>
+			</View>
+
 			<View
 				style={[
 					styles.spacer,
@@ -214,55 +212,49 @@ const InternshipApplyComponent: FC<{
 						},
 					]}
 				/>
-				<Pressable onPress={() => pickImage(Names.posting_letter)}>
-					<TextInput
-						label='Posting Letter'
-						left={<TextInput.Icon icon='hospital-building' />}
-						right={
-							<TextInput.Icon
-								onPress={() => pickImage(Names.posting_letter)}
-								icon={() => (
-									<Image
-										source={images?.filter((item) => item.name === Names.posting_letter)[0]?.uri || ''}
-										style={{
-											width: 50,
-											height: 50,
-										}}
-									/>
-								)}
+				<View>
+					<View>
+						<Pressable onPress={() => pickPostingLetter()}>
+							<TextInput
+								label={
+									selectedFile?.assets
+										? truncateText({
+												text: selectedFile?.assets[0].name,
+												length: 30,
+										  })
+										: 'Posting Letter'
+								}
+								left={<TextInput.Icon icon='subtitles' />}
+								mode='outlined'
+								editable={false}
+								onPressIn={() => pickPostingLetter()}
+								{...textProps}
 							/>
-						}
-						mode='outlined'
-						editable={false}
-						onPressIn={() => pickImage(Names.posting_letter)}
-						{...textProps}
-					/>
-				</Pressable>
+						</Pressable>
+					</View>
+				</View>
 
-				<Pressable onPress={() => pickImage(Names.degree_cert)}>
-					<TextInput
-						label='Degree Certificate'
-						left={<TextInput.Icon icon='certificate' />}
-						right={
-							<TextInput.Icon
-								onPress={() => pickImage(Names.degree_cert)}
-								icon={() => (
-									<Image
-										source={images?.filter((item) => item.name === Names.degree_cert)[0]?.uri || ''}
-										style={{
-											width: 50,
-											height: 50,
-										}}
-									/>
-								)}
+				<View>
+					<View>
+						<Pressable onPress={() => pickDegree()}>
+							<TextInput
+								label={
+									selectedDegree?.assets
+										? truncateText({
+												text: selectedDegree?.assets[0].name,
+												length: 30,
+										  })
+										: 'Degree Certificate'
+								}
+								left={<TextInput.Icon icon='subtitles' />}
+								mode='outlined'
+								editable={false}
+								onPressIn={() => pickDegree()}
+								{...textProps}
 							/>
-						}
-						mode='outlined'
-						editable={false}
-						onPressIn={() => pickImage(Names.degree_cert)}
-						{...textProps}
-					/>
-				</Pressable>
+						</Pressable>
+					</View>
+				</View>
 
 				<Pressable onPress={togglePicker}>
 					<TextInput

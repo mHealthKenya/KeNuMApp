@@ -3,6 +3,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import dayjs from 'dayjs';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
+import { useAtom } from 'jotai';
+import { errorAtom } from '../../atoms/error';
 interface Registration {
 	education_id: string;
 	current_passport: any;
@@ -10,7 +12,6 @@ interface Registration {
 
 const registrationApplication = async (data: Registration) => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);
-	axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 	const url = baseUrl + 'api/auth/registration/apply';
 
 	const formData = new FormData();
@@ -22,16 +23,19 @@ const registrationApplication = async (data: Registration) => {
 		dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z] ')
 	);
 
+
+
 	const config: AxiosRequestConfig = {
 		method: 'POST',
 		url,
 		data: formData,
 		headers: {
 			'Content-Type': 'multipart/form-data',
+			'Authorization': 'Bearer ' + token
 		},
 	};
 
-	const response = await axios(config).then((res) => res.data);
+	const response = await axios(config).then((res) => res.data)
 
 	return response;
 };
@@ -41,6 +45,9 @@ const useRegistrationApplication = (
 	errorFn: () => void
 ) => {
 	const queryClient = useQueryClient();
+
+	const [_, setError] = useAtom(errorAtom)
+
 	return useMutation({
 		mutationFn: registrationApplication,
 
@@ -51,8 +58,9 @@ const useRegistrationApplication = (
 			successFn();
 		},
 
-		onError: () => {
-			errorFn();
+		onError: async (error: any) => {
+			await setError(error?.response?.data?.message || "Something went wrong!");
+			await errorFn();
 		},
 	});
 };

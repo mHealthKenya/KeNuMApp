@@ -12,6 +12,8 @@ import {Alert, AlertIcon, AlertText, useToast} from '@gluestack-ui/themed';
 import {InfoIcon} from '@gluestack-ui/themed';
 import {useRouter} from 'expo-router';
 import ToastError from '../shared/ToastError';
+import {useAtom} from 'jotai';
+import {errorAtom} from '../../atoms/error';
 
 const RegistrationApplicationComponent = () => {
 	interface UserImage {
@@ -60,6 +62,8 @@ const RegistrationApplicationComponent = () => {
 
 	const toast = useToast();
 
+	const [error, _] = useAtom(errorAtom);
+
 	const successFn = () => {
 		router.push('/registrationapplications');
 	};
@@ -69,13 +73,7 @@ const RegistrationApplicationComponent = () => {
 			onCloseComplete() {},
 			duration: 5000,
 			render: ({id}) => {
-				return (
-					<ToastError
-						id={id}
-						title='Application Error'
-						description='Could not complete registration application. Please retry later'
-					/>
-				);
+				return <ToastError id={id} title='Application Error' description={error} />;
 			},
 			placement: 'top',
 		});

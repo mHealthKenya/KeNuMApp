@@ -1,11 +1,8 @@
-import {View, Text} from 'react-native';
-import React from 'react';
 import {Stack} from 'expo-router';
+import React from 'react';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
-import {useAuth} from '../../providers/auth';
 
 const ProfileLayout = () => {
-	const {user} = useAuth();
 	return (
 		<Stack
 			screenOptions={{

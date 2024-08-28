@@ -1,34 +1,27 @@
-import {Image, ImageSource} from 'expo-image';
-import {useRouter} from 'expo-router';
-import React, {FC} from 'react';
+import {Image} from 'expo-image';
+import * as Print from 'expo-print';
+import React from 'react';
 import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import {Divider, Icon} from 'react-native-paper';
-import globalStyles from '../../styles/global';
-import * as Print from 'expo-print';
 import {licenceGenerator} from '../../helpers/licencegenerator';
 import {useAuth} from '../../providers/auth';
+import globalStyles from '../../styles/global';
 
-export interface LicenceBox {
-	title: string;
-	content: string;
-	backgroundColor: string;
-	path: ImageSource;
-	route: any;
-	action?: () => void;
-	danger?: boolean;
-}
-
-const LBox: FC<{box: LicenceBox}> = ({box}) => {
+const DownloadBox = () => {
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
-	const router = useRouter();
 
-	const handlePress = () => {
-		if (box.action) {
-			box.action();
-		}
-		router.push(box.route);
+	const {user} = useAuth();
+
+	const printLicence = async () => {
+		const html = await licenceGenerator(user);
+		await Print.printAsync({
+			html,
+			// printerUrl: selectedPrinter?.url,
+		}).catch(() => {
+			return;
+		});
 	};
 
 	return (
@@ -37,13 +30,13 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 				styles.box,
 				{
 					width: usableWidth,
-					backgroundColor: box.backgroundColor,
+					backgroundColor: '#dcf0fa',
 				},
 			]}
-			onPress={() => handlePress()}>
+			onPress={async () => await printLicence()}>
 			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<Image
-					source={box.path}
+					source={require('../../assets/images/licencesmall.png')}
 					style={{
 						width: 60,
 						height: 80,
@@ -60,15 +53,7 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text
-							style={[
-								styles.titleText,
-								{
-									color: box.danger ? '#FFF' : '#000000',
-								},
-							]}>
-							{box.title}
-						</Text>
+						<Text style={styles.titleText}>Download Licence</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -79,24 +64,16 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 						style={{
 							padding: 10,
 						}}>
-						<Text
-							style={[
-								styles.contentText,
-								{
-									color: box.danger ? '#FFF' : '#74787e',
-								},
-							]}>
-							{box.content}
-						</Text>
+						<Text style={styles.contentText}>Click on this card to download your licence</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' color={box.danger ? '#FFF' : '#000'} />
+				<Icon size={30} source='download' />
 			</View>
 		</Pressable>
 	);
 };
 
-export default LBox;
+export default DownloadBox;
 
 const styles = StyleSheet.create({
 	box: {
@@ -118,6 +95,7 @@ const styles = StyleSheet.create({
 	},
 
 	contentText: {
+		color: '#74787e',
 		letterSpacing: 1.5,
 	},
 });

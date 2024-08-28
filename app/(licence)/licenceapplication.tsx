@@ -16,6 +16,9 @@ import LicenceApplicationComponent from '../../components/licence/apply';
 import {diasporaAtom} from '../../atoms/diaporaatom';
 import {useAtom} from 'jotai';
 import {Item} from '../../components/licence/licencebox';
+import {useAuth} from '../../providers/auth';
+import useLicenceApplications from '../../services/licence/applications';
+import LBox from '../../components/licence/lbox';
 
 const LicenceApplication = () => {
 	const {county, workStation} = useWorkStationFetched();
@@ -33,10 +36,34 @@ const LicenceApplication = () => {
 
 	const [diaspora, _] = useAtom(diasporaAtom);
 
-	if (isLoading) {
+	const {user} = useAuth();
+	const {data: applications = [], isLoading: loadingApplications} = useLicenceApplications(user?.id || '');
+
+	const hasPendingApplications = applications?.some((a) => {
+		return a.invoice_details.balance_due ? +a.invoice_details.balance_due > 0 : false;
+	});
+
+	if (isLoading || loadingApplications) {
 		return (
 			<View style={[globalStyles.container, globalStyles.center]}>
 				<ActivityIndicator size='large' color={primaryColor} />
+			</View>
+		);
+	}
+
+	if (hasPendingApplications) {
+		return (
+			<View className='flex flex-1'>
+				<LBox
+					box={{
+						title: 'Cannot Apply',
+						content: 'You have pending applications. Please clear them to apply for a new licence.',
+						backgroundColor: '#984b4b',
+						path: require('../../assets/images/licencesmall.png'),
+						route: '/licenceapplications',
+						danger: true,
+					}}
+				/>
 			</View>
 		);
 	}
@@ -47,6 +74,7 @@ const LicenceApplication = () => {
 				employers={data}
 				county={diaspora ? diaC : county!}
 				workstation={diaspora ? workStationC : workStation!}
+				applications={applications}
 			/>
 			<StatusBar style='light' />
 		</>

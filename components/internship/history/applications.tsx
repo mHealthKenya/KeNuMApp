@@ -164,18 +164,18 @@ const Application: FC<{
 				<InternshipItemDouble
 					title='Invoice'
 					subtitle='Invoice Number'
-					content={application.invoice_no}
+					content={application.invoice_details.invoice_number}
 					subtitle1='Amount'
-					content1={currencyFormatter.format(+application.amount_due)}
+					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
 					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
 					title='Amount'
 					subtitle='Amount Paid'
-					content={currencyFormatter.format(+application.amount_paid)}
+					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
 					subtitle1='Balance Due'
-					content1={currencyFormatter.format(+application.balance_due)}
+					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
 					availableWidth={availableWidth}
 				/>
 			</View>
@@ -212,10 +212,23 @@ const InternshipApplicationsComponent: FC<{
 		handlePresentModal();
 	};
 
-	const filtered = useMemo(
-		() => applications.filter((item) => item.internship_center.toLowerCase().includes(search.toLowerCase())),
-		[applications, search]
+	const sortedApplications = useMemo(
+		() => applications.sort((a, b) => new Date(b.application_date).getTime() - new Date(a.application_date).getTime()),
+		[applications]
 	);
+
+	const filtered = useMemo(
+		() => sortedApplications.filter((item) => item.internship_center.toLowerCase().includes(search.toLowerCase())),
+		[sortedApplications, search]
+	);
+
+	const latestApplication = sortedApplications[0];
+
+	if (!latestApplication) {
+		return <EmptyList message='Could not find any internship applications in your account' />;
+	}
+
+	const latestApplicationId = latestApplication?.internship_id;
 
 	return (
 		<GestureHandlerRootView style={{flex: 1}}>
@@ -223,9 +236,11 @@ const InternshipApplicationsComponent: FC<{
 				<View style={[globalStyles.container]}>
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
 						<View style={styles.bottomSheet}>
-							<BottomSheetView style={[styles.contentContainer]}>
-								<PayForApplication item={item} />
-							</BottomSheetView>
+							{item?.internship_id === latestApplicationId && (
+								<BottomSheetView style={[styles.contentContainer]}>
+									<PayForApplication item={item} />
+								</BottomSheetView>
+							)}
 
 							<View style={[styles.contentContainer]}>
 								<DownloadInvoice item={item} />

@@ -1,23 +1,52 @@
-import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { InternshipApplication } from '../../../../models/internshipapplications';
-import { useInternshipFetched } from '../../../../providers/internship';
+import {useBottomSheetModal} from '@gorhom/bottom-sheet';
+import {Image} from 'expo-image';
+import {useRouter} from 'expo-router';
+import {useAtom} from 'jotai';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {internshipPayAtom} from '../../../../atoms/internship';
+import {InternshipApplication} from '../../../../models/internshipapplications';
+import {Pay} from '../../../../models/pay';
+import {useInternshipFetched} from '../../../../providers/internship';
 import globalStyles from '../../../../styles/global';
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 
 const PayForApplication: FC<{
 	item: InternshipApplication | null;
-}> = ({ item }) => {
+}> = ({item}) => {
 	const router = useRouter();
-	const { dismiss } = useBottomSheetModal();
+	const {dismiss} = useBottomSheetModal();
 
-	const { handleApplication } = useInternshipFetched();
+	const [_, setPay] = useAtom(internshipPayAtom);
+
+	const {handleApplication} = useInternshipFetched();
 	const handlePay = async (item: InternshipApplication | null) => {
 		await handleApplication(item!);
 		await dismiss();
-		router.push('/internshippayhistory');
+
+		const data: Pay = {
+			secureHash: item?.invoice_details.secureHash || '',
+			apiClientID: item?.invoice_details.apiClientID || '',
+			serviceID: parseInt(item?.invoice_details.serviceID || '0'),
+			notificationURL: item?.invoice_details.notificationURL || '',
+			pictureURL: item?.invoice_details.pictureURL || '',
+			callBackURLOnSuccess: item?.invoice_details.callBackURLOnSuccess || '',
+			billRefNumber: item?.invoice_details.billRefNumber || '',
+			currency: item?.invoice_details.currency || '',
+			amountExpected: parseInt(item?.invoice_details.amountExpected || '0'),
+			billDesc: item?.invoice_details.billDesc || '',
+			clientMSISDN: item?.invoice_details.clientMSISDN || '',
+			clientIDNumber: item?.invoice_details.clientIDNumber || '',
+			clientEmail: item?.invoice_details.clientEmail || '',
+			clientName: item?.invoice_details.clientName || '',
+		};
+
+		await setPay(data);
+
+		router.push('/ecitizen');
+
+		// await mutate(data);
+
+		// router.push('/internshippayhistory');
 	};
 
 	return (
@@ -33,7 +62,7 @@ const PayForApplication: FC<{
 				},
 			]}
 			onPress={() => handlePay(item)}>
-			<View style={{ justifyContent: 'center' }}>
+			<View style={{justifyContent: 'center'}}>
 				<Image
 					source={require('../../../../assets/images/pay.png')}
 					style={{
@@ -45,7 +74,7 @@ const PayForApplication: FC<{
 				/>
 			</View>
 
-			<View style={{ justifyContent: 'center' }}>
+			<View style={{justifyContent: 'center'}}>
 				<Text style={styles.text}>Pay For Internship</Text>
 			</View>
 		</Pressable>

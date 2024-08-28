@@ -12,12 +12,14 @@ import globalStyles from '../../styles/global';
 import LicenceApplyBox, {Item} from './licencebox';
 import {diasporaAtom} from '../../atoms/diaporaatom';
 import {useAtom} from 'jotai';
+import {LicenceApplication} from '../../models/licenceapplications';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
 	county: Item;
 	workstation: Item;
-}> = ({employers, county, workstation}) => {
+	applications: LicenceApplication[];
+}> = ({employers, county, workstation, applications}) => {
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
@@ -56,6 +58,14 @@ const LicenceApplicationComponent: FC<{
 			employer_id: !diaspora ? '' + selected : '1',
 		});
 	};
+
+	const hasPendingApplications = applications?.some((a) => {
+		return a.invoice_details.balance_due ? +a.invoice_details.balance_due > 0 : false;
+	});
+
+	const hasActiveLicence = user?.license?.some((l) => {
+		return l.to_date ? new Date(l.to_date) > new Date() : false;
+	});
 
 	return (
 		<View style={globalStyles.container}>
@@ -109,10 +119,10 @@ const LicenceApplicationComponent: FC<{
 
 						<Button
 							mode='contained'
-							style={!selected && !diaspora ? styles.disabled : styles.button}
+							style={(!selected && !diaspora) || hasActiveLicence || hasPendingApplications ? styles.disabled : styles.button}
 							loading={isPending}
 							onPress={handleSubmit}
-							disabled={!selected && !diaspora}>
+							disabled={(!selected && !diaspora) || hasPendingApplications || hasActiveLicence}>
 							Apply
 						</Button>
 					</View>
