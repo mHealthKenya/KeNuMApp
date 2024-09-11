@@ -4,8 +4,9 @@ import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {outmigrationGenAtom} from '../../../atoms/outmigration';
+import {internshipPayAtom} from '../../../atoms/internship';
 import {OutmigrationApplication} from '../../../models/outmigrations';
+import {Pay} from '../../../models/pay';
 import globalStyles from '../../../styles/global';
 
 const PayForApplication: FC<{
@@ -14,11 +15,29 @@ const PayForApplication: FC<{
 	const router = useRouter();
 	const {dismiss} = useBottomSheetModal();
 
-	const [_, handleApplication] = useAtom(outmigrationGenAtom);
+	const [_, setPay] = useAtom(internshipPayAtom);
+
 	const handlePay = async (item: OutmigrationApplication | null) => {
-		await handleApplication(item!);
+		const data: Pay = {
+			secureHash: item?.invoice_details.secureHash || '',
+			apiClientID: item?.invoice_details.apiClientID || '',
+			serviceID: parseInt(item?.invoice_details.serviceID || '0'),
+			notificationURL: item?.invoice_details.notificationURL || '',
+			pictureURL: item?.invoice_details.pictureURL || '',
+			callBackURLOnSuccess: item?.invoice_details.callBackURLOnSuccess || '',
+			billRefNumber: item?.invoice_details.billRefNumber || '',
+			currency: item?.invoice_details.currency || '',
+			amountExpected: parseInt(item?.invoice_details.amountExpected || '0'),
+			billDesc: item?.invoice_details.billDesc || '',
+			clientMSISDN: item?.invoice_details.clientMSISDN || '',
+			clientIDNumber: item?.invoice_details.clientIDNumber || '',
+			clientEmail: item?.invoice_details.clientEmail || '',
+			clientName: item?.invoice_details.clientName || '',
+		};
+
+		await setPay(data);
 		await dismiss();
-		router.push('/payoutmigrationhist');
+		router.push('/ecitizen');
 	};
 
 	return (

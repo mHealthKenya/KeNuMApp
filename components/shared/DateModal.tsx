@@ -1,27 +1,22 @@
-import { Button } from '@gluestack-ui/themed';
-import {
-	ButtonText,
-	Modal,
-	ModalBackdrop,
-	ModalContent,
-	ModalFooter,
-} from '@gluestack-ui/themed';
-import React, { FC, ReactNode, useRef } from 'react';
-import { View } from 'react-native';
-import { Platform, StyleSheet } from 'react-native';
+import {Button} from '@gluestack-ui/themed';
+import {ButtonText, Modal, ModalBackdrop, ModalContent, ModalFooter} from '@gluestack-ui/themed';
+import React, {FC, ReactNode, useRef} from 'react';
+import {View} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { primaryColor } from '../../constants/Colors';
+import {primaryColor} from '../../constants/Colors';
+import dayjs from 'dayjs';
 
 interface CModal {
 	show: boolean;
 	toggleModal: () => void;
 	cancelDate: () => void;
 	date: Date;
-	handleDate: ({ type }: any, selectedDate: any) => void;
+	handleDate: ({type}: any, selectedDate: any) => void;
 }
 
-const DateModal: FC<{ items: CModal; minimumDate?: Date }> = ({
-	items: { show, toggleModal, cancelDate, date, handleDate },
+const DateModal: FC<{items: CModal; minimumDate?: Date}> = ({
+	items: {show, toggleModal, cancelDate, date, handleDate},
 	minimumDate,
 }) => {
 	const ref = useRef(null);
@@ -39,25 +34,16 @@ const DateModal: FC<{ items: CModal; minimumDate?: Date }> = ({
 							backgroundColor: primaryColor,
 							borderRadius: 10,
 						}}
-						minimumDate={minimumDate || new Date()}
+						minimumDate={minimumDate || new Date(dayjs().subtract(10, 'year').format())}
 						onChange={handleDate}
 					/>
 				</View>
 				{Platform.OS === 'ios' && (
 					<ModalFooter>
-						<Button
-							variant='outline'
-							size='sm'
-							action='secondary'
-							mr='$3'
-							onPress={cancelDate}>
+						<Button variant='outline' size='sm' action='secondary' mr='$3' onPress={cancelDate}>
 							<ButtonText>Cancel</ButtonText>
 						</Button>
-						<Button
-							size='sm'
-							action='positive'
-							borderWidth='$0'
-							onPress={toggleModal}>
+						<Button size='sm' action='positive' borderWidth='$0' onPress={toggleModal}>
 							<ButtonText>Confirm</ButtonText>
 						</Button>
 					</ModalFooter>

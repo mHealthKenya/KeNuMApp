@@ -26,16 +26,16 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
 			</DrawerContentScrollView>
 			<View style={{flex: 1}}>
 				<Divider />
-				<DrawerItem
+				{/* <DrawerItem
 					label='About'
 					onPress={() => {}}
 					icon={() => <Icon source='information-outline' size={40} color='#0445b5' />}
-				/>
-				<DrawerItem
+				/> */}
+				{/* <DrawerItem
 					label='Support'
 					onPress={() => {}}
 					icon={() => <Icon source='help-circle-outline' size={40} color='#0445b5' />}
-				/>
+				/> */}
 				<Divider />
 				<DrawerItem
 					label='Logout'
@@ -43,7 +43,7 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
 					icon={() => <Icon source='logout' size={40} color='#0445b5' />}
 				/>
 			</View>
-		</View>
+		</View> 
 	);
 };
 
