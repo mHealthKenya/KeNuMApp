@@ -1,26 +1,24 @@
-import * as WebBrowser from 'expo-web-browser';
-import React, {FC} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
-import {Divider, Icon} from 'react-native-paper';
-import {baseUrl} from '../../constants/baseurl';
-import {KnowledgeBase} from '../../models/knowledgebase';
-import {useKnowledgeFetched} from '../../providers/knowledge';
+import { useRouter } from 'expo-router';
+import React, { FC } from 'react';
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Divider, Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
 
 export interface KnowBox {
 	title: string;
 	content: string;
+	url: string;
 }
 
-const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
+const HomeBox: FC<{routing: KnowBox}> = ({routing}) => {
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
-	const {handleItem} = useKnowledgeFetched();
+	const router = useRouter();
 
-	const handlePress = (item: KnowledgeBase) => {
-		handleItem(item);
+	const handlePress = (item: string) => {
+		router.push(item);
 	};
 
 	return (
@@ -32,7 +30,7 @@ const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
 					backgroundColor: '#dcf0fa',
 				},
 			]}
-			onPress={() => WebBrowser.openBrowserAsync(baseUrl + box?.content)}>
+			onPress={() => handlePress(routing.url)}>
 			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
@@ -45,7 +43,7 @@ const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>{box?.title}</Text>
+						<Text style={styles.titleText}>{routing.title}</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -56,7 +54,7 @@ const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>{box?.subtitle}</Text>
+						<Text style={styles.contentText}>{routing.content}</Text>
 					</View>
 				</View>
 				<Icon size={30} source='chevron-right' />
@@ -65,7 +63,7 @@ const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
 	);
 };
 
-export default KnowledgeBox;
+export default HomeBox;
 
 const styles = StyleSheet.create({
 	box: {

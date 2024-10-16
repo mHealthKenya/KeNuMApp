@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import {Stack} from 'expo-router';
 import React from 'react';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
 import KnowledgeProvider from '../../providers/knowledge';
@@ -18,10 +18,24 @@ const KnowledgeLayout = () => {
 					},
 				}}>
 				<Stack.Screen
-					name='allknowledge'
+					name='segmented'
 					options={{
 						title: 'Knowledge Base',
 						headerLeft: () => <ProfileHeaderLeft />,
+					}}
+				/>
+				<Stack.Screen
+					name='allknowledge'
+					options={{
+						title: 'Policies and Manual',
+						headerLeft: () => <ProfileHeaderLeft />,
+					}}
+				/>
+
+				<Stack.Screen
+					name='research'
+					options={{
+						headerShown: false,
 					}}
 				/>
 			</Stack>

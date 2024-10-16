@@ -92,7 +92,7 @@ const AltHome = () => {
 							{
 								title: 'Knowledge Base',
 								source: require('../../assets/images/knowledgealt.png'),
-								href: '/allknowledge',
+								href: '/segmented',
 							},
 
 							{
