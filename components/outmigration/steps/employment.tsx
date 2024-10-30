@@ -1,18 +1,11 @@
-import { useRouter } from 'expo-router';
-import { useAtom } from 'jotai';
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import {
-	KeyboardAvoidingView,
-	Platform,
-	ScrollView,
-	StyleSheet,
-	View,
-	useWindowDimensions
-} from 'react-native';
+import {useRouter} from 'expo-router';
+import {useAtom} from 'jotai';
+import React, {FC, useEffect, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Button, Text, TextInput, TextInputProps } from 'react-native-paper';
-import { DropDownItem } from '../../../app/(outmigration)/applyoutmigration';
-import { employmentAtom } from '../../../atoms/employment';
+import {Button, Text, TextInput, TextInputProps} from 'react-native-paper';
+import {DropDownItem} from '../../../app/(outmigration)/applyoutmigration';
+import {employmentAtom} from '../../../atoms/employment';
 import useCounties from '../../../services/general/counties';
 import useWorkStations from '../../../services/general/workstations';
 import useEmployers from '../../../services/licence/employers';
@@ -178,7 +171,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 			experience_years: nursePeriod!,
 		});
 
-		router.push('/outmigrationdetails');
+		router.push('/personaldetails');
 	};
 
 	// if (loadingStatus || loadingCounties || loadingEmployers || loadingPeriods || loadingWorkStationTypes) {

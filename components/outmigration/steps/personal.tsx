@@ -1,15 +1,16 @@
-import {View, Text, KeyboardAvoidingView, useWindowDimensions, ActivityIndicator} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import useMaritalStatus from '../../../services/outmigration/maritalstatus';
+import { useRouter } from 'expo-router';
+import { useAtom } from 'jotai';
+import React, { useEffect, useMemo, useState } from 'react';
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {StyleSheet} from 'react-native';
-import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import { Button, TextInput, TextInputProps } from 'react-native-paper';
+import { employmentAtom } from '../../../atoms/employment';
+import { outmigrationAtom } from '../../../atoms/outmigration';
+import { personalDetailsAtom } from '../../../atoms/personaldetails';
+import useAuthenticatedUser from '../../../services/auth/authenticated';
+import useOutmigrationApply from '../../../services/outmigration/apply';
+import useMaritalStatus from '../../../services/outmigration/maritalstatus';
 import ProgressTrack from '../../shared/Progress';
-import {useAtom} from 'jotai';
-import {personalDetailsAtom} from '../../../atoms/personaldetails';
-import {MaritalStatus} from '../../../models/maritalstatus';
-import {useRouter} from 'expo-router';
-import {Platform} from 'react-native';
 
 const PersonalDetailsComponent = () => {
 	const theme = {
@@ -23,6 +24,8 @@ const PersonalDetailsComponent = () => {
 		activeOutlineColor: '#0445b5',
 	};
 	const {data: status, isLoading} = useMaritalStatus();
+
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
 	const [disabled, setDisabled] = useState(true);
 
@@ -73,15 +76,59 @@ const PersonalDetailsComponent = () => {
 		[status]
 	);
 
+	const [employmentDetails, setEmploymentDetails] = useAtom(employmentAtom);
+	const [outmigration, setOutmigration] = useAtom(outmigrationAtom);
+
+	const successFn = () => {
+		setPersonalDetails(null);
+		setEmploymentDetails(null);
+		setOutmigration(null);
+		router.push('/outmigrationhist');
+	};
+
+	const errorFn = () => {
+		console.log('error');
+	};
+
+	const {mutate, isPending} = useOutmigrationApply(successFn, errorFn);
+
+	const handleSubmit = () => {
+		mutate({
+			index_id: user?.id || '',
+			country_id: outmigration?.country_id || '',
+			marital_status: maritalStatus || '',
+			employment_status: employmentDetails?.employment_status || '',
+			current_employer: employmentDetails?.current_employer || '',
+			current_position: employmentDetails?.current_position || '',
+			dependants: dependents || '',
+			department: employmentDetails?.department || '',
+			form_attached: {
+				name: outmigration?.form_attached?.assets![0].name || '',
+				uri: outmigration?.form_attached?.assets![0].uri || '',
+				type: outmigration?.form_attached?.assets![0].mimeType || '',
+			},
+			workstation_type: employmentDetails?.workstation_type || '',
+			workstation_id: employmentDetails?.workstation_id || '',
+			workstation_name: employmentDetails?.workstation_name || '',
+			duration_current_employer: employmentDetails?.duration_current_employer || '',
+			experience_years: employmentDetails?.experience_years || '',
+			planning_return: outmigration?.planning_return || '',
+			verification_cadres: outmigration?.verification_cadres || '',
+			outmigration_reason: outmigration?.outmigration_reason || '',
+		});
+
+		// setSubmit(false);
+	};
+
 	return (
 		<View className='flex flex-1'>
 			<View className='mx-5'>
 				<KeyboardAvoidingView behavior='position'>
 					<View className='p-2 items-center'>
-						<Text>Step 1 of 3</Text>
+						<Text>Step 3 of 3</Text>
 					</View>
 					<View className='p-2 mb-4 items-center'>
-						<ProgressTrack progress={1 / 3} />
+						<ProgressTrack progress={3 / 3} />
 					</View>
 					<View className='p-2 flex flex-grow' style={styles.status}>
 						<DropDownPicker
@@ -126,10 +173,11 @@ const PersonalDetailsComponent = () => {
 					<View className='p-2'>
 						<Button
 							mode='contained'
-							style={disabled ? styles.disabled : styles.button}
-							disabled={disabled}
-							onPress={handleNext}>
-							Next
+							style={disabled || isPending ? styles.disabled : styles.button}
+							disabled={disabled || isPending}
+							onPress={handleSubmit}
+							loading={isPending}>
+							Submit
 						</Button>
 					</View>
 				</KeyboardAvoidingView>

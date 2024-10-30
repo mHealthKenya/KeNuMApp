@@ -1,4 +1,3 @@
-import {Ionicons} from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
@@ -136,48 +135,48 @@ const OutmigrationStepComponent = () => {
 			form_attached: selectedFile!,
 		});
 
-		setSubmit(true);
+		router.push('/employmentdetails');
+
+		// setSubmit(true);
 	};
 
-	const [checked, setChecked] = useState(false);
+	// const handleSubmit = () => {
+	// 	mutate({
+	// 		index_id: user?.id || '',
+	// 		country_id: outmigration?.country_id || '',
+	// 		marital_status: personalDetails?.marital_status || '',
+	// 		employment_status: employmentDetails?.employment_status || '',
+	// 		current_employer: employmentDetails?.current_employer || '',
+	// 		current_position: employmentDetails?.current_position || '',
+	// 		dependants: personalDetails?.dependants || '',
+	// 		department: employmentDetails?.department || '',
+	// 		form_attached: {
+	// 			name: selectedFile?.assets![0].name || '',
+	// 			uri: selectedFile?.assets![0].uri || '',
+	// 			type: selectedFile?.assets![0].mimeType || '',
+	// 		},
+	// 		workstation_type: employmentDetails?.workstation_type || '',
+	// 		workstation_id: employmentDetails?.workstation_id || '',
+	// 		workstation_name: employmentDetails?.workstation_name || '',
+	// 		duration_current_employer: employmentDetails?.duration_current_employer || '',
+	// 		experience_years: employmentDetails?.experience_years || '',
+	// 		planning_return: outmigration?.planning_return || '',
+	// 		verification_cadres: outmigration?.verification_cadres || '',
+	// 		outmigration_reason: outmigration?.outmigration_reason || '',
+	// 	});
 
-	const handleSubmit = () => {
-		mutate({
-			index_id: user?.id || '',
-			country_id: outmigration?.country_id || '',
-			marital_status: personalDetails?.marital_status || '',
-			employment_status: employmentDetails?.employment_status || '',
-			current_employer: employmentDetails?.current_employer || '',
-			current_position: employmentDetails?.current_position || '',
-			dependants: personalDetails?.dependants || '',
-			department: employmentDetails?.department || '',
-			form_attached: {
-				name: selectedFile?.assets![0].name || '',
-				uri: selectedFile?.assets![0].uri || '',
-				type: selectedFile?.assets![0].mimeType || '',
-			},
-			workstation_type: employmentDetails?.workstation_type || '',
-			workstation_id: employmentDetails?.workstation_id || '',
-			workstation_name: employmentDetails?.workstation_name || '',
-			duration_current_employer: employmentDetails?.duration_current_employer || '',
-			experience_years: employmentDetails?.experience_years || '',
-			planning_return: outmigration?.planning_return || '',
-			verification_cadres: outmigration?.verification_cadres || '',
-			outmigration_reason: outmigration?.outmigration_reason || '',
-		});
+	// 	setSubmit(false);
+	// };
 
-		setSubmit(false);
-	};
+	// useEffect(() => {
+	// 	if (submit) {
+	// 		handleSubmit();
+	// 	}
 
-	useEffect(() => {
-		if (submit) {
-			handleSubmit();
-		}
-
-		return () => {
-			setSubmit(false);
-		};
-	}, [submit]);
+	// 	return () => {
+	// 		setSubmit(false);
+	// 	};
+	// }, [submit]);
 
 	return (
 		<View
@@ -190,10 +189,10 @@ const OutmigrationStepComponent = () => {
 					paddingBottom: 20,
 				}}>
 				<View className='p-2 items-center'>
-					<Text>Step 3 of 3</Text>
+					<Text>Step 1 of 3</Text>
 				</View>
 				<View className='p-2 mb-4 items-center'>
-					<ProgressTrack progress={3 / 3} />
+					<ProgressTrack progress={1 / 3} />
 				</View>
 				<View className='p-3'>
 					<View className='p-2' style={styles.outmigration}>
@@ -334,24 +333,15 @@ const OutmigrationStepComponent = () => {
 							/>
 						</Pressable>
 					</View>
-					<View className='flex flex-row gap-2 items-center p-2'>
-						<Pressable
-							role='checkbox'
-							aria-checked={checked}
-							style={[styles.checkboxBase, checked && styles.checkboxChecked]}
-							onPress={() => setChecked(!checked)}>
-							{checked && <Ionicons name='checkmark' size={24} color='white' />}
-						</Pressable>
-						<Text>I confirm that I am fit to practice</Text>
-					</View>
+
 					<View className='p-2'>
 						<Button
 							mode='contained'
-							style={disabled || !checked ? styles.disabled : styles.button}
-							disabled={disabled || !checked}
+							style={disabled ? styles.disabled : styles.button}
+							disabled={disabled}
 							onPress={handleNext}
 							loading={isPending}>
-							Submit Application
+							Next
 						</Button>
 					</View>
 				</View>
