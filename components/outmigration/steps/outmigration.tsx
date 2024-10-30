@@ -1,21 +1,21 @@
+import {Ionicons} from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
+import {useRouter} from 'expo-router';
+import {useAtom} from 'jotai';
 import React, {useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, Icon, TextInput, TextInputProps} from 'react-native-paper';
+import {employmentAtom} from '../../../atoms/employment';
+import {outmigrationAtom} from '../../../atoms/outmigration';
+import {personalDetailsAtom} from '../../../atoms/personaldetails';
+import {truncateText} from '../../../helpers/truncate';
 import useAuthenticatedUser from '../../../services/auth/authenticated';
 import useCountries from '../../../services/general/countries';
+import useOutmigrationApply from '../../../services/outmigration/apply';
 import usePlanningToReturn from '../../../services/outmigration/planningtoreturn';
 import useOutmigrationReasons from '../../../services/outmigration/reasons';
 import ProgressTrack from '../../shared/Progress';
-import {truncateText} from '../../../helpers/truncate';
-import {useAtom} from 'jotai';
-import {outmigrationAtom} from '../../../atoms/outmigration';
-import {personalDetailsAtom} from '../../../atoms/personaldetails';
-import {employmentAtom} from '../../../atoms/employment';
-import useOutmigrationApply from '../../../services/outmigration/apply';
-import {useRouter} from 'expo-router';
-import {Platform} from 'react-native';
 
 const theme = {
 	roundness: 12,
@@ -138,6 +138,8 @@ const OutmigrationStepComponent = () => {
 
 		setSubmit(true);
 	};
+
+	const [checked, setChecked] = useState(false);
 
 	const handleSubmit = () => {
 		mutate({
@@ -332,11 +334,21 @@ const OutmigrationStepComponent = () => {
 							/>
 						</Pressable>
 					</View>
+					<View className='flex flex-row gap-2 items-center p-2'>
+						<Pressable
+							role='checkbox'
+							aria-checked={checked}
+							style={[styles.checkboxBase, checked && styles.checkboxChecked]}
+							onPress={() => setChecked(!checked)}>
+							{checked && <Ionicons name='checkmark' size={24} color='white' />}
+						</Pressable>
+						<Text>I confirm that I am fit to practice</Text>
+					</View>
 					<View className='p-2'>
 						<Button
 							mode='contained'
-							style={disabled ? styles.disabled : styles.button}
-							disabled={disabled}
+							style={disabled || !checked ? styles.disabled : styles.button}
+							disabled={disabled || !checked}
 							onPress={handleNext}
 							loading={isPending}>
 							Submit Application
@@ -394,6 +406,43 @@ const styles = StyleSheet.create({
 				zIndex: 1000,
 			},
 		}),
+	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
+	},
+
+	buttonDisabled: {
+		backgroundColor: '#A9A9A9', // Disabled button color
 	},
 });
 

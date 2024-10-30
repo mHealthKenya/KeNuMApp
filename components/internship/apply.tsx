@@ -17,6 +17,7 @@ import DateModal from '../shared/DateModal';
 import ToastError from '../shared/ToastError';
 import WarnAlert from '../shared/WarnAlert';
 import {Text} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
 
 interface UserImage {
 	uri: string | null;
@@ -35,6 +36,12 @@ const InternshipApplyComponent: FC<{
 	if (user?.education !== undefined && user?.education?.length <= 0) {
 		return <WarnAlert message='Could not find any education history in your account' />;
 	}
+
+	const [checked, setChecked] = useState(false);
+
+	const handleChecked = () => {
+		setChecked((checked) => !checked);
+	};
 
 	const textProps: TextInputProps = {
 		theme,
@@ -280,7 +287,23 @@ const InternshipApplyComponent: FC<{
 					/>
 				)}
 
-				<Button mode='contained' style={styles.button} onPress={handleSubmit} loading={isPending}>
+				<View className='flex flex-row gap-2 items-center'>
+					<Pressable
+						role='checkbox'
+						aria-checked={checked}
+						style={[styles.checkboxBase, checked && styles.checkboxChecked]}
+						onPress={() => setChecked(!checked)}>
+						{checked && <Ionicons name='checkmark' size={24} color='white' />}
+					</Pressable>
+					<Text>I confirm that I am fit to practice</Text>
+				</View>
+
+				<Button
+					mode='contained'
+					style={styles.button}
+					onPress={handleSubmit}
+					loading={isPending}
+					disabled={!checked || isPending}>
 					Apply
 				</Button>
 			</View>
@@ -320,5 +343,38 @@ const styles = StyleSheet.create({
 	button: {
 		borderRadius: 5,
 		backgroundColor: primaryColor,
+	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
 	},
 });
