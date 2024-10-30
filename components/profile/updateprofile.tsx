@@ -7,14 +7,14 @@ import ProfileHeader from './header';
 import globalStyles from '../../styles/global';
 import * as ImagePicker from 'expo-image-picker';
 import mime from 'mime';
-import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import {Button, Switch, TextInput, TextInputProps} from 'react-native-paper';
 import {Image} from 'expo-image';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import {Text} from 'react-native';
 import {primaryColor} from '../../constants/Colors';
-import {useToast} from '@gluestack-ui/themed';
+import { useToast} from '@gluestack-ui/themed';
 import ToastError from '../shared/ToastError';
 import ToastSuccess from '../shared/ToastSuccess';
 import useProfileUpdate from '../../services/profile/edit';
@@ -23,15 +23,19 @@ interface Form {
 	address: string;
 	email: string;
 	mobileno: string;
+    twoFactorAuthEnabled?: boolean;
 }
 
 const validationSchema = Yup.object().shape({
 	address: Yup.string().required('Address is required'),
 	email: Yup.string().required('Email is required'),
 	mobileno: Yup.string().required('Mobile number is required'),
+    
 });
 
 const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
+    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 	const {
 		control,
 		formState: {errors},
@@ -102,9 +106,10 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 	const {mutate, isPending} = useProfileUpdate(successFn, errorFn);
 
 	const onSubmit = (data: Form) => {
-		mutate({
+	 mutate({
 			...data,
 			profile_pic: image,
+            twoFactorAuthEnabled: isSwitchOn
 		});
 	};
 
@@ -183,7 +188,7 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 
 						{!!errors?.address?.message && <Text style={styles.errorText}>{errors?.address?.message}</Text>}
 					</View>
-					<Pressable onPress={() => pickImage('cpd_evidence')}>
+                    <Pressable onPress={() => pickImage('cpd_evidence')}>
 						<TextInput
 							label='Upload Profile'
 							left={<TextInput.Icon icon='subtitles' />}
@@ -207,6 +212,11 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 							{...textProps}
 						/>
 					</Pressable>
+                    <View>
+                        <Text className="mt-5 mb-2 font-normal">Enable 2 Factor Authentication</Text>
+                        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+					</View>
+					
 
 					<Button style={styles.button} mode='contained' onPress={handleSubmit(onSubmit)} loading={isPending}>
 						Update Profile

@@ -1,4 +1,4 @@
-import { useToast } from '@gluestack-ui/themed';
+import { Link, Pressable, useToast } from '@gluestack-ui/themed';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
@@ -19,6 +19,8 @@ import { useError } from '../../providers/error';
 import useLogin from '../../services/auth/login';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
+import { Ionicons } from '@expo/vector-icons';
+import Biometric from './Biometric';
 
 export interface Credentials {
 	username: string;
@@ -89,6 +91,7 @@ const LoginComponent = () => {
 	return (
 		<SafeAreaView style={globalStyles.container}>
 			<KeyboardAvoidingView behavior='position'>
+                
 				<View
 					style={[
 						styles.imageBox,
@@ -171,6 +174,8 @@ const LoginComponent = () => {
 					{!!errors?.password?.message && (
 						<Text style={styles.errorText}>{errors?.password?.message}</Text>
 					)}
+                    <Biometric/>
+
 
 					<Button
 						mode='contained'
@@ -233,6 +238,11 @@ const LoginComponent = () => {
 							/>
 						</View>
 					</View>
+                    <Link href="https://osp.nckenya.com/LicenseStatus" className="mt-10 mb-5">
+                        <View className="flex items-center justify-center w-full">
+                            <Text className="text-[#0445b5] text-lg font-semibold text-center underline">License Checker</Text>
+                        </View>
+                    </Link>
 				</View>
 			</KeyboardAvoidingView>
 			<StatusBar hidden />

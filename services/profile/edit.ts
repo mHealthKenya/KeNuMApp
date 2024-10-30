@@ -8,21 +8,27 @@ interface Profile {
     address: string;
     email: string;
     mobileno: string;
-    profile_pic: any
+    profile_pic: any;
+    twoFactorAuthEnabled?: boolean;
 }
 
 const updateProfile = async (data: Profile) => {
-    const token = await secureStore.getItemAsync('token').then((data) => data);
-    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
-    const url = baseUrl + 'api/auth/update';
+    const token = await secureStore.getItemAsync('token');
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    const url = `${baseUrl}api/auth/update`;
 
     const form = new FormData();
-
     form.append('address', data.address);
     form.append('email', data.email);
     form.append('mobileno', data.mobileno);
-    { data.profile_pic && form.append('profile_pic', data.profile_pic) }
 
+    if (data.profile_pic) {
+        form.append('profile_pic', data.profile_pic);
+    }
+
+    if (typeof data.twoFactorAuthEnabled === 'boolean') {
+        form.append('twoFactorAuthEnabled', String(data.twoFactorAuthEnabled));
+    }
 
     const config: AxiosRequestConfig = {
         method: 'POST',
@@ -46,12 +52,10 @@ const useProfileUpdate = (successFn: () => void, errorFn: () => void) => {
             queryClient.invalidateQueries({
                 queryKey: ['authenticated-user'],
             });
-
             successFn();
         },
-
         onError: (err) => {
-            console.log(err);
+            console.error('Update profile error:', err);
             errorFn();
         },
     });
