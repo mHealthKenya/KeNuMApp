@@ -16,7 +16,7 @@ const OutmigrationHomeComponent = () => {
 						content: 'Simply complete three steps to make your outmigration application',
 						backgroundColor: '#dcf0fa',
 						path: require('../../assets/images/outmigration.png'),
-						route: '/personaldetails',
+						route: '/outmigrationdetails',
 					}}
 				/>
 				<CPDBoxComponent
