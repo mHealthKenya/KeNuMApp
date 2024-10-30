@@ -20,6 +20,7 @@ import useInternshipApplications from "../../../services/internship/applications
 import useInternshipCheckin from "../../../services/internship/checkin";
 import globalStyles from "../../../styles/global";
 import ToastError from "../../shared/ToastError";
+import { useAuth } from "../../../providers/auth";
 
 interface Form {
   nurse_officer_incharge: string;
@@ -70,7 +71,15 @@ const AddCheckinComponent = () => {
     mode: "onChange",
   });
 
-  const { data: internships, isError, isLoading } = useInternshipApplications();
+  const { user } = useAuth();
+
+  const index_id = user?.IndexNo || "";
+
+  const {
+    data: internships,
+    isError,
+    isLoading,
+  } = useInternshipApplications(index_id);
 
   const [mobile_no, setMobile_no] = useState("");
 
@@ -357,4 +366,3 @@ const styles = StyleSheet.create({
     margin: 5,
   },
 });
-
