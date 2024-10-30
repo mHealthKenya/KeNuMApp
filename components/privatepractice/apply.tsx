@@ -7,6 +7,7 @@ import {
 	ScrollView,
 	ActivityIndicator,
 	Platform,
+	Pressable,
 } from 'react-native';
 import React, {FC, useEffect, useMemo, useState} from 'react';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
@@ -21,6 +22,7 @@ import {countAtom} from '../../atoms/county';
 import usePrivatePracticeApply from '../../services/privatepractice/apply';
 import {User} from '../../models/user';
 import {workStationAtom} from '../../atoms/workstation';
+import {Ionicons} from '@expo/vector-icons';
 
 const theme = {
 	roundness: 12,
@@ -118,6 +120,9 @@ const ApplyPrivateComponent: FC<{
 	};
 
 	const {height, width} = useWindowDimensions();
+
+	const [checked, setChecked] = useState(false);
+
 	return (
 		<View
 			style={{
@@ -261,8 +266,23 @@ const ApplyPrivateComponent: FC<{
 							{...textInputProps}
 						/>
 					</View>
+					<View className='flex flex-row gap-2 items-center p-2'>
+						<Pressable
+							role='checkbox'
+							aria-checked={checked}
+							style={[styles.checkboxBase, checked && styles.checkboxChecked]}
+							onPress={() => setChecked(!checked)}>
+							{checked && <Ionicons name='checkmark' size={24} color='white' />}
+						</Pressable>
+						<Text>I confirm that I am fit to practice</Text>
+					</View>
 					<View className='p-2'>
-						<Button mode='contained' style={styles.button} onPress={handleSubmit} loading={isPending}>
+						<Button
+							mode='contained'
+							style={[styles.button, (isPending || !checked) && styles.buttonDisabled]}
+							onPress={handleSubmit}
+							loading={isPending}
+							disabled={isPending || !checked}>
 							Submit Application
 						</Button>
 					</View>
@@ -280,6 +300,10 @@ const styles = StyleSheet.create({
 		backgroundColor: '#0445b5',
 		borderRadius: 12,
 		padding: 3,
+	},
+
+	buttonDisabled: {
+		backgroundColor: '#A9A9A9', // Disabled button color
 	},
 
 	proposed: {
@@ -313,6 +337,41 @@ const styles = StyleSheet.create({
 			},
 		}),
 	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
+	},
+
+	
 });
 
 export default ApplyPrivateComponent;

@@ -40,7 +40,15 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 		<View style={globalStyles.container}>
 			<ScrollView style={{flex: 1}}>
 				{hasActiveLicence ? (
-					<DownloadBox />
+					<LBox
+						box={{
+							title: 'Licence Renewal',
+							content: 'Complete your annual licence renewal',
+							backgroundColor: '#dcf0fa',
+							path: require('../../assets/images/licencesmall.png'),
+							route: '/licencecountry',
+						}}
+					/>
 				) : !hasRequisiteCPD ? (
 					<LBox
 						box={{

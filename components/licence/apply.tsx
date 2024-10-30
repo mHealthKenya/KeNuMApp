@@ -1,7 +1,7 @@
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import React, {FC, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
@@ -13,6 +13,8 @@ import LicenceApplyBox, {Item} from './licencebox';
 import {diasporaAtom} from '../../atoms/diaporaatom';
 import {useAtom} from 'jotai';
 import {LicenceApplication} from '../../models/licenceapplications';
+import {Ionicons} from '@expo/vector-icons';
+import {Text} from 'react-native';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
@@ -67,6 +69,8 @@ const LicenceApplicationComponent: FC<{
 		return l.to_date ? new Date(l.to_date) > new Date() : false;
 	});
 
+	const [checked, setChecked] = useState(false);
+
 	return (
 		<View style={globalStyles.container}>
 			<View className='p-3'>
@@ -117,12 +121,27 @@ const LicenceApplicationComponent: FC<{
 							/>
 						)}
 
+						<View className='flex flex-row gap-2 items-center'>
+							<Pressable
+								role='checkbox'
+								aria-checked={checked}
+								style={[styles.checkboxBase, checked && styles.checkboxChecked]}
+								onPress={() => setChecked(!checked)}>
+								{checked && <Ionicons name='checkmark' size={24} color='white' />}
+							</Pressable>
+							<Text>I confirm that I am fit to practice</Text>
+						</View>
+
 						<Button
 							mode='contained'
-							style={(!selected && !diaspora) || hasActiveLicence || hasPendingApplications ? styles.disabled : styles.button}
+							style={
+								(!selected && !diaspora) || hasActiveLicence || hasPendingApplications || !checked
+									? styles.disabled
+									: styles.button
+							}
 							loading={isPending}
 							onPress={handleSubmit}
-							disabled={(!selected && !diaspora) || hasPendingApplications || hasActiveLicence}>
+							disabled={(!selected && !diaspora) || hasPendingApplications || hasActiveLicence || !checked}>
 							Apply
 						</Button>
 					</View>
@@ -165,5 +184,38 @@ const styles = StyleSheet.create({
 		backgroundColor: '#bbbbbb',
 		borderRadius: 12,
 		padding: 3,
+	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
 	},
 });
