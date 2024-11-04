@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import React, {FC} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {Divider} from 'react-native-paper';
 import globalStyles from '../../styles/global';
 
 interface Education {
@@ -11,25 +11,23 @@ interface Education {
 
 const EducationItem: FC<{
 	education: Education;
-}> = ({ education }) => {
+}> = ({education}) => {
 	return (
 		<View style={styles.card}>
 			<View style={[globalStyles.column]}>
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
 					<Text style={styles.headerText}>Cadre</Text>
 					<Text style={styles.contentText}>{education?.cadre_text}</Text>
 				</View>
 				<Divider />
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
 					<Text style={styles.headerText}>Institution</Text>
 					<Text style={styles.contentText}>{education?.institution}</Text>
 				</View>
 				<Divider />
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
-					<Text style={styles.headerText}>Admission Date</Text>
-					<Text style={styles.contentText}>
-						{education?.admission_date?.toLocaleString()}
-					</Text>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
+					<Text style={styles.headerText}>Commence Date</Text>
+					<Text style={styles.contentText}>{education?.admission_date?.toLocaleString()}</Text>
 				</View>
 			</View>
 		</View>

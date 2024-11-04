@@ -1,35 +1,30 @@
-import { Image } from 'expo-image';
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import React, { FC, useMemo, useState } from 'react';
-import {
-	KeyboardAvoidingView,
-	StyleSheet,
-	View,
-	useWindowDimensions,
-} from 'react-native';
+import {Image} from 'expo-image';
+import {useLocalSearchParams, useRouter} from 'expo-router';
+import React, {FC, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Button } from 'react-native-paper';
+import {Button} from 'react-native-paper';
 
-import { useToast } from '@gluestack-ui/themed';
+import {useToast} from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
-import { primaryColor } from '../../constants/Colors';
-import { ExamCenter } from '../../models/examcenters';
-import { useAuth } from '../../providers/auth';
+import {primaryColor} from '../../constants/Colors';
+import {ExamCenter} from '../../models/examcenters';
+import {useAuth} from '../../providers/auth';
 import useExamApply from '../../services/exams/apply';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
-import { User } from '../../models/user';
+import {User} from '../../models/user';
 
 const AddExamComponent: FC<{
 	centers: ExamCenter[];
 	user: User | null;
-}> = ({ centers, user }) => {
+}> = ({centers, user}) => {
 	const [dropDownCenter, setDropDownCenter] = useState(false);
 	const [dropDownReason, setDropDownReason] = useState(false);
 	const [selectedCenter, setSelectedCenter] = useState(null);
 	const [selectedReason, setSelectedReason] = useState(null);
 
-	const { width, height } = useWindowDimensions();
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
@@ -44,7 +39,7 @@ const AddExamComponent: FC<{
 
 	const router = useRouter();
 
-	const { student_series_id = '' } = useLocalSearchParams();
+	const {student_series_id = ''} = useLocalSearchParams();
 
 	const toast = useToast();
 
@@ -56,7 +51,7 @@ const AddExamComponent: FC<{
 		toast.show({
 			onCloseComplete() {},
 			duration: 5000,
-			render: ({ id }) => {
+			render: ({id}) => {
 				return (
 					<ToastError
 						id={id}
@@ -69,14 +64,14 @@ const AddExamComponent: FC<{
 		});
 	};
 
-	const { mutate, isPending } = useExamApply(successFn, errorFn);
+	const {mutate, isPending} = useExamApply(successFn, errorFn);
 
 	const date = new Date();
 
 	const onSubmit = () => {
 		mutate({
 			index_id: user?.IndexNo || '',
-			exam_centers: selectedCenter + ',' + selectedReason,
+			exam_centers: selectedCenter + ',' + selectedCenter,
 			student_series_id: '' + student_series_id,
 			application_date: dayjs(date).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),
 		});
@@ -85,7 +80,7 @@ const AddExamComponent: FC<{
 	return (
 		<View style={globalStyles.container}>
 			<KeyboardAvoidingView
-				style={[styles.box, { position: 'relative', flex: 1 }]}
+				style={[styles.box, {position: 'relative', flex: 1}]}
 				behavior='position'
 				enabled
 				keyboardVerticalOffset={45}>
@@ -128,7 +123,7 @@ const AddExamComponent: FC<{
 					/>
 				</View>
 
-				<View
+				{/* <View
 					style={{
 						height: dropDownReason ? height * 0.3 : height * 0.07,
 					}}>
@@ -151,13 +146,13 @@ const AddExamComponent: FC<{
 							},
 						]}
 					/>
-				</View>
+				</View> */}
 
 				<View>
 					<Button
 						mode='contained'
 						style={styles.button}
-						disabled={selectedCenter === null || selectedReason === null}
+						disabled={selectedCenter === null}
 						onPress={onSubmit}
 						loading={isPending}>
 						Submit

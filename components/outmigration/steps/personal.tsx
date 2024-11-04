@@ -1,12 +1,12 @@
-import { useRouter } from 'expo-router';
-import { useAtom } from 'jotai';
-import React, { useEffect, useMemo, useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import {useRouter} from 'expo-router';
+import {useAtom} from 'jotai';
+import React, {useEffect, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, Platform, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Button, TextInput, TextInputProps } from 'react-native-paper';
-import { employmentAtom } from '../../../atoms/employment';
-import { outmigrationAtom } from '../../../atoms/outmigration';
-import { personalDetailsAtom } from '../../../atoms/personaldetails';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import {employmentAtom} from '../../../atoms/employment';
+import {outmigrationAtom} from '../../../atoms/outmigration';
+import {personalDetailsAtom} from '../../../atoms/personaldetails';
 import useAuthenticatedUser from '../../../services/auth/authenticated';
 import useOutmigrationApply from '../../../services/outmigration/apply';
 import useMaritalStatus from '../../../services/outmigration/maritalstatus';
@@ -25,7 +25,7 @@ const PersonalDetailsComponent = () => {
 	};
 	const {data: status, isLoading} = useMaritalStatus();
 
-	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
+	const {data: user} = useAuthenticatedUser();
 
 	const [disabled, setDisabled] = useState(true);
 

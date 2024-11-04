@@ -15,7 +15,7 @@ const KnowledgeComponent: FC<{
 
 	const items: KnowBox[] = [
 		{
-			title: 'Policies and Manual',
+			title: 'Policies and Manuals',
 			content: 'Streamlining Procedures for Consistency and Effective Action',
 			url: 'allknowledge',
 		},

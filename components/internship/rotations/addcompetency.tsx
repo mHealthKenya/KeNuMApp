@@ -16,6 +16,7 @@ import ToastError from '../../shared/ToastError';
 import ToastSuccess from '../../shared/ToastSuccess';
 import CompetencyInformationBox from './competencyinformationbox';
 import {useAuth} from '../../../providers/auth';
+import {ScrollView} from 'react-native';
 
 interface Activity {
 	activity_notes: string;
@@ -127,10 +128,11 @@ const AddCompetencyComponent = () => {
 		activeOutlineColor: '#0445b5',
 	};
 	return (
-		<View style={[globalStyles.container, {gap: 10}]}>
+		<ScrollView style={[globalStyles.container, {gap: 10}]}>
 			<CompetencyInformationBox competency={competency} />
-			<KeyboardAvoidingView behavior='position'>
-				<View style={[styles.box]}>
+
+			<KeyboardAvoidingView>
+				<View style={[styles.box]} className='container mx-auto max-h-[400px] h-auto overflow-y-auto'>
 					<Controller
 						rules={{
 							required: true,
@@ -146,6 +148,7 @@ const AddCompetencyComponent = () => {
 								value={value}
 								multiline
 								numberOfLines={5}
+								maxLength={3000}
 							/>
 						)}
 						name='activity_notes'
@@ -187,7 +190,7 @@ const AddCompetencyComponent = () => {
 					Record
 				</Button>
 			</KeyboardAvoidingView>
-		</View>
+		</ScrollView>
 	);
 };
 

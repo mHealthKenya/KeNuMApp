@@ -38,6 +38,12 @@ const KnowledgeLayout = () => {
 						headerShown: false,
 					}}
 				/>
+				<Stack.Screen
+					name='codec'
+					options={{
+						headerShown: false,
+					}}
+				/>
 			</Stack>
 		</KnowledgeProvider>
 	);

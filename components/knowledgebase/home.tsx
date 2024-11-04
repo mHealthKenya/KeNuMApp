@@ -1,7 +1,7 @@
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import { Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { Divider, Icon } from 'react-native-paper';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Divider, Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
 
 export interface KnowBox {
@@ -18,6 +18,7 @@ const HomeBox: FC<{routing: KnowBox}> = ({routing}) => {
 	const router = useRouter();
 
 	const handlePress = (item: string) => {
+		console.log(item);
 		router.push(item);
 	};
 
