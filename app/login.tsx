@@ -30,6 +30,7 @@ const Login = () => {
 	}
 
 	return <LoginComponent />;
+    // return <TwoFactorAuth isConfirmationRequired={true}/>
 };
 
 export default Login;

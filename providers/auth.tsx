@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import React, {
 	FC,
@@ -11,6 +11,9 @@ import React, {
 import { baseUrl } from '../constants/baseurl';
 import { User } from '../models/user';
 import { useQueryClient } from '@tanstack/react-query';
+// import { Credentials } from '../components/auth/Login';
+import { AllTokens, SignInMode } from '../enums/tokens';
+import mode from '../services/privatepractice/mode';
 
 enum Types {
 	Login = 'Login',
@@ -20,11 +23,26 @@ enum Types {
 	LoggingOut = 'LoggingOut',
 }
 
-interface Action {
-	type: Types;
-	payload?: any;
+enum AuthTypes {
+	SignIn = 'SignIn',
+	SignOut = 'SignOut',
+	InitialSignIn = 'InitialSignIn',
+	Error = 'Error',
+	Clear = 'Clear',
+	CheckAuth = 'CheckAuth',
+	Initiate = 'Initiate',
 }
 
+interface Action {
+	type: Types | AuthTypes;
+	payload?: any;
+}
+interface Credentials {
+        username?: string;
+        password?: string;
+        mode: SignInMode;
+        checked: boolean;
+    }
 interface State {
 	isAuthenticated: boolean;
 	isLoading: boolean;
@@ -39,6 +57,7 @@ interface Auth {
 	isAuthenticated: boolean;
 	user: User | null;
 	isLoggingOut: boolean;
+    signIn: (credentials: Credentials) => void;
 }
 
 const AuthContext = createContext<Auth>({
@@ -48,6 +67,7 @@ const AuthContext = createContext<Auth>({
 	isAuthenticated: false,
 	isLoggingOut: false,
 	user: null,
+    signIn: (_credentials: Credentials) => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -151,12 +171,82 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		checkAuth();
 	}, []);
 
+    const signIn = async ({ username, password, mode, checked }: Credentials) => {
+		dispatch({ type: AuthTypes.InitialSignIn });
+
+		const refresh =
+			(await secureStore
+				.getItemAsync(AllTokens.all_tokens)
+				.then((data) => data)) || '';
+
+		const config: AxiosRequestConfig = {
+			method: 'POST',
+			url: baseUrl + 'users/login',
+			headers: {
+				Authorization:
+					refresh.includes('*sep*') &&
+					mode === SignInMode.local &&
+					'Bearer ' + refresh.split('*sep*')[0],
+			},
+
+			data: {
+				username,
+				password,
+			},
+		};
+
+		const login = await axios(config)
+			.then(async (res) => {
+				let tokens = '';
+
+				const { refreshToken, token } = res.data;
+
+				if (checked) {
+					tokens = refreshToken + '*sep*' + token;
+				} else {
+					tokens = refresh.split('*sep*')[0] + '*sep*' + token;
+				}
+
+				await secureStore.setItemAsync(AllTokens.all_tokens, tokens);
+
+				const user = await axios
+					.get(baseUrl + 'users/individual', {
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					})
+					.then((res) => res.data);
+
+				await dispatch({
+					type: AuthTypes.SignIn,
+					payload: {
+						user,
+						token,
+					},
+				});
+			})
+			.catch((err) => {
+				dispatch({
+					type: AuthTypes.Error,
+					payload: {
+						error:
+							err?.response?.data?.message ||
+							err?.message ||
+							'An error occurred',
+					},
+				});
+			});
+
+		return login;
+	};
+
 	return (
 		<AuthContext.Provider
 			value={{
 				...state,
 				checkAuth,
 				logout,
+                signIn
 			}}>
 			{children}
 		</AuthContext.Provider>

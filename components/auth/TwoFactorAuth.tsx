@@ -1,11 +1,16 @@
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import globalStyles from '../../styles/global';
 import { Controller, useForm } from 'react-hook-form';
 import { PinInput, PinInputRef } from '@pakenfit/react-native-pin-input';
 import { Button } from '@gluestack-ui/themed';
 
-const TwoFactorAuth = ({ isConfirmationRequired = false, onSubmit }: any) => {
+interface Props {
+    isConfirmationRequired: boolean;
+    onSubmit: (pin: string) => void;
+}
+
+const TwoFactorAuth: FC<{props: Props}> = ({props: {isConfirmationRequired = false,  onSubmit}}) => {
     const ref = React.useRef<PinInputRef>(null);
     const { control, handleSubmit, watch, formState: { errors } } = useForm<{ pin: string; confirmPin?: string }>({
         defaultValues: {
