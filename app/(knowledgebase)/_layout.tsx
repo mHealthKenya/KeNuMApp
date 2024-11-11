@@ -44,6 +44,24 @@ const KnowledgeLayout = () => {
 						headerShown: false,
 					}}
 				/>
+                <Stack.Screen
+					name='policy_brief'
+					options={{
+						headerShown: false,
+					}}
+				/>
+                <Stack.Screen
+					name='ratio'
+					options={{
+						headerShown: false,
+					}}
+				/>
+                <Stack.Screen
+					name='code_of_conduct'
+					options={{
+						headerShown: false,
+					}}
+				/>
 			</Stack>
 		</KnowledgeProvider>
 	);

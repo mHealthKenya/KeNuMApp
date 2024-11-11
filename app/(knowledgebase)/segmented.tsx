@@ -27,9 +27,14 @@ const KnowledgeComponent: FC<{
 		},
 
 		{
-			title: 'Scop of Practice',
+			title: 'Scope of Practice',
 			content: 'Ensuring Competence and Compliance in Professional Practice',
-			url: 'allknowledge',
+			url: 'codec',
+		},
+        {
+			title: 'Policy Brief',
+			content: 'Ensuring Competence and Compliance in Professional Practice',
+			url: 'policy_brief',
 		},
 	];
 
