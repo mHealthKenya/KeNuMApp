@@ -26,9 +26,9 @@ const AllKnowledge = () => {
         refetch={refetch}
         isRefetching={isRefetching}
       />
-      <View style={{ flex: 1, marginTop: 20 }}>
+      {/* <View style={{ flex: 1, marginTop: 20 }}>
         <ManualView />
-      </View>
+      </View> */}
       <StatusBar style="light" />
     </>
   );

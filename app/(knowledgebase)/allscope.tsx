@@ -32,37 +32,37 @@ const AllScope = () => {
       title: "Critical Care Scope",
       content:
         "Advancing Knowledge through Rigorous and Innovative Research Studies",
-      url: "code_of_conduct",
+      url: "critical",
     },
     {
       title: "Final APN scope of practice",
       content:
         "Advancing Knowledge through Rigorous and Innovative Research Studies",
-      url: "code_of_conduct",
+      url: "apn",
     },
     {
       title: "FINAL ENTRY LEVEL SCOPE OF PRACTICE",
       content:
         "Advancing Knowledge through Rigorous and Innovative Research Studies",
-      url: "code_of_conduct",
+      url: "entry",
     },
     {
       title: "mental health-psychiatry scope of practice March 2022",
       content:
         "Advancing Knowledge through Rigorous and Innovative Research Studies",
-      url: "code_of_conduct",
+      url: "mental",
     },
     {
       title: "Neonatal Nursing Scope of Practice",
       content:
         "Advancing Knowledge through Rigorous and Innovative Research Studies",
-      url: "code_of_conduct",
+      url: "neonatal",
     },
     {
       title: "Nephrology Scope of Practice",
       content:
         "Advancing Knowledge through Rigorous and Innovative Research Studies",
-      url: "code_of_conduct",
+      url: "nephrology",
     },
     {
       title: "Oncology nursing scope of practice March 2022",
