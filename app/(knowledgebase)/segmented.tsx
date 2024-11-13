@@ -1,10 +1,11 @@
 import {FlashList} from '@shopify/flash-list';
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {View} from 'react-native';
 import HomeBox, {KnowBox} from '../../components/knowledgebase/home';
 import {KnowledgeBase} from '../../models/knowledgebase';
 import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
+import { Searchbar } from 'react-native-paper';
 
 const KnowledgeComponent: FC<{
 	items: KnowledgeBase[];
@@ -32,16 +33,28 @@ const KnowledgeComponent: FC<{
 			url: 'allscope',
 		},
         {
-			title: 'Policy Brief',
+			title: 'Policy Briefs',
 			content: 'Ensuring Competence and Compliance in Professional Practice',
 			url: 'policy_brief',
 		},
 	];
 
+    const filteredItems = useMemo(() => items?.filter((item) => 
+        item.title.toLowerCase().includes(search.toLowerCase()) || item.content.toLowerCase().includes(search.toLowerCase())
+    ), [search, items]);
+
 	return (
 		<View style={globalStyles.container}>
+            <Searchbar
+                placeholder=''
+                onChangeText={handleSearch}
+                value={search}
+                style={{backgroundColor: '#dbe6f5',
+                    margin: 5,
+                    padding: 2,
+                    borderRadius: 10}}/>
 			<FlashList
-				data={items}
+				data={filteredItems}
 				renderItem={({item}) => <HomeBox routing={item} />}
 				keyExtractor={(_, index) => String(index)}
 				estimatedItemSize={150}

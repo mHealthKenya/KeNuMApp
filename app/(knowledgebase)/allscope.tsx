@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View } from "react-native";
 import RatioView from "../../components/knowledgebase/research/ratio";
 import { FlashList } from "@shopify/flash-list";
@@ -6,6 +6,7 @@ import HomeBox from "../../components/knowledgebase/home";
 import { SafeAreaView } from "@gluestack-ui/themed";
 import { useSearch } from "../../providers/search";
 import globalStyles from "../../styles/global";
+import { Searchbar } from "react-native-paper";
 
 const AllScope = () => {
   const { search, handleSearch } = useSearch();
@@ -95,10 +96,22 @@ const AllScope = () => {
       url: "code_of_conduct",
     },
   ];
+
+  const filteredItems = useMemo(() => Items?.filter((item) => 
+    item.title.toLowerCase().includes(search.toLowerCase()) || item.content.toLowerCase().includes(search.toLowerCase())
+), [search, Items]);
   return (
     <View style={globalStyles.container}>
+        <Searchbar
+                placeholder=''
+                onChangeText={handleSearch}
+                value={search}
+                style={{backgroundColor: '#dbe6f5',
+                    margin: 5,
+                    padding: 2,
+                    borderRadius: 10}}/>
       <FlashList
-        data={Items}
+        data={filteredItems}
         renderItem={({ item }) => <HomeBox routing={item} />}
         keyExtractor={(_, index) => String(index)}
         estimatedItemSize={150}
