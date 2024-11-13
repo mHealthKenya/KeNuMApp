@@ -30,7 +30,7 @@ const KnowledgeComponent: FC<{
   const additionalItems = [
     {
       type: "manual",
-      title: "Clinical Procedure Manuals",
+      title: "Clinical Procedure Manual",
       content: "Streamlining Procedures for Consistency and Effective Action",
       url: "manual",
     },

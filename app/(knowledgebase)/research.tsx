@@ -12,18 +12,18 @@ const Research = () => {
     const {search, handleSearch} = useSearch()
   const Items = [
     {
-      title: "Policies and Manuals",
-      content: "Streamlining Procedures for Consistency and Effective Action",
-      url: "ratio",
+      title: "",
+      content: "",
+      url: "",
     },
 
-    {
-      title: "Code Of Conduct",
-      content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
-      url: "code_of_conduct",
-    },
-  ];
+    // {
+    //   title: "Code Of Conduct",
+    //   content:
+    //     "Advancing Knowledge through Rigorous and Innovative Research Studies",
+    //   url: "code_of_conduct",
+    // },
+  ].sort((a, b) => a.title.localeCompare(b.title));
 
   const filteredItems = useMemo(() => Items?.filter((item) => 
     item.title.toLowerCase().includes(search.toLowerCase()) || item.content.toLowerCase().includes(search.toLowerCase())

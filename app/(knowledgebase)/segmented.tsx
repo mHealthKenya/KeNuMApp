@@ -28,7 +28,7 @@ const KnowledgeComponent: FC<{
 		},
 
 		{
-			title: 'Scope of Practice',
+			title: 'Scopes of Practice', 
 			content: 'Ensuring Competence and Compliance in Professional Practice',
 			url: 'allscope',
 		},

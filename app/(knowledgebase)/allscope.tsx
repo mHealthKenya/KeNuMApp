@@ -26,78 +26,78 @@ const AllScope = () => {
     {
       title: "APM Scope of Practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Advanced Practice Midwives Scope of Practice in Kenya",
       url: "apm",
     },
     {
       title: "Critical Care Scope",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Critical care Scope of Policy for Nurses and Midwives in Kenya",
       url: "critical",
     },
     {
-      title: "Final APN scope of practice",
+      title: "APN scope of practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Advanced Nursing Practice in Kenya.",
       url: "apn",
     },
     {
-      title: "FINAL ENTRY LEVEL SCOPE OF PRACTICE",
+      title: "Entry level Scope of Practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Scope of Practice for Entry Level Nurses and Midwives in Kenya",
       url: "entry",
     },
     {
-      title: "mental health-psychiatry scope of practice March 2022",
+      title: "Mental Health-Psychiatry Scope of Practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Mental Health for Psychiatric Nurses in Kenya",
       url: "mental",
     },
     {
       title: "Neonatal Nursing Scope of Practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Neonatal Scope of Practice for Nursing and Midwives in Kenya",
       url: "neonatal",
     },
     {
       title: "Nephrology Scope of Practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Nephrology Scope of Practice for Nurses and Midwives in Kenya",
       url: "nephrology",
     },
     {
-      title: "Oncology nursing scope of practice March 2022",
+      title: "Oncology nursing scope of practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Oncology SoP for nurses and Midwives in Kenya",
       url: "code_of_conduct",
     },
     {
-      title: "Paediatric Critical care scope of practice March 2022",
+      title: "Paediatric Critical care scope of practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Pediatric Critical care scope of Practice for Nurses and Midwives in Kenya",
       url: "code_of_conduct",
     },
     {
       title: "Paediatric Scope of Practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Paediatric Scope of Practice for Nurses and Midwives in Kenya",
       url: "code_of_conduct",
     },
     {
-      title: "palliative Scope",
+      title: "Palliative Scope",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Palliative Scope of Practice for Nurses and Midwives in Kenya",
       url: "code_of_conduct",
     },
     {
       title: "Perioperative Scope of Practice",
       content:
-        "Advancing Knowledge through Rigorous and Innovative Research Studies",
+        "Practice for Nurses and Midwives in Kenya",
       url: "code_of_conduct",
     },
   ];
 
-  const filteredItems = useMemo(() => Items?.filter((item) => 
+  const filteredItems = useMemo(() => Items?.sort((a, b) => a.title.localeCompare(b.title)).filter((item) => 
     item.title.toLowerCase().includes(search.toLowerCase()) || item.content.toLowerCase().includes(search.toLowerCase())
 ), [search, Items]);
   return (
