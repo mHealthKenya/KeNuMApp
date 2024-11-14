@@ -9,7 +9,7 @@ import { useSearch } from "../../providers/search";
 import { Searchbar } from "react-native-paper";
 
 const Research = () => {
-    const {search, handleSearch} = useSearch()
+  const { search, handleSearch } = useSearch();
   const Items = [
     {
       title: "",
@@ -25,19 +25,28 @@ const Research = () => {
     // },
   ].sort((a, b) => a.title.localeCompare(b.title));
 
-  const filteredItems = useMemo(() => Items?.filter((item) => 
-    item.title.toLowerCase().includes(search.toLowerCase()) || item.content.toLowerCase().includes(search.toLowerCase())
-), [search, Items]);
+  const filteredItems = useMemo(
+    () =>
+      Items?.filter(
+        (item) =>
+          item.title.toLowerCase().includes(search.toLowerCase()) ||
+          item.content.toLowerCase().includes(search.toLowerCase())
+      ),
+    [search, Items]
+  );
   return (
     <View style={globalStyles.container}>
-        <Searchbar
-                placeholder=''
-                onChangeText={handleSearch}
-                value={search}
-                style={{backgroundColor: '#dbe6f5',
-                    margin: 5,
-                    padding: 2,
-                    borderRadius: 10}}/>
+      <Searchbar
+        placeholder="Start typing..."
+        onChangeText={handleSearch}
+        value={search}
+        style={{
+          backgroundColor: "#dbe6f5",
+          margin: 5,
+          padding: 2,
+          borderRadius: 10,
+        }}
+      />
       <FlashList
         data={filteredItems}
         renderItem={({ item }) => <HomeBox routing={item} />}

@@ -25,91 +25,89 @@ const AllScope = () => {
     // },
     {
       title: "APM Scope of Practice",
-      content:
-        "Advanced Practice Midwives Scope of Practice in Kenya",
+      content: "Advanced Practice Midwives Scope of Practice in Kenya",
       url: "apm",
     },
     {
-      title: "Critical Care Scope",
-      content:
-        "Critical care Scope of Policy for Nurses and Midwives in Kenya",
-      url: "critical",
-    },
-    {
       title: "APN scope of practice",
-      content:
-        "Advanced Nursing Practice in Kenya.",
+      content: "Advanced Nursing Practice in Kenya.",
       url: "apn",
     },
     {
+      title: "Critical Care Scope",
+      content: "Critical care Scope of Policy for Nurses and Midwives in Kenya",
+      url: "critical",
+    },
+    {
       title: "Entry level Scope of Practice",
-      content:
-        "Scope of Practice for Entry Level Nurses and Midwives in Kenya",
+      content: "Scope of Practice for Entry Level Nurses and Midwives in Kenya",
       url: "entry",
     },
     {
       title: "Mental Health-Psychiatry Scope of Practice",
-      content:
-        "Mental Health for Psychiatric Nurses in Kenya",
+      content: "Mental Health for Psychiatric Nurses in Kenya",
       url: "mental",
     },
     {
       title: "Neonatal Nursing Scope of Practice",
-      content:
-        "Neonatal Scope of Practice for Nursing and Midwives in Kenya",
+      content: "Neonatal Scope of Practice for Nursing and Midwives in Kenya",
       url: "neonatal",
     },
     {
       title: "Nephrology Scope of Practice",
-      content:
-        "Nephrology Scope of Practice for Nurses and Midwives in Kenya",
+      content: "Nephrology Scope of Practice for Nurses and Midwives in Kenya",
       url: "nephrology",
     },
     {
       title: "Oncology nursing scope of practice",
-      content:
-        "Oncology SoP for nurses and Midwives in Kenya",
-      url: "code_of_conduct",
+      content: "Oncology SoP for nurses and Midwives in Kenya",
+      url: "oncology",
     },
     {
       title: "Paediatric Critical care scope of practice",
       content:
         "Pediatric Critical care scope of Practice for Nurses and Midwives in Kenya",
-      url: "code_of_conduct",
+      url: "paediatriccritical",
     },
     {
       title: "Paediatric Scope of Practice",
-      content:
-        "Paediatric Scope of Practice for Nurses and Midwives in Kenya",
-      url: "code_of_conduct",
+      content: "Paediatric Scope of Practice for Nurses and Midwives in Kenya",
+      url: "paediatricscope",
     },
     {
       title: "Palliative Scope",
-      content:
-        "Palliative Scope of Practice for Nurses and Midwives in Kenya",
-      url: "code_of_conduct",
+      content: "Palliative Scope of Practice for Nurses and Midwives in Kenya",
+      url: "palliative",
     },
     {
       title: "Perioperative Scope of Practice",
-      content:
-        "Practice for Nurses and Midwives in Kenya",
-      url: "code_of_conduct",
+      content: "Practice for Nurses and Midwives in Kenya",
+      url: "perioperative",
     },
   ];
 
-  const filteredItems = useMemo(() => Items?.sort((a, b) => a.title.localeCompare(b.title)).filter((item) => 
-    item.title.toLowerCase().includes(search.toLowerCase()) || item.content.toLowerCase().includes(search.toLowerCase())
-), [search, Items]);
+  const filteredItems = useMemo(
+    () =>
+      Items?.sort((a, b) => a.title.localeCompare(b.title)).filter(
+        (item) =>
+          item.title.toLowerCase().includes(search.toLowerCase()) ||
+          item.content.toLowerCase().includes(search.toLowerCase())
+      ),
+    [search, Items]
+  );
   return (
     <View style={globalStyles.container}>
-        <Searchbar
-                placeholder=''
-                onChangeText={handleSearch}
-                value={search}
-                style={{backgroundColor: '#dbe6f5',
-                    margin: 5,
-                    padding: 2,
-                    borderRadius: 10}}/>
+      <Searchbar
+        placeholder="Start typing..."
+        onChangeText={handleSearch}
+        value={search}
+        style={{
+          backgroundColor: "#dbe6f5",
+          margin: 5,
+          padding: 2,
+          borderRadius: 10,
+        }}
+      />
       <FlashList
         data={filteredItems}
         renderItem={({ item }) => <HomeBox routing={item} />}
