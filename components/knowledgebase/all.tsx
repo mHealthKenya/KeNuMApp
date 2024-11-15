@@ -34,6 +34,12 @@ const KnowledgeComponent: FC<{
       content: "Streamlining Procedures for Consistency and Effective Action",
       url: "manual",
     },
+    {
+        type: "manual",
+        title: "Standards of Nursing and Midwifery Education and Practice",
+        content: "Standards of Nursing and Midwifery Education and Practice for Nurses in Kenya",
+        url: "standard",
+      },
   ];
 
   // Combine both filtered knowledge items and additional items into a single list

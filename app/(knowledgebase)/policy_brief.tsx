@@ -19,7 +19,7 @@ const Policy = () => {
     },
 
     {
-      title: "002/2024 Nurse to Patient Ratio",
+      title: "002/2024 Nurse to Patient",
       content: "Nurse to Patient Ratio",
       url: "ratio",
     },

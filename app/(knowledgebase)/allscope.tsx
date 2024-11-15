@@ -59,12 +59,12 @@ const AllScope = () => {
       url: "nephrology",
     },
     {
-      title: "Oncology nursing scope of practice",
+      title: "Oncology Nursing Scope of Practice",
       content: "Oncology SoP for nurses and Midwives in Kenya",
       url: "oncology",
     },
     {
-      title: "Paediatric Critical care scope of practice",
+      title: "Paediatric Critical Care Scope of Practice",
       content:
         "Pediatric Critical care scope of Practice for Nurses and Midwives in Kenya",
       url: "paediatriccritical",

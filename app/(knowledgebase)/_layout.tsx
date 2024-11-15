@@ -117,6 +117,14 @@ const KnowledgeLayout = () => {
           }}
         />
         <Stack.Screen
+          name="critical"
+          options={{
+            // headerShown: false,
+            title: "CCN",
+            headerLeft: () => <ProfileHeaderLeft />,
+          }}
+        />
+        <Stack.Screen
           name="oncology"
           options={{
             // headerShown: false,
@@ -166,13 +174,33 @@ const KnowledgeLayout = () => {
         <Stack.Screen
           name="ratio"
           options={{
-            headerShown: false,
+            // headerShown: false,
+            title: "Ratio",
+            headerLeft: () => <ProfileHeaderLeft />,
           }}
         />
         <Stack.Screen
           name="code_of_conduct"
           options={{
-            headerShown: false,
+            // headerShown: false,
+            title: "Code of Conduct",
+            headerLeft: () => <ProfileHeaderLeft />,
+          }}
+        />
+        <Stack.Screen
+          name="standard"
+          options={{
+            // headerShown: false,
+            title: "Standards of Practice",
+            headerLeft: () => <ProfileHeaderLeft />,
+          }}
+        />
+        <Stack.Screen
+          name="manual"
+          options={{
+            // headerShown: false,
+            title: "Manual",
+            headerLeft: () => <ProfileHeaderLeft />,
           }}
         />
       </Stack>
