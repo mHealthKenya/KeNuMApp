@@ -97,7 +97,6 @@ const NursesAltComponent: FC<{ item: NurseItem }> = ({ item }) => {
 							}}
 						/>
 
-						{index == 0 && <Divider style={{ width: 1, height: '100%' }} />}
 					</React.Fragment>
 				))}
 			</View>
