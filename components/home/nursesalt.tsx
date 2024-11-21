@@ -24,32 +24,38 @@ const ModuleItem: FC<{ item: Item }> = ({ item }) => {
 	return (
 		<Link href={item.href} asChild>
 			<Pressable
-				className='flex flex-col rounded-xl'
-				style={[
-					{
-						height: 'auto',
-						width: item.width * 0.45,
-					},
-				]}>
-				<View className='my-2 justify-center items-center '>
+				className="flex flex-row rounded-xl items-center justify-between"
+				style={{
+					height: 'auto',
+					width: item.width * 0.45, // Adjust the width to make it row-friendly
+					padding: 10,
+					backgroundColor: '#f9f9f9', // Optional background color
+					marginVertical: 8,
+				}}>
+				{/* Text Section */}
+				<View style={{ flex: 1 }}>
+					<Text
+						className="text-base tracking-widest"
+						style={{ textAlign: 'left', color: '#333' }}>
+						{item.title}
+					</Text>
+				</View>
+
+				{/* Image Section */}
+				<View>
 					<Image
 						source={item.source}
 						style={{
-							height: item.height * 0.15,
-							width: item.width * 0.38,
+							height: item.height * 0.04,
+							width: item.width * 0.09,
 						}}
 					/>
-				</View>
-
-				<View className='my-2'>
-					<Text className='text-base text-center tracking-widest'>
-						{item.title}
-					</Text>
 				</View>
 			</Pressable>
 		</Link>
 	);
 };
+
 
 const NursesAltComponent: FC<{ item: NurseItem }> = ({ item }) => {
 	return (
@@ -57,8 +63,8 @@ const NursesAltComponent: FC<{ item: NurseItem }> = ({ item }) => {
 			className='m-2 rounded-xl shadow-xl'
 			style={{
 				height: 'auto',
-				backgroundColor: '#ffffff',
-				paddingBottom: 15,
+				// backgroundColor: '#ffffff',
+				// paddingBottom: 5,
 			}}>
 			<View className='flex flex-row justify-between p-2 my-3'>
 				<Text className='font-bold text-xl tracking-widest'>{item.title}</Text>
