@@ -19,6 +19,7 @@ import { useError } from '../../providers/error';
 import useLogin from '../../services/auth/login';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
+import { Link } from 'expo-router';
 
 export interface Credentials {
 	username: string;
@@ -172,6 +173,8 @@ const LoginComponent = () => {
 						<Text style={styles.errorText}>{errors?.password?.message}</Text>
 					)}
 
+                    <Link href="https://osp.nckenya.go.ke/password" className='text-[#0445b5]'>Forget Password</Link>
+
 					<Button
 						mode='contained'
 						style={styles.button}
@@ -233,6 +236,7 @@ const LoginComponent = () => {
 							/>
 						</View>
 					</View>
+                   
 				</View>
 			</KeyboardAvoidingView>
 			<StatusBar hidden />

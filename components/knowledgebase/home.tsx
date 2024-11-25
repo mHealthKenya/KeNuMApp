@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 	titleText: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		textTransform: 'capitalize',
+		// textTransform: 'capitalize',
 		letterSpacing: 2,
 	},
 
