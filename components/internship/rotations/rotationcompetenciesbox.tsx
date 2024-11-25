@@ -1,25 +1,17 @@
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Divider, Icon } from 'react-native-paper';
-import { RotationCompetency } from '../../../models/rotationcompetencies';
-import { useFetchedCompetency } from '../../../providers/competency';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Divider, Icon} from 'react-native-paper';
+import {RotationCompetency} from '../../../models/rotationcompetencies';
+import {useFetchedCompetency} from '../../../providers/competency';
 import globalStyles from '../../../styles/global';
 
-const RotationCompetencyBox: FC<{ competency: RotationCompetency }> = ({
-	competency,
-}) => {
-	const { width, height } = useWindowDimensions();
+const RotationCompetencyBox: FC<{competency: RotationCompetency}> = ({competency}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
-	const { handleCompetency } = useFetchedCompetency();
+	const {handleCompetency} = useFetchedCompetency();
 
 	const router = useRouter();
 
@@ -30,20 +22,16 @@ const RotationCompetencyBox: FC<{ competency: RotationCompetency }> = ({
 
 	return (
 		<Pressable
+			className='flex'
 			style={[
 				styles.box,
 				{
 					width: usableWidth,
-					height: height * 0.17,
 					backgroundColor: '#dcf0fa',
 				},
 			]}
 			onPress={() => handleRedirect(competency)}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
 						globalStyles.column,
@@ -67,9 +55,7 @@ const RotationCompetencyBox: FC<{ competency: RotationCompetency }> = ({
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>
-							Minimum Requirement {competency.minimum_requirement} points
-						</Text>
+						<Text style={styles.contentText}>Minimum Requirement {competency.minimum_requirement} points</Text>
 					</View>
 				</View>
 

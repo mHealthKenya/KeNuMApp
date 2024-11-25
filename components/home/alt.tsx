@@ -37,8 +37,8 @@ const AltHome = () => {
 						width,
 						height,
 						title: "Student's Module",
-						actionTitle: 'View All',
-						more: '/studentshome',
+						// actionTitle: 'View All',
+						// more: '/studentshome',
 						items: [
 							{
 								title: 'Internships',
@@ -51,6 +51,11 @@ const AltHome = () => {
 								source: require('../../assets/images/examalt.png'),
 								href: '/examall',
 							},
+                            {
+								title: 'Registration',
+								source: require('../../assets/images/register.png'),
+								href: '/registrationhome',
+							},
 						],
 					}}
 				/>
@@ -59,8 +64,8 @@ const AltHome = () => {
 						width,
 						height,
 						title: "Practitioner's Module",
-						actionTitle: 'View All',
-						more: '/professionalhome',
+						// actionTitle: 'View All',
+						// more: '/professionalhome',
 						items: [
 							{
 								title: 'CPDs',
@@ -72,6 +77,16 @@ const AltHome = () => {
 								title: 'Licences',
 								source: require('../../assets/images/licencelarge.png'),
 								href: '/licencehome',
+							},
+                            {
+								title: 'Private Practice',
+								source: require('../../assets/images/private.png'),
+								href: '/privatepracticelanding',
+							},
+                            {
+								title: 'Out Migration',
+								source: require('../../assets/images/outmigration.png'),
+								href: '/outmigrationhome',
 							},
 						],
 					}}
@@ -92,7 +107,7 @@ const AltHome = () => {
 							{
 								title: 'Knowledge Base',
 								source: require('../../assets/images/knowledgealt.png'),
-								href: '/allknowledge',
+								href: '/segmented',
 							},
 
 							{

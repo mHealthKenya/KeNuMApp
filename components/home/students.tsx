@@ -23,13 +23,14 @@ const StudentsModule = () => {
 	const usableWidth = (availableWidth - 20) / 3;
 
 	return (
-		<View
+        <>
+            <View
 			style={[
 				globalStyles.column,
 				{ height: height * 0.3, justifyContent: 'space-evenly' },
 			]}>
 			<View style={[styles.inner]}>
-				<Text style={styles.titleText}>Student's Module</Text>
+				<Text style={styles.titleText}>Student' Module</Text>
 			</View>
 			<View
 				style={[
@@ -66,7 +67,9 @@ const StudentsModule = () => {
 					<Text>Registration</Text>
 				</Pressable>
 			</View>
-		</View>
+		</View> 
+        </>
+		
 	);
 };
 

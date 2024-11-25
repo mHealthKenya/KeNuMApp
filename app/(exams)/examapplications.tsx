@@ -1,14 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import React from 'react';
 import ExamApplicationsComponent from '../../components/exams/applications';
 import CenterLoad from '../../components/shared/CenterLoad';
-import { useAuth } from '../../providers/auth';
+import {useAuth} from '../../providers/auth';
 import useExamApplications from '../../services/exams/applications';
 
 const ExamApplications = () => {
 	const {user, isLoading: loadingUser} = useAuth();
 
-	const {data = [], isLoading, refetch, isRefetching} = useExamApplications(user?.id || '');
+	const {data = [], isLoading, refetch, isRefetching} = useExamApplications(user?.IndexNo || '');
 
 	if (isLoading || loadingUser) {
 		return <CenterLoad />;

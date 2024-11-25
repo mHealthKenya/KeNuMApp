@@ -1,18 +1,19 @@
+import {Ionicons} from '@expo/vector-icons';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
-import React, {FC, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {useAtom} from 'jotai';
+import React, {FC, useEffect, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
+import {diasporaAtom} from '../../atoms/diaporaatom';
 import {primaryColor} from '../../constants/Colors';
 import {Employer} from '../../models/employers';
+import {LicenceApplication} from '../../models/licenceapplications';
 import {useAuth} from '../../providers/auth';
 import useLicenceApply from '../../services/licence/apply';
 import globalStyles from '../../styles/global';
 import LicenceApplyBox, {Item} from './licencebox';
-import {diasporaAtom} from '../../atoms/diaporaatom';
-import {useAtom} from 'jotai';
-import {LicenceApplication} from '../../models/licenceapplications';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
@@ -59,13 +60,13 @@ const LicenceApplicationComponent: FC<{
 		});
 	};
 
-	const hasPendingApplications = applications?.some((a) => {
-		return a.invoice_details.balance_due ? +a.invoice_details.balance_due > 0 : false;
-	});
+	const [checked, setChecked] = useState(false);
 
-	const hasActiveLicence = user?.license?.some((l) => {
-		return l.to_date ? new Date(l.to_date) > new Date() : false;
-	});
+	const [disabled, setDisabled] = useState(false);
+
+	useEffect(() => {
+		setDisabled(() => (!selected && !diaspora) || !checked);
+	}, [diaspora, checked, selected]);
 
 	return (
 		<View style={globalStyles.container}>
@@ -117,12 +118,23 @@ const LicenceApplicationComponent: FC<{
 							/>
 						)}
 
+						<View className='flex flex-row gap-2 items-center'>
+							<Pressable
+								role='checkbox'
+								aria-checked={checked}
+								style={[styles.checkboxBase, checked && styles.checkboxChecked]}
+								onPress={() => setChecked(!checked)}>
+								{checked && <Ionicons name='checkmark' size={24} color='white' />}
+							</Pressable>
+							<Text>I confirm that I am fit to practice</Text>
+						</View>
+
 						<Button
 							mode='contained'
-							style={(!selected && !diaspora) || hasActiveLicence || hasPendingApplications ? styles.disabled : styles.button}
+							style={disabled ? styles.disabled : styles.button}
 							loading={isPending}
 							onPress={handleSubmit}
-							disabled={(!selected && !diaspora) || hasPendingApplications || hasActiveLicence}>
+							disabled={disabled}>
 							Apply
 						</Button>
 					</View>
@@ -165,5 +177,38 @@ const styles = StyleSheet.create({
 		backgroundColor: '#bbbbbb',
 		borderRadius: 12,
 		padding: 3,
+	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
 	},
 });

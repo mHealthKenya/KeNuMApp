@@ -1,16 +1,10 @@
 import * as WebBrowser from 'expo-web-browser';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Divider, Icon } from 'react-native-paper';
-import { baseUrl } from '../../constants/baseurl';
-import { KnowledgeBase } from '../../models/knowledgebase';
-import { useKnowledgeFetched } from '../../providers/knowledge';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Divider, Icon} from 'react-native-paper';
+import {baseUrl} from '../../constants/baseurl';
+import {KnowledgeBase} from '../../models/knowledgebase';
+import {useKnowledgeFetched} from '../../providers/knowledge';
 import globalStyles from '../../styles/global';
 
 export interface KnowBox {
@@ -18,12 +12,12 @@ export interface KnowBox {
 	content: string;
 }
 
-const KnowledgeBox: FC<{ box: KnowledgeBase }> = ({ box }) => {
-	const { width, height } = useWindowDimensions();
+const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
-	const { handleItem } = useKnowledgeFetched();
+	const {handleItem} = useKnowledgeFetched();
 
 	const handlePress = (item: KnowledgeBase) => {
 		handleItem(item);
@@ -38,12 +32,8 @@ const KnowledgeBox: FC<{ box: KnowledgeBase }> = ({ box }) => {
 					backgroundColor: '#dcf0fa',
 				},
 			]}
-			onPress={() => WebBrowser.openBrowserAsync(baseUrl + box.content)}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			onPress={() => WebBrowser.openBrowserAsync(baseUrl + box?.content)}>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
 						globalStyles.column,
@@ -55,7 +45,7 @@ const KnowledgeBox: FC<{ box: KnowledgeBase }> = ({ box }) => {
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>{box.title}</Text>
+						<Text style={styles.titleText}>{box?.title}</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -66,7 +56,7 @@ const KnowledgeBox: FC<{ box: KnowledgeBase }> = ({ box }) => {
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>{box.subtitle}</Text>
+						<Text style={styles.contentText}>{box?.subtitle}</Text>
 					</View>
 				</View>
 				<Icon size={30} source='chevron-right' />

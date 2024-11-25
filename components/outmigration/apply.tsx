@@ -8,6 +8,7 @@ import {employers, marital, period, reasons, returning, status, workstationType}
 import {truncateText} from '../../helpers/truncate';
 import {County} from '../../models/counties';
 import {User} from '../../models/user';
+import {Ionicons} from '@expo/vector-icons';
 
 const theme = {
 	roundness: 12,
@@ -73,6 +74,8 @@ const ApplyOutComponent: FC<{
 	};
 
 	const {height} = useWindowDimensions();
+
+	const [checked, setChecked] = useState(false);
 
 	return (
 		<View
@@ -454,9 +457,20 @@ const ApplyOutComponent: FC<{
 						))}
 					</View>
 
+					<View className='flex flex-row gap-2 items-center p-2'>
+						<Pressable
+							role='checkbox'
+							aria-checked={checked}
+							style={[styles.checkboxBase, checked && styles.checkboxChecked]}
+							onPress={() => setChecked(!checked)}>
+							{checked && <Ionicons name='checkmark' size={24} color='white' />}
+						</Pressable>
+						<Text>I confirm that I am fit to practice</Text>
+					</View>
+
 					<View className='p-2'>
-						<Button mode='contained' style={styles.button}>
-							Submit Application
+						<Button mode='contained' style={[styles.button, !checked && styles.buttonDisabled]}>
+							Submit Applications
 						</Button>
 					</View>
 				</ScrollView>
@@ -473,6 +487,43 @@ const styles = StyleSheet.create({
 		backgroundColor: '#0445b5',
 		borderRadius: 12,
 		padding: 3,
+	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
+	},
+
+	buttonDisabled: {
+		backgroundColor: '#A9A9A9', // Disabled button color
 	},
 });
 

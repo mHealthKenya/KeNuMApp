@@ -14,6 +14,7 @@ import {useRouter} from 'expo-router';
 import ToastError from '../shared/ToastError';
 import {useAtom} from 'jotai';
 import {errorAtom} from '../../atoms/error';
+import {Ionicons} from '@expo/vector-icons';
 
 const RegistrationApplicationComponent = () => {
 	interface UserImage {
@@ -27,6 +28,8 @@ const RegistrationApplicationComponent = () => {
 	const usableWidth = actualWidth - 20;
 
 	const [image, setImage] = useState<UserImage>();
+
+	const [checked, setChecked] = useState(false);
 
 	const theme = {
 		roundness: 10,
@@ -147,8 +150,25 @@ const RegistrationApplicationComponent = () => {
 							/>
 						</Pressable>
 					</View>
+
+					<View className='flex flex-row gap-2 items-center p-2'>
+						<Pressable
+							role='checkbox'
+							aria-checked={checked}
+							style={[styles.checkboxBase, checked && styles.checkboxChecked]}
+							onPress={() => setChecked(!checked)}>
+							{checked && <Ionicons name='checkmark' size={24} color='white' />}
+						</Pressable>
+						<Text>I confirm that I am fit to practice</Text>
+					</View>
+
 					<View style={[styles.container]}>
-						<Button style={styles.button} mode='contained' loading={isPending} onPress={handleSubmit}>
+						<Button
+							style={[styles.button, (isPending || !checked) && styles.buttonDisabled]}
+							mode='contained'
+							loading={isPending}
+							onPress={handleSubmit}
+							disabled={!checked}>
 							Register
 						</Button>
 					</View>
@@ -177,5 +197,42 @@ const styles = StyleSheet.create({
 	button: {
 		borderRadius: 5,
 		backgroundColor: primaryColor,
+	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
+	},
+
+	buttonDisabled: {
+		backgroundColor: '#A9A9A9', // Disabled button color
 	},
 });

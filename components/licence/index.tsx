@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {View} from 'react-native';
+import React, {FC, useCallback, useEffect, useState} from 'react';
+import {Text, View} from 'react-native';
 import globalStyles from '../../styles/global';
 import LBox from './lbox';
 import {ScrollView} from 'react-native';
@@ -8,9 +8,22 @@ import useAuthenticatedUser from '../../services/auth/authenticated';
 import {ActivityIndicator} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
 import DownloadBox from './downloadbox';
+import dayjs from 'dayjs';
 
 interface Props {
 	applications: LicenceApplication[];
+}
+
+interface Condition {
+	hasActiveLicence: boolean;
+	hasRequisiteCPD: boolean;
+	hasPendingApplications: boolean;
+}
+
+enum Conditions {
+	HAS_LICENCE = 'HAS_LICENCE',
+	NO_CPD = 'NO_CPD',
+	HAS_PENDING = 'PENDING',
 }
 
 const LicenceHomeComponent: FC<Props> = ({applications}) => {
@@ -24,37 +37,59 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 		);
 	}
 
-	const hasActiveLicence = data?.license?.some((l) => {
-		return l.to_date ? new Date(l.to_date) > new Date() : false;
-	});
+	const hasActiveLicence =
+		data?.license?.some((l) => {
+			return l.to_date ? new Date(l.to_date) > dayjs(new Date()).subtract(1, 'month').toDate() : false;
+		}) || false;
 
-	const hasRequisiteCPD = data?.cpd?.every((c) => {
-		return c.cpd_requirement && c.current_points ? +c.current_points >= +c.cpd_requirement : false;
-	});
+	const hasRequisiteCPD =
+		data?.cpd?.every((c) => {
+			return c.cpd_requirement && c.current_points ? +c.current_points >= +c.cpd_requirement : false;
+		}) || false;
 
 	const hasPendingApplications = applications?.some((a) => {
 		return a.invoice_details.balance_due ? +a.invoice_details.balance_due > 0 : false;
 	});
 
+	const statements = useCallback(
+		(conditions: Condition) => {
+			const messages = [];
+
+			if (conditions.hasActiveLicence) {
+				messages.push('You already have an active licence.');
+			}
+			if (conditions.hasPendingApplications) {
+				messages.push('You have pending licence applications.');
+			}
+			if (!conditions.hasRequisiteCPD) {
+				messages.push('You have insufficient CPD points to renew your licence.');
+			}
+
+			if (messages.length === 0) {
+				return 'You cannot renew your licence at this time';
+			}
+
+			return messages.join(' ');
+		},
+		[hasActiveLicence, hasPendingApplications, hasRequisiteCPD]
+	);
+
+	const [can, setCan] = useState(false);
+
+	const [condition, setCondition] = useState<Conditions>(Conditions.HAS_LICENCE);
+
+	useEffect(() => {
+		setCan(!(hasActiveLicence && hasPendingApplications && hasRequisiteCPD));
+
+		if (hasActiveLicence && hasPendingApplications && hasRequisiteCPD) {
+			setCondition(Conditions.HAS_LICENCE);
+		}
+	}, [hasActiveLicence, hasRequisiteCPD, hasPendingApplications]);
+
 	return (
 		<View style={globalStyles.container}>
 			<ScrollView style={{flex: 1}}>
-				{hasActiveLicence ? (
-					<DownloadBox />
-				) : !hasRequisiteCPD ? (
-					<LBox
-						box={{
-							title: 'Complete CPDs',
-							content: 'Complete your CPD requirements to apply for a licence',
-							backgroundColor: '#984b4b',
-							path: require('../../assets/images/licencesmall.png'),
-							route: '/cpdhome',
-							danger: true,
-						}}
-					/>
-				) : hasPendingApplications ? (
-					<></>
-				) : (
+				{can ? (
 					<LBox
 						box={{
 							title: 'Licence Renewal',
@@ -62,6 +97,17 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 							backgroundColor: '#dcf0fa',
 							path: require('../../assets/images/licencesmall.png'),
 							route: '/licencecountry',
+						}}
+					/>
+				) : (
+					<LBox
+						box={{
+							title: 'Cannot Renew Licence',
+							content: statements({hasActiveLicence, hasPendingApplications, hasRequisiteCPD}),
+							backgroundColor: '#984b4b',
+							path: require('../../assets/images/licencesmall.png'),
+							route: '/',
+							danger: true,
 						}}
 					/>
 				)}

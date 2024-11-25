@@ -1,21 +1,20 @@
 import * as DocumentPicker from 'expo-document-picker';
+import {useRouter} from 'expo-router';
+import {useAtom} from 'jotai';
 import React, {useEffect, useMemo, useState} from 'react';
-import {ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, Icon, TextInput, TextInputProps} from 'react-native-paper';
+import {employmentAtom} from '../../../atoms/employment';
+import {outmigrationAtom} from '../../../atoms/outmigration';
+import {personalDetailsAtom} from '../../../atoms/personaldetails';
+import {truncateText} from '../../../helpers/truncate';
 import useAuthenticatedUser from '../../../services/auth/authenticated';
 import useCountries from '../../../services/general/countries';
+import useOutmigrationApply from '../../../services/outmigration/apply';
 import usePlanningToReturn from '../../../services/outmigration/planningtoreturn';
 import useOutmigrationReasons from '../../../services/outmigration/reasons';
 import ProgressTrack from '../../shared/Progress';
-import {truncateText} from '../../../helpers/truncate';
-import {useAtom} from 'jotai';
-import {outmigrationAtom} from '../../../atoms/outmigration';
-import {personalDetailsAtom} from '../../../atoms/personaldetails';
-import {employmentAtom} from '../../../atoms/employment';
-import useOutmigrationApply from '../../../services/outmigration/apply';
-import {useRouter} from 'expo-router';
-import {Platform} from 'react-native';
 
 const theme = {
 	roundness: 12,
@@ -136,46 +135,48 @@ const OutmigrationStepComponent = () => {
 			form_attached: selectedFile!,
 		});
 
-		setSubmit(true);
+		router.push('/employmentdetails');
+
+		// setSubmit(true);
 	};
 
-	const handleSubmit = () => {
-		mutate({
-			index_id: user?.id || '',
-			country_id: outmigration?.country_id || '',
-			marital_status: personalDetails?.marital_status || '',
-			employment_status: employmentDetails?.employment_status || '',
-			current_employer: employmentDetails?.current_employer || '',
-			current_position: employmentDetails?.current_position || '',
-			dependants: personalDetails?.dependants || '',
-			department: employmentDetails?.department || '',
-			form_attached: {
-				name: selectedFile?.assets![0].name || '',
-				uri: selectedFile?.assets![0].uri || '',
-				type: selectedFile?.assets![0].mimeType || '',
-			},
-			workstation_type: employmentDetails?.workstation_type || '',
-			workstation_id: employmentDetails?.workstation_id || '',
-			workstation_name: employmentDetails?.workstation_name || '',
-			duration_current_employer: employmentDetails?.duration_current_employer || '',
-			experience_years: employmentDetails?.experience_years || '',
-			planning_return: outmigration?.planning_return || '',
-			verification_cadres: outmigration?.verification_cadres || '',
-			outmigration_reason: outmigration?.outmigration_reason || '',
-		});
+	// const handleSubmit = () => {
+	// 	mutate({
+	// 		index_id: user?.id || '',
+	// 		country_id: outmigration?.country_id || '',
+	// 		marital_status: personalDetails?.marital_status || '',
+	// 		employment_status: employmentDetails?.employment_status || '',
+	// 		current_employer: employmentDetails?.current_employer || '',
+	// 		current_position: employmentDetails?.current_position || '',
+	// 		dependants: personalDetails?.dependants || '',
+	// 		department: employmentDetails?.department || '',
+	// 		form_attached: {
+	// 			name: selectedFile?.assets![0].name || '',
+	// 			uri: selectedFile?.assets![0].uri || '',
+	// 			type: selectedFile?.assets![0].mimeType || '',
+	// 		},
+	// 		workstation_type: employmentDetails?.workstation_type || '',
+	// 		workstation_id: employmentDetails?.workstation_id || '',
+	// 		workstation_name: employmentDetails?.workstation_name || '',
+	// 		duration_current_employer: employmentDetails?.duration_current_employer || '',
+	// 		experience_years: employmentDetails?.experience_years || '',
+	// 		planning_return: outmigration?.planning_return || '',
+	// 		verification_cadres: outmigration?.verification_cadres || '',
+	// 		outmigration_reason: outmigration?.outmigration_reason || '',
+	// 	});
 
-		setSubmit(false);
-	};
+	// 	setSubmit(false);
+	// };
 
-	useEffect(() => {
-		if (submit) {
-			handleSubmit();
-		}
+	// useEffect(() => {
+	// 	if (submit) {
+	// 		handleSubmit();
+	// 	}
 
-		return () => {
-			setSubmit(false);
-		};
-	}, [submit]);
+	// 	return () => {
+	// 		setSubmit(false);
+	// 	};
+	// }, [submit]);
 
 	return (
 		<View
@@ -188,10 +189,10 @@ const OutmigrationStepComponent = () => {
 					paddingBottom: 20,
 				}}>
 				<View className='p-2 items-center'>
-					<Text>Step 3 of 3</Text>
+					<Text>Step 1 of 3</Text>
 				</View>
 				<View className='p-2 mb-4 items-center'>
-					<ProgressTrack progress={3 / 3} />
+					<ProgressTrack progress={1 / 3} />
 				</View>
 				<View className='p-3'>
 					<View className='p-2' style={styles.outmigration}>
@@ -332,6 +333,7 @@ const OutmigrationStepComponent = () => {
 							/>
 						</Pressable>
 					</View>
+
 					<View className='p-2'>
 						<Button
 							mode='contained'
@@ -339,7 +341,7 @@ const OutmigrationStepComponent = () => {
 							disabled={disabled}
 							onPress={handleNext}
 							loading={isPending}>
-							Submit Application
+							Next
 						</Button>
 					</View>
 				</View>
@@ -394,6 +396,43 @@ const styles = StyleSheet.create({
 				zIndex: 1000,
 			},
 		}),
+	},
+
+	checkboxBase: {
+		width: 24,
+		height: 24,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 4,
+		borderWidth: 2,
+		borderColor: 'coral',
+		backgroundColor: 'transparent',
+	},
+	checkboxChecked: {
+		backgroundColor: 'coral',
+	},
+	appContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	appTitle: {
+		marginVertical: 16,
+		fontWeight: 'bold',
+		fontSize: 24,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
+	checkboxLabel: {
+		marginLeft: 8,
+		fontWeight: '500',
+		fontSize: 18,
+	},
+
+	buttonDisabled: {
+		backgroundColor: '#A9A9A9', // Disabled button color
 	},
 });
 

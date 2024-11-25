@@ -1,20 +1,13 @@
-import { useToast } from '@gluestack-ui/themed';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {useToast} from '@gluestack-ui/themed';
+import {yupResolver} from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import {
-	Keyboard,
-	KeyboardAvoidingView,
-	Platform,
-	Pressable,
-	StyleSheet,
-	View,
-} from 'react-native';
-import { Button, TextInput, TextInputProps } from 'react-native-paper';
+import {useRouter} from 'expo-router';
+import React, {useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
+import {Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, View} from 'react-native';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import * as Yup from 'yup';
-import { useFetchedCompetency } from '../../../providers/competency';
+import {useFetchedCompetency} from '../../../providers/competency';
 import useAddCompetency from '../../../services/internship/addcompetency';
 import useInternshipApplications from '../../../services/internship/applications';
 import globalStyles from '../../../styles/global';
@@ -22,6 +15,8 @@ import DateModal from '../../shared/DateModal';
 import ToastError from '../../shared/ToastError';
 import ToastSuccess from '../../shared/ToastSuccess';
 import CompetencyInformationBox from './competencyinformationbox';
+import {useAuth} from '../../../providers/auth';
+import {ScrollView} from 'react-native';
 
 interface Activity {
 	activity_notes: string;
@@ -37,7 +32,7 @@ const validationSchema = Yup.object().shape({
 
 const AddCompetencyComponent = () => {
 	const currentYear = new Date().getFullYear();
-	const { competency } = useFetchedCompetency();
+	const {competency} = useFetchedCompetency();
 
 	const [picker, setPicker] = useState(false);
 
@@ -50,12 +45,12 @@ const AddCompetencyComponent = () => {
 	const {
 		control,
 		handleSubmit,
-		formState: { errors },
+		formState: {errors},
 	} = useForm<Activity>({
 		resolver: yupResolver(validationSchema),
 	});
 
-	const handleDate = ({ type }: any, selectedDate: any) => {
+	const handleDate = ({type}: any, selectedDate: any) => {
 		if (type === 'set') {
 			setDate(selectedDate);
 
@@ -72,7 +67,11 @@ const AddCompetencyComponent = () => {
 		setDate(new Date());
 	};
 
-	const { data: internship, isLoading } = useInternshipApplications();
+	const {user} = useAuth();
+
+	const index_id = user?.IndexNo || '';
+
+	const {data: internship = [], isLoading} = useInternshipApplications(index_id);
 
 	const router = useRouter();
 
@@ -80,13 +79,9 @@ const AddCompetencyComponent = () => {
 		toast.show({
 			onCloseComplete() {},
 			duration: 5000,
-			render: ({ id }) => {
+			render: ({id}) => {
 				return (
-					<ToastSuccess
-						id={id}
-						title='Competency Recorded'
-						description='Your competency has been successfully recorded'
-					/>
+					<ToastSuccess id={id} title='Competency Recorded' description='Your competency has been successfully recorded' />
 				);
 			},
 			placement: 'top',
@@ -102,7 +97,7 @@ const AddCompetencyComponent = () => {
 		toast.show({
 			onCloseComplete() {},
 			duration: 5000,
-			render: ({ id }) => {
+			render: ({id}) => {
 				return (
 					<ToastError
 						id={id}
@@ -115,12 +110,12 @@ const AddCompetencyComponent = () => {
 		});
 	};
 
-	const { mutate, isPending } = useAddCompetency(successFn, errorFn);
+	const {mutate, isPending} = useAddCompetency(successFn, errorFn);
 
 	const onSubmit = (data: Activity) => {
 		mutate({
 			...data,
-			internship_id: internship![0].internship_id,
+			internship_id: internship[0]?.internship_id || '',
 			competency_id: competency?.competency_id || '',
 			activity_date: dayjs(new Date(date)).format('YYYY-MM-DDTHH:mm:ssZ[Z] '),
 		});
@@ -133,16 +128,17 @@ const AddCompetencyComponent = () => {
 		activeOutlineColor: '#0445b5',
 	};
 	return (
-		<View style={[globalStyles.container, { gap: 10 }]}>
+		<ScrollView style={[globalStyles.container, {gap: 10}]}>
 			<CompetencyInformationBox competency={competency} />
-			<KeyboardAvoidingView behavior='position'>
-				<View style={[styles.box]}>
+
+			<KeyboardAvoidingView>
+				<View style={[styles.box]} className='container mx-auto max-h-[400px] h-auto overflow-y-auto'>
 					<Controller
 						rules={{
 							required: true,
 						}}
 						control={control}
-						render={({ field: { onChange, onBlur, value } }) => (
+						render={({field: {onChange, onBlur, value}}) => (
 							<TextInput
 								label='Activity Notes'
 								mode='outlined'
@@ -152,6 +148,7 @@ const AddCompetencyComponent = () => {
 								value={value}
 								multiline
 								numberOfLines={5}
+								maxLength={3000}
 							/>
 						)}
 						name='activity_notes'
@@ -193,7 +190,7 @@ const AddCompetencyComponent = () => {
 					Record
 				</Button>
 			</KeyboardAvoidingView>
-		</View>
+		</ScrollView>
 	);
 };
 
