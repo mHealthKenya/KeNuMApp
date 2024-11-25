@@ -51,7 +51,7 @@ const LicenceApplication = () => {
 		);
 	}
 
-	if (hasPendingApplications) {
+	if (!hasPendingApplications) {
 		return (
 			<View className='flex flex-1'>
 				<LBox

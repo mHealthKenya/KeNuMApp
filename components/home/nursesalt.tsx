@@ -57,30 +57,33 @@ const ModuleItem: FC<{ item: Item }> = ({ item }) => {
 };
 
 const NursesAltComponent: FC<{ item: NurseItem }> = ({ item }) => {
-  return (
-    <View
-      className="m-2 rounded-xl shadow-xl"
-      style={{
-        height: 'auto',
-      }}>
-      {/* Header Section */}
-      <View className="flex flex-row justify-between p-2 my-3">
-        <Text className="font-bold text-xl tracking-widest">{item.title}</Text>
-        {item.actionTitle && item.more ? (
-          <Link href={item.more} asChild>
-            <Pressable className="flex flex-row justify-center items-center">
-              <Text
-                className="text-base tracking-widest font-light"
-                style={{
-                  color: '#339934',
-                }}>
-                {item.actionTitle}
-              </Text>
-              <Icon source="arrow-right-thin" size={20} color="#339934" />
-            </Pressable>
-          </Link>
-        ) : null}
-      </View>
+
+	return (
+		<View
+			className='m-2 rounded-xl shadow-md'
+			style={{
+				height: 'auto',
+				backgroundColor: '#ffffff',
+				paddingBottom: 15,
+			}}>
+			<View className='flex flex-row justify-between p-2 my-3'>
+				<Text className='font-bold text-xl tracking-widest'>{item.title}</Text>
+				{item.actionTitle && item.more ? (
+					<Link href={item.more} asChild>
+						<Pressable className='flex flex-row justify-center items-center'>
+							<Text
+								className='text-base tracking-widest font-light'
+								style={{
+									color: '#339934',
+								}}>
+								{item.actionTitle}
+							</Text>
+							<Icon source='arrow-right-thin' size={20} color='#339934' />
+						</Pressable>
+					</Link>
+				) : null}
+			</View>
+
 
       {/* Items Section */}
       <FlatList

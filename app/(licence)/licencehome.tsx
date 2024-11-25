@@ -3,9 +3,9 @@ import React from 'react';
 import LicenceHomeComponent from '../../components/licence';
 import {useAuth} from '../../providers/auth';
 import useLicenceApplications from '../../services/licence/applications';
-import {View} from '../../components/Themed';
 import {ActivityIndicator} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
+import { View } from 'react-native';
 
 const LicenceHome = () => {
 	const {user} = useAuth();
