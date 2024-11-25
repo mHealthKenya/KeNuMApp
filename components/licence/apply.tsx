@@ -1,20 +1,19 @@
+import {Ionicons} from '@expo/vector-icons';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
-import React, {FC, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {useAtom} from 'jotai';
+import React, {FC, useEffect, useMemo, useState} from 'react';
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button} from 'react-native-paper';
+import {diasporaAtom} from '../../atoms/diaporaatom';
 import {primaryColor} from '../../constants/Colors';
 import {Employer} from '../../models/employers';
+import {LicenceApplication} from '../../models/licenceapplications';
 import {useAuth} from '../../providers/auth';
 import useLicenceApply from '../../services/licence/apply';
 import globalStyles from '../../styles/global';
 import LicenceApplyBox, {Item} from './licencebox';
-import {diasporaAtom} from '../../atoms/diaporaatom';
-import {useAtom} from 'jotai';
-import {LicenceApplication} from '../../models/licenceapplications';
-import {Ionicons} from '@expo/vector-icons';
-import {Text} from 'react-native';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
@@ -61,15 +60,13 @@ const LicenceApplicationComponent: FC<{
 		});
 	};
 
-	const hasPendingApplications = applications?.some((a) => {
-		return a.invoice_details.balance_due ? +a.invoice_details.balance_due > 0 : false;
-	});
-
-	const hasActiveLicence = user?.license?.some((l) => {
-		return l.to_date ? new Date(l.to_date) > new Date() : false;
-	});
-
 	const [checked, setChecked] = useState(false);
+
+	const [disabled, setDisabled] = useState(false);
+
+	useEffect(() => {
+		setDisabled(() => (!selected && !diaspora) || !checked);
+	}, [diaspora, checked, selected]);
 
 	return (
 		<View style={globalStyles.container}>
@@ -134,14 +131,10 @@ const LicenceApplicationComponent: FC<{
 
 						<Button
 							mode='contained'
-							style={
-								(!selected && !diaspora) || hasActiveLicence || hasPendingApplications || !checked
-									? styles.disabled
-									: styles.button
-							}
+							style={disabled ? styles.disabled : styles.button}
 							loading={isPending}
 							onPress={handleSubmit}
-							disabled={(!selected && !diaspora) || hasPendingApplications || hasActiveLicence || !checked}>
+							disabled={disabled}>
 							Apply
 						</Button>
 					</View>

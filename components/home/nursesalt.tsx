@@ -54,7 +54,7 @@ const ModuleItem: FC<{ item: Item }> = ({ item }) => {
 const NursesAltComponent: FC<{ item: NurseItem }> = ({ item }) => {
 	return (
 		<View
-			className='m-2 rounded-xl shadow-xl'
+			className='m-2 rounded-xl shadow-md'
 			style={{
 				height: 'auto',
 				backgroundColor: '#ffffff',

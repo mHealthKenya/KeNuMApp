@@ -33,6 +33,7 @@
     "countries-list": "^3.0.6",
     "dayjs": "^1.11.10",
     "expo": "^51.0.21",
+    "expo-dev-client": "~4.0.29",
     "expo-document-picker": "~12.0.2",
     "expo-font": "~12.0.9",
     "expo-image": "~1.12.13",
