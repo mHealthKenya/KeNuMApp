@@ -173,7 +173,7 @@ const LoginComponent = () => {
 						<Text style={styles.errorText}>{errors?.password?.message}</Text>
 					)}
 
-                    <Link href="https://osp.nckenya.go.ke/password" className='text-[#0445b5]'>Forget Password</Link>
+                    <Link href="https://osp.nckenya.go.ke/password" className='text-[#0445b5]'>Forgot Password</Link>
 
 					<Button
 						mode='contained'
