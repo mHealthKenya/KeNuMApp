@@ -1,12 +1,13 @@
+import {Ionicons} from '@expo/vector-icons';
 import {useToast} from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
 import * as DocumentPicker from 'expo-document-picker';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import React, {FC, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Button, Icon, TextInput, TextInputProps} from 'react-native-paper';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
 import {truncateText} from '../../helpers/truncate';
 import {InternshipCenters} from '../../models/internshipcenters';
@@ -16,10 +17,8 @@ import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
 import ToastError from '../shared/ToastError';
 import WarnAlert from '../shared/WarnAlert';
-import {Text} from 'react-native';
-import {Ionicons} from '@expo/vector-icons';
 
-interface UserImage {
+export interface UserImage {
 	uri: string | null;
 	name: string;
 	type?: string;
@@ -33,15 +32,7 @@ const InternshipApplyComponent: FC<{
 	centers: InternshipCenters;
 	user: User | null;
 }> = ({centers, user}) => {
-	if (user?.education !== undefined && user?.education?.length <= 0) {
-		return <WarnAlert message='Could not find any education history in your account' />;
-	}
-
 	const [checked, setChecked] = useState(false);
-
-	const handleChecked = () => {
-		setChecked((checked) => !checked);
-	};
 
 	const textProps: TextInputProps = {
 		theme,
@@ -95,7 +86,7 @@ const InternshipApplyComponent: FC<{
 	};
 
 	const pickDegree = async () => {
-		let result = await DocumentPicker.getDocumentAsync({
+		const result = await DocumentPicker.getDocumentAsync({
 			multiple: false,
 			type: ['application/pdf'],
 		});
@@ -103,7 +94,7 @@ const InternshipApplyComponent: FC<{
 	};
 
 	const pickPostingLetter = async () => {
-		let result = await DocumentPicker.getDocumentAsync({
+		const result = await DocumentPicker.getDocumentAsync({
 			multiple: false,
 			type: ['application/pdf'],
 		});
@@ -164,6 +155,10 @@ const InternshipApplyComponent: FC<{
 			education_id: '' + education_id,
 		});
 	};
+
+	if (user?.education !== undefined && user?.education?.length <= 0) {
+		return <WarnAlert message='Could not find any education history in your account' />;
+	}
 
 	return (
 		<KeyboardAvoidingView style={[globalStyles.container]} behavior='position'>

@@ -1,23 +1,21 @@
-import {useRouter} from 'expo-router';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
 import {Text} from '../Themed';
 
-export interface ContentBox {
+export interface ContentBoxProps {
 	title: string;
 	id: string;
 }
 
 const ContentBox: FC<{
-	box: ContentBox;
-	action: (item: ContentBox) => void;
+	box: ContentBoxProps;
+	action: (item: ContentBoxProps) => void;
 }> = ({box, action}) => {
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
-	const router = useRouter();
 
 	return (
 		<Pressable

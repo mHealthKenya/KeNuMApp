@@ -90,7 +90,6 @@ const JoinBox: FC<{join: Join}> = ({join}) => {
 };
 
 const MAKComponent = () => {
-	const {height, width} = useWindowDimensions();
 	return (
 		<View style={[styles.container]}>
 			<ImageBackground

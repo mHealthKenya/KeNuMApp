@@ -4,12 +4,10 @@ import {printToFileAsync} from 'expo-print';
 import {shareAsync} from 'expo-sharing';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {LicenceApplication} from '../../../models/licenceapplications';
-import {useAuth} from '../../../providers/auth';
-import {licenceReceiptGen} from '../../../helpers/receiptgeneratorlicence';
-import globalStyles from '../../../styles/global';
-import {PracticeApplication} from '../../../models/privatepractice';
 import {privateReceiptGen} from '../../../helpers/receiptgenprivate';
+import {PracticeApplication} from '../../../models/privatepractice';
+import {useAuth} from '../../../providers/auth';
+import globalStyles from '../../../styles/global';
 
 const DownloadReceipt: FC<{item: PracticeApplication | null}> = ({item}) => {
 	const {user} = useAuth();

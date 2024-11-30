@@ -1,10 +1,9 @@
 import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import {Text} from 'react-native-paper';
-import useOutmigrationApplications from '../../services/outmigration/applications';
-import useAuthenticatedUser from '../../services/auth/authenticated';
 import {ActivityIndicator, View} from 'react-native';
 import OutmigrationApplicationsComponent from '../../components/outmigration/applications';
+import useAuthenticatedUser from '../../services/auth/authenticated';
+import useOutmigrationApplications from '../../services/outmigration/applications';
 
 const OutMigrationApplications = () => {
 	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();

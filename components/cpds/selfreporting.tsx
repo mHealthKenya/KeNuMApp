@@ -30,12 +30,6 @@ interface Form {
 //   type?: string;
 // }
 
-interface FileType {
-	uri: string;
-	name: string;
-	type: string;
-}
-
 const validationSchema = Yup.object().shape({
 	event_location: Yup.string().required('Event location is required'),
 	event_title: Yup.string().required('Event title is required'),
@@ -109,7 +103,7 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 	// };
 
 	const pickCPdEvidence = async () => {
-		let result = await DocumentPicker.getDocumentAsync({
+		const result = await DocumentPicker.getDocumentAsync({
 			multiple: false,
 			type: ['application/pdf'],
 		});

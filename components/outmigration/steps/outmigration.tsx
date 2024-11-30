@@ -66,7 +66,7 @@ const OutmigrationStepComponent = () => {
 	const [_, setPersonalDetails] = useAtom(personalDetailsAtom);
 	const [__, setEmploymentDetails] = useAtom(employmentAtom);
 
-	const {mutate, isPending} = useOutmigrationApply(successFn, errorFn);
+	const {isPending} = useOutmigrationApply(successFn, errorFn);
 
 	const outmigrationReasons = useMemo(
 		() =>
@@ -105,7 +105,7 @@ const OutmigrationStepComponent = () => {
 	);
 
 	const pickDocument = async () => {
-		let result = await DocumentPicker.getDocumentAsync({
+		const result = await DocumentPicker.getDocumentAsync({
 			type: 'application/pdf',
 		});
 		setSelectedFile(result);

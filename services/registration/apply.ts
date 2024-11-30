@@ -7,7 +7,7 @@ import { useAtom } from 'jotai';
 import { errorAtom } from '../../atoms/error';
 interface Registration {
 	education_id: string;
-	current_passport: any;
+	current_passport: any
 }
 
 const registrationApplication = async (data: Registration) => {
@@ -17,7 +17,7 @@ const registrationApplication = async (data: Registration) => {
 	const formData = new FormData();
 
 	formData.append('education_id', data.education_id);
-	formData.append('current_passport', data.current_passport);
+	formData.append('current_passport', data.current_passport as unknown as Blob);
 	formData.append(
 		'application_date',
 		dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z] ')
@@ -58,8 +58,13 @@ const useRegistrationApplication = (
 			successFn();
 		},
 
-		onError: async (error: any) => {
-			await setError(error?.response?.data?.message || "Something went wrong!");
+		onError: async (error: unknown) => {
+			const errorMessage =
+				axios.isAxiosError(error)
+					? error.response?.data?.message || "Something went wrong!"
+					: "Something went wrong!";
+
+			await setError(errorMessage);
 			await errorFn();
 		},
 	});

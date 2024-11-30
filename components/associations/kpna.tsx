@@ -1,7 +1,7 @@
+import * as WebBrowser from 'expo-web-browser';
 import React, {FC} from 'react';
 import {ImageBackground, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Button, Icon, List} from 'react-native-paper';
-import * as WebBrowser from 'expo-web-browser';
 import {Text} from '../Themed';
 
 interface Content {
@@ -32,6 +32,7 @@ const handleRedirect = () => {
 
 const ContentBox: FC<{content: Content}> = ({content}) => {
 	const {width} = useWindowDimensions();
+
 	return (
 		<View className='p-2'>
 			<View

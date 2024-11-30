@@ -18,7 +18,7 @@ const Home = () => {
 		const endDate = user?.license?.length ? dayjs(new Date(user?.license[0].to_date || '')) : dayjs(new Date());
 
 		setEndDate(endDate);
-	}, []);
+	}, [user]);
 
 	const currentDate = dayjs(new Date());
 	return (

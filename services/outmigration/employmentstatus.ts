@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { MaritalStatus } from '../../models/maritalstatus';
 import { EmploymentStatus } from '../../models/employment';
 
 const employmentStatus = async () => {

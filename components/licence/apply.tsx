@@ -5,7 +5,7 @@ import {useAtom} from 'jotai';
 import React, {FC, useEffect, useMemo, useState} from 'react';
 import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {ActivityIndicator, Button} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import {diasporaAtom} from '../../atoms/diaporaatom';
 import {primaryColor} from '../../constants/Colors';
 import {Employer} from '../../models/employers';
@@ -13,7 +13,6 @@ import {useAuth} from '../../providers/auth';
 import useLicenceApply from '../../services/licence/apply';
 import {Text} from '../Themed';
 import LicenceApplyBox, {Item} from './licencebox';
-import {Loader2} from '@tamagui/lucide-icons';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];

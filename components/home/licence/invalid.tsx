@@ -1,15 +1,11 @@
-import dayjs from 'dayjs';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
-import React, {FC} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button, Divider} from 'react-native-paper';
-import {useAuth} from '../../../providers/auth';
 import {Text} from '../../Themed';
 
 const InvalidLicenceComponent = () => {
-	const {user} = useAuth();
-
 	const router = useRouter();
 
 	return (

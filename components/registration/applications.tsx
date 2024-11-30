@@ -2,40 +2,32 @@ import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorh
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
+import React, {FC, useCallback, useMemo, useRef} from 'react';
+import {Pressable, StyleSheet, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {registrationAtom} from '../../atoms/registration';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {RegistrationApplication} from '../../models/regapplications';
 import globalStyles from '../../styles/global';
 import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
+import AccordionShared from '../shared/Accordion';
 import EmptyList from '../shared/EmptyList';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import AccordionShared from '../shared/Accordion';
+import {Text} from '../Themed';
 
 const Application: FC<{
 	application: RegistrationApplication;
 	action: (application: RegistrationApplication) => void;
 }> = ({application, action}) => {
-	const {height, width} = useWindowDimensions();
-
-	const dimension = Math.min(width, height);
-
-	const availableWidth = dimension - 20;
 	return (
 		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				<InternshipItem availableWidth={availableWidth} title='Cadre' content={application.cadre_desc} />
-				<InternshipItem availableWidth={availableWidth} title='Status' content={application.application_status} />
+				<InternshipItem title='Cadre' content={application.cadre_desc} />
+				<InternshipItem title='Status' content={application.application_status} />
 
-				<InternshipItem
-					availableWidth={availableWidth}
-					title='Date'
-					content={dayjs(new Date(application.application_date)).format('YYYY-MM-DD')}
-				/>
+				<InternshipItem title='Date' content={dayjs(new Date(application.application_date)).format('YYYY-MM-DD')} />
 
 				<InternshipItemDouble
 					title='Invoice'
@@ -43,7 +35,6 @@ const Application: FC<{
 					content={application.invoice_details.invoice_number}
 					subtitle1='Amount'
 					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
@@ -52,7 +43,6 @@ const Application: FC<{
 					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
 					subtitle1='Balance Due'
 					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-					availableWidth={availableWidth}
 				/>
 			</View>
 		</Pressable>
@@ -142,10 +132,10 @@ const Title: FC<{item: RegistrationApplication}> = ({item}) => {
 	return (
 		<View className='flex flex-col justify-between gap-2'>
 			<View className='w-full overflow-auto'>
-				<Text className='tracking-wide capitalize'>{item.cadre_desc}</Text>
+				<Text className='text-xl'>{item.cadre_desc}</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='italic font-extralight'>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text italic>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
 			</View>
 		</View>
 	);

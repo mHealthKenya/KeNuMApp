@@ -1,6 +1,6 @@
 import {useRouter} from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import React, {FC} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import {Button, Icon} from 'react-native-paper';
 import {useAuth} from '../../providers/auth';

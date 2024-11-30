@@ -1,19 +1,16 @@
-import { Image } from 'expo-image';
-import * as Print from 'expo-print';
-import React, { FC } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { internShipReceiptGen } from '../../../../helpers/receiptgenerator';
-import { InternshipApplication } from '../../../../models/internshipapplications';
-import { useAuth } from '../../../../providers/auth';
-import globalStyles from '../../../../styles/global';
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
+import {useBottomSheetModal} from '@gorhom/bottom-sheet';
+import {Image} from 'expo-image';
+import {printToFileAsync} from 'expo-print';
 import * as Sharing from 'expo-sharing';
-import { printToFileAsync } from 'expo-print';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
+import {internShipReceiptGen} from '../../../../helpers/receiptgenerator';
+import {InternshipApplication} from '../../../../models/internshipapplications';
+import {useAuth} from '../../../../providers/auth';
+import globalStyles from '../../../../styles/global';
 
-const DownloadInvoice: FC<{ item: InternshipApplication | null }> = ({
-	item,
-}) => {
-	const { user } = useAuth();
+const DownloadInvoice: FC<{item: InternshipApplication | null}> = ({item}) => {
+	const {user} = useAuth();
 
 	const print = async () => {
 		const file = await printToFileAsync({
@@ -24,7 +21,7 @@ const DownloadInvoice: FC<{ item: InternshipApplication | null }> = ({
 		await Sharing.shareAsync(file.uri);
 	};
 
-	const { dismiss } = useBottomSheetModal();
+	const {dismiss} = useBottomSheetModal();
 
 	const clickAction = () => {
 		dismiss();
@@ -44,7 +41,7 @@ const DownloadInvoice: FC<{ item: InternshipApplication | null }> = ({
 				},
 			]}
 			onPress={clickAction}>
-			<View style={{ justifyContent: 'center' }}>
+			<View style={{justifyContent: 'center'}}>
 				<Image
 					source={require('../../../../assets/images/downloadinvoice.png')}
 					style={{
@@ -56,7 +53,7 @@ const DownloadInvoice: FC<{ item: InternshipApplication | null }> = ({
 				/>
 			</View>
 
-			<View style={{ justifyContent: 'center' }}>
+			<View style={{justifyContent: 'center'}}>
 				<Text style={styles.text}>Download Invoice</Text>
 			</View>
 		</Pressable>

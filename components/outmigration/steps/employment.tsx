@@ -1,7 +1,7 @@
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import React, {FC, useEffect, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, Text, TextInput, TextInputProps} from 'react-native-paper';
 import {DropDownItem} from '../../../app/(outmigration)/applyoutmigration';
@@ -45,8 +45,6 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 		outlineColor: '#0345B53D',
 		activeOutlineColor: '#0445b5',
 	};
-
-	const {height} = useWindowDimensions();
 
 	const {data: status, isLoading: loadingStatus} = useEmploymentStatus();
 	const {data: employers = [], isLoading: loadingEmployers} = useEmployers();
@@ -129,6 +127,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 		setCurrent_position(employStatus?.current_position || '');
 		setEmployPeriod(employStatus?.duration_current_employer || null);
 		setNursePeriod(employStatus?.experience_years || null);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [employmentStatus]);
 
 	useEffect(() => {
@@ -181,256 +180,251 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 	// }
 
 	return (
-		<View
-			style={{
-				flex: 1,
-			}}>
-			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'padding'}>
-				<ScrollView
-					nestedScrollEnabled={true}
-					style={{
-						paddingBottom: 160,
-					}}
-					className='p-3'>
-					<View className='p-2 items-center'>
-						<Text>Step 2 of 3</Text>
-					</View>
-					<View className='p-2 mb-4 items-center'>
-						<ProgressTrack progress={2 / 3} />
-					</View>
+		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1'>
+			<ScrollView
+				nestedScrollEnabled={true}
+				style={{
+					paddingBottom: 160,
+				}}
+				className='p-3'>
+				<View className='p-2 items-center'>
+					<Text>Step 2 of 3</Text>
+				</View>
+				<View className='p-2 mb-4 items-center'>
+					<ProgressTrack progress={2 / 3} />
+				</View>
 
-					<View className='p-2' style={styles.employment}>
-						<DropDownPicker
-							items={employmentStatus || []}
-							value={statusE}
-							setValue={setStatusE}
-							multiple={false}
-							open={statusDrop}
-							zIndex={7000}
-							placeholder='Employment Status'
-							placeholderStyle={{
-								fontSize: 16,
-								fontFamily: 'normal',
-							}}
-							textStyle={{
-								fontFamily: 'normal',
-							}}
-							setOpen={setStatusDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: statusDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							loading={loadingStatus}
-							listMode='SCROLLVIEW'
-						/>
-					</View>
+				<View className='p-2' style={styles.employment}>
+					<DropDownPicker
+						items={employmentStatus || []}
+						value={statusE}
+						setValue={setStatusE}
+						multiple={false}
+						open={statusDrop}
+						zIndex={7000}
+						placeholder='Employment Status'
+						placeholderStyle={{
+							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
+						}}
+						setOpen={setStatusDrop}
+						style={[
+							styles.input,
+							{
+								borderColor: statusDrop ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						loading={loadingStatus}
+						listMode='SCROLLVIEW'
+					/>
+				</View>
 
-					<View className='p-2' style={styles.employer}>
-						<DropDownPicker
-							items={allEmployers || []}
-							value={employersE}
-							setValue={setEmployersE}
-							multiple={false}
-							zIndex={6000}
-							open={employDrop}
-							placeholder='Current Employer'
-							placeholderStyle={{
-								fontSize: 16,
-								fontFamily: 'normal',
-							}}
-							textStyle={{
-								fontFamily: 'normal',
-							}}
-							setOpen={setEmployDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: statusDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-							loading={loadingEmployers}
-						/>
-					</View>
+				<View className='p-2' style={styles.employer}>
+					<DropDownPicker
+						items={allEmployers || []}
+						value={employersE}
+						setValue={setEmployersE}
+						multiple={false}
+						zIndex={6000}
+						open={employDrop}
+						placeholder='Current Employer'
+						placeholderStyle={{
+							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
+						}}
+						setOpen={setEmployDrop}
+						style={[
+							styles.input,
+							{
+								borderColor: statusDrop ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						listMode='SCROLLVIEW'
+						loading={loadingEmployers}
+					/>
+				</View>
 
-					<View className='p-2' style={styles.type}>
-						<DropDownPicker
-							items={stationTypes || []}
-							value={stationType}
-							setValue={setStationType}
-							multiple={false}
-							open={stationDrop}
-							zIndex={5000}
-							placeholder='Work Station Type'
-							placeholderStyle={{
-								fontSize: 16,
-								fontFamily: 'normal',
-							}}
-							textStyle={{
-								fontFamily: 'normal',
-							}}
-							setOpen={setStationDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: stationDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-							loading={loadingWorkStationTypes}
-						/>
-					</View>
+				<View className='p-2' style={styles.type}>
+					<DropDownPicker
+						items={stationTypes || []}
+						value={stationType}
+						setValue={setStationType}
+						multiple={false}
+						open={stationDrop}
+						zIndex={5000}
+						placeholder='Work Station Type'
+						placeholderStyle={{
+							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
+						}}
+						setOpen={setStationDrop}
+						style={[
+							styles.input,
+							{
+								borderColor: stationDrop ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						listMode='SCROLLVIEW'
+						loading={loadingWorkStationTypes}
+					/>
+				</View>
 
-					<View className='p-2' style={styles.county}>
-						<DropDownPicker
-							items={allCounties || []}
-							value={county}
-							searchable
-							setValue={setCounty}
-							zIndex={4000}
-							multiple={false}
-							open={countyDrop}
-							placeholder='Select County'
-							placeholderStyle={{
-								fontSize: 16,
-								fontFamily: 'normal',
-							}}
-							textStyle={{
-								fontFamily: 'normal',
-							}}
-							setOpen={setCountyDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: stationDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-							loading={loadingCounties}
-						/>
-					</View>
+				<View className='p-2' style={styles.county}>
+					<DropDownPicker
+						items={allCounties || []}
+						value={county}
+						searchable
+						setValue={setCounty}
+						zIndex={4000}
+						multiple={false}
+						open={countyDrop}
+						placeholder='Select County'
+						placeholderStyle={{
+							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
+						}}
+						setOpen={setCountyDrop}
+						style={[
+							styles.input,
+							{
+								borderColor: stationDrop ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						listMode='SCROLLVIEW'
+						loading={loadingCounties}
+					/>
+				</View>
 
-					{/* {loadingWorkStations ? <ActivityIndicator /> : null} */}
+				{/* {loadingWorkStations ? <ActivityIndicator /> : null} */}
 
-					<View className='p-2' style={styles.station}>
-						<DropDownPicker
-							items={countyWorkStations || []}
-							value={station}
-							searchable
-							zIndex={3000}
-							setValue={setStation}
-							multiple={false}
-							open={countyStationDrop}
-							placeholder='Select Work Station'
-							placeholderStyle={{
-								fontSize: 16,
-								fontFamily: 'normal',
-							}}
-							textStyle={{
-								fontFamily: 'normal',
-							}}
-							setOpen={setCountyStationDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: stationDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-							loading={loadingWorkStations}
-						/>
-					</View>
+				<View className='p-2' style={styles.station}>
+					<DropDownPicker
+						items={countyWorkStations || []}
+						value={station}
+						searchable
+						zIndex={3000}
+						setValue={setStation}
+						multiple={false}
+						open={countyStationDrop}
+						placeholder='Select Work Station'
+						placeholderStyle={{
+							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
+						}}
+						setOpen={setCountyStationDrop}
+						style={[
+							styles.input,
+							{
+								borderColor: stationDrop ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						listMode='SCROLLVIEW'
+						loading={loadingWorkStations}
+					/>
+				</View>
 
-					<View className='p-2' style={styles.periodE}>
-						<DropDownPicker
-							items={allPeriods || []}
-							value={employPeriod}
-							setValue={setEmployPeriod}
-							multiple={false}
-							open={periodDrop}
-							zIndex={2000}
-							placeholder='Period With Current Employer'
-							placeholderStyle={{
-								fontSize: 16,
-								fontFamily: 'normal',
-							}}
-							textStyle={{
-								fontFamily: 'normal',
-							}}
-							setOpen={setPeriodDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: periodDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-							loading={loadingPeriods}
-						/>
-					</View>
+				<View className='p-2' style={styles.periodE}>
+					<DropDownPicker
+						items={allPeriods || []}
+						value={employPeriod}
+						setValue={setEmployPeriod}
+						multiple={false}
+						open={periodDrop}
+						zIndex={2000}
+						placeholder='Period With Current Employer'
+						placeholderStyle={{
+							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
+						}}
+						setOpen={setPeriodDrop}
+						style={[
+							styles.input,
+							{
+								borderColor: periodDrop ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						listMode='SCROLLVIEW'
+						loading={loadingPeriods}
+					/>
+				</View>
 
-					<View className='p-2' style={styles.periodN}>
-						<DropDownPicker
-							items={allPeriods || []}
-							value={nursePeriod}
-							setValue={setNursePeriod}
-							multiple={false}
-							open={nurseDrop}
-							zIndex={1000}
-							placeholder='Period Working As A Nurse'
-							placeholderStyle={{
-								fontSize: 16,
-								fontFamily: 'normal',
-							}}
-							textStyle={{
-								fontFamily: 'normal',
-							}}
-							setOpen={setNurseDrop}
-							style={[
-								styles.input,
-								{
-									borderColor: nurseDrop ? '#0445b5' : '#0345B53D',
-								},
-							]}
-							listMode='SCROLLVIEW'
-							loading={loadingPeriods}
-						/>
-					</View>
+				<View className='p-2' style={styles.periodN}>
+					<DropDownPicker
+						items={allPeriods || []}
+						value={nursePeriod}
+						setValue={setNursePeriod}
+						multiple={false}
+						open={nurseDrop}
+						zIndex={1000}
+						placeholder='Period Working As A Nurse'
+						placeholderStyle={{
+							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
+						}}
+						setOpen={setNurseDrop}
+						style={[
+							styles.input,
+							{
+								borderColor: nurseDrop ? '#0445b5' : '#0345B53D',
+							},
+						]}
+						listMode='SCROLLVIEW'
+						loading={loadingPeriods}
+					/>
+				</View>
 
-					<View className='p-2'>
-						<TextInput
-							label={<Text>Department</Text>}
-							mode='outlined'
-							defaultValue={employStatus?.department || ''}
-							onChangeText={handleDept}
-							{...textInputProps}
-						/>
-					</View>
+				<View className='p-2'>
+					<TextInput
+						label={<Text>Department</Text>}
+						mode='outlined'
+						defaultValue={employStatus?.department || ''}
+						onChangeText={handleDept}
+						{...textInputProps}
+					/>
+				</View>
 
-					<View className='p-2'>
-						<TextInput
-							label={<Text>Current Position</Text>}
-							defaultValue={employStatus?.current_position || ''}
-							mode='outlined'
-							onChangeText={handlePosition}
-							{...textInputProps}
-						/>
-					</View>
+				<View className='p-2'>
+					<TextInput
+						label={<Text>Current Position</Text>}
+						defaultValue={employStatus?.current_position || ''}
+						mode='outlined'
+						onChangeText={handlePosition}
+						{...textInputProps}
+					/>
+				</View>
 
-					<View className='p-2'>
-						<Button
-							mode='contained'
-							style={disabled ? styles.disabled : styles.button}
-							disabled={disabled}
-							onPress={handleNext}>
-							Next
-						</Button>
-					</View>
-				</ScrollView>
-			</KeyboardAvoidingView>
-		</View>
+				<View className='p-2'>
+					<Button
+						mode='contained'
+						style={disabled ? styles.disabled : styles.button}
+						disabled={disabled}
+						onPress={handleNext}>
+						Next
+					</Button>
+				</View>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	);
 };
 

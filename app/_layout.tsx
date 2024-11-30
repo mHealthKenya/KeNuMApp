@@ -1,15 +1,15 @@
-import { config } from '@gluestack-ui/config';
-import { GluestackUIProvider } from '@gluestack-ui/themed';
-import { config as tconfig } from '@tamagui/config/v3';
-import { createTamagui, TamaguiProvider } from '@tamagui/core';
+import {config} from '@gluestack-ui/config';
+import {GluestackUIProvider} from '@gluestack-ui/themed';
+import {config as tconfig} from '@tamagui/config/v3';
+import {createTamagui, TamaguiProvider} from '@tamagui/core';
 import '@tamagui/core/reset.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {useFonts} from 'expo-font';
+import {Stack} from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Updates from 'expo-updates';
-import React, { useEffect } from 'react';
-import { configureFonts, MD2LightTheme, PaperProvider } from 'react-native-paper';
+import React, {useEffect} from 'react';
+import {configureFonts, MD2LightTheme, PaperProvider} from 'react-native-paper';
 import '../global.css';
 import AuthProvider from '../providers/auth';
 import CompetencyProvider from '../providers/competency';
@@ -40,6 +40,7 @@ const RootLayout = () => {
 				await Updates.reloadAsync();
 			}
 		} catch (error) {
+			alert(error);
 			// You can also add an alert() to see the error message in case of an error when fetching updates.
 			return;
 		}

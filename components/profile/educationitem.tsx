@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Divider} from 'react-native-paper';
 import globalStyles from '../../styles/global';
+import { Text } from '../Themed';
 
 interface Education {
 	cadre_text?: string;

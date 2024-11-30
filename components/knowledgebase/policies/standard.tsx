@@ -1,9 +1,9 @@
-import {View, Text, StyleSheet, Dimensions} from 'react-native';
 import React from 'react';
-import Pdf from 'react-native-pdf';
-import globalStyles from '../../../styles/global';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
+import Pdf from 'react-native-pdf';
 import {primaryColor} from '../../../constants/Colors';
+import globalStyles from '../../../styles/global';
 
 const Standards = () => {
 	const source = require('../library/Standards of Nursing and Midwifery Education and Practice.pdf');

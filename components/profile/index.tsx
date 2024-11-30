@@ -1,12 +1,11 @@
 import React from 'react';
 import {ScrollView, View, useWindowDimensions} from 'react-native';
 import {ActivityIndicator, Divider} from 'react-native-paper';
-import {useAuth} from '../../providers/auth';
+import {primaryColor} from '../../constants/Colors';
 import useAuthenticatedUser from '../../services/auth/authenticated';
+import globalStyles from '../../styles/global';
 import ProfileHeader from './header';
 import ProfileItem from './item';
-import {primaryColor} from '../../constants/Colors';
-import globalStyles from '../../styles/global';
 
 interface Profile {
 	title: string;

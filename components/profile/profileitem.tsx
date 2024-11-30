@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Divider, Icon } from 'react-native-paper';
 import globalStyles from '../../styles/global';
+import { Text } from '../Themed';
 
 const ProfileItem: FC<{ title: string; content?: string; icon?: string }> = ({
 	title,

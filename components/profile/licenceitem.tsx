@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import React, {FC} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Divider} from 'react-native-paper';
 import globalStyles from '../../styles/global';
+import {Text} from '../Themed';
 
 interface License {
 	license_no?: string;
@@ -12,27 +13,23 @@ interface License {
 
 const LicenseItem: FC<{
 	license: License;
-}> = ({ license }) => {
+}> = ({license}) => {
 	return (
 		<View style={styles.card}>
 			<View style={[globalStyles.column]}>
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
 					<Text style={styles.headerText}>License Number</Text>
 					<Text style={styles.contentText}>{license?.license_no}</Text>
 				</View>
 				<Divider />
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
 					<Text style={styles.headerText}>From</Text>
-					<Text style={styles.contentText}>
-						{license?.from_date?.toLocaleString()}
-					</Text>
+					<Text style={styles.contentText}>{license?.from_date?.toLocaleString()}</Text>
 				</View>
 				<Divider />
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
 					<Text style={styles.headerText}>To Date</Text>
-					<Text style={styles.contentText}>
-						{license?.to_date?.toLocaleString()}
-					</Text>
+					<Text style={styles.contentText}>{license?.to_date?.toLocaleString()}</Text>
 				</View>
 			</View>
 		</View>

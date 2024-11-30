@@ -1,9 +1,8 @@
 import {useAtom} from 'jotai';
 import React from 'react';
-import {licenceApplicationAtom} from '../../atoms/licence';
+import {outmigrationGenAtom} from '../../atoms/outmigration';
 import PayComponent from '../../components/payments/pay';
 import {Transactions} from '../../enums/transactions';
-import {outmigrationGenAtom} from '../../atoms/outmigration';
 
 const PayOutmigrationHist = () => {
 	const [outmigration, _] = useAtom(outmigrationGenAtom);
@@ -12,8 +11,8 @@ const PayOutmigrationHist = () => {
 		<PayComponent
 			pay={{
 				title: 'Pay for Outmigration',
-				acc_no: '' + outmigration?.invoice_no!,
-				amount: +outmigration?.balance_due!,
+				acc_no: '' + outmigration?.invoice_details?.invoice_number!,
+				amount: +outmigration?.invoice_details?.balance_due!,
 				subtitle: 'Outmigration Payment',
 				transaction: Transactions.Outmigration,
 				redirectPath: '/outmigrationhist',

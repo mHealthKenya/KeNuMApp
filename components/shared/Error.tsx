@@ -1,26 +1,21 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect } from 'react';
-import {
-	Image,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Button } from 'react-native-paper';
-import { useError } from '../../providers/error';
+import {useRouter} from 'expo-router';
+import React, {useEffect} from 'react';
+import {Image, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Button} from 'react-native-paper';
+import {useError} from '../../providers/error';
 
 const ErrorComponent = () => {
-	const { clearError, error } = useError();
+	const {clearError, error} = useError();
 	const router = useRouter();
 
 	useEffect(() => {
 		return () => {
 			clearError();
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const { width, height } = useWindowDimensions();
+	const {width, height} = useWindowDimensions();
 
 	const handleClose = () => {
 		clearError();

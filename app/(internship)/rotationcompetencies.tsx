@@ -1,12 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
+import {View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
+import {primaryColor} from '../../constants/Colors';
 import useRotationCompetencies from '../../services/internship/rotationcompetencies';
 import globalStyles from '../../styles/global';
 
 const RotationCompetencies = () => {
-	const {data: areas = [], isPending} = useRotationCompetencies(() => {});
+	const {isPending} = useRotationCompetencies(() => {});
 
 	if (isPending) {
 		return (
@@ -15,7 +15,7 @@ const RotationCompetencies = () => {
 			</View>
 		);
 	}
-	return <></>
+	return <></>;
 };
 
 export default RotationCompetencies;

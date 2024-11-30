@@ -14,7 +14,7 @@ const FAQComponent: FC<{faq: FAQ}> = ({faq}) => {
 	};
 
 	return (
-		<View style={[styles.spacer]}>
+		<View className='px-2 py-1 rounded-lg'>
 			<List.Accordion
 				title={faq.title}
 				expanded={expanded}
@@ -26,7 +26,7 @@ const FAQComponent: FC<{faq: FAQ}> = ({faq}) => {
 				}}
 				titleNumberOfLines={500}
 				style={{
-					backgroundColor: '#dcf0fa',
+					backgroundColor: '#FFFFFF',
 					borderRadius: 10,
 					justifyContent: 'center',
 				}}>
@@ -38,11 +38,10 @@ const FAQComponent: FC<{faq: FAQ}> = ({faq}) => {
 						title={faq.content}
 						titleNumberOfLines={1000}
 						titleStyle={{
-							letterSpacing: 2,
-							fontSize: 20,
+							fontSize: 15,
 						}}
 						style={{
-							backgroundColor: '#e1e8ed',
+							backgroundColor: '#FFFFFF',
 							padding: 10,
 							marginVertical: 5,
 							borderRadius: 10,

@@ -11,8 +11,8 @@ const PayLicenceHist = () => {
 		<PayComponent
 			pay={{
 				title: 'Pay for Licence',
-				acc_no: '' + licence?.invoice_no!,
-				amount: +licence?.balance_due!,
+				acc_no: '' + licence?.invoice_details?.invoice_number!,
+				amount: +licence?.invoice_details?.balance_due!,
 				subtitle: 'Licence Renewal',
 				transaction: Transactions.Licence,
 				redirectPath: '/licenceapplications',

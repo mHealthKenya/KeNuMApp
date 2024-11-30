@@ -3,10 +3,10 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
-import {Text as DefaultText, useColorScheme, View as DefaultView} from 'react-native';
+import {Text as DefaultText, View as DefaultView, useColorScheme} from 'react-native';
 
-import Colors from '../constants/Colors';
 import React from 'react';
+import Colors from '../constants/Colors';
 
 type ThemeProps = {
 	lightColor?: string;
@@ -33,7 +33,7 @@ export function useThemeColor(
 }
 
 export function Text(props: TextProps) {
-	const {style, lightColor, darkColor, bold, italic, ...otherProps} = props;
+	const {style, bold, italic, ...otherProps} = props;
 	// const color = useThemeColor({light: lightColor, dark: darkColor}, 'text');
 
 	return <DefaultText style={[style, {fontFamily: bold ? 'bold' : italic ? 'italic' : 'normal'}]} {...otherProps} />;

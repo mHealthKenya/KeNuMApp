@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native';
 import React from 'react';
+import {View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
+import {primaryColor} from '../../constants/Colors';
 import globalStyles from '../../styles/global';
-import { ActivityIndicator } from 'react-native-paper';
-import { primaryColor } from '../../constants/Colors';
 
 const CenterLoad = () => {
 	return (

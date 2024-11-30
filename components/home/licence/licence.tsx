@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import {Image} from 'expo-image';
 import * as Print from 'expo-print';
-import React, {FC} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import {licenceGenerator} from '../../../helpers/licencegenerator';

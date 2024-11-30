@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { CPDSuccess } from '../../models/cpdsuccess';
 import { ClaimSuccess } from '../../models/claimsuccess';
 
 interface Claim {

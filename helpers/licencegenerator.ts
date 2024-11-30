@@ -1,3 +1,6 @@
+/* eslint-enable no-useless-escape */
+
+
 import { User } from '../models/user';
 import dayjs from 'dayjs';
 export const licenceGenerator = async (user: User | null) => {

@@ -1,14 +1,12 @@
+import {countries} from 'countries-list';
 import {StatusBar} from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
-import ApplyPrivateComponent from '../../components/privatepractice/apply';
-import {primaryColor} from '../../constants/Colors';
-import useCounties from '../../services/general/counties';
-import globalStyles from '../../styles/global';
 import ApplyOutComponent from '../../components/outmigration/apply';
-import {countries} from 'countries-list';
+import {primaryColor} from '../../constants/Colors';
 import useAuthenticatedUser from '../../services/auth/authenticated';
+import globalStyles from '../../styles/global';
 
 export interface DropDownItem {
 	label: string;
@@ -28,8 +26,7 @@ const OutMigrationApply = () => {
 		setNames(item);
 	}, []);
 
-	const {data: counties = [], isLoading} = useCounties();
-	if (isLoading || loadingUser) {
+	if (loadingUser) {
 		return (
 			<View style={[globalStyles.container, globalStyles.center]}>
 				<ActivityIndicator size='large' color={primaryColor} />
@@ -38,7 +35,7 @@ const OutMigrationApply = () => {
 	}
 	return (
 		<>
-			<ApplyOutComponent counties={counties} countries={names} user={user || {}} />
+			<ApplyOutComponent countries={names} user={user || {}} />
 			<StatusBar style='light' />
 		</>
 	);

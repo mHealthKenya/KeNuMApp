@@ -1,4 +1,3 @@
-import {useLocalSearchParams} from 'expo-router';
 import React from 'react';
 import PayComponent from '../../components/payments/pay';
 import {Transactions} from '../../enums/transactions';
@@ -6,7 +5,6 @@ import {useInternshipFetched} from '../../providers/internship';
 
 const InternshipPayHistory = () => {
 	const {application} = useInternshipFetched();
-	const {acc_no, amount, subtitle} = useLocalSearchParams();
 
 	return (
 		<PayComponent

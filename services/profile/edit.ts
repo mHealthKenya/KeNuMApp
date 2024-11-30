@@ -1,14 +1,15 @@
+ 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { CPDSuccess } from '../../models/cpdsuccess';
+import { UserImage } from '../../components/internship/apply';
 
 interface Profile {
     address: string;
     email: string;
     mobileno: string;
-    profile_pic: any
+    profile_pic: UserImage
 }
 
 const updateProfile = async (data: Profile) => {
@@ -21,7 +22,9 @@ const updateProfile = async (data: Profile) => {
     form.append('address', data.address);
     form.append('email', data.email);
     form.append('mobileno', data.mobileno);
-    { data.profile_pic && form.append('profile_pic', data.profile_pic) }
+    if (data.profile_pic) {
+        form.append('profile_pic', data.profile_pic as unknown as Blob);
+    }
 
 
     const config: AxiosRequestConfig = {

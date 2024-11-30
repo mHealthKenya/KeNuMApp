@@ -2,10 +2,12 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { baseUrl } from '../../constants/baseurl';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as secureStore from 'expo-secure-store';
+import { UserImage } from '../../components/internship/apply';
+
 
 interface Apply {
-	posting_letter: any;
-	degree_cert: any;
+	posting_letter: UserImage;
+	degree_cert: UserImage;
 	education_id: string;
 	internship_center: string;
 	start_date: string;
@@ -18,8 +20,8 @@ const internshipApply = async (data: Apply) => {
 
 	const form = new FormData();
 
-	form.append('posting_letter', data.posting_letter);
-	form.append('degree_cert', data.degree_cert);
+	form.append('posting_letter', data.posting_letter as unknown as Blob);
+	form.append('degree_cert', data.degree_cert as unknown as Blob);
 	form.append('education_id', data.education_id);
 	form.append('internship_center', data.internship_center);
 	form.append('start_date', data.start_date);

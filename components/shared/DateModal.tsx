@@ -1,11 +1,9 @@
-import {Button} from '@gluestack-ui/themed';
-import {ButtonText, Modal, ModalBackdrop, ModalContent, ModalFooter} from '@gluestack-ui/themed';
-import React, {FC, ReactNode, useRef} from 'react';
-import {View} from 'react-native';
-import {Platform, StyleSheet} from 'react-native';
+import {Button, ButtonText, Modal, ModalBackdrop, ModalContent, ModalFooter} from '@gluestack-ui/themed';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {primaryColor} from '../../constants/Colors';
 import dayjs from 'dayjs';
+import React, {FC, useRef} from 'react';
+import {Platform, View} from 'react-native';
+import {primaryColor} from '../../constants/Colors';
 
 interface CModal {
 	show: boolean;
@@ -54,5 +52,3 @@ const DateModal: FC<{items: CModal; minimumDate?: Date}> = ({
 };
 
 export default DateModal;
-
-const styles = StyleSheet.create({});

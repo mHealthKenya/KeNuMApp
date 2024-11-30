@@ -1,35 +1,30 @@
 import dayjs from 'dayjs';
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
-import {currencyFormatter} from '../../helpers/currency-formatter';
-import {LicenceApplication} from '../../models/licenceapplications';
+import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { currencyFormatter } from '../../helpers/currency-formatter';
+import { LicenceApplication } from '../../models/licenceapplications';
 import globalStyles from '../../styles/global';
-import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
+import { InternshipItem, InternshipItemDouble } from '../internship/history/applications';
 import EmptyList from '../shared/EmptyList';
 // import ActionBottomLicence from './actionbottomlicence';
-import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
-import {FlashList} from '@shopify/flash-list';
-import {useAtom} from 'jotai';
-import {licenceApplicationAtom} from '../../atoms/licence';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import { FlashList } from '@shopify/flash-list';
+import { useAtom } from 'jotai';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Searchbar } from 'react-native-paper';
+import { licenceApplicationAtom } from '../../atoms/licence';
+import { DateFormat } from '../../enums/date';
+import { useSearch } from '../../providers/search';
+import AccordionShared from '../shared/Accordion';
+import { Text } from '../Themed';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import AccordionShared from '../shared/Accordion';
-import {useSearch} from '../../providers/search';
-import {DateFormat} from '../../enums/date';
-import {Searchbar} from 'react-native-paper';
-import {Text} from '../Themed';
 
 const Application: FC<{
 	application: LicenceApplication;
 	action: (application: LicenceApplication) => void;
 }> = ({application, action}) => {
-	const {height, width} = useWindowDimensions();
-
-	const dimension = Math.min(width, height);
-
-	const availableWidth = dimension - 20;
 	return (
 		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>

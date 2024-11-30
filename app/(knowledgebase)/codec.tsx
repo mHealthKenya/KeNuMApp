@@ -1,5 +1,5 @@
-import {View, Text} from 'react-native';
 import React from 'react';
+import {View} from 'react-native';
 import CodeView from '../../components/knowledgebase/policies/code';
 
 const Code = () => {

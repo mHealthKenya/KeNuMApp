@@ -1,19 +1,11 @@
-import { useRouter } from 'expo-router';
+import {useRouter} from 'expo-router';
 import React from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Icon } from 'react-native-paper';
-import { useAuth } from '../../providers/auth';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
 
 const StudentsModule = () => {
-	const { width, height } = useWindowDimensions();
-	const { checkAuth } = useAuth();
+	const {width, height} = useWindowDimensions();
 
 	const router = useRouter();
 	const dimension = Math.min(width, height);
@@ -23,53 +15,34 @@ const StudentsModule = () => {
 	const usableWidth = (availableWidth - 20) / 3;
 
 	return (
-        <>
-            <View
-			style={[
-				globalStyles.column,
-				{ height: height * 0.3, justifyContent: 'space-evenly' },
-			]}>
-			<View style={[styles.inner]}>
-				<Text style={styles.titleText}>Student' Module</Text>
-			</View>
-			<View
-				style={[
-					styles.inner,
-					globalStyles.row,
-					{ justifyContent: 'space-around' },
-				]}>
-				<Pressable
-					style={[styles.square, { width: usableWidth, height: usableWidth }]}
-					onPress={() => router.push('/internship')}>
-					<Icon
-						size={usableWidth * 0.6}
-						source={require('../../assets/images/internsh.png')}
-					/>
-					<Text>Internships</Text>
-				</Pressable>
-				<Pressable
-					style={[styles.square, { width: usableWidth, height: usableWidth }]}
-					onPress={() => router.push('/examall')}>
-					<Icon
-						size={usableWidth * 0.6}
-						source={require('../../assets/images/exams.png')}
-					/>
-					<Text>Exams</Text>
-				</Pressable>
+		<>
+			<View style={[globalStyles.column, {height: height * 0.3, justifyContent: 'space-evenly'}]}>
+				<View style={[styles.inner]}>
+					<Text style={styles.titleText}>Student' Module</Text>
+				</View>
+				<View style={[styles.inner, globalStyles.row, {justifyContent: 'space-around'}]}>
+					<Pressable
+						style={[styles.square, {width: usableWidth, height: usableWidth}]}
+						onPress={() => router.push('/internship')}>
+						<Icon size={usableWidth * 0.6} source={require('../../assets/images/internsh.png')} />
+						<Text>Internships</Text>
+					</Pressable>
+					<Pressable
+						style={[styles.square, {width: usableWidth, height: usableWidth}]}
+						onPress={() => router.push('/examall')}>
+						<Icon size={usableWidth * 0.6} source={require('../../assets/images/exams.png')} />
+						<Text>Exams</Text>
+					</Pressable>
 
-				<Pressable
-					style={[styles.square, { width: usableWidth, height: usableWidth }]}
-					onPress={() => router.push('/registrationhome')}>
-					<Icon
-						size={usableWidth * 0.6}
-						source={require('../../assets/images/register.png')}
-					/>
-					<Text>Registration</Text>
-				</Pressable>
+					<Pressable
+						style={[styles.square, {width: usableWidth, height: usableWidth}]}
+						onPress={() => router.push('/registrationhome')}>
+						<Icon size={usableWidth * 0.6} source={require('../../assets/images/register.png')} />
+						<Text>Registration</Text>
+					</Pressable>
+				</View>
 			</View>
-		</View> 
-        </>
-		
+		</>
 	);
 };
 

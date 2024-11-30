@@ -1,13 +1,8 @@
-import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import React, {FC} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Divider} from 'react-native-paper';
 import globalStyles from '../../styles/global';
-
-interface Education {
-	cadre_text?: string;
-	institution?: string;
-	admission_date?: string | Date | undefined;
-}
+import {Text} from '../Themed';
 
 interface Registration {
 	reg_no?: string;
@@ -16,16 +11,16 @@ interface Registration {
 
 const RegistrationItem: FC<{
 	registration: Registration;
-}> = ({ registration }) => {
+}> = ({registration}) => {
 	return (
 		<View style={styles.card}>
 			<View style={[globalStyles.column]}>
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
 					<Text style={styles.headerText}>Cadre</Text>
 					<Text style={styles.contentText}>{registration?.cadre_text}</Text>
 				</View>
 				<Divider />
-				<View style={[globalStyles.column, { gap: 10, padding: 20 }]}>
+				<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
 					<Text style={styles.headerText}>Registration Number</Text>
 					<Text style={styles.contentText}>{registration?.reg_no}</Text>
 				</View>

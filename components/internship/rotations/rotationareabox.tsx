@@ -1,7 +1,7 @@
 import {ImageSource} from 'expo-image';
 import {useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, View, useWindowDimensions} from 'react-native';
 import {ActivityIndicator, Divider, Icon} from 'react-native-paper';
 import {primaryColor} from '../../../constants/Colors';
 import {RotationArea} from '../../../models/rotationareas';
@@ -71,29 +71,3 @@ const RotationAreaBox: FC<{area: RotationArea}> = ({area}) => {
 };
 
 export default RotationAreaBox;
-
-const styles = StyleSheet.create({
-	box: {
-		marginHorizontal: 10,
-		marginVertical: 3,
-		padding: 20,
-		borderRadius: 10,
-		justifyContent: 'center',
-	},
-
-	fullSize: {
-		justifyContent: 'space-evenly',
-	},
-
-	titleText: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		textTransform: 'capitalize',
-		letterSpacing: 2,
-	},
-
-	contentText: {
-		color: '#74787e',
-		letterSpacing: 1.5,
-	},
-});

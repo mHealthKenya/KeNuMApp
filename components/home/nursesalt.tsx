@@ -1,10 +1,10 @@
+import {FlashList} from '@shopify/flash-list';
 import {Image, ImageSource} from 'expo-image';
 import {Href, Link} from 'expo-router';
 import React, {FC} from 'react';
-import {FlatList, Pressable, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {Icon} from 'react-native-paper';
 import {Text} from '../Themed';
-import {FlashList} from '@shopify/flash-list';
 
 type Item = {
 	height: number;

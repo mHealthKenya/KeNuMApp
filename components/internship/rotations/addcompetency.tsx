@@ -128,10 +128,10 @@ const AddCompetencyComponent = () => {
 		activeOutlineColor: '#0445b5',
 	};
 	return (
-		<ScrollView style={[globalStyles.container, {gap: 10}]}>
-			<CompetencyInformationBox competency={competency} />
+		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1 p-2'>
+			<ScrollView style={[globalStyles.container, {gap: 10}]}>
+				<CompetencyInformationBox competency={competency} />
 
-			<KeyboardAvoidingView>
 				<View style={[styles.box]} className='container mx-auto max-h-[400px] h-auto overflow-y-auto'>
 					<Controller
 						rules={{
@@ -149,6 +149,7 @@ const AddCompetencyComponent = () => {
 								multiline
 								numberOfLines={5}
 								maxLength={3000}
+								error={!!errors?.activity_notes?.message}
 							/>
 						)}
 						name='activity_notes'
@@ -189,8 +190,8 @@ const AddCompetencyComponent = () => {
 					disabled={isLoading}>
 					Record
 				</Button>
-			</KeyboardAvoidingView>
-		</ScrollView>
+			</ScrollView>
+		</KeyboardAvoidingView>
 	);
 };
 

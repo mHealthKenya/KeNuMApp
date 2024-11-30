@@ -1,12 +1,11 @@
-import {useLocalSearchParams} from 'expo-router';
+import {useAtom} from 'jotai';
 import React from 'react';
+import {examAtom} from '../../atoms/exam';
 import PayComponent from '../../components/payments/pay';
 import {Transactions} from '../../enums/transactions';
-import {useAtom} from 'jotai';
-import {examAtom} from '../../atoms/exam';
 
 const PayExamHist = () => {
-	const [exam, _] = useAtom(examAtom);
+	const [exam] = useAtom(examAtom);
 
 	return (
 		<PayComponent

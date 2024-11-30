@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { OutMigrationReasons } from '../../models/outmigrationreasons';
 import { PlanningToReturn } from '../../models/planningtoreturn';
 
 const planningToReturn = async () => {

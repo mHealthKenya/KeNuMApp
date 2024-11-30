@@ -20,11 +20,10 @@ import * as Yup from 'yup';
 import {primaryColor} from '../../../constants/Colors';
 import {InternshipCenter} from '../../../models/internshipcenters';
 import {TransferReason} from '../../../models/transferreasons';
+import {useAuth} from '../../../providers/auth';
 import useInternshipApplications from '../../../services/internship/applications';
 import useInternshipTransfer from '../../../services/internship/transfer';
-import globalStyles from '../../../styles/global';
 import ToastError from '../../shared/ToastError';
-import {useAuth} from '../../../providers/auth';
 
 interface Transfer {
 	transfer_request_desc: string;
@@ -216,6 +215,7 @@ const RequestTransferComponent: FC<{
 									multiline
 									numberOfLines={5}
 									scrollEnabled={false}
+									maxLength={3000}
 								/>
 							)}
 							name='transfer_request_desc'

@@ -37,13 +37,20 @@ const CustomDrawer = (props: DrawerContentComponentProps) => {
 					icon={() => <Icon source='help-circle-outline' size={40} color='#0445b5' />}
 				/> */}
 				<Divider />
-				<DrawerItem
-					label='Logout'
-					onPress={() => logout()}
-					icon={() => <Icon source='logout' size={40} color='#0445b5' />}
-				/>
+				<View className='absolute bottom-0 left-0 w-full p-4'>
+					<DrawerItem
+						label='Logout'
+						onPress={() => logout()}
+						icon={() => <Icon source='logout' size={40} color='#0445b5' />}
+						labelStyle={{
+							fontFamily: 'normal',
+							textAlign: 'left',
+							color: '#000000',
+						}}
+					/>
+				</View>
 			</View>
-		</View> 
+		</View>
 	);
 };
 

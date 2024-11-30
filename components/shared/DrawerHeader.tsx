@@ -1,12 +1,13 @@
 import {Image} from 'expo-image';
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
 import {useAuth} from '../../providers/auth';
 import globalStyles from '../../styles/global';
 import {useRouter} from 'expo-router';
 import useAuthenticatedUser from '../../services/auth/authenticated';
+import {Text} from '../Themed';
 
 const DrawerHeader = () => {
 	const {height, width} = useWindowDimensions();
@@ -16,7 +17,7 @@ const DrawerHeader = () => {
 	const availableWidth = dimension - 30;
 
 	const usableWidth = (availableWidth - 20) / 3;
-	const {user, logout} = useAuth();
+	const {user} = useAuth();
 
 	const {data, isPending} = useAuthenticatedUser();
 

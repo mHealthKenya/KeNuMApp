@@ -1,3 +1,4 @@
+import {Ionicons} from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
 import React, {FC, useMemo, useState} from 'react';
 import {KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
@@ -6,19 +7,16 @@ import {Button, Icon, Text, TextInput, TextInputProps} from 'react-native-paper'
 import {DropDownItem} from '../../app/(outmigration)/applyoutmigration';
 import {employers, marital, period, reasons, returning, status, workstationType} from '../../data/outmigration';
 import {truncateText} from '../../helpers/truncate';
-import {County} from '../../models/counties';
 import {User} from '../../models/user';
-import {Ionicons} from '@expo/vector-icons';
 
 const theme = {
 	roundness: 12,
 };
 
 const ApplyOutComponent: FC<{
-	counties: County[];
 	countries: DropDownItem[];
 	user: User;
-}> = ({counties, countries, user}) => {
+}> = ({countries, user}) => {
 	const education = useMemo(
 		() =>
 			user?.education?.map((item) => ({
@@ -26,15 +24,6 @@ const ApplyOutComponent: FC<{
 				value: item?.cadre_text,
 			})),
 		[user]
-	);
-
-	const actual = useMemo(
-		() =>
-			counties.map((item) => ({
-				label: item.County,
-				value: item.id,
-			})),
-		[counties]
 	);
 
 	// const [county, setCounty] = useState(null);

@@ -1,30 +1,26 @@
 module.exports = {
+	extends: ['expo'],
+	plugins: ['unused-imports'],
 	env: {
-		browser: true,
-		es2021: true,
+		browser: true, // Ensures that browser globals like Blob are available
+		node: true, // If you're working with Node.js too, you can keep this
 	},
-	extends: [
-		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
-		'plugin:react/recommended',
-		'@react-native-community',
-	],
-	overrides: [
-		{
-			env: {
-				node: true,
+	rules: {
+		'unused-imports/no-unused-imports': 'error',
+		'no-unused-vars': 'off',
+		'@typescript-eslint/no-unused-vars': [
+			'error',
+			{
+				varsIgnorePattern: '^_',
+				argsIgnorePattern: '^_',
 			},
-			files: ['.eslintrc.{js,cjs}'],
-			parserOptions: {
-				sourceType: 'script',
+		],
+		'no-undef': [
+			'error',
+			{
+				// This will ignore global objects like Blob
+				typeof: true,
 			},
-		},
-	],
-	parser: '@typescript-eslint/parser',
-	parserOptions: {
-		ecmaVersion: 'latest',
-		sourceType: 'module',
+		],
 	},
-	plugins: ['@typescript-eslint', 'react'],
-	rules: {},
 };

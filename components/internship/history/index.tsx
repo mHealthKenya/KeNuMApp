@@ -1,7 +1,6 @@
 import {FlashList} from '@shopify/flash-list';
 import React from 'react';
 import {View} from 'react-native';
-import globalStyles from '../../../styles/global';
 import BoxImage, {InternBox} from '../../shared/BoxImage';
 
 const data: InternBox[] = [

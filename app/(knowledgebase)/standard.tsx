@@ -1,15 +1,13 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import Standards from "../../components/knowledgebase/policies/standard";
+import React from 'react';
+import {View} from 'react-native';
+import Standards from '../../components/knowledgebase/policies/standard';
 
-const apm = () => {
-  return (
-    <View className="flex flex-1">
-      <Standards />
-    </View>
-  );
+const STDS = () => {
+	return (
+		<View className='flex flex-1'>
+			<Standards />
+		</View>
+	);
 };
 
-export default apm;
-
-const styles = StyleSheet.create({});
+export default STDS;

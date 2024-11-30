@@ -1,12 +1,5 @@
-import { View, Text } from 'react-native';
-import React, {
-	FC,
-	ReactNode,
-	createContext,
-	useContext,
-	useState,
-} from 'react';
-import { RotationCompetencies } from '../models/rotationcompetencies';
+import React, {FC, ReactNode, createContext, useContext, useState} from 'react';
+import {RotationCompetencies} from '../models/rotationcompetencies';
 
 interface Competency {
 	competencies: RotationCompetencies | null;
@@ -20,12 +13,8 @@ const CompetenciesContext = createContext<Competency>({
 
 export const useFetchedCompetencies = () => useContext(CompetenciesContext);
 
-const RotationCompetenciesProvider: FC<{ children: ReactNode }> = ({
-	children,
-}) => {
-	const [competencies, setCompetencies] = useState<RotationCompetencies | null>(
-		null
-	);
+const RotationCompetenciesProvider: FC<{children: ReactNode}> = ({children}) => {
+	const [competencies, setCompetencies] = useState<RotationCompetencies | null>(null);
 
 	const handleCompetencies = (competencies: RotationCompetencies) => {
 		setCompetencies(competencies);

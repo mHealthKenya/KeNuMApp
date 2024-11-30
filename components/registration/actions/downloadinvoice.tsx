@@ -4,11 +4,10 @@ import {printToFileAsync} from 'expo-print';
 import * as Sharing from 'expo-sharing';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {examReceiptGen} from '../../../helpers/receiptgeneratorexam';
+import {registrationReceiptGen} from '../../../helpers/receiptgeneratorregistration';
 import {RegistrationApplication} from '../../../models/regapplications';
 import {useAuth} from '../../../providers/auth';
 import globalStyles from '../../../styles/global';
-import {registrationReceiptGen} from '../../../helpers/receiptgeneratorregistration';
 
 const DownloadInvoice: FC<{item: RegistrationApplication | null}> = ({item}) => {
 	const {user} = useAuth();

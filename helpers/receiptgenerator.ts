@@ -4,20 +4,20 @@ import dayjs from 'dayjs';
 import { currencyFormatter } from './currency-formatter';
 
 export enum InternshipMode {
-	paid = 'paid',
+    paid = 'paid',
 }
 
 export const internShipReceiptGen = (
-	item: InternshipApplication,
-	user: User | null,
-	mode?: string
+    item: InternshipApplication,
+    user: User | null,
+    mode?: string
 ) => {
-	const html = `
+    const html = `
    <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-            <title>Invoice ${item.invoice_no}</title>
+            <title>Invoice ${item.invoice_details.invoice_number}</title>
 
             <style>
                 html,
@@ -101,10 +101,10 @@ export const internShipReceiptGen = (
                             <h2 class="text-start">Nursing Council of Kenya</h2>
                         </th>
                         <th width="50%" colspan="2" class="text-end company-data">
-                            <span>Invoice Id: ${item.invoice_no}</span> <br>
+                            <span>Invoice Id: ${item.invoice_details.invoice_number}</span> <br>
                             <span>Date: ${dayjs(new Date()).format(
-															'DD-MM-YYYY'
-														)}</span> <br>
+        'DD-MM-YYYY'
+    )}</span> <br>
                            
                             <span>Address: Kilimani, Kabarnet Rd, Nairobi</span> <br>
                               <span>Phone: +254 20 3873556</span> <br>
@@ -118,7 +118,7 @@ export const internShipReceiptGen = (
                 <tbody>
                     <tr>
                         <td>Invoice Number:</td>
-                        <td>${item.invoice_no}</td>
+                        <td>${item.invoice_details.invoice_number}</td>
 
                         <td>Full Name:</td>
                         <td>${user?.Name}</td>
@@ -140,8 +140,8 @@ export const internShipReceiptGen = (
                     <tr>
                         <td>Application Date:</td>
                         <td>${dayjs(new Date(item.application_date)).format(
-													'DD-MM-YYYY h:mm A'
-												)}</td>
+        'DD-MM-YYYY h:mm A'
+    )}</td>
 
                         <td>Index Number:</td>
                         <td>${user?.IndexNo}</td>
@@ -153,11 +153,10 @@ export const internShipReceiptGen = (
                 <thead>
                     <tr>
                         <th class="no-border text-start heading" colspan="5">
-                           ${
-															mode === InternshipMode.paid
-																? 'Paid Items'
-																: 'Payable Items'
-														}
+                           ${mode === InternshipMode.paid
+            ? 'Paid Items'
+            : 'Payable Items'
+        }
                         </th>
                     </tr>
                     <tr class="bg-blue">
@@ -175,18 +174,18 @@ export const internShipReceiptGen = (
                             Internship at ${item.internship_center}
                         </td>
                         <td width="10%">${currencyFormatter.format(
-													+item.balance_due
-												)}</td>
+            +item.invoice_details.balance_due
+        )}</td>
                         <td width="10%">1</td>
                         <td width="15%" class="fw-bold">${currencyFormatter.format(
-													+item.balance_due
-												)}</td>
+            +item.invoice_details.balance_due
+        )}</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="total-heading">Total Amount - <small>Inc. all vat/tax</small> :</td>
                         <td colspan="1" class="total-heading">${currencyFormatter.format(
-													+item.balance_due
-												)}</td>
+            +item.invoice_details.balance_due
+        )}</td>
                     </tr>
                 </tbody>
             </table>
@@ -200,5 +199,5 @@ export const internShipReceiptGen = (
         </html>
    `;
 
-	return html;
+    return html;
 };

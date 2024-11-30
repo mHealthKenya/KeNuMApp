@@ -166,7 +166,6 @@ const JoinBox: FC<{join: Join}> = ({join}) => {
 };
 
 const NNAKComponent = () => {
-	const {height, width} = useWindowDimensions();
 	return (
 		<View style={[styles.container]}>
 			<ImageBackground

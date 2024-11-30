@@ -1,9 +1,7 @@
-import {useRouter} from 'expo-router';
-import {ExpoRouter} from 'expo-router/types/expo-router';
+import {Href, useRouter} from 'expo-router';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import {Divider, Icon} from 'react-native-paper';
-import {useKnowledgeFetched} from '../../providers/knowledge';
 import globalStyles from '../../styles/global';
 
 export interface KnowBox {
@@ -11,13 +9,11 @@ export interface KnowBox {
 	content: string;
 }
 
-const SharedBox: FC<{route: ExpoRouter.Href; title: string; subtitle: string}> = ({route, title, subtitle}) => {
+const SharedBox: FC<{route: Href; title: string; subtitle: string}> = ({route, title, subtitle}) => {
 	const router = useRouter();
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
-
-	const {handleItem} = useKnowledgeFetched();
 
 	const handlePress = () => {
 		router.push(route);

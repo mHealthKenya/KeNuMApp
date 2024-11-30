@@ -20,7 +20,7 @@ interface OutmigrationApply {
     experience_years: string;
     duration_current_employer: string;
     planning_return: string
-    form_attached: any
+    form_attached: Blob
     outmigration_reason: string;
     verification_cadres: string
 }
@@ -49,7 +49,7 @@ const outmigrationApp = async (data: OutmigrationApply) => {
     form.append('experience_years', data.experience_years);
     form.append('planning_return', data.planning_return);
     form.append('duration_current_employer', data.duration_current_employer);
-    form.append('form_attached', data.form_attached);
+    form.append('form_attached', data.form_attached as unknown as Blob);
     form.append('outmigration_reason', data.outmigration_reason);
     form.append('verification_cadres', data.verification_cadres);
 

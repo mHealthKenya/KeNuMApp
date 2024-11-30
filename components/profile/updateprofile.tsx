@@ -1,23 +1,21 @@
-import React, {FC, useState} from 'react';
-import {KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, View} from 'react-native';
-import {User} from '../../models/user';
-import WarnAlert from '../shared/WarnAlert';
-import EducationItem from './educationitem';
-import ProfileHeader from './header';
-import globalStyles from '../../styles/global';
+import {useToast} from '@gluestack-ui/themed';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {Image} from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import mime from 'mime';
-import {Button, TextInput, TextInputProps} from 'react-native-paper';
-import {Image} from 'expo-image';
+import React, {FC, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+import {KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import * as Yup from 'yup';
-import {Text} from 'react-native';
 import {primaryColor} from '../../constants/Colors';
-import {useToast} from '@gluestack-ui/themed';
+import {User} from '../../models/user';
+import useProfileUpdate from '../../services/profile/edit';
+import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
 import ToastSuccess from '../shared/ToastSuccess';
-import useProfileUpdate from '../../services/profile/edit';
+import ProfileHeader from './header';
+import {UserImage} from '../internship/apply';
 
 interface Form {
 	address: string;
@@ -55,9 +53,12 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 		outlineColor: '#f9f9f9',
 		activeOutlineColor: '#0445b5',
 	};
-	const [image, setImage] = useState<any>();
+	const [image, setImage] = useState<UserImage>({
+		uri: null,
+		name: '',
+	});
 	const pickImage = async (name: string) => {
-		let result = await ImagePicker.launchImageLibraryAsync({
+		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
 			aspect: [4, 3],

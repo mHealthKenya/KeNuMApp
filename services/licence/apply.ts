@@ -36,7 +36,7 @@ const licenceApply = async (data: Apply) => {
 const useLicenceApply = (successFn: () => void) => {
 	return useMutation({
 		mutationFn: licenceApply,
-		onSuccess: (data) => {
+		onSuccess: () => {
 			successFn();
 		},
 

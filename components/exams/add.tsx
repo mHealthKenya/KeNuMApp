@@ -19,9 +19,7 @@ const AddExamComponent: FC<{
 	user: User | null;
 }> = ({centers, user}) => {
 	const [dropDownCenter, setDropDownCenter] = useState(false);
-	const [dropDownReason, setDropDownReason] = useState(false);
 	const [selectedCenter, setSelectedCenter] = useState(null);
-	const [selectedReason, setSelectedReason] = useState(null);
 
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);

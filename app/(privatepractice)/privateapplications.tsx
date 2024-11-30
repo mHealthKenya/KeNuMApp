@@ -1,23 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import {View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
 import PrivatePracticeApplications from '../../components/privatepractice/applications';
-import { primaryColor } from '../../constants/Colors';
+import {primaryColor} from '../../constants/Colors';
+import {useAuth} from '../../providers/auth';
 import usePrivateApplications from '../../services/privatepractice/applications';
 import globalStyles from '../../styles/global';
-import useAuthenticatedUser from '../../services/auth/authenticated';
-import { useAuth } from '../../providers/auth';
 
 const PrivateApplications = () => {
-	
-	const { user } = useAuth()
-	const {
-		data = [],
-		isLoading,
-		refetch,
-		isRefetching,
-	} = usePrivateApplications(user?.id);
+	const {user} = useAuth();
+	const {data = [], isLoading, refetch, isRefetching} = usePrivateApplications(user?.id);
 
 	if (isLoading) {
 		return (
@@ -29,11 +22,7 @@ const PrivateApplications = () => {
 
 	return (
 		<>
-			<PrivatePracticeApplications
-				applications={data}
-				refetch={refetch}
-				isRefetching={isRefetching}
-			/>
+			<PrivatePracticeApplications applications={data} refetch={refetch} isRefetching={isRefetching} />
 			<StatusBar style='light' />
 		</>
 	);

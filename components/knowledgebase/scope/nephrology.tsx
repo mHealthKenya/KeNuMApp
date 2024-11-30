@@ -1,37 +1,37 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
-import React from "react";
-import Pdf from "react-native-pdf";
-import globalStyles from "../../../styles/global";
-import { ActivityIndicator } from "react-native-paper";
-import { primaryColor } from "../../../constants/Colors";
+import React from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {ActivityIndicator} from 'react-native-paper';
+import Pdf from 'react-native-pdf';
+import {primaryColor} from '../../../constants/Colors';
+import globalStyles from '../../../styles/global';
 
 const NephrologyView = () => {
-  const source = require("../library/Nephrology Scope of Practice.pdf");
+	const source = require('../library/Nephrology Scope of Practice.pdf');
 
-  return (
-    <View className="flex flex-1">
-      <Pdf
-        source={source}
-        onLoadComplete={(numberOfPages) => {
-          console.log(`Number of pages: ${numberOfPages}`);
-        }}
-        onLoadProgress={() => (
-          <View style={[globalStyles.container, globalStyles.center]}>
-            <ActivityIndicator size="large" color={primaryColor} />
-          </View>
-        )}
-        style={styles.pdf}
-      />
-    </View>
-  );
+	return (
+		<View className='flex flex-1'>
+			<Pdf
+				source={source}
+				onLoadComplete={(numberOfPages) => {
+					console.log(`Number of pages: ${numberOfPages}`);
+				}}
+				onLoadProgress={() => (
+					<View style={[globalStyles.container, globalStyles.center]}>
+						<ActivityIndicator size='large' color={primaryColor} />
+					</View>
+				)}
+				style={styles.pdf}
+			/>
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({
-  pdf: {
-    flex: 1,
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-  },
+	pdf: {
+		flex: 1,
+		width: Dimensions.get('window').width,
+		height: Dimensions.get('window').height,
+	},
 });
 
 export default NephrologyView;

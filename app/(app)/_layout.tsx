@@ -36,6 +36,9 @@ const AppLayout = () => {
 					name='index'
 					options={{
 						drawerLabel: 'Home',
+						drawerLabelStyle: {
+							fontFamily: 'normal',
+						},
 						drawerIcon: () => (
 							<Image
 								source={require('../../assets/images/home0.png')}
@@ -52,6 +55,10 @@ const AppLayout = () => {
 					name='profile'
 					options={{
 						drawerLabel: 'My Account',
+
+						drawerLabelStyle: {
+							fontFamily: 'normal',
+						},
 						drawerIcon: () => (
 							<Image
 								source={require('../../assets/images/prof44.png')}

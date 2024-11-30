@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useAuth } from '../../providers/auth';
+import {View} from 'react-native';
+import {Button} from 'react-native-paper';
+import {useAuth} from '../../providers/auth';
 
 const More = () => {
-	const { logout } = useAuth();
+	const {logout} = useAuth();
 	return (
 		<View>
 			<Button
@@ -22,5 +22,3 @@ const More = () => {
 };
 
 export default More;
-
-const styles = StyleSheet.create({});

@@ -1,7 +1,6 @@
 import React from 'react';
-import {ScrollView, View} from 'react-native';
+import { ScrollView, View } from 'react-native';
 import globalStyles from '../../styles/global';
-import LBox from '../licence/lbox';
 import CPDBoxComponent from '../cpds/cpdbox';
 
 const PrivatePracticeHome = () => {

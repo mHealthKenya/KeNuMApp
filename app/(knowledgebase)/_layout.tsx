@@ -66,14 +66,7 @@ const KnowledgeLayout = () => {
             headerLeft: () => <ProfileHeaderLeft />,
           }}
         />
-        <Stack.Screen
-          name="criitcal"
-          options={{
-            // headerShown: false,
-            title: "Critical Care Scope",
-            headerLeft: () => <ProfileHeaderLeft />,
-          }}
-        />
+        
         <Stack.Screen
           name="apn"
           options={{

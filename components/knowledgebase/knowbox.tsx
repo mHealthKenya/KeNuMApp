@@ -1,11 +1,11 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Divider, Icon} from 'react-native-paper';
 import {baseUrl} from '../../constants/baseurl';
 import {KnowledgeBase} from '../../models/knowledgebase';
-import {useKnowledgeFetched} from '../../providers/knowledge';
 import globalStyles from '../../styles/global';
+import {Text} from '../Themed';
 
 export interface KnowBox {
 	title: string;
@@ -16,12 +16,6 @@ const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
-
-	const {handleItem} = useKnowledgeFetched();
-
-	const handlePress = (item: KnowledgeBase) => {
-		handleItem(item);
-	};
 
 	return (
 		<Pressable
@@ -34,18 +28,12 @@ const KnowledgeBox: FC<{box?: KnowledgeBase; routing?: KnowBox}> = ({box}) => {
 			]}
 			onPress={() => WebBrowser.openBrowserAsync(baseUrl + box?.content)}>
 			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-				<View
-					style={[
-						globalStyles.column,
-						{
-							width: usableWidth * 0.8,
-						},
-					]}>
+				<View className='flex flex-col'>
 					<View
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>{box?.title}</Text>
+						<Text>{box?.title}</Text>
 						<Divider
 							style={{
 								marginTop: 5,

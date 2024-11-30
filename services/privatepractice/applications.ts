@@ -1,9 +1,8 @@
+import { useQuery } from '@tanstack/react-query';
+import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { PracticeMode } from '../../models/practicemode';
-import axios, { AxiosRequestConfig } from 'axios';
 import { PracticeApplication } from '../../models/privatepractice';
-import { useQuery } from '@tanstack/react-query';
 
 const privatePractices = async (id: string) => {
     const token = await secureStore.getItemAsync('token').then((data) => data);

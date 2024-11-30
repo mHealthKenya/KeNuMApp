@@ -1,6 +1,6 @@
 import {useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, View, useWindowDimensions} from 'react-native';
 import {ActivityIndicator, Icon} from 'react-native-paper';
 import {primaryColor} from '../../../constants/Colors';
 import useRotationAreas from '../../../services/internship/rotationareas';
@@ -53,29 +53,3 @@ const InternshipAreaBox: FC<{item: InternShipArea}> = ({item}) => {
 };
 
 export default InternshipAreaBox;
-
-const styles = StyleSheet.create({
-	box: {
-		marginHorizontal: 10,
-		marginVertical: 3,
-		padding: 10,
-		borderRadius: 10,
-		justifyContent: 'center',
-	},
-
-	fullSize: {
-		justifyContent: 'space-evenly',
-	},
-
-	titleText: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		textTransform: 'capitalize',
-		letterSpacing: 2,
-	},
-
-	contentText: {
-		color: '#74787e',
-		letterSpacing: 1.5,
-	},
-});

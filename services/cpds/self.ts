@@ -3,6 +3,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
 import { CPDSuccess } from '../../models/cpdsuccess';
+import { UserImage } from '../../components/internship/apply';
+
 
 interface Self {
 	index_id: string;
@@ -10,7 +12,7 @@ interface Self {
 	event_date: string;
 	event_title: string;
 	event_location: string;
-	cpd_evidence: any;
+	cpd_evidence: UserImage;
 }
 
 const selfReport = async (data: Self) => {
@@ -25,7 +27,7 @@ const selfReport = async (data: Self) => {
 	form.append('event_date', data.event_date);
 	form.append('event_title', data.event_title);
 	form.append('event_location', data.event_location);
-	form.append('cpd_evidence', data.cpd_evidence);
+	form.append('cpd_evidence', data.cpd_evidence as unknown as Blob);
 
 	const config: AxiosRequestConfig = {
 		method: 'POST',

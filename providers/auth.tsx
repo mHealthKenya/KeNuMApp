@@ -1,16 +1,9 @@
 import axios from 'axios';
 import * as secureStore from 'expo-secure-store';
-import React, {
-	FC,
-	ReactNode,
-	createContext,
-	useContext,
-	useEffect,
-	useReducer,
-} from 'react';
-import { baseUrl } from '../constants/baseurl';
-import { User } from '../models/user';
-import { useQueryClient } from '@tanstack/react-query';
+import React, {FC, ReactNode, createContext, useContext, useEffect, useReducer} from 'react';
+import {baseUrl} from '../constants/baseurl';
+import {User} from '../models/user';
+import {useQueryClient} from '@tanstack/react-query';
 
 enum Types {
 	Login = 'Login',
@@ -22,7 +15,7 @@ enum Types {
 
 interface Action {
 	type: Types;
-	payload?: any;
+	payload: User | null;
 }
 
 interface State {
@@ -52,7 +45,7 @@ const AuthContext = createContext<Auth>({
 
 export const useAuth = () => useContext(AuthContext);
 
-const reducer = (state: State, { type, payload }: Action): State => {
+const reducer = (state: State, {type, payload}: Action): State => {
 	switch (type) {
 		case Types.Initial:
 			return {
@@ -115,33 +108,33 @@ const getUser = async (token: string) => {
 	return user;
 };
 
-const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const AuthProvider: FC<{children: ReactNode}> = ({children}) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
 	const queryClient = useQueryClient();
 
 	const checkAuth = async () => {
-		dispatch({ type: Types.Initial });
+		dispatch({type: Types.Initial, payload: null});
 		const token = await secureStore.getItemAsync('token').then((data) => data);
 
 		if (!token) {
-			dispatch({ type: Types.Uncheck });
+			dispatch({type: Types.Uncheck, payload: null});
 		}
 
 		const user = await getUser(token || '');
 
 		if (user) {
-			dispatch({ type: Types.Check, payload: user });
+			dispatch({type: Types.Check, payload: user});
 		} else {
-			dispatch({ type: Types.Uncheck });
+			dispatch({type: Types.Uncheck, payload: null});
 		}
 	};
 
 	const logout = async () => {
-		dispatch({ type: Types.LoggingOut });
+		dispatch({type: Types.LoggingOut, payload: null});
 		await secureStore.deleteItemAsync('token');
 		axios.defaults.headers.common['Authorization'] = '';
-		dispatch({ type: Types.Uncheck });
+		dispatch({type: Types.Uncheck, payload: null});
 		queryClient.invalidateQueries({
 			queryKey: ['authenticated-user'],
 		});

@@ -103,6 +103,7 @@ const ApplyPrivateComponent: FC<{
 		if (filtered) {
 			setStationName(filtered.workstation);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [county, station]);
 
 	const {mutate, isPending} = usePrivatePracticeApply();

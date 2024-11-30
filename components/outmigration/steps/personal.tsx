@@ -1,7 +1,7 @@
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import React, {useEffect, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, StyleSheet, Text, useWindowDimensions, View} from 'react-native';
+import {KeyboardAvoidingView, Platform, StyleSheet, Text, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import {employmentAtom} from '../../../atoms/employment';
@@ -35,8 +35,6 @@ const PersonalDetailsComponent = () => {
 
 	const [dropMarital, setDropMarital] = useState(false);
 
-	const {height} = useWindowDimensions();
-
 	const router = useRouter();
 
 	const handleDependents = (dependents: string) => {
@@ -44,15 +42,6 @@ const PersonalDetailsComponent = () => {
 	};
 
 	const [personalDetails, setPersonalDetails] = useAtom(personalDetailsAtom);
-
-	const handleNext = () => {
-		setPersonalDetails({
-			marital_status: maritalStatus!,
-			dependants: dependents!,
-		});
-
-		router.push('/employmentdetails');
-	};
 
 	useEffect(() => {
 		setMaritalStatus(personalDetails?.marital_status || null);
@@ -106,7 +95,7 @@ const PersonalDetailsComponent = () => {
 				name: outmigration?.form_attached?.assets![0].name || '',
 				uri: outmigration?.form_attached?.assets![0].uri || '',
 				type: outmigration?.form_attached?.assets![0].mimeType || '',
-			},
+			} as unknown as Blob,
 			workstation_type: employmentDetails?.workstation_type || '',
 			workstation_id: employmentDetails?.workstation_id || '',
 			workstation_name: employmentDetails?.workstation_name || '',

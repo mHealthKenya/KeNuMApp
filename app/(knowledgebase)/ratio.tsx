@@ -1,15 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import RatioView from '../../components/knowledgebase/research/ratio'
+import React from 'react';
+import {View} from 'react-native';
+import RatioView from '../../components/knowledgebase/research/ratio';
 
-const ratio = () => {
-  return (
-    <View className='flex flex-1'>
+const Rat = () => {
+	return (
+		<View className='flex flex-1'>
 			<RatioView />
-	</View>
-  )
-}
+		</View>
+	);
+};
 
-export default ratio
-
-const styles = StyleSheet.create({})
+export default Rat;

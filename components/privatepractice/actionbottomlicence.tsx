@@ -6,18 +6,16 @@ import {
 	ActionsheetDragIndicatorWrapper,
 	ActionsheetItem,
 } from '@gluestack-ui/themed';
-import { Image } from 'expo-image';
+import {Image} from 'expo-image';
 import * as Print from 'expo-print';
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { InternshipMode } from '../../helpers/receiptgenerator';
-import { licenceReceiptGen } from '../../helpers/receiptgeneratorlicence';
-import { LicenceApplication } from '../../models/licenceapplications';
-import { useAuth } from '../../providers/auth';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import {InternshipMode} from '../../helpers/receiptgenerator';
+import {privateReceiptGen} from '../../helpers/receiptgenprivate';
+import {PracticeApplication} from '../../models/privatepractice';
+import {useAuth} from '../../providers/auth';
 import globalStyles from '../../styles/global';
-import { PracticeApplication } from '../../models/privatepractice';
-import { privateReceiptGen } from '../../helpers/receiptgenprivate';
 
 interface Action {
 	show: boolean;
@@ -25,10 +23,8 @@ interface Action {
 	item: PracticeApplication | null;
 }
 
-const ActionBottomLicence: FC<{ action: Action }> = ({
-	action: { show, toggleShow, item },
-}) => {
-	const { user } = useAuth();
+const ActionBottomLicence: FC<{action: Action}> = ({action: {show, toggleShow, item}}) => {
+	const {user} = useAuth();
 
 	// const [selectedPrinter, setSelectedPrinter] = useState<Print.Printer>();
 
@@ -49,7 +45,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 	};
 
 	const router = useRouter();
-	const handlePay = (item: PracticeApplication | null) => {
+	const handlePay = () => {
 		toggleShow();
 
 		router.push({
@@ -64,7 +60,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 				<ActionsheetDragIndicatorWrapper>
 					<ActionsheetDragIndicator />
 				</ActionsheetDragIndicatorWrapper>
-				<ActionsheetItem onPress={() => handlePay(item)}>
+				<ActionsheetItem onPress={handlePay}>
 					<View
 						style={[
 							globalStyles.row,
@@ -73,7 +69,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 								height: 50,
 							},
 						]}>
-						<View style={{ justifyContent: 'center' }}>
+						<View style={{justifyContent: 'center'}}>
 							<Image
 								source={require('../../assets/images/pay.png')}
 								style={{
@@ -85,7 +81,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 							/>
 						</View>
 
-						<View style={{ justifyContent: 'center' }}>
+						<View style={{justifyContent: 'center'}}>
 							<Text style={styles.text}>Pay For Licence</Text>
 						</View>
 					</View>
@@ -99,7 +95,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 								height: 50,
 							},
 						]}>
-						<View style={{ justifyContent: 'center' }}>
+						<View style={{justifyContent: 'center'}}>
 							<Image
 								source={require('../../assets/images/downloadinvoice.png')}
 								style={{
@@ -111,7 +107,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 							/>
 						</View>
 
-						<View style={{ justifyContent: 'center' }}>
+						<View style={{justifyContent: 'center'}}>
 							<Text style={styles.text}>Download Invoice</Text>
 						</View>
 					</View>
@@ -125,7 +121,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 								height: 50,
 							},
 						]}>
-						<View style={{ justifyContent: 'center' }}>
+						<View style={{justifyContent: 'center'}}>
 							<Image
 								source={require('../../assets/images/downloadreceipt.png')}
 								style={{
@@ -137,7 +133,7 @@ const ActionBottomLicence: FC<{ action: Action }> = ({
 							/>
 						</View>
 
-						<View style={{ justifyContent: 'center' }}>
+						<View style={{justifyContent: 'center'}}>
 							<Text style={styles.text}>Download Receipt</Text>
 						</View>
 					</View>

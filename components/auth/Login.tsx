@@ -1,25 +1,18 @@
-import { useToast } from '@gluestack-ui/themed';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import {
-	Image,
-	KeyboardAvoidingView,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Avatar, Button, TextInput, TextInputProps } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {useToast} from '@gluestack-ui/themed';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {StatusBar} from 'expo-status-bar';
+import React, {useEffect, useState} from 'react';
+import {Controller, useForm} from 'react-hook-form';
+import {Image, KeyboardAvoidingView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Avatar, Button, TextInput, TextInputProps} from 'react-native-paper';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import * as Yup from 'yup';
-import { useAuth } from '../../providers/auth';
-import { useError } from '../../providers/error';
+import {useAuth} from '../../providers/auth';
+import {useError} from '../../providers/error';
 import useLogin from '../../services/auth/login';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
-import { Link } from 'expo-router';
+import {Link} from 'expo-router';
 
 export interface Credentials {
 	username: string;
@@ -51,37 +44,37 @@ const LoginComponent = () => {
 		activeOutlineColor: '#0445b5',
 	};
 
-	const { height, width } = useWindowDimensions();
+	const {height, width} = useWindowDimensions();
 
 	const {
 		control,
-		formState: { errors },
+		formState: {errors},
 		handleSubmit,
 	} = useForm<Credentials>({
 		resolver: yupResolver(validationSchema),
 		mode: 'onChange',
 	});
 
-	const { mutate, isPending } = useLogin();
+	const {mutate, isPending} = useLogin();
 
-	const { isLoading } = useAuth();
+	const {isLoading} = useAuth();
 
-	const { error, clearError } = useError();
+	const {error, clearError} = useError();
 
 	useEffect(() => {
-		if (!!error) {
+		if (error) {
 			toast.show({
 				onCloseComplete() {
 					clearError();
 				},
 
-				render: ({ id }) => {
+				render: ({id}) => {
 					return <ToastError id={id} title='Auth Error' description={error} />;
 				},
 				placement: 'top',
 			});
 		}
-	}, [error]);
+	}, [error, clearError, toast]);
 
 	const onSubmit = (data: Credentials) => {
 		mutate(data);
@@ -99,7 +92,7 @@ const LoginComponent = () => {
 					]}>
 					<Image
 						source={require('../../assets/images/medical-team.png')}
-						style={[{ height: height * 0.2, width: width * 0.6 }]}
+						style={[{height: height * 0.2, width: width * 0.6}]}
 					/>
 				</View>
 				<View style={styles.inner}>
@@ -121,7 +114,7 @@ const LoginComponent = () => {
 						rules={{
 							required: true,
 						}}
-						render={({ field: { onChange, onBlur, value } }) => (
+						render={({field: {onChange, onBlur, value}}) => (
 							<TextInput
 								mode='outlined'
 								label='Username or Email'
@@ -137,16 +130,14 @@ const LoginComponent = () => {
 						name='username'
 					/>
 
-					{!!errors?.username?.message && (
-						<Text style={styles.errorText}>{errors?.username?.message}</Text>
-					)}
+					{!!errors?.username?.message && <Text style={styles.errorText}>{errors?.username?.message}</Text>}
 
 					<Controller
 						control={control}
 						rules={{
 							required: true,
 						}}
-						render={({ field: { onChange, onBlur, value } }) => (
+						render={({field: {onChange, onBlur, value}}) => (
 							<TextInput
 								mode='outlined'
 								label='Password'
@@ -154,12 +145,7 @@ const LoginComponent = () => {
 								onChangeText={onChange}
 								onBlur={onBlur}
 								secureTextEntry={!show}
-								right={
-									<TextInput.Icon
-										icon={show ? 'eye-off-outline' : 'eye-outline'}
-										onPress={toggleShow}
-									/>
-								}
+								right={<TextInput.Icon icon={show ? 'eye-off-outline' : 'eye-outline'} onPress={toggleShow} />}
 								value={value}
 								error={!!errors?.password?.message}
 								defaultValue=''
@@ -169,17 +155,13 @@ const LoginComponent = () => {
 						name='password'
 					/>
 
-					{!!errors?.password?.message && (
-						<Text style={styles.errorText}>{errors?.password?.message}</Text>
-					)}
+					{!!errors?.password?.message && <Text style={styles.errorText}>{errors?.password?.message}</Text>}
 
-                    <Link href="https://osp.nckenya.go.ke/password" className='text-[#0445b5]'>Forget Password</Link>
+					<Link href='https://osp.nckenya.go.ke/password' className='text-[#0445b5]'>
+						Forget Password
+					</Link>
 
-					<Button
-						mode='contained'
-						style={styles.button}
-						onPress={handleSubmit(onSubmit)}
-						loading={isPending || isLoading}>
+					<Button mode='contained' style={styles.button} onPress={handleSubmit(onSubmit)} loading={isPending || isLoading}>
 						Login
 					</Button>
 				</View>
@@ -213,30 +195,13 @@ const LoginComponent = () => {
 									gap: 5,
 								},
 							]}>
-							<Avatar.Image
-								source={require('../../assets/images/moh.jpg')}
-								style={globalStyles.blankAvatar}
-								size={50}
-							/>
-							<Avatar.Image
-								source={require('../../assets/images/aku.png')}
-								style={globalStyles.blankAvatar}
-								size={50}
-							/>
+							<Avatar.Image source={require('../../assets/images/moh.jpg')} style={globalStyles.blankAvatar} size={50} />
+							<Avatar.Image source={require('../../assets/images/aku.png')} style={globalStyles.blankAvatar} size={50} />
 
-							<Avatar.Image
-								source={require('../../assets/images/nck.jpg')}
-								style={globalStyles.blankAvatar}
-								size={50}
-							/>
-							<Avatar.Image
-								source={require('../../assets/images/MHEALTH.png')}
-								style={globalStyles.blankAvatar}
-								size={50}
-							/>
+							<Avatar.Image source={require('../../assets/images/nck.jpg')} style={globalStyles.blankAvatar} size={50} />
+							<Avatar.Image source={require('../../assets/images/MHEALTH.png')} style={globalStyles.blankAvatar} size={50} />
 						</View>
 					</View>
-                   
 				</View>
 			</KeyboardAvoidingView>
 			<StatusBar hidden />

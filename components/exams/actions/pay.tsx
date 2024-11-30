@@ -1,14 +1,12 @@
+import {useBottomSheetModal} from '@gorhom/bottom-sheet';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
+import {useAtom} from 'jotai';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {useBottomSheetModal} from '@gorhom/bottom-sheet';
-import {LicenceApplication} from '../../../models/licenceapplications';
-import {useAtom} from 'jotai';
-import {licenceApplicationAtom} from '../../../atoms/licence';
-import globalStyles from '../../../styles/global';
-import {ExamApplication} from '../../../models/examapplications';
 import {examAtom} from '../../../atoms/exam';
+import {ExamApplication} from '../../../models/examapplications';
+import globalStyles from '../../../styles/global';
 
 const PayForApplication: FC<{
 	item: ExamApplication | null;

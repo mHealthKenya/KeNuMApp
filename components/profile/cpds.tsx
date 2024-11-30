@@ -1,9 +1,10 @@
 import React, {FC} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {Divider} from 'react-native-paper';
 import {User} from '../../models/user';
 import globalStyles from '../../styles/global';
 import ProfileHeader from './header';
+import { Text } from '../Themed';
 
 const CPDsComponent: FC<{user: User | undefined}> = ({user}) => {
 	return (
