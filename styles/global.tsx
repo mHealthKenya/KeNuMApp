@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 const globalStyles = StyleSheet.create({
 	container: {
@@ -16,6 +16,10 @@ const globalStyles = StyleSheet.create({
 
 	blankAvatar: {
 		backgroundColor: '#FFF',
+	},
+
+	onlyAvatar: {
+		backgroundColor: '#f0f6fb',
 	},
 
 	center: {

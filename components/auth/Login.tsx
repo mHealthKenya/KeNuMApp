@@ -3,7 +3,7 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {StatusBar} from 'expo-status-bar';
 import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Image, KeyboardAvoidingView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Image, KeyboardAvoidingView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Avatar, Button, TextInput, TextInputProps} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import * as Yup from 'yup';
@@ -13,6 +13,7 @@ import useLogin from '../../services/auth/login';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
 import {Link} from 'expo-router';
+import {Text} from '../Themed';
 
 export interface Credentials {
 	username: string;
@@ -97,7 +98,9 @@ const LoginComponent = () => {
 				</View>
 				<View style={styles.inner}>
 					<View style={[globalStyles.column, styles.gap]}>
-						<Text style={styles.titleText}>Welcome Back</Text>
+						<Text style={styles.titleText} bold>
+							Welcome Back
+						</Text>
 						<Text>Login to manage your account</Text>
 					</View>
 				</View>
@@ -157,13 +160,14 @@ const LoginComponent = () => {
 
 					{!!errors?.password?.message && <Text style={styles.errorText}>{errors?.password?.message}</Text>}
 
-					<Link href='https://osp.nckenya.go.ke/password' className='text-[#0445b5]'>
-						Forget Password
-					</Link>
-
 					<Button mode='contained' style={styles.button} onPress={handleSubmit(onSubmit)} loading={isPending || isLoading}>
 						Login
 					</Button>
+					<View className='flex items-end'>
+						<Link href='https://osp.nckenya.go.ke/password' className='text-[#0445b5]'>
+							Forgot Password?
+						</Link>
+					</View>
 				</View>
 				<View
 					style={[
@@ -195,7 +199,7 @@ const LoginComponent = () => {
 									gap: 5,
 								},
 							]}>
-							<Avatar.Image source={require('../../assets/images/moh.jpg')} style={globalStyles.blankAvatar} size={50} />
+							<Avatar.Image source={require('../../assets/images/coat.png')} style={globalStyles.onlyAvatar} size={50} />
 							<Avatar.Image source={require('../../assets/images/aku.png')} style={globalStyles.blankAvatar} size={50} />
 
 							<Avatar.Image source={require('../../assets/images/nck.jpg')} style={globalStyles.blankAvatar} size={50} />
