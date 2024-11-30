@@ -1,70 +1,84 @@
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Divider, Searchbar} from 'react-native-paper';
+import {DateFormat} from '../../enums/date';
+import {truncateText} from '../../helpers/truncate';
 import {CPDActivity} from '../../models/activity';
 import {useSearch} from '../../providers/search';
-import globalStyles from '../../styles/global';
-import EmptyList from '../shared/EmptyList';
 import AccordionShared from '../shared/Accordion';
-import {truncateText} from '../../helpers/truncate';
-import {DateFormat} from '../../enums/date';
+import EmptyList from '../shared/EmptyList';
+import {Text} from '../Themed';
 
 const CPDActivityBox: FC<{activity: CPDActivity}> = ({activity}) => {
 	return (
 		<View>
 			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Activity</Text>
-					<Text style={styles.titleText}>{activity.activity}</Text>
+				<View className='flex flex-col gap-2'>
+					<Text className="text-['#4e4e4e'] text-lg" bold>
+						Activity
+					</Text>
+					<Text className='text-lg'>{activity.activity}</Text>
 					<Divider />
 				</View>
 			</View>
 			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Provider</Text>
-					<Text style={styles.titleText}>{activity.provider}</Text>
-					<Divider />
-				</View>
-			</View>
-
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Location</Text>
-					<Text style={styles.titleText}>{activity.activity_location}</Text>
+				<View className='flex flex-col gap-2'>
+					<Text className="text-['#4e4e4e'] text-lg" bold>
+						Provider
+					</Text>
+					<Text className='text-lg'>{activity.provider}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Date</Text>
-					<Text style={styles.titleText}>{dayjs(new Date(activity.activity_date)).format('YYYY-MM-DD')}</Text>
+				<View className='flex flex-col gap-2'>
+					<Text className="text-['#4e4e4e'] text-lg" bold>
+						Location
+					</Text>
+					<Text className='text-lg'>{activity.activity_location}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Approval Status</Text>
-					<Text style={styles.titleText}>{activity.approval_status}</Text>
+				<View className='flex flex-col gap-2'>
+					<Text className="text-['#4e4e4e'] text-lg" bold>
+						Date
+					</Text>
+					<Text className='text-lg'>{dayjs(new Date(activity.activity_date)).format('YYYY-MM-DD')}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Approval Comments</Text>
-					<Text style={styles.titleText}>{activity.approval_comments}</Text>
+				<View className='flex flex-col gap-2'>
+					<Text className="text-['#4e4e4e'] text-lg" bold>
+						Approval Status
+					</Text>
+					<Text className='text-lg'>{activity.approval_status}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Points Earned</Text>
-					<Text style={styles.titleText}>{activity.points_earned}</Text>
+				<View className='flex flex-col gap-2'>
+					<Text className="text-['#4e4e4e'] text-lg" bold>
+						Approval Comments
+					</Text>
+					<Text className='text-lg'>{activity.approval_comments}</Text>
+					<Divider />
+				</View>
+			</View>
+
+			<View style={{padding: 10}}>
+				<View className='flex flex-col gap-2'>
+					<Text className="text-['#4e4e4e'] text-lg" bold>
+						Points Earned
+					</Text>
+					<Text className='text-lg'>{activity.points_earned}</Text>
 				</View>
 			</View>
 		</View>
@@ -90,7 +104,7 @@ const CPDActivitiesComponent: FC<{
 	);
 
 	return (
-		<View style={globalStyles.container}>
+		<View className='flex flex-1'>
 			<Searchbar
 				placeholder='Search by activity location or date'
 				onChangeText={handleSearch}
@@ -126,7 +140,7 @@ const Title: FC<{item: CPDActivity}> = ({item}) => {
 	return (
 		<View className='flex flex-col gap-1'>
 			<View className='w-full flex'>
-				<Text>
+				<Text className='text-lg'>
 					{truncateText({
 						text: item.activity,
 						length: 50,
@@ -134,42 +148,15 @@ const Title: FC<{item: CPDActivity}> = ({item}) => {
 				</Text>
 			</View>
 			<View className='w-full '>
-				<Text className='font-extralight italic'>{dayjs(new Date(item.activity_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text className='text-sm' italic>
+					{dayjs(new Date(item.activity_date)).format('ddd DD MMM YYYY')}
+				</Text>
 			</View>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	card: {
-		backgroundColor: '#FFF',
-		borderRadius: 10,
-		padding: 10,
-		shadowColor: '#dcf0fa',
-		shadowOffset: {
-			width: 0,
-			height: 10,
-		},
-		shadowOpacity: 0.9,
-		shadowRadius: 6,
-		elevation: 14,
-		margin: 10,
-	},
-
-	mutedText: {
-		color: '#4e4e4e',
-		fontSize: 14,
-		letterSpacing: 1.5,
-		textTransform: 'capitalize',
-	},
-
-	titleText: {
-		color: '#3f51b5',
-		fontSize: 16,
-		letterSpacing: 2,
-		textTransform: 'capitalize',
-	},
-
 	searchBar: {
 		backgroundColor: '#dbe6f5',
 		margin: 5,

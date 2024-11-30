@@ -1,66 +1,66 @@
 import {FlashList} from '@shopify/flash-list';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Divider, Searchbar} from 'react-native-paper';
 import {ExamResult} from '../../models/results';
-import globalStyles from '../../styles/global';
-import EmptyList from '../shared/EmptyList';
-import AccordionShared from '../shared/Accordion';
 import {useSearch} from '../../providers/search';
+import AccordionShared from '../shared/Accordion';
+import EmptyList from '../shared/EmptyList';
+import {Text} from '../Themed';
 
 const ResultBox: FC<{result: ExamResult}> = ({result}) => {
 	return (
 		<View>
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Name</Text>
-					<Text style={styles.titleText}>{result.full_name}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text>Name</Text>
+					<Text className='text-lg'>{result.full_name}</Text>
 					<Divider />
 				</View>
 			</View>
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Series</Text>
-					<Text style={styles.titleText}>{result.series}</Text>
-					<Divider />
-				</View>
-			</View>
-
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Training Institution</Text>
-					<Text style={styles.titleText}>{result.training_institution}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text>Series</Text>
+					<Text className='text-lg'>{result.series}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Cadre</Text>
-					<Text style={styles.titleText}>{result.cadre}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text>Training Institution</Text>
+					<Text className='text-lg'>{result.training_institution}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Grading Method</Text>
-					<Text style={styles.titleText}>{result.grading_method}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text>Cadre</Text>
+					<Text className='text-lg'>{result.cadre}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Score Paper One</Text>
-					<Text style={styles.titleText}>{result.score_paper_one}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text>Grading Method</Text>
+					<Text className='text-lg'>{result.grading_method}</Text>
+					<Divider />
 				</View>
 			</View>
 
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Score Paper Two</Text>
-					<Text style={styles.titleText}>{result.score_paper_two}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text>Score Paper One</Text>
+					<Text className='text-lg'>{result.score_paper_one}</Text>
+				</View>
+			</View>
+
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text>Score Paper Two</Text>
+					<Text className='text-lg'>{result.score_paper_two}</Text>
 				</View>
 			</View>
 		</View>
@@ -86,13 +86,8 @@ const ExamResultsComponent: FC<{
 	);
 
 	return (
-		<View style={globalStyles.container}>
-			<Searchbar
-				placeholder='Search by cadre, overall score, or series'
-				onChangeText={handleSearch}
-				value={search}
-				style={styles.searchBar}
-			/>
+		<View className='flex flex-1'>
+			<Searchbar placeholder='Search by cadre' onChangeText={handleSearch} value={search} style={styles.searchBar} />
 			<FlashList
 				data={items}
 				renderItem={({item}) => (
@@ -126,34 +121,6 @@ const Title: FC<{item: ExamResult}> = ({item}) => {
 };
 
 const styles = StyleSheet.create({
-	card: {
-		backgroundColor: '#FFF',
-		borderRadius: 10,
-		padding: 10,
-		shadowColor: '#dcf0fa',
-		shadowOffset: {
-			width: 0,
-			height: 10,
-		},
-		shadowOpacity: 0.9,
-		shadowRadius: 6,
-		elevation: 14,
-		margin: 10,
-	},
-
-	mutedText: {
-		color: '#4e4e4e',
-		fontSize: 14,
-		letterSpacing: 1.5,
-		textTransform: 'capitalize',
-	},
-
-	titleText: {
-		color: '#3f51b5',
-		fontSize: 16,
-		letterSpacing: 2,
-		textTransform: 'capitalize',
-	},
 	searchBar: {
 		backgroundColor: '#dbe6f5',
 		margin: 5,

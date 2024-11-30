@@ -9,11 +9,10 @@ import {useToast} from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
 import {primaryColor} from '../../constants/Colors';
 import {ExamCenter} from '../../models/examcenters';
-import {useAuth} from '../../providers/auth';
+import {User} from '../../models/user';
 import useExamApply from '../../services/exams/apply';
 import globalStyles from '../../styles/global';
 import ToastError from '../shared/ToastError';
-import {User} from '../../models/user';
 
 const AddExamComponent: FC<{
 	centers: ExamCenter[];
@@ -111,6 +110,10 @@ const AddExamComponent: FC<{
 						placeholder='Select Exam Center'
 						placeholderStyle={{
 							fontSize: 16,
+							fontFamily: 'normal',
+						}}
+						textStyle={{
+							fontFamily: 'normal',
 						}}
 						searchable
 						setOpen={setDropDownCenter}

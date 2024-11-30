@@ -1,17 +1,11 @@
-import { Image, ImageSource } from 'expo-image';
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	ScrollView,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Series } from '../../models/series';
+import {Image, ImageSource} from 'expo-image';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Series} from '../../models/series';
 import globalStyles from '../../styles/global';
 import InfoAlert from '../shared/InfoAlert';
+import {Text} from '../Themed';
 
 export interface InternBox {
 	title: string;
@@ -21,25 +15,13 @@ export interface InternBox {
 	route: any;
 }
 
-const SeriesBox: FC<{ series: Series }> = ({ series }) => {
-	const { width, height } = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
+const SeriesBox: FC<{series: Series}> = ({series}) => {
 	const router = useRouter();
 
 	return (
 		<Pressable
-			style={[
-				styles.box,
-				{
-					width: usableWidth,
-					height: height * 0.17,
-					// backgroundColor: '#dcf0fa',
-					backgroundColor: '#FFF',
-					flex: 1,
-					justifyContent: 'space-evenly',
-				},
-			]}
+			className='flex bg-[#FFFFFF] m-2 p-2 rounded-lg'
+			disabled={series.application_status === 'closed'}
 			onPress={() =>
 				router.push({
 					pathname: '/applyexam',
@@ -48,7 +30,7 @@ const SeriesBox: FC<{ series: Series }> = ({ series }) => {
 					},
 				})
 			}>
-			<View style={globalStyles.row}>
+			<View className='flex flex-row'>
 				<View>
 					<Image
 						source={require('../../assets/images/rotationssmall.png')}
@@ -58,25 +40,19 @@ const SeriesBox: FC<{ series: Series }> = ({ series }) => {
 						}}
 					/>
 				</View>
-				<View style={{ marginLeft: 10, padding: 10, flex: 1 }}>
-					<View style={[globalStyles.column, { gap: 10, flex: 1 }]}>
-						<Text style={styles.titleText}>Exam Series</Text>
-						<View style={[{ flex: 1, gap: 10 }, globalStyles.column]}>
-							<Text style={styles.contentText}>{series.cadre}</Text>
+				<View className='flex flex-1 ml-2 p-2'>
+					<View className='flex flex-1 flex-col gap-2'>
+						<Text className='text-xl' bold>
+							Exam Series
+						</Text>
+						<View className='flex flex-1 flex-col gap-2'>
+							<Text className='text-lg'>{series.cadre}</Text>
 
-							<View style={[globalStyles.row, { gap: 10 }]}>
-								<Text
-									style={[
-										styles.contentText,
-										series.application_status === 'closed' && styles.closedText,
-									]}>
+							<View className='flex flex-row gap-2'>
+								<Text style={[styles.contentText, series.application_status === 'closed' && styles.closedText]}>
 									{series.exams_series} -{' '}
 								</Text>
-								<Text
-									style={[
-										styles.contentText,
-										series.application_status === 'closed' && styles.closedText,
-									]}>
+								<Text style={[styles.contentText, series.application_status === 'closed' && styles.closedText]}>
 									{series.application_status}
 								</Text>
 							</View>
@@ -88,8 +64,8 @@ const SeriesBox: FC<{ series: Series }> = ({ series }) => {
 	);
 };
 
-const SeriesComponent: FC<{ serie: Series[] }> = ({ serie }) => {
-	const { height, width } = useWindowDimensions();
+const SeriesComponent: FC<{serie: Series[]}> = ({serie}) => {
+	const {height, width} = useWindowDimensions();
 	return (
 		<ScrollView style={globalStyles.container}>
 			<View
@@ -110,9 +86,7 @@ const SeriesComponent: FC<{ serie: Series[] }> = ({ serie }) => {
 			{serie?.length === 0 ? (
 				<InfoAlert message='No active series found in your account' />
 			) : (
-				serie?.map((item) => (
-					<SeriesBox series={item} key={item.student_series_id} />
-				))
+				serie?.map((item) => <SeriesBox series={item} key={item.student_series_id} />)
 			)}
 		</ScrollView>
 	);

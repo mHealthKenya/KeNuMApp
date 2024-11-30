@@ -1,7 +1,7 @@
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Divider, Searchbar} from 'react-native-paper';
 import {TransferHist} from '../../../models/transferhist';
 import globalStyles from '../../../styles/global';
@@ -9,38 +9,39 @@ import EmptyList from '../../shared/EmptyList';
 import AccordionShared from '../../shared/Accordion';
 import {useSearch} from '../../../providers/search';
 import {DateFormat} from '../../../enums/date';
+import {Text} from '../../Themed';
 
 const TransferBox: FC<{transfer: TransferHist}> = ({transfer}) => {
 	return (
 		<View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Center From</Text>
-					<Text style={styles.titleText}>{transfer.center_from}</Text>
+					<Text bold>Center From</Text>
+					<Text className='text-xl'>{transfer.center_from}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Center To</Text>
-					<Text style={styles.titleText}>{transfer.center_to}</Text>
+					<Text bold>Center To</Text>
+					<Text className='text-xl'>{transfer.center_to}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Transfer Reason</Text>
-					<Text style={styles.titleText}>{transfer.transfer_reason_desc}</Text>
+					<Text bold>Transfer Reason</Text>
+					<Text className='text-xl'>{transfer.transfer_reason_desc}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Request Date</Text>
-					<Text style={styles.titleText}>{dayjs(new Date(transfer.request_date)).format(DateFormat.WITH_DAY)}</Text>
+					<Text bold>Request Date</Text>
+					<Text className='text-xl'>{dayjs(new Date(transfer.request_date)).format(DateFormat.WITH_DAY)}</Text>
 
 					<Divider />
 				</View>
@@ -48,8 +49,8 @@ const TransferBox: FC<{transfer: TransferHist}> = ({transfer}) => {
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Application Status</Text>
-					<Text style={styles.titleText}>{transfer.application_status}</Text>
+					<Text bold>Application Status</Text>
+					<Text className='text-xl'>{transfer.application_status}</Text>
 				</View>
 			</View>
 		</View>
@@ -76,12 +77,7 @@ const TransferHistComponent: FC<{
 
 	return (
 		<View style={globalStyles.container}>
-			<Searchbar
-				placeholder='Search by from to or date'
-				onChangeText={handleSearch}
-				value={search}
-				style={styles.searchBar}
-			/>
+			<Searchbar placeholder='Search by from or to' onChangeText={handleSearch} value={search} style={styles.searchBar} />
 			<FlashList
 				data={items}
 				renderItem={({item}) => (
@@ -105,10 +101,10 @@ const Title: FC<{item: TransferHist}> = ({item}) => {
 	return (
 		<View className='flex flex-col justify-between gap-2'>
 			<View className='w-full overflow-auto'>
-				<Text className='tracking-wide'>{item.center_to}</Text>
+				<Text className='text-xl'>{item.center_to}</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='italic font-extralight'>{dayjs(new Date(item.request_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text italic>{dayjs(new Date(item.request_date)).format('ddd DD MMM YYYY')}</Text>
 			</View>
 		</View>
 	);

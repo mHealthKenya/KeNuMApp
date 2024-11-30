@@ -161,7 +161,10 @@ const ApplyPrivateComponent: FC<{
 							searchable
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setCountyDrop}
 							style={[
@@ -189,7 +192,10 @@ const ApplyPrivateComponent: FC<{
 								zIndex={3000}
 								placeholderStyle={{
 									fontSize: 16,
-									color: '#7b7e81',
+									fontFamily: 'normal',
+								}}
+								textStyle={{
+									fontFamily: 'normal',
 								}}
 								setOpen={setStationDrop}
 								style={[
@@ -215,7 +221,10 @@ const ApplyPrivateComponent: FC<{
 							placeholder='Proposed Practice'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setDropDown}
 							style={[
@@ -237,7 +246,10 @@ const ApplyPrivateComponent: FC<{
 							placeholder='Practice Mode'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							zIndex={1000}
 							setOpen={setDropDownP}
@@ -370,8 +382,6 @@ const styles = StyleSheet.create({
 		fontWeight: '500',
 		fontSize: 18,
 	},
-
-	
 });
 
 export default ApplyPrivateComponent;

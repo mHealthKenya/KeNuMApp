@@ -3,7 +3,7 @@ import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {privatePractice} from '../../atoms/privatepractice';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {PracticeApplication} from '../../models/privatepractice';
@@ -18,29 +18,21 @@ import AccordionShared from '../shared/Accordion';
 import {useSearch} from '../../providers/search';
 import {DateFormat} from '../../enums/date';
 import {Searchbar} from 'react-native-paper';
+import {Text} from '../Themed';
 
 const Application: FC<{
 	application: PracticeApplication;
 	action: (application: PracticeApplication) => void;
 }> = ({application, action}) => {
-	const {height, width} = useWindowDimensions();
-
-	const dimension = Math.min(width, height);
-
-	const availableWidth = dimension - 20;
 	return (
 		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				<InternshipItem availableWidth={availableWidth} title='Practice' content={application.proposed_practice} />
-				<InternshipItem availableWidth={availableWidth} title='Practice Mode' content={application.practice_mode} />
+				<InternshipItem title='Practice' content={application.proposed_practice} />
+				<InternshipItem title='Practice Mode' content={application.practice_mode} />
 
-				<InternshipItem availableWidth={availableWidth} title='Work Station' content={application.workstation_name} />
+				<InternshipItem title='Work Station' content={application.workstation_name} />
 
-				<InternshipItem
-					availableWidth={availableWidth}
-					title='Date'
-					content={dayjs(new Date(application.renewal_date)).format('DD/MM/YYYY')}
-				/>
+				<InternshipItem title='Date' content={dayjs(new Date(application.renewal_date)).format('DD/MM/YYYY')} />
 
 				<InternshipItemDouble
 					title='Invoice'
@@ -48,7 +40,6 @@ const Application: FC<{
 					content={application.invoice_details.invoice_number}
 					subtitle1='Amount'
 					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
@@ -57,7 +48,6 @@ const Application: FC<{
 					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
 					subtitle1='Balance Due'
 					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-					availableWidth={availableWidth}
 				/>
 			</View>
 		</Pressable>
@@ -163,12 +153,14 @@ export default PrivatePracticeApplicationsComponent;
 
 const Title: FC<{item: PracticeApplication}> = ({item}) => {
 	return (
-		<View className='flex flex-col'>
+		<View className='flex flex-col gap-1'>
 			<View className='w-full'>
-				<Text className='truncate'>{item.workstation_name}</Text>
+				<Text className='truncate text-lg'>{item.workstation_name}</Text>
 			</View>
-			<View className='w-full '>
-				<Text className='font-extralight italic'>{dayjs(new Date(item.renewal_date)).format('ddd DD MMM YYYY')}</Text>
+			<View className='w-full'>
+				<Text className='font-extralight' italic>
+					{dayjs(new Date(item.renewal_date)).format('ddd DD MMM YYYY')}
+				</Text>
 			</View>
 		</View>
 	);

@@ -52,8 +52,6 @@ const OutmigrationStepComponent = () => {
 
 	const [disabled, setDisabled] = useState(true);
 
-	const [submit, setSubmit] = useState(false);
-
 	const successFn = () => {
 		setPersonalDetails(null);
 		setEmploymentDetails(null);
@@ -65,8 +63,8 @@ const OutmigrationStepComponent = () => {
 		console.log('error');
 	};
 
-	const [personalDetails, setPersonalDetails] = useAtom(personalDetailsAtom);
-	const [employmentDetails, setEmploymentDetails] = useAtom(employmentAtom);
+	const [_, setPersonalDetails] = useAtom(personalDetailsAtom);
+	const [__, setEmploymentDetails] = useAtom(employmentAtom);
 
 	const {mutate, isPending} = useOutmigrationApply(successFn, errorFn);
 
@@ -114,16 +112,16 @@ const OutmigrationStepComponent = () => {
 	};
 
 	useEffect(() => {
-		setDisabled(!(outReasons && outCountry && returnValue && educVal && selectedFile));
-	}, [outReasons, outCountry, returnValue, educVal, selectedFile]);
-
-	useEffect(() => {
 		setOutReasons(outmigration?.outmigration_reason || null);
 		setOutCountry(outmigration?.country_id || null);
 		setReturnValue(outmigration?.planning_return || null);
 		setEducVal(outmigration?.verification_cadres.split(',') || null);
 		setSelectedFile(outmigration?.form_attached || null);
 	}, [outmigration]);
+
+	useEffect(() => {
+		setDisabled(!(outReasons && outCountry && returnValue && educVal && selectedFile));
+	}, [outReasons, outCountry, returnValue, educVal, selectedFile]);
 
 	const handleNext = () => {
 		setOutmigration({
@@ -139,44 +137,6 @@ const OutmigrationStepComponent = () => {
 
 		// setSubmit(true);
 	};
-
-	// const handleSubmit = () => {
-	// 	mutate({
-	// 		index_id: user?.id || '',
-	// 		country_id: outmigration?.country_id || '',
-	// 		marital_status: personalDetails?.marital_status || '',
-	// 		employment_status: employmentDetails?.employment_status || '',
-	// 		current_employer: employmentDetails?.current_employer || '',
-	// 		current_position: employmentDetails?.current_position || '',
-	// 		dependants: personalDetails?.dependants || '',
-	// 		department: employmentDetails?.department || '',
-	// 		form_attached: {
-	// 			name: selectedFile?.assets![0].name || '',
-	// 			uri: selectedFile?.assets![0].uri || '',
-	// 			type: selectedFile?.assets![0].mimeType || '',
-	// 		},
-	// 		workstation_type: employmentDetails?.workstation_type || '',
-	// 		workstation_id: employmentDetails?.workstation_id || '',
-	// 		workstation_name: employmentDetails?.workstation_name || '',
-	// 		duration_current_employer: employmentDetails?.duration_current_employer || '',
-	// 		experience_years: employmentDetails?.experience_years || '',
-	// 		planning_return: outmigration?.planning_return || '',
-	// 		verification_cadres: outmigration?.verification_cadres || '',
-	// 		outmigration_reason: outmigration?.outmigration_reason || '',
-	// 	});
-
-	// 	setSubmit(false);
-	// };
-
-	// useEffect(() => {
-	// 	if (submit) {
-	// 		handleSubmit();
-	// 	}
-
-	// 	return () => {
-	// 		setSubmit(false);
-	// 	};
-	// }, [submit]);
 
 	return (
 		<View
@@ -207,7 +167,10 @@ const OutmigrationStepComponent = () => {
 							searchable
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							scrollViewProps={{
 								nestedScrollEnabled: true,
@@ -236,7 +199,10 @@ const OutmigrationStepComponent = () => {
 							searchable
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setCountryDrop}
 							style={[
@@ -261,7 +227,10 @@ const OutmigrationStepComponent = () => {
 							placeholder='Planning To Return'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setReturnDrop}
 							style={[
@@ -286,7 +255,10 @@ const OutmigrationStepComponent = () => {
 							placeholder='Cadres To Verify'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setEducDrop}
 							style={[

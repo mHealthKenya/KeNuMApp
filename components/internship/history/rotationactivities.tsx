@@ -1,7 +1,7 @@
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Divider, Searchbar} from 'react-native-paper';
 import {RotationActivity} from '../../../models/rotationactivity';
 import globalStyles from '../../../styles/global';
@@ -9,54 +9,55 @@ import EmptyList from '../../shared/EmptyList';
 import AccordionShared from '../../shared/Accordion';
 import {useSearch} from '../../../providers/search';
 import {DateFormat} from '../../../enums/date';
+import {Text} from '../../Themed';
 
 const RotationsBox: FC<{rotation: RotationActivity}> = ({rotation}) => {
 	return (
 		<View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Internship Center</Text>
-					<Text style={styles.titleText}>{rotation.internship_center}</Text>
+					<Text bold>Internship Center</Text>
+					<Text className='text-lg'>{rotation.internship_center}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Internship Area</Text>
-					<Text style={styles.titleText}>{rotation.internship_area}</Text>
+					<Text bold>Internship Area</Text>
+					<Text className='text-lg'>{rotation.internship_area}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Competency</Text>
-					<Text style={styles.titleText}>{rotation.competency}</Text>
+					<Text bold>Competency</Text>
+					<Text className='text-lg'>{rotation.competency}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Activity Notes</Text>
-					<Text style={styles.titleText}>{rotation.activity_notes}</Text>
+					<Text bold>Activity Notes</Text>
+					<Text className='text-lg'>{rotation.activity_notes}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Rotation Area</Text>
-					<Text style={styles.titleText}>{rotation.rotation_area}</Text>
+					<Text bold>Rotation Area</Text>
+					<Text className='text-lg'>{rotation.rotation_area}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Activity Date</Text>
-					<Text style={styles.titleText}>{dayjs(new Date(rotation.activity_date)).format('DD MMMM YYYY ')}</Text>
+					<Text bold>Activity Date</Text>
+					<Text className='text-lg'>{dayjs(new Date(rotation.activity_date)).format('DD MMMM YYYY ')}</Text>
 				</View>
 			</View>
 		</View>
@@ -83,12 +84,7 @@ const RotationActivitiesComponent: FC<{
 
 	return (
 		<View style={globalStyles.container}>
-			<Searchbar
-				placeholder='Search by notes, rotation area, or date'
-				onChangeText={handleSearch}
-				value={search}
-				style={styles.searchBar}
-			/>
+			<Searchbar placeholder='Search by notes' onChangeText={handleSearch} value={search} style={styles.searchBar} />
 			<FlashList
 				data={items}
 				renderItem={({item}) => (
@@ -112,10 +108,10 @@ const Title: FC<{item: RotationActivity}> = ({item}) => {
 	return (
 		<View className='flex flex-col justify-between gap-2'>
 			<View className='w-full overflow-auto'>
-				<Text className='tracking-wide'>{item.rotation_area}</Text>
+				<Text className='text-xl'>{item.rotation_area}</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='italic font-extralight'>{dayjs(new Date(item.activity_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text italic>{dayjs(new Date(item.activity_date)).format('ddd DD MMM YYYY')}</Text>
 			</View>
 		</View>
 	);

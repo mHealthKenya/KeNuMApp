@@ -1,57 +1,38 @@
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { ActivityIndicator, Icon } from 'react-native-paper';
-import { primaryColor } from '../../../constants/Colors';
-import { useFetchedRotationAreas } from '../../../providers/rotationareas';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {ActivityIndicator, Icon} from 'react-native-paper';
+import {primaryColor} from '../../../constants/Colors';
 import useRotationAreas from '../../../services/internship/rotationareas';
 import globalStyles from '../../../styles/global';
+import {Text} from '../../Themed';
 
 export interface InternShipArea {
 	title: string;
 	id: string;
 }
 
-const InternshipAreaBox: FC<{ item: InternShipArea }> = ({ item }) => {
-	const { width, height } = useWindowDimensions();
+const InternshipAreaBox: FC<{item: InternShipArea}> = ({item}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 	const router = useRouter();
-
-	const { areas } = useFetchedRotationAreas();
 
 	const successFn = () => {
 		router.push('/rotationareas');
 	};
 
-	const { mutate, isPending } = useRotationAreas(successFn);
+	const {mutate, isPending} = useRotationAreas(successFn);
 
 	return (
 		<Pressable
-			style={[
-				styles.box,
-				{
-					width: usableWidth,
-					height: height * 0.15,
-					backgroundColor: '#dcf0fa',
-				},
-			]}
+			className='flex bg-[#FFFFFF] m-2 py-8 px-2 rounded-lg'
 			onPress={() =>
 				mutate({
 					internship_area_id: item.id,
 				})
 			}>
-			<View
-				style={[
-					{ justifyContent: 'space-between', alignItems: 'center' },
-					globalStyles.row,
-				]}>
+			<View style={[{justifyContent: 'space-between', alignItems: 'center'}, globalStyles.row]}>
 				<View
 					style={[
 						{
@@ -62,14 +43,10 @@ const InternshipAreaBox: FC<{ item: InternShipArea }> = ({ item }) => {
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>{item.title}</Text>
+						<Text className='text-xl'>{item.title}</Text>
 					</View>
 				</View>
-				{isPending ? (
-					<ActivityIndicator size={30} color={primaryColor} />
-				) : (
-					<Icon size={30} source='chevron-right' />
-				)}
+				{isPending ? <ActivityIndicator size={30} color={primaryColor} /> : <Icon size={30} source='chevron-right' />}
 			</View>
 		</Pressable>
 	);

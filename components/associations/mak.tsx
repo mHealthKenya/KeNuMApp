@@ -1,14 +1,8 @@
 import * as WebBrowser from 'expo-web-browser';
-import React, { FC } from 'react';
-import {
-	ImageBackground,
-	ScrollView,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Button, Icon } from 'react-native-paper';
+import React, {FC} from 'react';
+import {ImageBackground, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Button, Icon} from 'react-native-paper';
+import {Text} from '../Themed';
 
 interface Content {
 	title: string;
@@ -26,7 +20,7 @@ const handleRedirect = () => {
 	WebBrowser.openBrowserAsync(url);
 };
 
-const ContentBox: FC<{ content: Content }> = ({ content }) => {
+const ContentBox: FC<{content: Content}> = ({content}) => {
 	return (
 		<View className='p-2'>
 			<View
@@ -40,7 +34,7 @@ const ContentBox: FC<{ content: Content }> = ({ content }) => {
 					}}
 					className='justify-center items-center'>
 					<Text
-						className='uppercase font-bold tracking-wide text-base my-4'
+						className='uppercase font-bold tracking-wide text-lg my-4'
 						style={{
 							color: '#000',
 						}}>
@@ -54,7 +48,7 @@ const ContentBox: FC<{ content: Content }> = ({ content }) => {
 					}}
 					className='justify-center items-center p-3 rounded'>
 					<Text
-						className='font-normal tracking-wide text-base my-4'
+						className='font-normal tracking-wide text-lg my-4'
 						style={{
 							color: '#000',
 						}}>
@@ -66,8 +60,8 @@ const ContentBox: FC<{ content: Content }> = ({ content }) => {
 	);
 };
 
-const JoinBox: FC<{ join: Join }> = ({ join }) => {
-	const { width } = useWindowDimensions();
+const JoinBox: FC<{join: Join}> = ({join}) => {
+	const {width} = useWindowDimensions();
 	return (
 		<View className='p-3  flex flex-row gap-5'>
 			<View>
@@ -79,18 +73,14 @@ const JoinBox: FC<{ join: Join }> = ({ join }) => {
 					style={{
 						height: 'auto',
 					}}>
-					<Text className='uppercase tracking-widest text-slate-100 text-base'>
-						{join.title}
-					</Text>
+					<Text className='uppercase tracking-widest text-slate-100 text-lg'>{join.title}</Text>
 				</View>
 				<View
 					style={{
 						width: width * 0.7,
 						height: 'auto',
 					}}>
-					<Text
-						className='tracking-widest text-slate-100 text-sm'
-						numberOfLines={6}>
+					<Text className='tracking-widest text-slate-100 text-lg' numberOfLines={6}>
 						{join.description}
 					</Text>
 				</View>
@@ -100,7 +90,7 @@ const JoinBox: FC<{ join: Join }> = ({ join }) => {
 };
 
 const MAKComponent = () => {
-	const { height, width } = useWindowDimensions();
+	const {height, width} = useWindowDimensions();
 	return (
 		<View style={[styles.container]}>
 			<ImageBackground
@@ -116,43 +106,32 @@ const MAKComponent = () => {
 					}}>
 					<View className='mt-10'>
 						<View className='flex flex-col'>
-							<Text className='text-center font-bold text-5xl tracking widest uppercase'>
-								Who We Are
-							</Text>
+							<Text className='text-center font-bold text-5xl tracking widest uppercase'>Who We Are</Text>
 							<Text className='text-center font-semibold text-lg tracking widest uppercase'>
 								Midwives Association of Kenya
 							</Text>
 						</View>
 						<View className='p-2 flex flex-col'>
 							<View>
-								<Text className='tracking-wide text-base'>
-									MAK, founded in 2016, is a non-profit representing Kenyan
-									midwives. Registered under the Societies Act (No. 48354), MAK
-									is committed to advancing and revitalizing the midwifery
-									profession in Kenya. As a member of ICM, ECSACON, and KHPS,
-									MAK collaborates globally and regionally to enhance midwifery
-									standards.
+								<Text className='tracking-wide text-lg'>
+									MAK, founded in 2016, is a non-profit representing Kenyan midwives. Registered under the Societies Act (No.
+									48354), MAK is committed to advancing and revitalizing the midwifery profession in Kenya. As a member of ICM,
+									ECSACON, and KHPS, MAK collaborates globally and regionally to enhance midwifery standards.
 								</Text>
 							</View>
 						</View>
 					</View>
 					<View className='mt-10'>
 						<View className='flex flex-col'>
-							<Text className='text-center font-bold text-5xl tracking widest uppercase'>
-								Join us
-							</Text>
-							<Text className='text-center font-semibold text-lg tracking widest uppercase'>
-								Some of our membership types
-							</Text>
+							<Text className='text-center font-bold text-5xl tracking widest uppercase'>Join us</Text>
+							<Text className='text-center font-semibold text-lg tracking widest uppercase'>Some of our membership types</Text>
 						</View>
 						<View className='p-2 flex flex-col'>
 							<View>
-								<Text className='tracking-wide text-base'>
-									Welcome to our exclusive membership! Enjoy priority event
-									access, special discounts, and personalized recommendations.
-									Connect with like-minded individuals, expand your network, and
-									access a plethora of benefits designed to enhance your
-									experience with us. Welcome to a world of possibilities!
+								<Text className='tracking-wide text-lg'>
+									Welcome to our exclusive membership! Enjoy priority event access, special discounts, and personalized
+									recommendations. Connect with like-minded individuals, expand your network, and access a plethora of benefits
+									designed to enhance your experience with us. Welcome to a world of possibilities!
 								</Text>
 							</View>
 						</View>
@@ -160,9 +139,7 @@ const MAKComponent = () => {
 
 					<View className='mt-10'>
 						<View className='flex flex-col my-5'>
-							<Text className='text-center font-bold text-xl tracking widest uppercase'>
-								Joining and Subscription Fees
-							</Text>
+							<Text className='text-center font-bold text-xl tracking widest uppercase'>Joining and Subscription Fees</Text>
 						</View>
 
 						<ContentBox
@@ -269,12 +246,7 @@ const MAKComponent = () => {
 								/>
 
 								<View className='my-8 items-end p-2'>
-									<Button
-										onPress={handleRedirect}
-										mode='outlined'
-										className='mb-3'
-										textColor='#fff'
-										style={styles.memberButton}>
+									<Button onPress={handleRedirect} mode='outlined' className='mb-3' textColor='#fff' style={styles.memberButton}>
 										{' '}
 										BECOME A MEMBER
 									</Button>

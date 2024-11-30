@@ -1,14 +1,8 @@
-import React, { FC } from 'react';
-import {
-	ImageBackground,
-	ScrollView,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Button, Icon, List } from 'react-native-paper';
+import React, {FC} from 'react';
+import {ImageBackground, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Button, Icon, List} from 'react-native-paper';
 import * as WebBrowser from 'expo-web-browser';
+import {Text} from '../Themed';
 
 interface Content {
 	title: string;
@@ -36,8 +30,8 @@ const handleRedirect = () => {
 	WebBrowser.openBrowserAsync(url);
 };
 
-const ContentBox: FC<{ content: Content }> = ({ content }) => {
-	const { width } = useWindowDimensions();
+const ContentBox: FC<{content: Content}> = ({content}) => {
+	const {width} = useWindowDimensions();
 	return (
 		<View className='p-2'>
 			<View
@@ -68,9 +62,7 @@ const ContentBox: FC<{ content: Content }> = ({ content }) => {
 							key={index}
 							title={
 								<View className='flex'>
-									<Text
-										className='uppercase font-semibold tracking-wide text-sm p-2'
-										numberOfLines={5}>
+									<Text className='uppercase font-semibold tracking-wide text-sm p-2' numberOfLines={5}>
 										{item}
 									</Text>
 								</View>
@@ -87,7 +79,7 @@ const ContentBox: FC<{ content: Content }> = ({ content }) => {
 						<Button
 							onPress={handleRedirect}
 							mode='outlined'
-							style={[styles.button, { width: width * 0.5 }]}
+							style={[styles.button, {width: width * 0.5}]}
 							textColor='#000000'>
 							Register
 						</Button>
@@ -98,8 +90,8 @@ const ContentBox: FC<{ content: Content }> = ({ content }) => {
 	);
 };
 
-const JoinBox: FC<{ join: Join }> = ({ join }) => {
-	const { width } = useWindowDimensions();
+const JoinBox: FC<{join: Join}> = ({join}) => {
+	const {width} = useWindowDimensions();
 	return (
 		<View className='p-3  flex flex-row gap-5'>
 			<View>
@@ -111,18 +103,14 @@ const JoinBox: FC<{ join: Join }> = ({ join }) => {
 					style={{
 						height: 'auto',
 					}}>
-					<Text className='uppercase tracking-widest text-slate-100 text-base'>
-						{join.title}
-					</Text>
+					<Text className='uppercase tracking-widest text-slate-100 text-base'>{join.title}</Text>
 				</View>
 				<View
 					style={{
 						width: width * 0.7,
 						height: 'auto',
 					}}>
-					<Text
-						className='tracking-widest text-slate-100 text-sm'
-						numberOfLines={6}>
+					<Text className='tracking-widest text-slate-100 text-sm' numberOfLines={6}>
 						{join.description}
 					</Text>
 				</View>
@@ -132,7 +120,6 @@ const JoinBox: FC<{ join: Join }> = ({ join }) => {
 };
 
 const KPNAComponent = () => {
-	const { height, width } = useWindowDimensions();
 	return (
 		<View style={[styles.container]}>
 			<ImageBackground
@@ -148,9 +135,7 @@ const KPNAComponent = () => {
 					}}>
 					<View className='mt-10'>
 						<View className='flex flex-col'>
-							<Text className='text-center font-bold text-5xl tracking widest uppercase'>
-								Who We Are
-							</Text>
+							<Text className='text-center font-bold text-5xl tracking widest uppercase'>Who We Are</Text>
 							<Text className='text-center font-semibold text-lg tracking widest uppercase'>
 								Kenya Progressive Nurses Association
 							</Text>
@@ -158,18 +143,15 @@ const KPNAComponent = () => {
 						<View className='p-2 flex flex-col'>
 							<View>
 								<Text className='tracking-wide text-base'>
-									KPNA is the national and global professional voice of Kenyan
-									nursing, representing over 135,000 nurses in all 47 counties
-									across
+									KPNA is the national and global professional voice of Kenyan nursing, representing over 135,000 nurses in all
+									47 counties across
 								</Text>
 							</View>
 						</View>
 					</View>
 					<View className='mt-10'>
 						<View className='flex flex-col'>
-							<Text className='text-center font-bold text-5xl tracking widest uppercase'>
-								Membership
-							</Text>
+							<Text className='text-center font-bold text-5xl tracking widest uppercase'>Membership</Text>
 							<Text className='text-center font-semibold text-lg tracking widest uppercase'>
 								A variety of value added services
 							</Text>
@@ -177,21 +159,17 @@ const KPNAComponent = () => {
 						<View className='p-2 flex flex-col'>
 							<View>
 								<Text className='tracking-wide text-base'>
-									KPNA is the national voice of Kenyan nursing, working with
-									nurses in all the 47 counties across Kenya with an aim to
-									introduce essential and meaningful change to health care and
-									nursing in the country. We bring you the latest knowledge,
-									help you achieve your career goals and offer you preferred
-									rates with various businesses and service providers.
+									KPNA is the national voice of Kenyan nursing, working with nurses in all the 47 counties across Kenya with an
+									aim to introduce essential and meaningful change to health care and nursing in the country. We bring you the
+									latest knowledge, help you achieve your career goals and offer you preferred rates with various businesses and
+									service providers.
 								</Text>
 							</View>
 						</View>
 					</View>
 					<View className='mt-10'>
 						<View className='flex flex-col my-5'>
-							<Text className='text-center font-bold text-xl tracking widest uppercase'>
-								How you benefit as a member
-							</Text>
+							<Text className='text-center font-bold text-xl tracking widest uppercase'>How you benefit as a member</Text>
 						</View>
 						<ContentBox
 							content={{
@@ -267,8 +245,7 @@ const KPNAComponent = () => {
 								<JoinBox
 									join={{
 										title: 'networking',
-										description:
-											'Add Networking with like minded partners for professional growth',
+										description: 'Add Networking with like minded partners for professional growth',
 										icon: 'seal-variant',
 									}}
 								/>
@@ -276,19 +253,13 @@ const KPNAComponent = () => {
 								<JoinBox
 									join={{
 										title: 'benchmarking',
-										description:
-											'Benchmarking for best Nursing practices locally, Regionally and Internationally.',
+										description: 'Benchmarking for best Nursing practices locally, Regionally and Internationally.',
 										icon: 'web',
 									}}
 								/>
 
 								<View className='my-8 items-end p-2'>
-									<Button
-										onPress={handleRedirect}
-										mode='outlined'
-										className='mb-3'
-										textColor='#fff'
-										style={styles.memberButton}>
+									<Button onPress={handleRedirect} mode='outlined' className='mb-3' textColor='#fff' style={styles.memberButton}>
 										{' '}
 										BECOME A MEMBER
 									</Button>

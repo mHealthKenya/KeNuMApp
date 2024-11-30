@@ -132,21 +132,19 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 	}, [employmentStatus]);
 
 	useEffect(() => {
-		if (
-			!statusE ||
-			!employersE ||
-			!stationType ||
-			!county ||
-			!station ||
-			!department ||
-			!current_position ||
-			!employPeriod ||
-			!nursePeriod
-		) {
-			setDisabled(true);
-		} else {
-			setDisabled(false);
-		}
+		setDisabled(
+			!(
+				statusE &&
+				employersE &&
+				stationType &&
+				county &&
+				station &&
+				department &&
+				current_position &&
+				employPeriod &&
+				nursePeriod
+			)
+		);
 	}, [statusE, employersE, stationType, county, station, department, current_position, employPeriod, nursePeriod]);
 
 	useEffect(() => {
@@ -191,7 +189,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 				<ScrollView
 					nestedScrollEnabled={true}
 					style={{
-						paddingBottom: 20,
+						paddingBottom: 160,
 					}}
 					className='p-3'>
 					<View className='p-2 items-center'>
@@ -212,7 +210,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							placeholder='Employment Status'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setStatusDrop}
 							style={[
@@ -237,7 +238,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							placeholder='Current Employer'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setEmployDrop}
 							style={[
@@ -262,7 +266,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							placeholder='Work Station Type'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setStationDrop}
 							style={[
@@ -288,7 +295,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							placeholder='Select County'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setCountyDrop}
 							style={[
@@ -316,7 +326,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							placeholder='Select Work Station'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setCountyStationDrop}
 							style={[
@@ -341,7 +354,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							placeholder='Period With Current Employer'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setPeriodDrop}
 							style={[
@@ -366,7 +382,10 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 							placeholder='Period Working As A Nurse'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setNurseDrop}
 							style={[
@@ -382,14 +401,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 
 					<View className='p-2'>
 						<TextInput
-							label={
-								<Text
-									style={{
-										color: '#0000004F',
-									}}>
-									Department
-								</Text>
-							}
+							label={<Text>Department</Text>}
 							mode='outlined'
 							defaultValue={employStatus?.department || ''}
 							onChangeText={handleDept}
@@ -399,14 +411,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 
 					<View className='p-2'>
 						<TextInput
-							label={
-								<Text
-									style={{
-										color: '#0000004F',
-									}}>
-									Current Position
-								</Text>
-							}
+							label={<Text>Current Position</Text>}
 							defaultValue={employStatus?.current_position || ''}
 							mode='outlined'
 							onChangeText={handlePosition}

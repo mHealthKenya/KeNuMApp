@@ -1,10 +1,11 @@
 import {useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Divider, Icon} from 'react-native-paper';
 import {RotationCompetency} from '../../../models/rotationcompetencies';
 import {useFetchedCompetency} from '../../../providers/competency';
 import globalStyles from '../../../styles/global';
+import {Text} from '../../Themed';
 
 const RotationCompetencyBox: FC<{competency: RotationCompetency}> = ({competency}) => {
 	const {width, height} = useWindowDimensions();
@@ -21,16 +22,7 @@ const RotationCompetencyBox: FC<{competency: RotationCompetency}> = ({competency
 	};
 
 	return (
-		<Pressable
-			className='flex'
-			style={[
-				styles.box,
-				{
-					width: usableWidth,
-					backgroundColor: '#dcf0fa',
-				},
-			]}
-			onPress={() => handleRedirect(competency)}>
+		<Pressable className='flex bg-[#FFFFFF] py-8 m-2 rounded-lg' onPress={() => handleRedirect(competency)}>
 			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
@@ -44,7 +36,9 @@ const RotationCompetencyBox: FC<{competency: RotationCompetency}> = ({competency
 						style={{
 							paddingHorizontal: 10,
 						}}>
-						<Text style={styles.titleText}>{competency.competency}</Text>
+						<Text className='text-xl' bold>
+							{competency.competency}
+						</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -55,7 +49,7 @@ const RotationCompetencyBox: FC<{competency: RotationCompetency}> = ({competency
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>Minimum Requirement {competency.minimum_requirement} points</Text>
+						<Text className='text-lg'>Minimum Requirement {competency.minimum_requirement} points</Text>
 					</View>
 				</View>
 

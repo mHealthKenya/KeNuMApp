@@ -2,17 +2,17 @@ import {StatusBar} from 'expo-status-bar';
 import React from 'react';
 import StudentsHome from '../../components/home/studentsalt';
 import {useAuth} from '../../providers/auth';
-import AltHome from '../../components/home/alt';
+import Home from '../../components/home';
 
-const Home = () => {
+const HomePage = () => {
 	const {user} = useAuth();
 	return (
 		<>
-			{user?.registration && user?.registration?.length > 0 ? <AltHome /> : <StudentsHome />}
+			{user?.registration && user?.registration?.length > 0 ? <Home /> : <StudentsHome />}
 
 			<StatusBar style='light' />
 		</>
 	);
 };
 
-export default Home;
+export default HomePage;

@@ -1,14 +1,9 @@
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { Icon } from 'react-native-paper';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
+import {Text} from '../Themed';
 
 export interface ContentBox {
 	title: string;
@@ -18,8 +13,8 @@ export interface ContentBox {
 const ContentBox: FC<{
 	box: ContentBox;
 	action: (item: ContentBox) => void;
-}> = ({ box, action }) => {
-	const { width, height } = useWindowDimensions();
+}> = ({box, action}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 	const router = useRouter();
@@ -30,16 +25,12 @@ const ContentBox: FC<{
 				styles.box,
 				{
 					width: usableWidth,
-					backgroundColor: '#dcf0fa',
+					backgroundColor: '#FFFFFF',
 					flex: 1,
 				},
 			]}
 			onPress={() => action(box)}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
 						globalStyles.column,
@@ -51,7 +42,7 @@ const ContentBox: FC<{
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>{box.title}</Text>
+						<Text className='text-lg'>{box.title}</Text>
 					</View>
 				</View>
 				<Icon size={30} source='chevron-right' />

@@ -83,7 +83,7 @@ const PersonalDetailsComponent = () => {
 		setPersonalDetails(null);
 		setEmploymentDetails(null);
 		setOutmigration(null);
-		router.push('/outmigrationhist');
+		router.replace('/outmigrationhist');
 	};
 
 	const errorFn = () => {
@@ -141,7 +141,10 @@ const PersonalDetailsComponent = () => {
 							placeholder='Marital Status'
 							placeholderStyle={{
 								fontSize: 16,
-								color: '#7b7e81',
+								fontFamily: 'normal',
+							}}
+							textStyle={{
+								fontFamily: 'normal',
 							}}
 							setOpen={setDropMarital}
 							style={[
@@ -156,14 +159,7 @@ const PersonalDetailsComponent = () => {
 					</View>
 					<View className='p-2'>
 						<TextInput
-							label={
-								<Text
-									style={{
-										color: '#0000004F',
-									}}>
-									Number of Dependants
-								</Text>
-							}
+							label={<Text>Number of Dependants</Text>}
 							mode='outlined'
 							defaultValue={personalDetails?.dependants}
 							onChangeText={handleDependents}

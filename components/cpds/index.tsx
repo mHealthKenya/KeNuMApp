@@ -1,11 +1,10 @@
 import React from 'react';
 import {ScrollView, View} from 'react-native';
-import globalStyles from '../../styles/global';
 import CPDBoxComponent from './cpdbox';
 
 const CPDHomeComponent = () => {
 	return (
-		<View style={globalStyles.container}>
+		<View className='flex flex-1'>
 			<ScrollView
 				style={{
 					flex: 1,

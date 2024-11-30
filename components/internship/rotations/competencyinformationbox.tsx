@@ -1,39 +1,20 @@
-import React, { FC } from 'react';
-import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
-import { Divider } from 'react-native-paper';
-import { RotationCompetency } from '../../../models/rotationcompetencies';
-import globalStyles from '../../../styles/global';
+import React, {FC} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Divider} from 'react-native-paper';
+import {RotationCompetency} from '../../../models/rotationcompetencies';
+import {Text} from '../../Themed';
 
 const CompetencyInformationBox: FC<{
 	competency?: RotationCompetency | null;
-}> = ({ competency }) => {
-	const { width, height } = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
-
+}> = ({competency}) => {
 	return (
-		<View
-			style={[
-				styles.box,
-				{
-					width: usableWidth,
-					height: height * 0.17,
-					backgroundColor: '#dcf0fa',
-				},
-			]}>
-			<View style={[{ justifyContent: 'space-between', alignItems: 'center' }]}>
-				<View
-					style={[
-						globalStyles.column,
-						{
-							justifyContent: 'space-between',
-						},
-					]}>
-					<View
-						style={{
-							paddingHorizontal: 10,
-						}}>
-						<Text style={styles.titleText}>{competency?.competency}</Text>
+		<View className='flex bg-[#FFFFFF] py-8 m-2 rounded-lg'>
+			<View style={[{justifyContent: 'space-between', alignItems: 'center'}]}>
+				<View className='flex flex-col gap-2'>
+					<View className='p-2'>
+						<Text className='text-xl' bold>
+							{competency?.competency}
+						</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -44,9 +25,7 @@ const CompetencyInformationBox: FC<{
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>
-							Minimum Requirement {competency?.minimum_requirement} points
-						</Text>
+						<Text style={styles.contentText}>Minimum Requirement {competency?.minimum_requirement} points</Text>
 					</View>
 				</View>
 			</View>

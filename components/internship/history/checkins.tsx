@@ -1,7 +1,7 @@
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Divider, Searchbar} from 'react-native-paper';
 import {CheckIns} from '../../../models/checkins';
 import globalStyles from '../../../styles/global';
@@ -9,53 +9,54 @@ import EmptyList from '../../shared/EmptyList';
 import AccordionShared from '../../shared/Accordion';
 import {useSearch} from '../../../providers/search';
 import {DateFormat} from '../../../enums/date';
+import {Text} from '../../Themed';
 
 const CheckinBox: FC<{checkin: CheckIns}> = ({checkin}) => {
 	return (
 		<View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Internship Center</Text>
-					<Text style={styles.titleText}>{checkin.internship_center}</Text>
+					<Text bold>Internship Center</Text>
+					<Text className='text-xl'>{checkin.internship_center}</Text>
 					<Divider />
 				</View>
 			</View>
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Nurse In Charge</Text>
-					<Text style={styles.titleText}>{checkin.nurse_officer_incharge}</Text>
-					<Divider />
-				</View>
-			</View>
-
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Nurse In Charge Phone</Text>
-					<Text style={styles.titleText}>{checkin.nurse_officer_incharge_mobile}</Text>
+					<Text bold>Nurse In Charge</Text>
+					<Text className='text-xl'>{checkin.nurse_officer_incharge}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Supervisor</Text>
-					<Text style={styles.titleText}>{checkin.supervisor}</Text>
+					<Text bold>Nurse In Charge Phone</Text>
+					<Text className='text-xl'>{checkin.nurse_officer_incharge_mobile}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Supervisor Phone</Text>
-					<Text style={styles.titleText}>{checkin.supervisor_mobile}</Text>
+					<Text bold>Supervisor</Text>
+					<Text className='text-xl'>{checkin.supervisor}</Text>
 					<Divider />
 				</View>
 			</View>
 
 			<View style={{padding: 10}}>
 				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Checkin Date</Text>
-					<Text style={styles.titleText}>{dayjs(new Date(checkin.checkin_date)).format('DD MMMM YYYY ')}</Text>
+					<Text bold>Supervisor Phone</Text>
+					<Text className='text-xl'>{checkin.supervisor_mobile}</Text>
+					<Divider />
+				</View>
+			</View>
+
+			<View style={{padding: 10}}>
+				<View style={[globalStyles.column, {gap: 10}]}>
+					<Text bold>Checkin Date</Text>
+					<Text className='text-xl'>{dayjs(new Date(checkin.checkin_date)).format('DD MMMM YYYY ')}</Text>
 				</View>
 			</View>
 		</View>
@@ -110,10 +111,10 @@ const Title: FC<{item: CheckIns}> = ({item}) => {
 	return (
 		<View className='flex flex-col justify-between gap-2'>
 			<View className='w-full overflow-auto'>
-				<Text className='tracking-wide'>{item.internship_center}</Text>
+				<Text className='text-xl'>{item.internship_center}</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='italic font-extralight'>{dayjs(new Date(item.checkin_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text italic>{dayjs(new Date(item.checkin_date)).format('ddd DD MMM YYYY')}</Text>
 			</View>
 		</View>
 	);

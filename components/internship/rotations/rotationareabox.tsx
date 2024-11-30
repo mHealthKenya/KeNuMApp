@@ -1,18 +1,13 @@
-import { ImageSource } from 'expo-image';
-import { useRouter } from 'expo-router';
-import React, { FC } from 'react';
-import {
-	Pressable,
-	StyleSheet,
-	Text,
-	View,
-	useWindowDimensions,
-} from 'react-native';
-import { ActivityIndicator, Divider, Icon } from 'react-native-paper';
-import { primaryColor } from '../../../constants/Colors';
-import { RotationArea } from '../../../models/rotationareas';
+import {ImageSource} from 'expo-image';
+import {useRouter} from 'expo-router';
+import React, {FC} from 'react';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {ActivityIndicator, Divider, Icon} from 'react-native-paper';
+import {primaryColor} from '../../../constants/Colors';
+import {RotationArea} from '../../../models/rotationareas';
 import useRotationCompetencies from '../../../services/internship/rotationcompetencies';
 import globalStyles from '../../../styles/global';
+import {Text} from '../../Themed';
 
 export interface InternBox {
 	title: string;
@@ -22,8 +17,8 @@ export interface InternBox {
 	route: any;
 }
 
-const RotationAreaBox: FC<{ area: RotationArea }> = ({ area }) => {
-	const { width, height } = useWindowDimensions();
+const RotationAreaBox: FC<{area: RotationArea}> = ({area}) => {
+	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
 
@@ -33,28 +28,17 @@ const RotationAreaBox: FC<{ area: RotationArea }> = ({ area }) => {
 		router.push('/competencies');
 	};
 
-	const { mutate, isPending } = useRotationCompetencies(successFn);
+	const {mutate, isPending} = useRotationCompetencies(successFn);
 
 	return (
 		<Pressable
-			style={[
-				styles.box,
-				{
-					width: usableWidth,
-					height: height * 0.17,
-					backgroundColor: '#dcf0fa',
-				},
-			]}
+			className='flex bg-[#FFFFFF] py-8 rounded-lg m-2'
 			onPress={() =>
 				mutate({
 					rotation_id: area.rotation_id,
 				})
 			}>
-			<View
-				style={[
-					globalStyles.row,
-					{ justifyContent: 'space-between', alignItems: 'center' },
-				]}>
+			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
 						globalStyles.column,
@@ -63,11 +47,10 @@ const RotationAreaBox: FC<{ area: RotationArea }> = ({ area }) => {
 							justifyContent: 'space-between',
 						},
 					]}>
-					<View
-						style={{
-							paddingHorizontal: 10,
-						}}>
-						<Text style={styles.titleText}>{area.rotation_area}</Text>
+					<View className='p-2'>
+						<Text className='text-xl' bold>
+							{area.rotation_area}
+						</Text>
 						<Divider
 							style={{
 								marginTop: 5,
@@ -78,16 +61,10 @@ const RotationAreaBox: FC<{ area: RotationArea }> = ({ area }) => {
 						style={{
 							padding: 10,
 						}}>
-						<Text style={styles.contentText}>
-							Required duration {area.rotation_duration} days
-						</Text>
+						<Text className='text-lg'>Required duration {area.rotation_duration} days</Text>
 					</View>
 				</View>
-				{isPending ? (
-					<ActivityIndicator size={30} color={primaryColor} />
-				) : (
-					<Icon size={30} source='chevron-right' />
-				)}
+				{isPending ? <ActivityIndicator size={30} color={primaryColor} /> : <Icon size={30} source='chevron-right' />}
 			</View>
 		</Pressable>
 	);

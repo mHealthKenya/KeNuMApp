@@ -2,7 +2,7 @@ import {Badge, BadgeIcon, BadgeText} from '@gluestack-ui/themed';
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import React, {FC, useMemo} from 'react';
-import {StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Button, Divider, Icon, Searchbar} from 'react-native-paper';
 import {CPDEvent} from '../../models/cpdevents';
 import {useSearch} from '../../providers/search';
@@ -12,6 +12,7 @@ import EmptyList from '../shared/EmptyList';
 import AccordionShared from '../shared/Accordion';
 import {truncateText} from '../../helpers/truncate';
 import {DateFormat} from '../../enums/date';
+import {Text} from '../Themed';
 
 interface Item {
 	title: string;
@@ -26,15 +27,15 @@ const Double: FC<{item: Item}> = ({item}) => {
 		<>
 			<View className='flex flex-row justify-between'>
 				<View style={{width: width * 0.46}}>
-					<View style={[globalStyles.column, {gap: 10}]}>
-						<Text style={styles.mutedText}>{item.title}</Text>
-						<Text style={styles.titleText}>{item.value}</Text>
+					<View className='flex flex-col gap-2'>
+						<Text className="text-['#4e4e4e'] text-lg">{item.title}</Text>
+						<Text className='text-xl'>{item.value}</Text>
 					</View>
 				</View>
 				<View style={{width: width * 0.46}}>
-					<View style={[globalStyles.column, {gap: 10}]}>
-						<Text style={styles.mutedText}>{item.title1}</Text>
-						<Text style={styles.titleText}>{item.value1}</Text>
+					<View className='flex flex-col gap-2'>
+						<Text className='text-[#4e4e4e] text-lg'>{item.title1}</Text>
+						<Text className='text-xl'>{item.value1}</Text>
 					</View>
 				</View>
 			</View>
@@ -58,41 +59,41 @@ const CPDEventBox: FC<{event: CPDEvent}> = ({event}) => {
 
 	return (
 		<View>
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Event</Text>
-					<Text style={styles.titleText}>{event.event_title}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text className='text-[#4e4e4e] text-lg'>Event</Text>
+					<Text className='text-xl'>{event.event_title}</Text>
 					<Divider />
 				</View>
 			</View>
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Provider</Text>
-					<Text style={styles.titleText}>{event.provider}</Text>
-					<Divider />
-				</View>
-			</View>
-
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Category</Text>
-					<Text style={styles.titleText}>{event.category}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text className='text-[#4e4e4e] text-lg'>Provider</Text>
+					<Text className='text-xl'>{event.provider}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Activity</Text>
-					<Text style={styles.titleText}>{event.activity}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text className='text-[#4e4e4e] text-lg'>Category</Text>
+					<Text className='text-xl'>{event.category}</Text>
 					<Divider />
 				</View>
 			</View>
 
-			<View style={{padding: 10}}>
-				<View style={[globalStyles.column, {gap: 10}]}>
-					<Text style={styles.mutedText}>Delivery Mode</Text>
-					<Text style={[styles.titleText]}>{event.delivery_mode}</Text>
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text className='text-[#4e4e4e] text-lg'>Activity</Text>
+					<Text className='text-xl'>{event.activity}</Text>
+					<Divider />
+				</View>
+			</View>
+
+			<View className='p-2'>
+				<View className='flex flex-col gap-2'>
+					<Text className='text-[#4e4e4e] text-lg'>Delivery Mode</Text>
+					<Text className='text-xl'>{event.delivery_mode}</Text>
 					<Divider />
 				</View>
 			</View>
@@ -111,13 +112,13 @@ const CPDEventBox: FC<{event: CPDEvent}> = ({event}) => {
 			</View>
 
 			{event.attended_event === 'yes' && (
-				<View style={{padding: 10}}>
-					<View style={[globalStyles.column, {gap: 10}]}>
+				<View className='p-2'>
+					<View className='flex flex-col gap-2'>
 						<View className='flex flex-row justify-between'>
 							<View style={{width: width * 0.46}}>
-								<View style={[globalStyles.column, {gap: 10}]}>
-									<Text style={styles.mutedText}>Event Code</Text>
-									<Text style={[styles.titleText]}>{event.event_token}</Text>
+								<View className='flex flex-col gap-2'>
+									<Text className='text-[#4e4e4e] text-lg'>Event Code</Text>
+									<Text>{event.event_token}</Text>
 								</View>
 							</View>
 							<View style={{width: width * 0.46}}>
@@ -170,12 +171,7 @@ const CPDEventsComponent: FC<{
 	);
 	return (
 		<View style={globalStyles.container}>
-			<Searchbar
-				placeholder='Search by title, activity, or start date'
-				onChangeText={handleSearch}
-				value={search}
-				style={styles.searchBar}
-			/>
+			<Searchbar placeholder='Search by title' onChangeText={handleSearch} value={search} style={styles.searchBar} />
 
 			<FlashList
 				data={items}
@@ -200,7 +196,7 @@ const Title: FC<{item: CPDEvent}> = ({item}) => {
 	return (
 		<View className='flex flex-col gap-1'>
 			<View className='w-full flex'>
-				<Text>
+				<Text className='text-xl'>
 					{truncateText({
 						text: item.activity,
 						length: 50,
@@ -208,42 +204,15 @@ const Title: FC<{item: CPDEvent}> = ({item}) => {
 				</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='font-extralight italic'>{dayjs(new Date(item.event_start_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text className='text-lg' italic>
+					{dayjs(new Date(item.event_start_date)).format('ddd DD MMM YYYY')}
+				</Text>
 			</View>
 		</View>
 	);
 };
 
 const styles = StyleSheet.create({
-	card: {
-		backgroundColor: '#FFF',
-		borderRadius: 10,
-		padding: 10,
-		shadowColor: '#dcf0fa',
-		shadowOffset: {
-			width: 0,
-			height: 10,
-		},
-		shadowOpacity: 0.9,
-		shadowRadius: 6,
-		elevation: 14,
-		margin: 10,
-	},
-
-	mutedText: {
-		color: '#4e4e4e',
-		fontSize: 14,
-		letterSpacing: 1.5,
-		textTransform: 'capitalize',
-	},
-
-	titleText: {
-		color: '#3f51b5',
-		fontSize: 16,
-		letterSpacing: 2,
-		textTransform: 'capitalize',
-	},
-
 	searchBar: {
 		backgroundColor: '#dbe6f5',
 		margin: 5,

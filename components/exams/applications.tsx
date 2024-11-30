@@ -2,42 +2,34 @@ import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorh
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
+import React, {FC, useCallback, useMemo, useRef} from 'react';
+import {Pressable, StyleSheet, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Searchbar} from 'react-native-paper';
 import {examAtom} from '../../atoms/exam';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {ExamApplication} from '../../models/examapplications';
+import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
+import AccordionShared from '../shared/Accordion';
 import EmptyList from '../shared/EmptyList';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import AccordionShared from '../shared/Accordion';
-import {useSearch} from '../../providers/search';
-import {Searchbar} from 'react-native-paper';
+import {Text} from '../Themed';
 
 const Application: FC<{
 	application: ExamApplication;
 	action: (application: ExamApplication) => void;
 }> = ({application, action}) => {
-	const {height, width} = useWindowDimensions();
-
-	const dimension = Math.min(width, height);
-
-	const availableWidth = dimension - 20;
 	return (
 		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				<InternshipItem availableWidth={availableWidth} title='Exam Series' content={application.exams_series} />
-				<InternshipItem availableWidth={availableWidth} title='Cadre' content={application.cadre} />
+				<InternshipItem title='Exam Series' content={application.exams_series} />
+				<InternshipItem title='Cadre' content={application.cadre} />
 
-				<InternshipItem
-					availableWidth={availableWidth}
-					title='Date'
-					content={dayjs(new Date(application.application_date)).format('YYYY-MM-DD')}
-				/>
+				<InternshipItem title='Date' content={dayjs(new Date(application.application_date)).format('YYYY-MM-DD')} />
 
 				<InternshipItemDouble
 					title='Invoice'
@@ -45,7 +37,6 @@ const Application: FC<{
 					content={application.invoice_no}
 					subtitle1='Amount'
 					content1={currencyFormatter.format(+application.amount_due)}
-					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
@@ -54,7 +45,6 @@ const Application: FC<{
 					content={currencyFormatter.format(+application.amount_paid)}
 					subtitle1='Balance Due'
 					content1={currencyFormatter.format(+application.balance_due)}
-					availableWidth={availableWidth}
 				/>
 			</View>
 		</Pressable>
@@ -99,12 +89,7 @@ const ExamApplicationsComponent: FC<{
 		<GestureHandlerRootView style={{flex: 1}}>
 			<BottomSheetModalProvider>
 				<View style={globalStyles.container}>
-					<Searchbar
-						placeholder='Search by cadre or exam series'
-						onChangeText={handleSearch}
-						value={search}
-						style={styles.searchBar}
-					/>
+					<Searchbar placeholder='Search by cadre' onChangeText={handleSearch} value={search} style={styles.searchBar} />
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
 						<View style={styles.bottomSheet}>
 							<BottomSheetView style={[styles.contentContainer]}>
@@ -145,10 +130,10 @@ const Title: FC<{item: ExamApplication}> = ({item}) => {
 	return (
 		<View className='flex flex-col gap-1'>
 			<View className='w-full overflow-auto'>
-				<Text className='tracking-wide'>{item.cadre}</Text>
+				<Text className='text-xl'>{item.cadre}</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='italic font-extralight'>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text italic>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
 			</View>
 		</View>
 	);

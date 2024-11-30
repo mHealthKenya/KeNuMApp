@@ -1,14 +1,11 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
-import globalStyles from '../../styles/global';
-import LBox from './lbox';
-import {ScrollView} from 'react-native';
+import dayjs from 'dayjs';
+import React, {FC, useEffect, useState} from 'react';
+import {ScrollView, View} from 'react-native';
 import {LicenceApplication} from '../../models/licenceapplications';
 import useAuthenticatedUser from '../../services/auth/authenticated';
-import {ActivityIndicator} from 'react-native-paper';
-import {primaryColor} from '../../constants/Colors';
-import DownloadBox from './downloadbox';
-import dayjs from 'dayjs';
+import globalStyles from '../../styles/global';
+import CenterLoad from '../shared/CenterLoad';
+import LBox from './lbox';
 
 interface Props {
 	applications: LicenceApplication[];
@@ -20,22 +17,8 @@ interface Condition {
 	hasPendingApplications: boolean;
 }
 
-enum Conditions {
-	HAS_LICENCE = 'HAS_LICENCE',
-	NO_CPD = 'NO_CPD',
-	HAS_PENDING = 'PENDING',
-}
-
 const LicenceHomeComponent: FC<Props> = ({applications}) => {
 	const {data, isLoading} = useAuthenticatedUser();
-
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
-	}
 
 	const hasActiveLicence =
 		data?.license?.some((l) => {
@@ -51,40 +34,38 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 		return a.invoice_details.balance_due ? +a.invoice_details.balance_due > 0 : false;
 	});
 
-	const statements = useCallback(
-		(conditions: Condition) => {
-			const messages = [];
+	const statements = (conditions: Condition) => {
+		const messages = [];
 
-			if (conditions.hasActiveLicence) {
-				messages.push('You already have an active licence.');
-			}
-			if (conditions.hasPendingApplications) {
-				messages.push('You have pending licence applications.');
-			}
-			if (!conditions.hasRequisiteCPD) {
-				messages.push('You have insufficient CPD points to renew your licence.');
-			}
+		if (conditions.hasActiveLicence) {
+			messages.push('You already have an active licence.');
+		}
+		if (conditions.hasPendingApplications) {
+			messages.push('You have pending licence applications.');
+		}
+		if (!conditions.hasRequisiteCPD) {
+			messages.push('You have insufficient CPD points to renew your licence.');
+		}
 
-			if (messages.length === 0) {
-				return 'You cannot renew your licence at this time';
-			}
+		if (messages.length === 0) {
+			return 'You cannot renew your licence at this time';
+		}
 
-			return messages.join(' ');
-		},
-		[hasActiveLicence, hasPendingApplications, hasRequisiteCPD]
-	);
+		return messages.join(' ');
+	};
 
 	const [can, setCan] = useState(false);
 
-	const [condition, setCondition] = useState<Conditions>(Conditions.HAS_LICENCE);
-
 	useEffect(() => {
-		setCan(!(hasActiveLicence && hasPendingApplications && hasRequisiteCPD));
-
-		if (hasActiveLicence && hasPendingApplications && hasRequisiteCPD) {
-			setCondition(Conditions.HAS_LICENCE);
+		const newCan = !(hasActiveLicence && hasPendingApplications && hasRequisiteCPD);
+		if (newCan !== can) {
+			setCan(newCan);
 		}
-	}, [hasActiveLicence, hasRequisiteCPD, hasPendingApplications]);
+	}, [hasActiveLicence, hasPendingApplications, hasRequisiteCPD, can]);
+
+	if (isLoading) {
+		return <CenterLoad />;
+	}
 
 	return (
 		<View style={globalStyles.container}>
@@ -94,7 +75,7 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 						box={{
 							title: 'Licence Renewal',
 							content: 'Complete your annual licence renewal',
-							backgroundColor: '#dcf0fa',
+							backgroundColor: '#FFFFFF',
 							path: require('../../assets/images/licencesmall.png'),
 							route: '/licencecountry',
 						}}
@@ -117,7 +98,7 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 						title: 'Licence Applications History',
 						content:
 							'View a history of all your licence applications, pay for applications, and download licence invoices and receipts',
-						backgroundColor: '#dcf0fa',
+						backgroundColor: '#FFFFFF',
 						path: require('../../assets/images/clock.png'),
 						route: '/licenceapplications',
 					}}

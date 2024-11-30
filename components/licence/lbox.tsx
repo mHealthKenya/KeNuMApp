@@ -1,19 +1,17 @@
 import {Image, ImageSource} from 'expo-image';
-import {useRouter} from 'expo-router';
+import {Href, useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Divider, Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
-import * as Print from 'expo-print';
-import {licenceGenerator} from '../../helpers/licencegenerator';
-import {useAuth} from '../../providers/auth';
+import {Text} from '../Themed';
 
 export interface LicenceBox {
 	title: string;
 	content: string;
 	backgroundColor: string;
 	path: ImageSource;
-	route: any;
+	route: Href;
 	action?: () => void;
 	danger?: boolean;
 }
@@ -62,11 +60,12 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 						}}>
 						<Text
 							style={[
-								styles.titleText,
 								{
 									color: box.danger ? '#FFF' : '#000000',
 								},
-							]}>
+							]}
+							className='text-xl'
+							bold>
 							{box.title}
 						</Text>
 						<Divider
@@ -81,11 +80,11 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 						}}>
 						<Text
 							style={[
-								styles.contentText,
 								{
 									color: box.danger ? '#FFF' : '#74787e',
 								},
-							]}>
+							]}
+							className='text-lg'>
 							{box.content}
 						</Text>
 					</View>

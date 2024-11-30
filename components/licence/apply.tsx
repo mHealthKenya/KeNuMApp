@@ -3,24 +3,23 @@ import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import React, {FC, useEffect, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Button} from 'react-native-paper';
+import {ActivityIndicator, Button} from 'react-native-paper';
 import {diasporaAtom} from '../../atoms/diaporaatom';
 import {primaryColor} from '../../constants/Colors';
 import {Employer} from '../../models/employers';
-import {LicenceApplication} from '../../models/licenceapplications';
 import {useAuth} from '../../providers/auth';
 import useLicenceApply from '../../services/licence/apply';
-import globalStyles from '../../styles/global';
+import {Text} from '../Themed';
 import LicenceApplyBox, {Item} from './licencebox';
+import {Loader2} from '@tamagui/lucide-icons';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
 	county: Item;
 	workstation: Item;
-	applications: LicenceApplication[];
-}> = ({employers, county, workstation, applications}) => {
+}> = ({employers, county, workstation}) => {
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
@@ -69,16 +68,10 @@ const LicenceApplicationComponent: FC<{
 	}, [diaspora, checked, selected]);
 
 	return (
-		<View style={globalStyles.container}>
+		<View className='flex flex-1'>
 			<View className='p-3'>
 				<KeyboardAvoidingView behavior='position'>
-					<View
-						style={[
-							styles.center,
-							{
-								height: height * 0.4,
-							},
-						]}>
+					<View className='flex items-center justify-center h-[50%]'>
 						<Image
 							source={require('../../assets/images/licencelarge.png')}
 							style={{
@@ -87,24 +80,14 @@ const LicenceApplicationComponent: FC<{
 							}}
 						/>
 					</View>
-					<View
-						style={{
-							height: height * 0.2,
-						}}>
+					<View className='flex w-full'>
 						<LicenceApplyBox county={county} workstation={workstation} />
 					</View>
 
-					<View
-						style={[
-							styles.box,
-							{
-								height: height * 0.35,
-								gap: 10,
-							},
-						]}>
+					<View className='flex flex-col p-2 mb-2 gap-2'>
 						{!diaspora && (
 							<DropDownPicker
-								items={items || []}
+								items={items}
 								value={selected}
 								setValue={setSelected}
 								multiple={false}
@@ -112,13 +95,17 @@ const LicenceApplicationComponent: FC<{
 								placeholder='Select an employer'
 								placeholderStyle={{
 									fontSize: 16,
+									fontFamily: 'normal',
+								}}
+								textStyle={{
+									fontFamily: 'normal',
 								}}
 								searchable
 								setOpen={setDropDown}
 							/>
 						)}
 
-						<View className='flex flex-row gap-2 items-center'>
+						<View className='flex flex-row gap-2 items-center mt-4 mb-2'>
 							<Pressable
 								role='checkbox'
 								aria-checked={checked}
@@ -129,14 +116,17 @@ const LicenceApplicationComponent: FC<{
 							<Text>I confirm that I am fit to practice</Text>
 						</View>
 
-						<Button
-							mode='contained'
-							style={disabled ? styles.disabled : styles.button}
-							loading={isPending}
-							onPress={handleSubmit}
+						<Pressable
+							className='flex items-center justify-center py-4 rounded-md'
+							style={{backgroundColor: disabled ? '#bbbbbb' : primaryColor}}
 							disabled={disabled}>
-							Apply
-						</Button>
+							<View className='flex flex-row gap-2'>
+								{isPending && <ActivityIndicator size='small' color='#FFFFFF' />}
+								<Text className={`uppercase mt-1 ${disabled ? 'text-[#85878b]' : 'text-white'}`} onPress={handleSubmit}>
+									Apply
+								</Text>
+							</View>
+						</Pressable>
 					</View>
 				</KeyboardAvoidingView>
 			</View>

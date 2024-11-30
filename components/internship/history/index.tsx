@@ -1,15 +1,16 @@
+import {FlashList} from '@shopify/flash-list';
 import React from 'react';
-import {ScrollView, View} from 'react-native';
+import {View} from 'react-native';
 import globalStyles from '../../../styles/global';
-import InternshipBox, {InternBox} from '../internshipbox';
+import BoxImage, {InternBox} from '../../shared/BoxImage';
 
-const history: InternBox[] = [
+const data: InternBox[] = [
 	{
 		title: 'Internship Applications',
 		content: 'View a history of all internship applications, make payments, download invoices and receipts.',
 		path: require('../../../assets/images/nursesmall.png'),
 		route: '/internshiphistory',
-		backgroundColor: '#dcf0fa',
+		backgroundColor: '#FFFFFF',
 	},
 
 	{
@@ -17,7 +18,7 @@ const history: InternBox[] = [
 		content: 'See a history of all you internship check ins.',
 		path: require('../../../assets/images/clock.png'),
 		route: '/checkins',
-		backgroundColor: '#dcf0fa',
+		backgroundColor: '#FFFFFF',
 	},
 
 	{
@@ -25,7 +26,7 @@ const history: InternBox[] = [
 		content: 'View a history of all your internship rotations and request for competency verification',
 		path: require('../../../assets/images/rotationssmall.png'),
 		route: '/rotationactivities',
-		backgroundColor: '#dcf0fa',
+		backgroundColor: '#FFFFFF',
 	},
 
 	{
@@ -33,18 +34,14 @@ const history: InternBox[] = [
 		content: 'View a history of all internship transfers applications and their approval status.',
 		path: require('../../../assets/images/transfersmall.png'),
 		route: '/transferhist',
-		backgroundColor: '#dcf0fa',
+		backgroundColor: '#FFFFFF',
 	},
 ];
 
 const AllHistoryComponent = () => {
 	return (
-		<View style={globalStyles.container}>
-			<ScrollView style={[{flex: 1}]}>
-				{history.map((box) => (
-					<InternshipBox box={box} key={box.title} />
-				))}
-			</ScrollView>
+		<View className='flex flex-1'>
+			<FlashList data={data} estimatedItemSize={20} renderItem={({item}) => <BoxImage data={item} />} />
 		</View>
 	);
 };

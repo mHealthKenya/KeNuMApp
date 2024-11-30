@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	@font-face {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 900;
+		font-display: swap;
+		src: url('/assets/fonts/san.otf') format('otf');
+	}
+}

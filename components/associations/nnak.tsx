@@ -1,8 +1,9 @@
 import {FlashList} from '@shopify/flash-list';
 import * as WebBrowser from 'expo-web-browser';
 import React, {FC} from 'react';
-import {Image, ImageBackground, ScrollView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Image, ImageBackground, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Button, Icon, List} from 'react-native-paper';
+import {Text} from '../Themed';
 
 interface Content {
 	title: string;
@@ -74,10 +75,11 @@ const ContentBox: FC<{content: Content}> = ({content}) => {
 					}}
 					className='justify-center items-center'>
 					<Text
-						className='uppercase font-bold tracking-wide text-base my-4'
+						className='uppercase font-bold tracking-wide text-lg my-4'
 						style={{
 							color: '#000',
-						}}>
+						}}
+						bold>
 						{content.title}
 					</Text>
 				</View>
@@ -91,7 +93,7 @@ const ContentBox: FC<{content: Content}> = ({content}) => {
 							key={index}
 							title={
 								<View className='flex'>
-									<Text className='uppercase font-semibold tracking-wide text-sm p-2' numberOfLines={5}>
+									<Text className='uppercase font-semibold tracking-wide text-lg p-2' numberOfLines={5}>
 										{item}
 									</Text>
 								</View>
@@ -145,14 +147,16 @@ const JoinBox: FC<{join: Join}> = ({join}) => {
 					style={{
 						height: 'auto',
 					}}>
-					<Text className='uppercase tracking-widest text-slate-100 text-base'>{join.title}</Text>
+					<Text className='uppercase tracking-widest text-slate-100 text-lg' bold>
+						{join.title}
+					</Text>
 				</View>
 				<View
 					style={{
 						width: width * 0.7,
 						height: 'auto',
 					}}>
-					<Text className='tracking-widest text-slate-100 text-sm' numberOfLines={6}>
+					<Text className='tracking-widest text-slate-100 text-lg' numberOfLines={6}>
 						{join.description}
 					</Text>
 				</View>

@@ -1,12 +1,13 @@
 import {FlashList} from '@shopify/flash-list';
 import {useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, View, useWindowDimensions} from 'react-native';
 import {Icon} from 'react-native-paper';
 import {CPDCategory} from '../../models/cpdcategory';
 import {useCPDCategoryFetched} from '../../providers/cpdcategories';
 import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
+import {Text} from '../Themed';
 
 const Category: FC<{category: CPDCategory}> = ({category}) => {
 	const {width, height} = useWindowDimensions();
@@ -23,15 +24,7 @@ const Category: FC<{category: CPDCategory}> = ({category}) => {
 	};
 
 	return (
-		<Pressable
-			style={[
-				styles.box,
-				{
-					backgroundColor: '#dcf0fa',
-					flex: 1,
-				},
-			]}
-			onPress={() => handlePush(category)}>
+		<Pressable className='bg-white m-2 p-3 rounded-lg' onPress={() => handlePush(category)}>
 			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<View
 					style={[
@@ -40,11 +33,8 @@ const Category: FC<{category: CPDCategory}> = ({category}) => {
 							width: usableWidth * 0.8,
 						},
 					]}>
-					<View
-						style={{
-							padding: 10,
-						}}>
-						<Text style={styles.contentText}>{category.category}</Text>
+					<View>
+						<Text className='text-lg'>{category.category}</Text>
 					</View>
 				</View>
 				<Icon size={30} source='chevron-right' />
@@ -74,28 +64,3 @@ const SelfReportingCategoriesComponent: FC<{
 };
 
 export default SelfReportingCategoriesComponent;
-
-const styles = StyleSheet.create({
-	box: {
-		margin: 3,
-		padding: 10,
-		borderRadius: 10,
-	},
-
-	fullSize: {
-		justifyContent: 'space-evenly',
-	},
-
-	titleText: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		textTransform: 'capitalize',
-		letterSpacing: 2,
-	},
-
-	contentText: {
-		color: 'black',
-		letterSpacing: 2,
-		fontSize: 18,
-	},
-});

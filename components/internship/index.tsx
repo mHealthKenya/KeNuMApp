@@ -1,32 +1,55 @@
+import {FlashList} from '@shopify/flash-list';
 import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
-import globalStyles from '../../styles/global';
-import ApplyBox from './box/apply';
-import CheckInBox from './box/checkin';
-import HistoryBox from './box/history';
-import RotationsBox from './box/rotations';
-import TransfersBox from './box/transfers';
+import {View} from 'react-native';
+import BoxImage, {InternBox} from '../shared/BoxImage';
+
+const data: InternBox[] = [
+	{
+		title: 'Apply For Internship',
+		content: 'Embark on a journey towards professional growth!',
+		backgroundColor: '#FFFFFF',
+		path: require('../../assets/images/nursesmall.png'),
+		route: '/internshipapply',
+	},
+
+	{
+		title: 'Checkin',
+		content: 'Verify that you reported to your internship center',
+		backgroundColor: '#FFFFFF',
+		path: require('../../assets/images/checkin.png'),
+		route: '/checkin',
+	},
+
+	{
+		title: 'Rotations',
+		content: 'Verify that you reported to your internship center',
+		backgroundColor: '#FFFFFF',
+		path: require('../../assets/images/rotationssmall.png'),
+		route: '/internshipareas',
+	},
+
+	{
+		title: 'Transfers',
+		content: 'Apply for a change of internship center',
+		backgroundColor: '#FFFFFF',
+		path: require('../../assets/images/transfersmall.png'),
+		route: '/transfer',
+	},
+	{
+		title: 'Internship History',
+		content: 'View histories of your internship applications, transfers and check ins',
+		backgroundColor: '#FFFFFF',
+		path: require('../../assets/images/clock.png'),
+		route: '/allhistory',
+	},
+];
 
 const InternshipComponent = () => {
 	return (
-		<View style={[globalStyles.container]}>
-			<ScrollView style={[{flex: 1}]}>
-				<ApplyBox />
-				<CheckInBox />
-				<RotationsBox />
-				<TransfersBox />
-				<HistoryBox />
-			</ScrollView>
+		<View className='flex flex-1'>
+			<FlashList data={data} estimatedItemSize={20} renderItem={({item}) => <BoxImage data={item} />} />
 		</View>
 	);
 };
 
 export default InternshipComponent;
-
-const styles = StyleSheet.create({
-	box: {
-		margin: 10,
-		padding: 20,
-		borderRadius: 10,
-	},
-});

@@ -2,18 +2,19 @@ import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorh
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Divider, Searchbar} from 'react-native-paper';
 import {InternshipApplication} from '../../../models/internshipapplications';
 import {useInternshipFetched} from '../../../providers/internship';
 import {useSearch} from '../../../providers/search';
 import globalStyles from '../../../styles/global';
+import AccordionShared from '../../shared/Accordion';
 import EmptyList from '../../shared/EmptyList';
+import {Text} from '../../Themed';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import AccordionShared from '../../shared/Accordion';
 
 export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',
@@ -23,29 +24,13 @@ export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 export const InternshipItem: FC<{
 	title: string;
 	content: string;
-	availableWidth: number;
-}> = ({title, content, availableWidth}) => {
+}> = ({title, content}) => {
 	return (
 		<View>
-			<View
-				style={[
-					globalStyles.row,
-					{
-						justifyContent: 'space-between',
-						padding: 10,
-					},
-				]}>
-				<View
-					style={[
-						globalStyles.row,
-						{
-							width: availableWidth * 0.25,
-							justifyContent: 'space-between',
-							padding: 10,
-						},
-					]}>
+			<View className='flex flex-1 flex-row gap-2 justify-between w-full'>
+				<View className='flex flex-row justify-between gap-2 w-[35%]'>
 					<View style={{justifyContent: 'center'}}>
-						<Text style={[styles.itemText, styles.titleText]}>{title}</Text>
+						<Text className='text-[#0445b5] text-base'>{title}</Text>
 					</View>
 					<Divider
 						style={{
@@ -61,7 +46,7 @@ export const InternshipItem: FC<{
 							padding: 10,
 						},
 					]}>
-					<Text style={styles.normalText}>{content}</Text>
+					<Text className='text-base'>{content}</Text>
 				</View>
 			</View>
 		</View>
@@ -74,29 +59,13 @@ export const InternshipItemDouble: FC<{
 	subtitle1: string;
 	content: string;
 	content1: string;
-	availableWidth: number;
-}> = ({title, content, availableWidth, subtitle, subtitle1, content1}) => {
+}> = ({title, content, subtitle, subtitle1, content1}) => {
 	return (
 		<View>
-			<View
-				style={[
-					globalStyles.row,
-					{
-						justifyContent: 'space-between',
-						padding: 10,
-					},
-				]}>
-				<View
-					style={[
-						globalStyles.row,
-						{
-							width: availableWidth * 0.25,
-							justifyContent: 'space-between',
-							padding: 10,
-						},
-					]}>
+			<View className='flex flex-row gap-2 w-full'>
+				<View className='flex flex-row gap-2 w-[35%] justify-between'>
 					<View style={{justifyContent: 'center'}}>
-						<Text style={[styles.itemText, styles.titleText]}>{title}</Text>
+						<Text className='text-[#0445b5] text-base'>{title}</Text>
 					</View>
 
 					<Divider
@@ -106,30 +75,22 @@ export const InternshipItemDouble: FC<{
 						}}
 					/>
 				</View>
-				<View
-					style={[
-						globalStyles.row,
-						{
-							flex: 1,
-							padding: 10,
-							justifyContent: 'space-between',
-						},
-					]}>
-					<View style={[globalStyles.column, {width: availableWidth * 0.31}]}>
-						<View style={{paddingVertical: 3}}>
-							<Text style={styles.mutedText}>{subtitle}</Text>
+				<View className='flex flex-1 flex-row justify-between w-full p-2'>
+					<View className='flex flex-col gap-2 w-[33%]'>
+						<View>
+							<Text className="text-['#b6b6b6']">{subtitle}</Text>
 						</View>
-						<View style={{paddingVertical: 3}}>
-							<Text style={styles.normalText}>{content}</Text>
+						<View>
+							<Text className='text-base'>{content}</Text>
 						</View>
 					</View>
 
-					<View style={[globalStyles.column, {width: availableWidth * 0.31}]}>
-						<View style={{paddingVertical: 3}}>
-							<Text style={styles.mutedText}>{subtitle1}</Text>
+					<View className='flex flex-col gap-2 w-[33%]'>
+						<View>
+							<Text className="text-['#b6b6b6']">{subtitle1}</Text>
 						</View>
-						<View style={{paddingVertical: 3}}>
-							<Text style={styles.normalText}>{content1}</Text>
+						<View>
+							<Text className='text-base'>{content1}</Text>
 						</View>
 					</View>
 				</View>
@@ -142,32 +103,25 @@ const Application: FC<{
 	application: InternshipApplication;
 	action: (item: InternshipApplication) => void;
 }> = ({application, action}) => {
-	const {height, width} = useWindowDimensions();
-
-	const dimension = Math.min(width, height);
-
-	const availableWidth = dimension - 20;
 	return (
 		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				<InternshipItem availableWidth={availableWidth} title='Center' content={application.internship_center} />
-				<InternshipItem availableWidth={availableWidth} title='Cadre' content={application.cadre_desc} />
+				<InternshipItem title='Center' content={application.internship_center} />
+				<InternshipItem title='Cadre' content={application.cadre_desc} />
 				<InternshipItemDouble
 					title='Date'
 					subtitle='Start Date'
 					content={dayjs(new Date(application.start_date)).format('DD/MM/YYYY')}
 					subtitle1='Application Date'
 					content1={dayjs(new Date(application.application_date)).format('DD/MM/YYYY')}
-					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
 					title='Invoice'
-					subtitle='Invoice Number'
+					subtitle='Invoice'
 					content={application.invoice_details.invoice_number}
 					subtitle1='Amount'
 					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
@@ -176,7 +130,6 @@ const Application: FC<{
 					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
 					subtitle1='Balance Due'
 					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-					availableWidth={availableWidth}
 				/>
 			</View>
 		</Pressable>

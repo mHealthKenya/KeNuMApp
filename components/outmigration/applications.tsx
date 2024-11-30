@@ -3,7 +3,7 @@ import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import {useAtom} from 'jotai';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Divider, List, Searchbar} from 'react-native-paper';
 import {outmigrationGenAtom} from '../../atoms/outmigration';
 import {currencyFormatter} from '../../helpers/currency-formatter';
@@ -17,6 +17,7 @@ import PayForApplication from './actions/pay';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AccordionShared from '../shared/Accordion';
 import {useSearch} from '../../providers/search';
+import {Text} from '../Themed';
 
 const extractor = (t: string) => {
 	let name = '';
@@ -62,14 +63,7 @@ export const CustomDrop: FC<{
 
 	return (
 		<View>
-			<View
-				style={[
-					globalStyles.row,
-					{
-						justifyContent: 'space-between',
-						padding: 10,
-					},
-				]}>
+			<View className='flex flex-row justify-between p-2'>
 				<View
 					style={[
 						globalStyles.row,
@@ -93,7 +87,6 @@ export const CustomDrop: FC<{
 					style={[
 						{
 							flex: 1,
-							padding: 10,
 						},
 					]}>
 					{fItems.map((val, index) => (
@@ -121,26 +114,14 @@ const Application: FC<{
 	application: OutmigrationApplication;
 	action: (application: OutmigrationApplication) => void;
 }> = ({application, action}) => {
-	const {height, width} = useWindowDimensions();
-
-	const dimension = Math.min(width, height);
-
-	const availableWidth = dimension - 20;
-
 	return (
 		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				<InternshipItem availableWidth={availableWidth} title='Country' content={application.country_name} />
+				<InternshipItem title='Country' content={application.country_name} />
 
-				<CustomDrop application={application} />
+				<InternshipItem title='Work Station' content={application.application_status} />
 
-				<InternshipItem availableWidth={availableWidth} title='Work Station' content={application.application_status} />
-
-				<InternshipItem
-					availableWidth={availableWidth}
-					title='Date'
-					content={dayjs(new Date(application.application_date)).format('DD/MM/YYYY')}
-				/>
+				<InternshipItem title='Date' content={dayjs(new Date(application.application_date)).format('DD/MM/YYYY')} />
 
 				<InternshipItemDouble
 					title='Invoice'
@@ -148,7 +129,6 @@ const Application: FC<{
 					content={application.invoice_details.invoice_number}
 					subtitle1='Amount'
 					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
@@ -157,7 +137,6 @@ const Application: FC<{
 					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
 					subtitle1='Balance Due'
 					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-					availableWidth={availableWidth}
 				/>
 			</View>
 		</Pressable>
@@ -257,10 +236,10 @@ const Title: FC<{item: OutmigrationApplication}> = ({item}) => {
 	return (
 		<View className='flex flex-col gap-1'>
 			<View className='w-full'>
-				<Text className='truncate'>{item.country_name}</Text>
+				<Text className='truncate text-xl'>{item.country_name}</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='font-extralight italic'>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text italic>{dayjs(new Date(item.application_date)).format('ddd DD MMM YYYY')}</Text>
 			</View>
 		</View>
 	);

@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions, Text} from 'react-native';
+import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {LicenceApplication} from '../../models/licenceapplications';
 import globalStyles from '../../styles/global';
@@ -19,6 +19,7 @@ import AccordionShared from '../shared/Accordion';
 import {useSearch} from '../../providers/search';
 import {DateFormat} from '../../enums/date';
 import {Searchbar} from 'react-native-paper';
+import {Text} from '../Themed';
 
 const Application: FC<{
 	application: LicenceApplication;
@@ -32,28 +33,19 @@ const Application: FC<{
 	return (
 		<Pressable onPress={() => action(application)}>
 			<View style={[globalStyles.column]}>
-				{application?.workstation_name !== 'DIASPORA' && (
-					<InternshipItem availableWidth={availableWidth} title='County' content={application.County} />
-				)}
-				<InternshipItem availableWidth={availableWidth} title='Station' content={application.workstation_name} />
+				{application?.workstation_name !== 'DIASPORA' && <InternshipItem title='County' content={application.County} />}
+				<InternshipItem title='Station' content={application.workstation_name} />
 
-				{application?.workstation_name !== 'DIASPORA' && (
-					<InternshipItem availableWidth={availableWidth} title='Employer' content={application.employer} />
-				)}
+				{application?.workstation_name !== 'DIASPORA' && <InternshipItem title='Employer' content={application.employer} />}
 
-				<InternshipItem
-					availableWidth={availableWidth}
-					title='Date'
-					content={dayjs(new Date(application.renewal_date)).format(DateFormat.WITH_DAY)}
-				/>
+				<InternshipItem title='Date' content={dayjs(new Date(application.renewal_date)).format(DateFormat.WITH_DAY)} />
 
 				<InternshipItemDouble
 					title='Invoice'
-					subtitle='Invoice Number'
+					subtitle='Invoice'
 					content={application.invoice_details.invoice_number}
 					subtitle1='Amount'
 					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-					availableWidth={availableWidth}
 				/>
 
 				<InternshipItemDouble
@@ -62,7 +54,6 @@ const Application: FC<{
 					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
 					subtitle1='Balance Due'
 					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-					availableWidth={availableWidth}
 				/>
 			</View>
 		</Pressable>
@@ -165,10 +156,12 @@ const Title: FC<{item: LicenceApplication}> = ({item}) => {
 	return (
 		<View className='flex flex-col gap-1'>
 			<View className='w-full'>
-				<Text className='truncate'>{item.workstation_name}</Text>
+				<Text className='truncate text-lg'>{item.workstation_name}</Text>
 			</View>
 			<View className='w-full'>
-				<Text className='font-extralight italic'>{dayjs(new Date(item.renewal_date)).format('ddd DD MMM YYYY')}</Text>
+				<Text className='font-extralight' italic>
+					{dayjs(new Date(item.renewal_date)).format('ddd DD MMM YYYY')}
+				</Text>
 			</View>
 		</View>
 	);
