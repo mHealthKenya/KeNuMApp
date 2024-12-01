@@ -1,6 +1,6 @@
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, Text, TextInput, TextInputProps} from 'react-native-paper';
@@ -18,7 +18,7 @@ const theme = {
 	roundness: 12,
 };
 
-const EmploymentDetailsComponent: FC<{}> = () => {
+const EmploymentDetailsComponent = () => {
 	const [statusE, setStatusE] = useState<string | null>(null);
 	const [employersE, setEmployersE] = useState<string | null>(null);
 	const [stationType, setStationType] = useState<string | null>(null);
@@ -149,7 +149,7 @@ const EmploymentDetailsComponent: FC<{}> = () => {
 	useEffect(() => {
 		const workStationName = countyWorkStations?.find((item) => item.value === station);
 		setWorkstationName(workStationName?.label || '');
-	}, [station]);
+	}, [station, countyWorkStations]);
 
 	const router = useRouter();
 

@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
+import { useError } from '../../providers/error';
 
 interface Competency {
 	internship_id: string;
@@ -26,7 +27,8 @@ const addCompetency = async (data: Competency) => {
 	return response;
 };
 
-const useAddCompetency = (successFn: () => void, errorFn: () => void) => {
+const useAddCompetency = (successFn: () => void) => {
+	const { handleError } = useError()
 	return useMutation({
 		mutationFn: addCompetency,
 		onSuccess: () => {
@@ -34,7 +36,7 @@ const useAddCompetency = (successFn: () => void, errorFn: () => void) => {
 		},
 
 		onError: () => {
-			errorFn();
+			handleError("Could not add competency")
 		},
 	});
 };

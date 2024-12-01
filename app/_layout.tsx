@@ -18,6 +18,7 @@ import RegistrationProvider from '../providers/registrationprovider';
 import RotationAreasProvider from '../providers/rotationareas';
 import RotationCompetenciesProvider from '../providers/rotationcompetencies';
 import SearchProvider from '../providers/search';
+import Toast, {BaseToast, BaseToastProps, ErrorToast, InfoToast} from 'react-native-toast-message';
 
 const tamaguiConfig = createTamagui(tconfig);
 
@@ -27,6 +28,7 @@ SplashScreen.preventAutoHideAsync();
 
 type Conf = typeof tamaguiConfig;
 declare module '@tamagui/core' {
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 	interface TamaguiCustomConfig extends Conf {}
 }
 
@@ -133,34 +135,83 @@ const RootLayout = () => {
 		fonts: configureFonts({config: fontConfig, isV3: false}),
 	};
 
+	const toastConfig = {
+		/*
+    Overwrite 'success' type,
+    by modifying the existing `BaseToast` component
+  */
+		success: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
+			<BaseToast
+				{...props}
+				style={{borderLeftColor: 'pink'}}
+				contentContainerStyle={{paddingHorizontal: 15}}
+				text1Style={{
+					fontSize: 15,
+					fontWeight: '400',
+				}}
+			/>
+		),
+
+		error: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
+			<ErrorToast
+				{...props}
+				text1Style={{
+					fontSize: 17,
+					fontFamily: 'normal',
+				}}
+				text2Style={{
+					fontSize: 15,
+					fontFamily: 'normal',
+				}}
+			/>
+		),
+
+		info: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
+			<InfoToast
+				{...props}
+				text1Style={{
+					fontSize: 17,
+					fontFamily: 'normal',
+				}}
+				text2Style={{
+					fontSize: 15,
+					fontFamily: 'normal',
+				}}
+			/>
+		),
+	};
+
 	return (
-		<GluestackUIProvider config={config}>
-			<TamaguiProvider config={tamaguiConfig}>
-				<PaperProvider theme={theme}>
-					<QueryClientProvider client={client}>
-						<AuthProvider>
-							<RotationAreasProvider>
-								<RotationCompetenciesProvider>
-									<CompetencyProvider>
-										<RegistrationProvider>
-											<ErrorProvider>
-												<SearchProvider>
-													<Stack
-														screenOptions={{
-															headerShown: false,
-														}}
-													/>
-												</SearchProvider>
-											</ErrorProvider>
-										</RegistrationProvider>
-									</CompetencyProvider>
-								</RotationCompetenciesProvider>
-							</RotationAreasProvider>
-						</AuthProvider>
-					</QueryClientProvider>
-				</PaperProvider>
-			</TamaguiProvider>
-		</GluestackUIProvider>
+		<>
+			<GluestackUIProvider config={config}>
+				<TamaguiProvider config={tamaguiConfig}>
+					<PaperProvider theme={theme}>
+						<QueryClientProvider client={client}>
+							<AuthProvider>
+								<RotationAreasProvider>
+									<RotationCompetenciesProvider>
+										<CompetencyProvider>
+											<RegistrationProvider>
+												<ErrorProvider>
+													<SearchProvider>
+														<Stack
+															screenOptions={{
+																headerShown: false,
+															}}
+														/>
+													</SearchProvider>
+												</ErrorProvider>
+											</RegistrationProvider>
+										</CompetencyProvider>
+									</RotationCompetenciesProvider>
+								</RotationAreasProvider>
+							</AuthProvider>
+						</QueryClientProvider>
+					</PaperProvider>
+				</TamaguiProvider>
+			</GluestackUIProvider>
+			<Toast config={toastConfig} />
+		</>
 	);
 };
 

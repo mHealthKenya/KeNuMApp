@@ -87,7 +87,7 @@ const CPDActivityBox: FC<{activity: CPDActivity}> = ({activity}) => {
 
 const CPDActivitiesComponent: FC<{
 	activities: CPDActivity[];
-	refresh: () => {};
+	refresh: () => void;
 	isRefetching: boolean;
 }> = ({activities, refresh, isRefetching}) => {
 	const {search, handleSearch} = useSearch();

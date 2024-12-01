@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
+import { useError } from '../../providers/error';
 
 interface Transfer {
 	internship_id: string;
@@ -26,7 +27,8 @@ const internshipTransfer = async (data: Transfer) => {
 	return response;
 };
 
-const useInternshipTransfer = (successFn: () => void, errorFn: () => void) => {
+const useInternshipTransfer = (successFn: () => void) => {
+	const { handleError } = useError()
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: internshipTransfer,
@@ -38,7 +40,7 @@ const useInternshipTransfer = (successFn: () => void, errorFn: () => void) => {
 		},
 
 		onError: () => {
-			errorFn();
+			handleError("Could not complete transfer request")
 		},
 	});
 };

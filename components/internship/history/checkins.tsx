@@ -65,7 +65,7 @@ const CheckinBox: FC<{checkin: CheckIns}> = ({checkin}) => {
 
 const CheckinHistoryComponent: FC<{
 	checkins: CheckIns[];
-	refresh: () => {};
+	refresh: () => void;
 	isRefetching: boolean;
 }> = ({checkins, refresh, isRefetching}) => {
 	const {search, handleSearch} = useSearch();

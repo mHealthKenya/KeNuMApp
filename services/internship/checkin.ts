@@ -4,6 +4,7 @@ import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
 import { CheckinApp } from '../../models/checkinsuccess';
 import { useAuth } from '../../providers/auth';
+import { useError } from '../../providers/error';
 
 export interface OTP {
 	index_id: string;
@@ -56,8 +57,9 @@ export const sendOTP = async (data: OTP) => {
 	});
 };
 
-const useInternshipCheckin = (successFn: () => void, errorFn: () => void) => {
+const useInternshipCheckin = (successFn: () => void) => {
 	const { user } = useAuth();
+	const { handleError } = useError()
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: internshipCheckin,
@@ -76,7 +78,7 @@ const useInternshipCheckin = (successFn: () => void, errorFn: () => void) => {
 		},
 
 		onError: () => {
-			errorFn();
+			handleError("Could not complete checkin")
 		},
 	});
 };

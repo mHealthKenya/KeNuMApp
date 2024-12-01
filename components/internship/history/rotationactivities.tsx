@@ -66,7 +66,7 @@ const RotationsBox: FC<{rotation: RotationActivity}> = ({rotation}) => {
 
 const RotationActivitiesComponent: FC<{
 	rotation: RotationActivity[];
-	refresh: () => {};
+	refresh: () => void;
 	isRefetching: boolean;
 }> = ({rotation, refresh, isRefetching}) => {
 	const {search, handleSearch} = useSearch();

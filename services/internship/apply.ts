@@ -3,6 +3,7 @@ import { baseUrl } from '../../constants/baseurl';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as secureStore from 'expo-secure-store';
 import { UserImage } from '../../components/internship/apply';
+import { useError } from '../../providers/error';
 
 
 interface Apply {
@@ -41,8 +42,9 @@ const internshipApply = async (data: Apply) => {
 	return response;
 };
 
-const useInternshipApply = (successFn: () => void, errorFn: () => void) => {
+const useInternshipApply = (successFn: () => void) => {
 	const queryClient = useQueryClient();
+	const { handleError } = useError()
 	return useMutation({
 		mutationFn: internshipApply,
 		onSuccess: () => {
@@ -52,12 +54,8 @@ const useInternshipApply = (successFn: () => void, errorFn: () => void) => {
 			successFn();
 		},
 
-		onError: (error) => {
-
-			console.log({
-				error: JSON.stringify(error),
-			})
-			errorFn();
+		onError: () => {
+			handleError("Could not complete internship application")
 		},
 	});
 };

@@ -59,7 +59,7 @@ const TransferBox: FC<{transfer: TransferHist}> = ({transfer}) => {
 
 const TransferHistComponent: FC<{
 	transfers: TransferHist[];
-	refresh: () => {};
+	refresh: () => void;
 	isRefetching: boolean;
 }> = ({transfers, refresh, isRefetching}) => {
 	const {search, handleSearch} = useSearch();

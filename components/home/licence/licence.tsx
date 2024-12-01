@@ -7,11 +7,14 @@ import {Button} from 'react-native-paper';
 import {licenceGenerator} from '../../../helpers/licencegenerator';
 import {useAuth} from '../../../providers/auth';
 import {Text} from '../../Themed';
+import {DateFormat} from '../../../enums/date';
 
 const HomeLicenceComponent = () => {
 	const {user} = useAuth();
 
 	const endDate = user?.license?.length ? dayjs(new Date(user?.license[0].to_date || '')) : dayjs(new Date());
+
+	const eDate = user?.license?.length ? dayjs(new Date(user?.license[0].to_date || '')).format(DateFormat.WITH_DAY) : '';
 
 	const currentDate = dayjs(new Date());
 	const diff = Math.ceil(endDate.diff(currentDate) / 86400000);
@@ -40,7 +43,7 @@ const HomeLicenceComponent = () => {
 						source={require('../../../assets/images/validlicence.png')}
 						style={{
 							height: 90,
-							width: 'auto',
+							width: 90,
 						}}
 						className='mr-3'
 					/>
@@ -51,16 +54,12 @@ const HomeLicenceComponent = () => {
 						<Text className='text-2xl tracking-wide' bold>
 							Well Done!
 						</Text>
-						<Text className='text-lg'>
-							Your licence is active and will expire in <Text className='font-bold'>{diff}</Text> days.
-						</Text>
+						<Text className='text-lg'>Your licence is active</Text>
+						<Text className='text-lg'>Expiry {eDate}</Text>
 					</View>
 					<View className='flex-row justify-between items-center'>
 						<Text className='text-base'>
-							Status: <Text className='text-base'>Active</Text>
-						</Text>
-						<Text className='text-base'>
-							Days Left: <Text className='text-base'>{diff}</Text>
+							Active Days Left: <Text className='text-base'>{diff}</Text>
 						</Text>
 					</View>
 				</View>

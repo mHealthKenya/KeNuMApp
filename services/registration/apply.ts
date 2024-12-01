@@ -3,8 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import dayjs from 'dayjs';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
-import { useAtom } from 'jotai';
-import { errorAtom } from '../../atoms/error';
+import { useError } from '../../providers/error';
 interface Registration {
 	education_id: string;
 	current_passport: any
@@ -42,11 +41,10 @@ const registrationApplication = async (data: Registration) => {
 
 const useRegistrationApplication = (
 	successFn: () => void,
-	errorFn: () => void
 ) => {
 	const queryClient = useQueryClient();
 
-	const [_, setError] = useAtom(errorAtom)
+	const { handleError } = useError()
 
 	return useMutation({
 		mutationFn: registrationApplication,
@@ -64,8 +62,8 @@ const useRegistrationApplication = (
 					? error.response?.data?.message || "Something went wrong!"
 					: "Something went wrong!";
 
-			await setError(errorMessage);
-			await errorFn();
+			await handleError(errorMessage);
+
 		},
 	});
 };

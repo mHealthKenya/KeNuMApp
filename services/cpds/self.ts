@@ -4,6 +4,7 @@ import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
 import { CPDSuccess } from '../../models/cpdsuccess';
 import { UserImage } from '../../components/internship/apply';
+import { useError } from '../../providers/error';
 
 
 interface Self {
@@ -43,7 +44,8 @@ const selfReport = async (data: Self) => {
 	return response;
 };
 
-const useSelfReport = (successFn: () => void, errorFn: () => void) => {
+const useSelfReport = (successFn: () => void) => {
+	const { handleError } = useError()
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: selfReport,
@@ -59,9 +61,8 @@ const useSelfReport = (successFn: () => void, errorFn: () => void) => {
 			successFn();
 		},
 
-		onError: (err) => {
-			console.log(err);
-			errorFn();
+		onError: () => {
+			handleError("Could not complete request")
 		},
 	});
 };

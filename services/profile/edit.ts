@@ -1,9 +1,10 @@
- 
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
 import { UserImage } from '../../components/internship/apply';
+import { useError } from '../../providers/error';
 
 interface Profile {
     address: string;
@@ -41,7 +42,8 @@ const updateProfile = async (data: Profile) => {
     return response;
 };
 
-const useProfileUpdate = (successFn: () => void, errorFn: () => void) => {
+const useProfileUpdate = () => {
+    const { handleError } = useError()
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: updateProfile,
@@ -49,14 +51,11 @@ const useProfileUpdate = (successFn: () => void, errorFn: () => void) => {
             queryClient.invalidateQueries({
                 queryKey: ['authenticated-user'],
             });
-
-            successFn();
+        },
+        onError: () => {
+            handleError('Invalid email or password');
         },
 
-        onError: (err) => {
-            console.log(err);
-            errorFn();
-        },
     });
 };
 

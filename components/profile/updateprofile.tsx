@@ -1,21 +1,20 @@
-import {useToast} from '@gluestack-ui/themed';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Image} from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import mime from 'mime';
-import React, {FC, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAvoidingView, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
 import {primaryColor} from '../../constants/Colors';
 import {User} from '../../models/user';
+import {useError} from '../../providers/error';
 import useProfileUpdate from '../../services/profile/edit';
 import globalStyles from '../../styles/global';
-import ToastError from '../shared/ToastError';
-import ToastSuccess from '../shared/ToastSuccess';
-import ProfileHeader from './header';
 import {UserImage} from '../internship/apply';
+import ProfileHeader from './header';
 
 interface Form {
 	address: string;
@@ -76,31 +75,9 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 		}
 	};
 
-	const toast = useToast();
+	const {error, clearError} = useError();
 
-	const successFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return <ToastSuccess id={id} title='Success' description='Profile updated successfully' />;
-			},
-			placement: 'top',
-		});
-	};
-
-	const errorFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return <ToastError id={id} title='Error' description='Could not update profile. Try again later.' />;
-			},
-			placement: 'top',
-		});
-	};
-
-	const {mutate, isPending} = useProfileUpdate(successFn, errorFn);
+	const {mutate, isPending, reset, isSuccess} = useProfileUpdate();
 
 	const onSubmit = (data: Form) => {
 		mutate({
@@ -108,6 +85,36 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 			profile_pic: image,
 		});
 	};
+
+	const showToastError = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Auth Error',
+			text2: error,
+			onShow: () => clearError(),
+		});
+	}, [error, clearError]);
+
+	const showToastSuccess = useCallback(() => {
+		Toast.show({
+			type: 'success',
+			text1: 'Success',
+			text2: 'Your profile was updated!',
+			onShow: () => reset(),
+		});
+	}, [reset]);
+
+	useEffect(() => {
+		if (error) {
+			showToastError();
+		}
+	}, [error, showToastError]);
+
+	useEffect(() => {
+		if (isSuccess) {
+			showToastSuccess();
+		}
+	}, [isSuccess, showToastSuccess]);
 
 	return (
 		<ScrollView style={styles.container}>

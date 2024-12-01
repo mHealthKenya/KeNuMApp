@@ -1,9 +1,8 @@
-import {useToast} from '@gluestack-ui/themed';
 import {yupResolver} from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
@@ -12,7 +11,8 @@ import {primaryColor} from '../../../constants/Colors';
 import {useAuth} from '../../../providers/auth';
 import useInternshipApplications from '../../../services/internship/applications';
 import useInternshipCheckin from '../../../services/internship/checkin';
-import ToastError from '../../shared/ToastError';
+import {useError} from '../../../providers/error';
+import Toast from 'react-native-toast-message';
 
 interface Form {
 	nurse_officer_incharge: string;
@@ -44,7 +44,6 @@ const AddCheckinComponent = () => {
 		activeOutlineColor: '#0445b5',
 	};
 
-	const toast = useToast();
 	const {width, height} = useWindowDimensions();
 	const actualWidth = Math.min(width, height);
 	const usableWidth = actualWidth - 20;
@@ -74,24 +73,24 @@ const AddCheckinComponent = () => {
 		});
 	};
 
-	const errorFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return (
-					<ToastError
-						id={id}
-						title='Application Error'
-						description='Could not complete internship checkin. Please retry later'
-					/>
-				);
-			},
-			placement: 'top',
-		});
-	};
+	const {mutate, isPending} = useInternshipCheckin(successFn);
 
-	const {mutate, isPending} = useInternshipCheckin(successFn, errorFn);
+	const {error, clearError} = useError();
+
+	const showToast = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Error',
+			text2: error,
+			onShow: () => clearError(),
+		});
+	}, [error, clearError]);
+
+	useEffect(() => {
+		if (error) {
+			showToast();
+		}
+	}, [error, showToast]);
 
 	const onSubmit = (data: Form) => {
 		const date = dayjs(new Date()).format('YYYY-MM-DDTHH:mm:ssZ[Z] ');

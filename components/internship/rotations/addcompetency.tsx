@@ -1,22 +1,20 @@
-import {useToast} from '@gluestack-ui/themed';
 import {yupResolver} from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import {useRouter} from 'expo-router';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, View} from 'react-native';
+import {Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
+import {useAuth} from '../../../providers/auth';
 import {useFetchedCompetency} from '../../../providers/competency';
+import {useError} from '../../../providers/error';
 import useAddCompetency from '../../../services/internship/addcompetency';
 import useInternshipApplications from '../../../services/internship/applications';
 import globalStyles from '../../../styles/global';
 import DateModal from '../../shared/DateModal';
-import ToastError from '../../shared/ToastError';
-import ToastSuccess from '../../shared/ToastSuccess';
 import CompetencyInformationBox from './competencyinformationbox';
-import {useAuth} from '../../../providers/auth';
-import {ScrollView} from 'react-native';
 
 interface Activity {
 	activity_notes: string;
@@ -76,41 +74,43 @@ const AddCompetencyComponent = () => {
 	const router = useRouter();
 
 	const successFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return (
-					<ToastSuccess id={id} title='Competency Recorded' description='Your competency has been successfully recorded' />
-				);
-			},
-			placement: 'top',
-		});
-
 		router.push('/internship');
 		Keyboard.dismiss();
 	};
 
-	const toast = useToast();
+	const {mutate, isPending, isSuccess, reset} = useAddCompetency(successFn);
 
-	const errorFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return (
-					<ToastError
-						id={id}
-						title='Recording Error'
-						description='Could not complete recording your competency. Please retry later'
-					/>
-				);
-			},
-			placement: 'top',
+	const {error, clearError} = useError();
+
+	const showToastError = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Error',
+			text2: error,
+			onShow: () => clearError(),
 		});
-	};
+	}, [error, clearError]);
 
-	const {mutate, isPending} = useAddCompetency(successFn, errorFn);
+	const showToastSuccess = useCallback(() => {
+		Toast.show({
+			type: 'success',
+			text1: 'Success',
+			text2: 'Your profile was updated!',
+			onShow: () => reset(),
+		});
+	}, [reset]);
+
+	useEffect(() => {
+		if (error) {
+			showToastError();
+		}
+	}, [error, showToastError]);
+
+	useEffect(() => {
+		if (isSuccess) {
+			showToastSuccess();
+		}
+	}, [isSuccess, showToastSuccess]);
 
 	const onSubmit = (data: Activity) => {
 		mutate({

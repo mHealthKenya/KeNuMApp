@@ -1,8 +1,7 @@
-import {useToast} from '@gluestack-ui/themed';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useCallback, useEffect, useMemo, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {
 	Keyboard,
@@ -16,14 +15,15 @@ import {
 } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
 import {primaryColor} from '../../../constants/Colors';
 import {InternshipCenter} from '../../../models/internshipcenters';
 import {TransferReason} from '../../../models/transferreasons';
 import {useAuth} from '../../../providers/auth';
+import {useError} from '../../../providers/error';
 import useInternshipApplications from '../../../services/internship/applications';
 import useInternshipTransfer from '../../../services/internship/transfer';
-import ToastError from '../../shared/ToastError';
 
 interface Transfer {
 	transfer_request_desc: string;
@@ -37,8 +37,6 @@ const RequestTransferComponent: FC<{
 	centers: InternshipCenter[];
 	reasons: TransferReason[];
 }> = ({centers, reasons}) => {
-	const toast = useToast();
-
 	const [dropDownCenter, setDropDownCenter] = useState(false);
 	const [dropDownReason, setDropDownReason] = useState(false);
 	const [selectedCenter, setSelectedCenter] = useState(null);
@@ -91,24 +89,7 @@ const RequestTransferComponent: FC<{
 		router.replace('/transferhist');
 	};
 
-	const errorFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return (
-					<ToastError
-						id={id}
-						title='Application Error'
-						description='Could not complete internship transfer. Please retry later'
-					/>
-				);
-			},
-			placement: 'top',
-		});
-	};
-
-	const {mutate, isPending} = useInternshipTransfer(successFn, errorFn);
+	const {mutate, isPending} = useInternshipTransfer(successFn);
 
 	const {user} = useAuth();
 
@@ -126,6 +107,23 @@ const RequestTransferComponent: FC<{
 
 		Keyboard.dismiss();
 	};
+
+	const {error, clearError} = useError();
+
+	const showToast = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Error',
+			text2: error,
+			onShow: () => clearError(),
+		});
+	}, [error, clearError]);
+
+	useEffect(() => {
+		if (error) {
+			showToast();
+		}
+	}, [error, showToast]);
 
 	return (
 		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1 p-2'>

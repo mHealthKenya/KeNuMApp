@@ -1,22 +1,22 @@
-import {useToast} from '@gluestack-ui/themed';
 import {yupResolver} from '@hookform/resolvers/yup';
 import dayjs from 'dayjs';
 import * as DocumentPicker from 'expo-document-picker';
 import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
-import React, {FC, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
 import {primaryColor} from '../../constants/Colors';
 import {truncateText} from '../../helpers/truncate';
 import {User} from '../../models/user';
 import {useCPDCategoryFetched} from '../../providers/cpdcategories';
+import {useError} from '../../providers/error';
 import useSelfReport from '../../services/cpds/self';
 import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
-import ToastError from '../shared/ToastError';
 import {Text} from '../Themed';
 
 interface Form {
@@ -83,25 +83,6 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 		setDate(new Date());
 	};
 
-	// const pickImage = async (name: string) => {
-	// 	let result = await ImagePicker.launchImageLibraryAsync({
-	// 		mediaTypes: ImagePicker.MediaTypeOptions.Images,
-	// 		allowsEditing: true,
-	// 		aspect: [4, 3],
-	// 		quality: 1,
-	// 	});
-
-	// 	if (!result.canceled) {
-	// 		const item = {
-	// 			uri: 'file:///' + result.assets[0].uri.split('file:/').join(''),
-	// 			name,
-	// 			type: mime.getType(result.assets[0].uri) || '',
-	// 		};
-
-	// 		setImage(item);
-	// 	}
-	// };
-
 	const pickCPdEvidence = async () => {
 		const result = await DocumentPicker.getDocumentAsync({
 			multiple: false,
@@ -124,22 +105,7 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 		router.replace('/cpdactivities');
 	};
 
-	const toast = useToast();
-
-	const errorFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return (
-					<ToastError id={id} title='Reporting Error' description='Could not CPD self reporting. Please retry later' />
-				);
-			},
-			placement: 'top',
-		});
-	};
-
-	const {mutate, isPending} = useSelfReport(successFn, errorFn);
+	const {mutate, isPending} = useSelfReport(successFn);
 
 	const cpd_evidence = {
 		name: selectedEvidence?.assets![0].name || '',
@@ -156,6 +122,23 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 			category_id,
 		});
 	};
+
+	const {error, clearError} = useError();
+
+	const showToast = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Error',
+			text2: error,
+			onShow: () => clearError(),
+		});
+	}, [error, clearError]);
+
+	useEffect(() => {
+		if (error) {
+			showToast();
+		}
+	}, [error, showToast]);
 
 	return (
 		<View style={globalStyles.container}>

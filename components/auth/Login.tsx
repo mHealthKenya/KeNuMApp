@@ -1,18 +1,17 @@
-import {useToast} from '@gluestack-ui/themed';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {Link} from 'expo-router';
 import {StatusBar} from 'expo-status-bar';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {Image, KeyboardAvoidingView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Avatar, Button, TextInput, TextInputProps} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
 import {useAuth} from '../../providers/auth';
 import {useError} from '../../providers/error';
 import useLogin from '../../services/auth/login';
 import globalStyles from '../../styles/global';
-import ToastError from '../shared/ToastError';
-import {Link} from 'expo-router';
 import {Text} from '../Themed';
 
 export interface Credentials {
@@ -27,8 +26,6 @@ const validationSchema = Yup.object().shape({
 
 const LoginComponent = () => {
 	const [show, setShow] = useState(false);
-
-	const toast = useToast();
 
 	const toggleShow = () => {
 		setShow((show) => !show);
@@ -62,24 +59,36 @@ const LoginComponent = () => {
 
 	const {error, clearError} = useError();
 
-	useEffect(() => {
-		if (error) {
-			toast.show({
-				onCloseComplete() {
-					clearError();
-				},
+	// useEffect(() => {
+	// 	setTimeout(() => {
+	// 		if (error) {
+	// 			clearError();
+	// 		}
+	// 	}, 3000);
+	// }, [error, clearError]);
 
-				render: ({id}) => {
-					return <ToastError id={id} title='Auth Error' description={error} />;
-				},
-				placement: 'top',
-			});
-		}
-	}, [error, clearError, toast]);
+	if (error) {
+		console.log(error);
+	}
 
 	const onSubmit = (data: Credentials) => {
 		mutate(data);
 	};
+
+	const showToast = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Auth Error',
+			text2: error,
+			onShow: () => clearError(),
+		});
+	}, [error, clearError]);
+
+	useEffect(() => {
+		if (error) {
+			showToast();
+		}
+	}, [error, showToast]);
 
 	return (
 		<SafeAreaView style={globalStyles.container}>

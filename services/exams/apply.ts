@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosRequestConfig } from 'axios';
 import * as secureStore from 'expo-secure-store';
 import { baseUrl } from '../../constants/baseurl';
+import { useError } from '../../providers/error';
 
 interface Apply {
 	student_series_id: string;
@@ -26,7 +27,8 @@ const applyExam = async (data: Apply) => {
 	return response;
 };
 
-const useExamApply = (successFn: () => void, errorFn: () => void) => {
+const useExamApply = (successFn: () => void) => {
+	const { handleError } = useError()
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: applyExam,
@@ -39,7 +41,7 @@ const useExamApply = (successFn: () => void, errorFn: () => void) => {
 		},
 
 		onError: () => {
-			errorFn();
+			handleError("Could not complete exam application")
 		},
 	});
 };

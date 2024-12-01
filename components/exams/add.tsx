@@ -1,18 +1,18 @@
-import {Image} from 'expo-image';
-import {useLocalSearchParams, useRouter} from 'expo-router';
-import React, {FC, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, StyleSheet, View, useWindowDimensions} from 'react-native';
+import { Image } from 'expo-image';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { KeyboardAvoidingView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {Button} from 'react-native-paper';
+import { Button } from 'react-native-paper';
 
-import {useToast} from '@gluestack-ui/themed';
 import dayjs from 'dayjs';
-import {primaryColor} from '../../constants/Colors';
-import {ExamCenter} from '../../models/examcenters';
-import {User} from '../../models/user';
+import Toast from 'react-native-toast-message';
+import { primaryColor } from '../../constants/Colors';
+import { ExamCenter } from '../../models/examcenters';
+import { User } from '../../models/user';
+import { useError } from '../../providers/error';
 import useExamApply from '../../services/exams/apply';
 import globalStyles from '../../styles/global';
-import ToastError from '../shared/ToastError';
 
 const AddExamComponent: FC<{
 	centers: ExamCenter[];
@@ -38,30 +38,28 @@ const AddExamComponent: FC<{
 
 	const {student_series_id = ''} = useLocalSearchParams();
 
-	const toast = useToast();
-
 	const successFn = () => {
 		router.push('/examapplications');
 	};
 
-	const errorFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return (
-					<ToastError
-						id={id}
-						title='Application Error'
-						description='Could not complete exam application. Please retry later'
-					/>
-				);
-			},
-			placement: 'top',
-		});
-	};
+	const {error, clearError} = useError();
 
-	const {mutate, isPending} = useExamApply(successFn, errorFn);
+	const showToast = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Error',
+			text2: error,
+			onShow: () => clearError(),
+		});
+	}, [error, clearError]);
+
+	useEffect(() => {
+		if (error) {
+			showToast();
+		}
+	}, [error, showToast]);
+
+	const {mutate, isPending} = useExamApply(successFn);
 
 	const date = new Date();
 

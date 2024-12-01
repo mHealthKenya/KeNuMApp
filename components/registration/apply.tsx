@@ -1,20 +1,18 @@
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
-import React, {useState} from 'react';
-import globalStyles from '../../styles/global';
+import {Ionicons} from '@expo/vector-icons';
+import {Alert, AlertIcon, AlertText, InfoIcon} from '@gluestack-ui/themed';
 import {Image} from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-import mime from 'mime';
-import {Button, TextInput, TextInputProps} from 'react-native-paper';
-import {primaryColor} from '../../constants/Colors';
-import useRegistrationApplication from '../../services/registration/apply';
-import {useAuth} from '../../providers/auth';
-import {Alert, AlertIcon, AlertText, useToast} from '@gluestack-ui/themed';
-import {InfoIcon} from '@gluestack-ui/themed';
 import {useRouter} from 'expo-router';
-import ToastError from '../shared/ToastError';
-import {useAtom} from 'jotai';
-import {errorAtom} from '../../atoms/error';
-import {Ionicons} from '@expo/vector-icons';
+import mime from 'mime';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
+import {primaryColor} from '../../constants/Colors';
+import {useAuth} from '../../providers/auth';
+import {useError} from '../../providers/error';
+import useRegistrationApplication from '../../services/registration/apply';
+import globalStyles from '../../styles/global';
 
 const RegistrationApplicationComponent = () => {
 	interface UserImage {
@@ -63,26 +61,11 @@ const RegistrationApplicationComponent = () => {
 
 	const router = useRouter();
 
-	const toast = useToast();
-
-	const [error, _] = useAtom(errorAtom);
-
 	const successFn = () => {
 		router.push('/registrationapplications');
 	};
 
-	const errorFn = () => {
-		toast.show({
-			onCloseComplete() {},
-			duration: 5000,
-			render: ({id}) => {
-				return <ToastError id={id} title='Application Error' description={error} />;
-			},
-			placement: 'top',
-		});
-	};
-
-	const {mutate, isPending} = useRegistrationApplication(successFn, errorFn);
+	const {mutate, isPending} = useRegistrationApplication(successFn);
 
 	const {user} = useAuth();
 
@@ -95,6 +78,23 @@ const RegistrationApplicationComponent = () => {
 			});
 		}
 	};
+
+	const {error, clearError} = useError();
+
+	const showToast = useCallback(() => {
+		Toast.show({
+			type: 'error',
+			text1: 'Error',
+			text2: error,
+			onShow: () => clearError(),
+		});
+	}, [error, clearError]);
+
+	useEffect(() => {
+		if (error) {
+			showToast();
+		}
+	}, [error, showToast]);
 
 	return (
 		<View style={globalStyles.container}>

@@ -69,7 +69,7 @@ const ResultBox: FC<{result: ExamResult}> = ({result}) => {
 
 const ExamResultsComponent: FC<{
 	results: ExamResult[];
-	refresh: () => {};
+	refresh: () => void;
 	isRefetching: boolean;
 }> = ({results, refresh, isRefetching}) => {
 	const {search, handleSearch} = useSearch();
@@ -82,7 +82,7 @@ const ExamResultsComponent: FC<{
 					item.overall_score.toLowerCase().includes(search.toLowerCase()) ||
 					item.series.toLowerCase().includes(search.toLowerCase())
 			),
-		[search]
+		[search, results]
 	);
 
 	return (
