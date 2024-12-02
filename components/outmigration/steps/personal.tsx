@@ -117,7 +117,7 @@ const PersonalDetailsComponent = () => {
 						<Text>Step 3 of 3</Text>
 					</View>
 					<View className='p-2 mb-4 items-center'>
-						<ProgressTrack progress={3 / 3} />
+						<ProgressTrack progress={100} />
 					</View>
 					<View className='p-2 flex flex-grow' style={styles.status}>
 						<DropDownPicker
@@ -131,6 +131,7 @@ const PersonalDetailsComponent = () => {
 							placeholderStyle={{
 								fontSize: 16,
 								fontFamily: 'normal',
+								color: '#A9A9A9',
 							}}
 							textStyle={{
 								fontFamily: 'normal',
@@ -148,7 +149,7 @@ const PersonalDetailsComponent = () => {
 					</View>
 					<View className='p-2'>
 						<TextInput
-							label={<Text>Number of Dependants</Text>}
+							label={<Text style={{color: '#A9A9A9'}}>Number of Dependants</Text>}
 							mode='outlined'
 							defaultValue={personalDetails?.dependants}
 							onChangeText={handleDependents}

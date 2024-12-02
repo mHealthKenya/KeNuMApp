@@ -1,18 +1,19 @@
-import {
-	Alert,
-	AlertCircleIcon,
-	AlertIcon,
-	AlertText,
-} from '@gluestack-ui/themed';
-import React, { FC } from 'react';
+import React, {FC} from 'react';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {View} from 'react-native';
+import {Text} from '../Themed';
 
-const WarnAlert: FC<{ message: string }> = ({ message }) => {
+const WarningAlert: FC<{message: string}> = ({message}) => {
 	return (
-		<Alert action='warning' variant='solid' mx='$2.5'>
-			<AlertIcon as={AlertCircleIcon} mr='$3' />
-			<AlertText>{message}</AlertText>
-		</Alert>
+		<View className='bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4 mx-2 mt-2 rounded-r-lg shadow-md'>
+			<View className='flex py-4 items-center justify-between'>
+				<View className='flex flex-row gap-4 items-center'>
+					<FontAwesome name='warning' size={34} color='#fbbf24' />
+					<Text className='text-yellow-700'>{message}</Text>
+				</View>
+			</View>
+		</View>
 	);
 };
 
-export default WarnAlert;
+export default WarningAlert;

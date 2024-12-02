@@ -2,8 +2,9 @@ import * as DocumentPicker from 'expo-document-picker';
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import React, {useEffect, useMemo, useState} from 'react';
-import {Platform, Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {KeyboardAwareScrollView, KeyboardToolbar} from 'react-native-keyboard-controller';
 import {Button, Icon, TextInput, TextInputProps} from 'react-native-paper';
 import {employmentAtom} from '../../../atoms/employment';
 import {outmigrationAtom} from '../../../atoms/outmigration';
@@ -139,20 +140,13 @@ const OutmigrationStepComponent = () => {
 	};
 
 	return (
-		<View
-			style={{
-				flex: 1,
-			}}>
-			<ScrollView
-				nestedScrollEnabled={true}
-				style={{
-					paddingBottom: 20,
-				}}>
+		<>
+			<KeyboardAwareScrollView bottomOffset={62} contentContainerStyle={{padding: 16, gap: 16}}>
 				<View className='p-2 items-center'>
 					<Text>Step 1 of 3</Text>
 				</View>
 				<View className='p-2 mb-4 items-center'>
-					<ProgressTrack progress={1 / 3} />
+					<ProgressTrack progress={33} />
 				</View>
 				<View className='p-3'>
 					<View className='p-2' style={styles.outmigration}>
@@ -168,6 +162,7 @@ const OutmigrationStepComponent = () => {
 							placeholderStyle={{
 								fontSize: 16,
 								fontFamily: 'normal',
+								color: '#A9A9A9',
 							}}
 							textStyle={{
 								fontFamily: 'normal',
@@ -200,6 +195,7 @@ const OutmigrationStepComponent = () => {
 							placeholderStyle={{
 								fontSize: 16,
 								fontFamily: 'normal',
+								color: '#A9A9A9',
 							}}
 							textStyle={{
 								fontFamily: 'normal',
@@ -228,6 +224,7 @@ const OutmigrationStepComponent = () => {
 							placeholderStyle={{
 								fontSize: 16,
 								fontFamily: 'normal',
+								color: '#A9A9A9',
 							}}
 							textStyle={{
 								fontFamily: 'normal',
@@ -256,6 +253,7 @@ const OutmigrationStepComponent = () => {
 							placeholderStyle={{
 								fontSize: 16,
 								fontFamily: 'normal',
+								color: '#A9A9A9',
 							}}
 							textStyle={{
 								fontFamily: 'normal',
@@ -317,8 +315,9 @@ const OutmigrationStepComponent = () => {
 						</Button>
 					</View>
 				</View>
-			</ScrollView>
-		</View>
+			</KeyboardAwareScrollView>
+			<KeyboardToolbar />
+		</>
 	);
 };
 

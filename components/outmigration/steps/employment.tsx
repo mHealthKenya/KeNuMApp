@@ -191,7 +191,7 @@ const EmploymentDetailsComponent = () => {
 					<Text>Step 2 of 3</Text>
 				</View>
 				<View className='p-2 mb-4 items-center'>
-					<ProgressTrack progress={2 / 3} />
+					<ProgressTrack progress={67} />
 				</View>
 
 				<View className='p-2' style={styles.employment}>
@@ -206,6 +206,7 @@ const EmploymentDetailsComponent = () => {
 						placeholderStyle={{
 							fontSize: 16,
 							fontFamily: 'normal',
+							color: '#A9A9A9',
 						}}
 						textStyle={{
 							fontFamily: 'normal',
@@ -234,6 +235,7 @@ const EmploymentDetailsComponent = () => {
 						placeholderStyle={{
 							fontSize: 16,
 							fontFamily: 'normal',
+							color: '#A9A9A9',
 						}}
 						textStyle={{
 							fontFamily: 'normal',
@@ -262,6 +264,7 @@ const EmploymentDetailsComponent = () => {
 						placeholderStyle={{
 							fontSize: 16,
 							fontFamily: 'normal',
+							color: '#A9A9A9',
 						}}
 						textStyle={{
 							fontFamily: 'normal',
@@ -291,6 +294,7 @@ const EmploymentDetailsComponent = () => {
 						placeholderStyle={{
 							fontSize: 16,
 							fontFamily: 'normal',
+							color: '#A9A9A9',
 						}}
 						textStyle={{
 							fontFamily: 'normal',
@@ -322,6 +326,7 @@ const EmploymentDetailsComponent = () => {
 						placeholderStyle={{
 							fontSize: 16,
 							fontFamily: 'normal',
+							color: '#A9A9A9',
 						}}
 						textStyle={{
 							fontFamily: 'normal',
@@ -350,6 +355,7 @@ const EmploymentDetailsComponent = () => {
 						placeholderStyle={{
 							fontSize: 16,
 							fontFamily: 'normal',
+							color: '#A9A9A9',
 						}}
 						textStyle={{
 							fontFamily: 'normal',
@@ -378,6 +384,7 @@ const EmploymentDetailsComponent = () => {
 						placeholderStyle={{
 							fontSize: 16,
 							fontFamily: 'normal',
+							color: '#A9A9A9',
 						}}
 						textStyle={{
 							fontFamily: 'normal',
@@ -396,7 +403,7 @@ const EmploymentDetailsComponent = () => {
 
 				<View className='p-2'>
 					<TextInput
-						label={<Text>Department</Text>}
+						label={<Text style={{color: '#A9A9A9'}}>Department</Text>}
 						mode='outlined'
 						defaultValue={employStatus?.department || ''}
 						onChangeText={handleDept}
@@ -406,7 +413,7 @@ const EmploymentDetailsComponent = () => {
 
 				<View className='p-2'>
 					<TextInput
-						label={<Text>Current Position</Text>}
+						label={<Text style={{color: '#A9A9A9'}}>Current Position</Text>}
 						defaultValue={employStatus?.current_position || ''}
 						mode='outlined'
 						onChangeText={handlePosition}

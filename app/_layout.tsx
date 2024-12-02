@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Updates from 'expo-updates';
 import React, {useEffect} from 'react';
 import {configureFonts, MD2LightTheme, PaperProvider} from 'react-native-paper';
+import Toast, {BaseToast, BaseToastProps, ErrorToast, InfoToast} from 'react-native-toast-message';
 import '../global.css';
 import AuthProvider from '../providers/auth';
 import CompetencyProvider from '../providers/competency';
@@ -18,7 +19,7 @@ import RegistrationProvider from '../providers/registrationprovider';
 import RotationAreasProvider from '../providers/rotationareas';
 import RotationCompetenciesProvider from '../providers/rotationcompetencies';
 import SearchProvider from '../providers/search';
-import Toast, {BaseToast, BaseToastProps, ErrorToast, InfoToast} from 'react-native-toast-message';
+import {KeyboardProvider} from 'react-native-keyboard-controller';
 
 const tamaguiConfig = createTamagui(tconfig);
 
@@ -194,11 +195,13 @@ const RootLayout = () => {
 											<RegistrationProvider>
 												<ErrorProvider>
 													<SearchProvider>
-														<Stack
-															screenOptions={{
-																headerShown: false,
-															}}
-														/>
+														<KeyboardProvider>
+															<Stack
+																screenOptions={{
+																	headerShown: false,
+																}}
+															/>
+														</KeyboardProvider>
 													</SearchProvider>
 												</ErrorProvider>
 											</RegistrationProvider>
