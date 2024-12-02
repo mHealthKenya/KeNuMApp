@@ -15,11 +15,11 @@ const KnowledgeComponent: FC<{
   const { search, handleSearch } = useSearch();
 
   const items: KnowBox[] = [
-    {
-      title: "Policies and Manuals",
-      content: "Streamlining Procedures for Consistency and Effective Action",
-      url: "allknowledge",
-    },
+    // {
+    //   title: "Policies and Manuals",
+    //   content: "Streamlining Procedures for Consistency and Effective Action",
+    //   url: "allknowledge",
+    // },
 
     {
       title: "Research Papers",
@@ -28,11 +28,11 @@ const KnowledgeComponent: FC<{
       url: "research",
     },
 
-    {
-      title: "Scopes of Practice",
-      content: "Ensuring Competence and Compliance in Professional Practice",
-      url: "allscope",
-    },
+    // {
+    //   title: "Scopes of Practice",
+    //   content: "Ensuring Competence and Compliance in Professional Practice",
+    //   url: "allscope",
+    // },
     {
       title: "Policy Briefs",
       content: "Ensuring Competence and Compliance in Professional Practice",
