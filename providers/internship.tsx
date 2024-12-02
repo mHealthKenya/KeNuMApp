@@ -1,11 +1,5 @@
-import React, {
-	FC,
-	ReactNode,
-	createContext,
-	useContext,
-	useState,
-} from 'react';
-import { InternshipApplication } from '../models/internshipapplications';
+import React, {FC, ReactNode, createContext, useContext, useState} from 'react';
+import {InternshipApplication} from '../models/internshipapplications';
 
 interface Internship {
 	application: InternshipApplication | null;
@@ -19,10 +13,8 @@ const InternshipContext = createContext<Internship>({
 
 export const useInternshipFetched = () => useContext(InternshipContext);
 
-const InternshipProvider: FC<{ children: ReactNode }> = ({ children }) => {
-	const [application, setApplication] = useState<InternshipApplication | null>(
-		null
-	);
+const InternshipProvider: FC<{children: ReactNode}> = ({children}) => {
+	const [application, setApplication] = useState<InternshipApplication | null>(null);
 
 	const handleApplication = (application: InternshipApplication) => {
 		setApplication(application);

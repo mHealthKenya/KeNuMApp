@@ -88,6 +88,10 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 			multiple: false,
 			type: ['application/pdf'],
 		});
+
+		if (result.canceled) {
+			return;
+		}
 		setSelectedEvidence(result);
 	};
 
@@ -159,27 +163,25 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 					/>
 				</View>
 
-				<View style={{height: height * 0.6}}>
-					<View>
-						<View>
-							<Pressable onPress={() => pickCPdEvidence()}>
-								<TextInput
-									label={
-										selectedEvidence?.assets
-											? truncateText({
-													text: selectedEvidence?.assets[0].name,
-													length: 30,
-											  })
-											: 'Posting Letter'
-									}
-									left={<TextInput.Icon icon='subtitles' />}
-									mode='outlined'
-									editable={false}
-									onPressIn={() => pickCPdEvidence()}
-									{...textProps}
-								/>
-							</Pressable>
-						</View>
+				<View className='flex p-2'>
+					<View className='p-2'>
+						<Pressable onPress={() => pickCPdEvidence()}>
+							<TextInput
+								label={
+									selectedEvidence?.assets
+										? truncateText({
+												text: selectedEvidence?.assets[0].name,
+												length: 30,
+										  })
+										: 'CPD Evidence'
+								}
+								left={<TextInput.Icon icon='subtitles' />}
+								mode='outlined'
+								editable={false}
+								onPressIn={() => pickCPdEvidence()}
+								{...textProps}
+							/>
+						</Pressable>
 					</View>
 					{/* <View style={[styles.container]}>
             <Pressable onPress={() => pickCPdEvidence()}>
@@ -207,7 +209,7 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
               />
             </Pressable>
           </View> */}
-					<View style={styles.container}>
+					<View className='flex p-2'>
 						<Controller
 							control={control}
 							rules={{
@@ -275,6 +277,7 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 									handleDate,
 								}}
 								minimumDate={new Date(currentYear, 0, 1)}
+								maximumDate={new Date()}
 							/>
 						)}
 					</View>

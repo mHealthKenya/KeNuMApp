@@ -1,14 +1,14 @@
 import {Avatar, AvatarBadge, AvatarFallbackText, AvatarImage} from '@gluestack-ui/themed';
+import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useAuth} from '../../providers/auth';
-import {Text} from '../Themed';
 import {Pressable, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import useAuthenticatedUser from '../../services/auth/authenticated';
+import {Text} from '../Themed';
 
 const Greeting = () => {
-	const {user} = useAuth();
+	const {data: user, isLoading} = useAuthenticatedUser();
 
 	const [greeting, setGreeting] = useState('');
 
@@ -37,6 +37,10 @@ const Greeting = () => {
 	}, [greeting]);
 
 	const {toggleDrawer} = useNavigation<any>();
+
+	if (isLoading) {
+		return <></>;
+	}
 
 	return (
 		<SafeAreaView className='flex flex-row  items-center gap-4 bg-[#0445b5] px-2'>

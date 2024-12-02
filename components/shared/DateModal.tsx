@@ -13,9 +13,10 @@ interface CModal {
 	handleDate: ({type}: any, selectedDate: any) => void;
 }
 
-const DateModal: FC<{items: CModal; minimumDate?: Date}> = ({
+const DateModal: FC<{items: CModal; minimumDate?: Date; maximumDate?: Date}> = ({
 	items: {show, toggleModal, cancelDate, date, handleDate},
 	minimumDate,
+	maximumDate,
 }) => {
 	const ref = useRef(null);
 	return (
@@ -34,6 +35,7 @@ const DateModal: FC<{items: CModal; minimumDate?: Date}> = ({
 						}}
 						minimumDate={minimumDate || new Date(dayjs().subtract(10, 'year').format())}
 						onChange={handleDate}
+						maximumDate={maximumDate}
 					/>
 				</View>
 				{Platform.OS === 'ios' && (

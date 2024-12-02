@@ -1,26 +1,19 @@
 import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import {View} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
 import SeriesComponent from '../../components/exams/series';
-import {primaryColor} from '../../constants/Colors';
-import useAuthenticatedUser from '../../services/auth/authenticated';
+import CenterLoad from '../../components/shared/CenterLoad';
+import {useAuth} from '../../providers/auth';
 import useExamSeries from '../../services/exams/series';
-import globalStyles from '../../styles/global';
 
 const Series = () => {
-	const {isLoading: loadingUser} = useAuthenticatedUser();
+	const {user} = useAuth();
 
-	const {data = [], isLoading} = useExamSeries('105501'); // We are using this for demo purposes. Please use the code below in production
+	// const {data = [], isLoading} = useExamSeries('105501'); // We are using this for demo purposes. Please use the code below in production
 
-	// const { data = [], isLoading } = useExamSeries(user?.IndexNo || '');
+	const {data = [], isLoading} = useExamSeries(user?.IndexNo || '');
 
-	if (isLoading || loadingUser) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading) {
+		return <CenterLoad />;
 	}
 
 	return (

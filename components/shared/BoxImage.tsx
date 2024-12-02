@@ -12,6 +12,7 @@ export interface InternBox {
 	backgroundColor: string;
 	path: ImageSource;
 	route: Href;
+	disabled?: boolean;
 }
 
 const BoxImage: FC<{data: InternBox}> = ({data}) => {
@@ -20,9 +21,13 @@ const BoxImage: FC<{data: InternBox}> = ({data}) => {
 	const usableWidth = actualWidth - 20;
 	const router = useRouter();
 
+	if (data?.disabled) {
+		return <></>;
+	}
+
 	return (
 		<Pressable
-			className='flex flex-1 bg-[#FFFFFF] justify-center rounded-lg m-2 p-2'
+			className={`flex flex-1 bg-[#FFFFFF] justify-center rounded-lg m-2 p-2`}
 			onPress={() => router.push(data.route)}>
 			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
 				<Image
