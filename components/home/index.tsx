@@ -1,15 +1,14 @@
+import dayjs, {Dayjs} from 'dayjs';
 import React, {useEffect, useState} from 'react';
-import {ScrollView, View, useWindowDimensions} from 'react-native';
+import {ScrollView, View} from 'react-native';
+import {useAuth} from '../../providers/auth';
 import Associations from './associations';
 import CPDHome from './cpd';
+import InvalidLicenceComponent from './licence/invalid';
 import HomeLicenceComponent from './licence/licence';
 import NursesAltComponent from './nursesalt';
-import {useAuth} from '../../providers/auth';
-import InvalidLicenceComponent from './licence/invalid';
-import dayjs, {Dayjs} from 'dayjs';
 
 const Home = () => {
-	const {height, width} = useWindowDimensions();
 	const {user} = useAuth();
 
 	const [endDate, setEndDate] = useState<Dayjs>();
@@ -28,8 +27,6 @@ const Home = () => {
 				<CPDHome />
 				<NursesAltComponent
 					item={{
-						width,
-						height,
 						title: "Practitioner's Module",
 						// actionTitle: 'View All',
 						// more: '/professionalhome',
@@ -60,8 +57,6 @@ const Home = () => {
 				/>
 				<NursesAltComponent
 					item={{
-						width,
-						height,
 						title: "Student's Module",
 						// actionTitle: 'View All',
 						// more: '/studentshome',
@@ -86,17 +81,10 @@ const Home = () => {
 					}}
 				/>
 
-				<Associations
-					item={{
-						width,
-						height,
-					}}
-				/>
+				<Associations />
 
 				<NursesAltComponent
 					item={{
-						width,
-						height,
 						title: 'General',
 						items: [
 							{

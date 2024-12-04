@@ -12,7 +12,6 @@ import {primaryColor} from '../../constants/Colors';
 import {User} from '../../models/user';
 import {useError} from '../../providers/error';
 import useProfileUpdate from '../../services/profile/edit';
-import globalStyles from '../../styles/global';
 import {UserImage} from '../internship/apply';
 import ProfileHeader from './header';
 
@@ -52,10 +51,7 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 		outlineColor: '#f9f9f9',
 		activeOutlineColor: '#0445b5',
 	};
-	const [image, setImage] = useState<UserImage>({
-		uri: null,
-		name: '',
-	});
+	const [image, setImage] = useState<UserImage | null>(null);
 	const pickImage = async (name: string) => {
 		const result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -63,6 +59,10 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 			aspect: [4, 3],
 			quality: 1,
 		});
+
+		if (result.canceled) {
+			return;
+		}
 
 		if (!result.canceled) {
 			const item = {
@@ -121,8 +121,8 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 			<KeyboardAvoidingView behavior='position'>
 				<ProfileHeader user={user} backgroundColor='#eaf2fa' textColor='#0445b5' hideButton />
 
-				<View style={[globalStyles.column, styles.card, {marginHorizontal: 10}]}>
-					<View>
+				<View className='flex flex-col mx-2 bg-[#FFFFFF] py-4 rounded-xl'>
+					<View className='p-2'>
 						<Controller
 							control={control}
 							rules={{
@@ -145,7 +145,7 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 
 						{!!errors?.mobileno?.message && <Text style={styles.errorText}>{errors?.mobileno?.message}</Text>}
 					</View>
-					<View>
+					<View className='p-2'>
 						<Controller
 							control={control}
 							rules={{
@@ -168,7 +168,7 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 
 						{!!errors?.email?.message && <Text style={styles.errorText}>{errors?.email?.message}</Text>}
 					</View>
-					<View>
+					<View className='p-2'>
 						<Controller
 							control={control}
 							rules={{
@@ -191,7 +191,7 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 
 						{!!errors?.address?.message && <Text style={styles.errorText}>{errors?.address?.message}</Text>}
 					</View>
-					<Pressable onPress={() => pickImage('cpd_evidence')}>
+					<Pressable onPress={() => pickImage('cpd_evidence')} className='p-2'>
 						<TextInput
 							label='Upload Profile'
 							left={<TextInput.Icon icon='subtitles' />}
@@ -215,10 +215,11 @@ const UpdateProfileComponent: FC<{user: User | undefined}> = ({user}) => {
 							{...textProps}
 						/>
 					</Pressable>
-
-					<Button style={styles.button} mode='contained' onPress={handleSubmit(onSubmit)} loading={isPending}>
-						Update Profile
-					</Button>
+					<View className='p-2'>
+						<Button style={styles.button} mode='contained' onPress={handleSubmit(onSubmit)} loading={isPending}>
+							Update Profile
+						</Button>
+					</View>
 				</View>
 			</KeyboardAvoidingView>
 		</ScrollView>

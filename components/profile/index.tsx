@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, View, useWindowDimensions} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {ActivityIndicator, Divider} from 'react-native-paper';
 import {primaryColor} from '../../constants/Colors';
 import useAuthenticatedUser from '../../services/auth/authenticated';
@@ -41,8 +41,6 @@ const profileItems: Profile[] = [
 const ProfileComponent = () => {
 	const {data, isLoading} = useAuthenticatedUser();
 
-	const {height} = useWindowDimensions();
-
 	if (isLoading) {
 		return (
 			<View style={[globalStyles.container, globalStyles.center]}>
@@ -52,33 +50,17 @@ const ProfileComponent = () => {
 	}
 
 	return (
-		<View style={{flex: 1}}>
-			<ScrollView style={{flex: 1}}>
-				<ProfileHeader
-					user={data}
-					backgroundColor='#0445b5'
-					textColor='#FFF'
-					buttonColor='#FFF'
-					buttonTextColor='#0445b5'
-				/>
-				<View
-					style={[
-						{
-							height: height * 0.5,
-							flex: 1,
-							marginTop: 5,
-							justifyContent: 'space-evenly',
-						},
-					]}>
-					{profileItems.map((item, index) => (
-						<View key={index}>
-							<ProfileItem title={item.title} path={item.path} />
-							{index !== profileItems.length - 1 && <Divider />}
-						</View>
-					))}
-				</View>
-			</ScrollView>
-		</View>
+		<ScrollView style={{flex: 1}}>
+			<ProfileHeader user={data} backgroundColor='#0445b5' textColor='#FFF' buttonColor='#FFF' buttonTextColor='#0445b5' />
+			<View className='flex'>
+				{profileItems.map((item, index) => (
+					<View key={index}>
+						<ProfileItem title={item.title} path={item.path} />
+						{index !== profileItems.length - 1 && <Divider />}
+					</View>
+				))}
+			</View>
+		</ScrollView>
 	);
 };
 

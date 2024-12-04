@@ -8,6 +8,7 @@ import {licenceGenerator} from '../../../helpers/licencegenerator';
 import {useAuth} from '../../../providers/auth';
 import {Text} from '../../Themed';
 import {DateFormat} from '../../../enums/date';
+import {useDimensions} from '../../../providers/dimensions';
 
 const HomeLicenceComponent = () => {
 	const {user} = useAuth();
@@ -18,6 +19,11 @@ const HomeLicenceComponent = () => {
 
 	const currentDate = dayjs(new Date());
 	const diff = Math.ceil(endDate.diff(currentDate) / 86400000);
+
+	const {
+		dimensions: {width, height},
+		portrait,
+	} = useDimensions();
 
 	const printLicence = async () => {
 		const html = await licenceGenerator(user);
@@ -35,16 +41,21 @@ const HomeLicenceComponent = () => {
 				backgroundColor: '#dfefd8',
 				padding: 8,
 			}}
-			className='m-2 rounded-lg shadow-sm'>
+			className='flex flex-1 m-2 rounded-lg shadow-sm'>
 			{/* Top Section */}
 			<View className='flex-row items-center mb-2 gap-5'>
-				<View className='w-[30%]'>
+				<View
+					style={{
+						height: portrait ? height * 0.1 : width * 0.2,
+						width: portrait ? width * 0.22 : height * 0.45,
+					}}>
 					<Image
 						source={require('../../../assets/images/validlicence.png')}
 						style={{
-							height: 90,
-							width: 90,
+							height: '100%',
+							width: '100%',
 						}}
+						contentFit='contain'
 						className='mr-3'
 					/>
 				</View>

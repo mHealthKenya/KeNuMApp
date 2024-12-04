@@ -1,9 +1,8 @@
 import {Image, ImageSource} from 'expo-image';
 import {Href, useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, View, useWindowDimensions} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {Divider, Icon} from 'react-native-paper';
-import globalStyles from '../../styles/global';
 import {Text} from '../Themed';
 
 export interface InternBox {
@@ -16,9 +15,6 @@ export interface InternBox {
 }
 
 const BoxImage: FC<{data: InternBox}> = ({data}) => {
-	const {width, height} = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
 	const router = useRouter();
 
 	if (data?.disabled) {
@@ -29,21 +25,16 @@ const BoxImage: FC<{data: InternBox}> = ({data}) => {
 		<Pressable
 			className={`flex flex-1 bg-[#FFFFFF] justify-center rounded-lg m-2 p-2`}
 			onPress={() => router.push(data.route)}>
-			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
+			<View className='flex flex-1 flex-row gap-2'>
 				<Image
 					source={data.path}
 					style={{
-						width: 60,
+						width: 80,
 						height: 80,
 					}}
+					contentFit='contain'
 				/>
-				<View
-					style={[
-						globalStyles.column,
-						{
-							width: usableWidth * 0.6,
-						},
-					]}>
+				<View className='flex flex-1 flex-col gap-2 p-2 flex-wrap'>
 					<View
 						style={{
 							paddingHorizontal: 10,
@@ -64,7 +55,9 @@ const BoxImage: FC<{data: InternBox}> = ({data}) => {
 						<Text className='text-lg'>{data.content}</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' />
+				<View className='justify-center items-center'>
+					<Icon size={30} source='chevron-right' />
+				</View>
 			</View>
 		</Pressable>
 	);

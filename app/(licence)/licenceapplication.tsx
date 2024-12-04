@@ -36,14 +36,14 @@ const LicenceApplication = () => {
 	}
 
 	return (
-		<>
+		<View className='flex flex-1'>
 			<LicenceApplicationComponent
 				employers={data}
 				county={diaspora ? diaC : county!}
 				workstation={diaspora ? workStationC : workStation!}
 			/>
 			<StatusBar style='light' />
-		</>
+		</View>
 	);
 };
 

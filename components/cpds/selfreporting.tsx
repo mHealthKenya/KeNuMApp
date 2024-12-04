@@ -5,7 +5,15 @@ import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {
+	KeyboardAvoidingView,
+	Platform,
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	View,
+	useWindowDimensions,
+} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
@@ -15,7 +23,6 @@ import {User} from '../../models/user';
 import {useCPDCategoryFetched} from '../../providers/cpdcategories';
 import {useError} from '../../providers/error';
 import useSelfReport from '../../services/cpds/self';
-import globalStyles from '../../styles/global';
 import DateModal from '../shared/DateModal';
 import {Text} from '../Themed';
 
@@ -145,21 +152,16 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 	}, [error, showToast]);
 
 	return (
-		<View style={globalStyles.container}>
-			<KeyboardAvoidingView behavior='position'>
-				<View
-					style={[
-						styles.center,
-						{
-							height: height * 0.35,
-						},
-					]}>
+		<ScrollView className='flex flex-1'>
+			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1 p-2'>
+				<View className='flex justify-center items-center'>
 					<Image
 						source={require('../../assets/images/cpdlarge.png')}
 						style={{
 							width: usableWidth,
 							height: height * 0.25,
 						}}
+						contentFit='contain'
 					/>
 				</View>
 
@@ -288,7 +290,7 @@ const CPDSelfReportingComponent: FC<{user: User | null}> = ({user}) => {
 					</View>
 				</View>
 			</KeyboardAvoidingView>
-		</View>
+		</ScrollView>
 	);
 };
 

@@ -8,9 +8,9 @@ import { useError } from '../../providers/error';
 
 interface Profile {
     address: string;
-    email: string;
+    email: string; 
     mobileno: string;
-    profile_pic: UserImage
+    profile_pic: UserImage | null
 }
 
 const updateProfile = async (data: Profile) => {

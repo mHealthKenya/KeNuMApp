@@ -5,14 +5,13 @@ import * as ImagePicker from 'expo-image-picker';
 import {useRouter} from 'expo-router';
 import mime from 'mime';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Pressable, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import {primaryColor} from '../../constants/Colors';
 import {useAuth} from '../../providers/auth';
 import {useError} from '../../providers/error';
 import useRegistrationApplication from '../../services/registration/apply';
-import globalStyles from '../../styles/global';
 
 const RegistrationApplicationComponent = () => {
 	interface UserImage {
@@ -20,10 +19,6 @@ const RegistrationApplicationComponent = () => {
 		name: string;
 		type?: string;
 	}
-
-	const {width, height} = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
 
 	const [image, setImage] = useState<UserImage>();
 
@@ -47,6 +42,10 @@ const RegistrationApplicationComponent = () => {
 			aspect: [4, 3],
 			quality: 1,
 		});
+
+		if (result.canceled) {
+			return;
+		}
 
 		if (!result.canceled) {
 			const item = {
@@ -97,20 +96,15 @@ const RegistrationApplicationComponent = () => {
 	}, [error, showToast]);
 
 	return (
-		<View style={globalStyles.container}>
-			<View
-				style={[
-					styles.center,
-					{
-						height: height * 0.4,
-					},
-				]}>
+		<ScrollView className='flex flex-1'>
+			<View className='flex items-center justify-center'>
 				<Image
 					source={require('../../assets/images/registration.png')}
 					style={{
-						width: usableWidth,
-						height: height * 0.3,
+						width: 200,
+						height: 200,
 					}}
+					contentFit='contain'
 				/>
 			</View>
 			{user?.education === undefined || user?.education?.length < 1 ? (
@@ -174,7 +168,7 @@ const RegistrationApplicationComponent = () => {
 					</View>
 				</>
 			)}
-		</View>
+		</ScrollView>
 	);
 };
 

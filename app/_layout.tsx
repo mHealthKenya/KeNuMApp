@@ -20,6 +20,7 @@ import RotationAreasProvider from '../providers/rotationareas';
 import RotationCompetenciesProvider from '../providers/rotationcompetencies';
 import SearchProvider from '../providers/search';
 import {KeyboardProvider} from 'react-native-keyboard-controller';
+import DimensionsProvider from '../providers/dimensions';
 
 const tamaguiConfig = createTamagui(tconfig);
 
@@ -144,11 +145,15 @@ const RootLayout = () => {
 		success: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
 			<BaseToast
 				{...props}
-				style={{borderLeftColor: 'pink'}}
+				style={{borderLeftColor: 'green'}}
 				contentContainerStyle={{paddingHorizontal: 15}}
 				text1Style={{
-					fontSize: 15,
-					fontWeight: '400',
+					fontSize: 18,
+					fontFamily: 'normal',
+				}}
+				text2Style={{
+					fontSize: 17,
+					fontFamily: 'normal',
 				}}
 			/>
 		),
@@ -156,12 +161,14 @@ const RootLayout = () => {
 		error: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
 			<ErrorToast
 				{...props}
+				style={{borderLeftColor: 'red'}}
+				contentContainerStyle={{paddingHorizontal: 15}}
 				text1Style={{
-					fontSize: 17,
+					fontSize: 18,
 					fontFamily: 'normal',
 				}}
 				text2Style={{
-					fontSize: 15,
+					fontSize: 17,
 					fontFamily: 'normal',
 				}}
 			/>
@@ -170,12 +177,14 @@ const RootLayout = () => {
 		info: (props: React.JSX.IntrinsicAttributes & BaseToastProps) => (
 			<InfoToast
 				{...props}
+				style={{borderLeftColor: 'blue'}}
+				contentContainerStyle={{paddingHorizontal: 15}}
 				text1Style={{
-					fontSize: 17,
+					fontSize: 18,
 					fontFamily: 'normal',
 				}}
 				text2Style={{
-					fontSize: 15,
+					fontSize: 17,
 					fontFamily: 'normal',
 				}}
 			/>
@@ -193,17 +202,19 @@ const RootLayout = () => {
 									<RotationCompetenciesProvider>
 										<CompetencyProvider>
 											<RegistrationProvider>
-												<ErrorProvider>
-													<SearchProvider>
-														<KeyboardProvider>
-															<Stack
-																screenOptions={{
-																	headerShown: false,
-																}}
-															/>
-														</KeyboardProvider>
-													</SearchProvider>
-												</ErrorProvider>
+												<DimensionsProvider>
+													<ErrorProvider>
+														<SearchProvider>
+															<KeyboardProvider>
+																<Stack
+																	screenOptions={{
+																		headerShown: false,
+																	}}
+																/>
+															</KeyboardProvider>
+														</SearchProvider>
+													</ErrorProvider>
+												</DimensionsProvider>
 											</RegistrationProvider>
 										</CompetencyProvider>
 									</RotationCompetenciesProvider>

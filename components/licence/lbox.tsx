@@ -1,9 +1,8 @@
 import {Image, ImageSource} from 'expo-image';
 import {Href, useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {Divider, Icon} from 'react-native-paper';
-import globalStyles from '../../styles/global';
 import {Text} from '../Themed';
 
 export interface LicenceBox {
@@ -17,9 +16,6 @@ export interface LicenceBox {
 }
 
 const LBox: FC<{box: LicenceBox}> = ({box}) => {
-	const {width, height} = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
 	const router = useRouter();
 
 	const handlePress = () => {
@@ -31,33 +27,26 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 
 	return (
 		<Pressable
-			style={[
-				styles.box,
-				{
-					width: usableWidth,
-					backgroundColor: box.backgroundColor,
-				},
-			]}
-			onPress={() => handlePress()}>
-			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-				<Image
-					source={box.path}
-					style={{
-						width: 60,
-						height: 80,
-					}}
-				/>
-				<View
-					style={[
-						globalStyles.column,
-						{
-							width: usableWidth * 0.6,
-						},
-					]}>
-					<View
+			className={`flex flex-1 flex-row m-2 rounded-xl`}
+			onPress={() => handlePress()}
+			style={{
+				backgroundColor: box.backgroundColor,
+			}}>
+			<View className='flex flex-1 flex-row gap-2'>
+				<View className='flex justify-center items-center p-2'>
+					<Image
+						source={box.path}
 						style={{
-							paddingHorizontal: 10,
-						}}>
+							width: 80,
+							height: 80,
+							borderRadius: 40,
+						}}
+						contentFit='contain'
+					/>
+				</View>
+
+				<View className='flex flex-1'>
+					<View className='p-2'>
 						<Text
 							style={[
 								{
@@ -89,34 +78,12 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 						</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' color={box.danger ? '#FFF' : '#000'} />
+				<View className='flex justify-center items-center'>
+					<Icon size={30} source='chevron-right' color={box.danger ? '#FFF' : '#000'} />
+				</View>
 			</View>
 		</Pressable>
 	);
 };
 
 export default LBox;
-
-const styles = StyleSheet.create({
-	box: {
-		margin: 10,
-		padding: 20,
-		borderRadius: 10,
-		justifyContent: 'center',
-	},
-
-	fullSize: {
-		justifyContent: 'space-evenly',
-	},
-
-	titleText: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		textTransform: 'capitalize',
-		letterSpacing: 2,
-	},
-
-	contentText: {
-		letterSpacing: 1.5,
-	},
-});

@@ -59,7 +59,7 @@ const ExamApplicationsComponent: FC<{
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
 	const {search, handleSearch} = useSearch();
-	const snapPoints = useMemo(() => ['25%', '50%'], []);
+	const snapPoints = useMemo(() => ['50%', '75%'], []);
 
 	const handlePresentModal = useCallback(() => {
 		bottomSheetModalRef.current?.present();

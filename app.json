@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "KeNuM",
 		"slug": "KeNuMApp",
-		"version": "1.0.3",
+		"version": "1.0.4",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
 		"scheme": "myapp",
@@ -18,7 +18,8 @@
 				"usesNonExemptEncryption": false
 			},
 			"supportsTablet": true,
-			"bundleIdentifier": "com.ikode.KeNuMApp"
+			"bundleIdentifier": "com.ikode.KeNuMApp",
+			"requireFullScreen": true
 		},
 		"android": {
 			"adaptiveIcon": {
@@ -33,6 +34,7 @@
 			"output": "static",
 			"favicon": "./assets/images/favicon.png"
 		},
+
 		"plugins": [
 			"expo-router",
 			[
@@ -51,6 +53,12 @@
 				"expo-updates",
 				{
 					"username": "iKode"
+				}
+			],
+			[
+				"expo-screen-orientation",
+				{
+					"initialOrientation": "DEFAULT"
 				}
 			],
 			[

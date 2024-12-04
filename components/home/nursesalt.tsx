@@ -7,8 +7,6 @@ import {Icon} from 'react-native-paper';
 import {Text} from '../Themed';
 
 type Item = {
-	height: number;
-	width: number;
 	title: string;
 	source: ImageSource;
 	href: Href<string>;
@@ -25,7 +23,7 @@ type NurseItem = Omit<Item, 'source' | 'href'> & {
 const ModuleItem: FC<{item: Item}> = ({item}) => {
 	return (
 		<Link href={item.href} asChild>
-			<Pressable className='flex flex-1 flex-row rounded-xl items-center justify-between px-2 gap-2 my-2 mx-1 bg-slate-100 py-2'>
+			<Pressable className='flex flex-1 flex-row rounded-xl items-center justify-between px-1 gap-2 my-2 mx-1 bg-slate-100 py-2'>
 				<View className='flex bg-[#0445b5] rounded-full'>
 					<Image
 						source={item.source}
@@ -51,14 +49,8 @@ const ModuleItem: FC<{item: Item}> = ({item}) => {
 
 const NursesAltComponent: FC<{item: NurseItem}> = ({item}) => {
 	return (
-		<View
-			className='m-2 rounded-xl shadow-md'
-			style={{
-				height: 'auto',
-				backgroundColor: '#ffffff',
-				paddingBottom: 15,
-			}}>
-			<View className='flex flex-row justify-between p-4 my-3'>
+		<View className='m-2 rounded-xl flex bg-[#FFFFFF] p-2'>
+			<View className='flex flex-row justify-between p-1 my-3'>
 				<Text className='tracking-widest text-xl' bold>
 					{item.title}
 				</Text>
@@ -92,8 +84,6 @@ const NursesAltComponent: FC<{item: NurseItem}> = ({item}) => {
 				renderItem={({item: val}) => (
 					<ModuleItem
 						item={{
-							width: item.width,
-							height: item.height,
 							title: val.title,
 							source: val.source,
 							href: val.href,

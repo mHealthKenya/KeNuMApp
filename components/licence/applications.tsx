@@ -1,22 +1,22 @@
 import dayjs from 'dayjs';
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { currencyFormatter } from '../../helpers/currency-formatter';
-import { LicenceApplication } from '../../models/licenceapplications';
+import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
+import {Pressable, StyleSheet, View} from 'react-native';
+import {currencyFormatter} from '../../helpers/currency-formatter';
+import {LicenceApplication} from '../../models/licenceapplications';
 import globalStyles from '../../styles/global';
-import { InternshipItem, InternshipItemDouble } from '../internship/history/applications';
+import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
 import EmptyList from '../shared/EmptyList';
 // import ActionBottomLicence from './actionbottomlicence';
-import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
-import { useAtom } from 'jotai';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Searchbar } from 'react-native-paper';
-import { licenceApplicationAtom } from '../../atoms/licence';
-import { DateFormat } from '../../enums/date';
-import { useSearch } from '../../providers/search';
+import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
+import {FlashList} from '@shopify/flash-list';
+import {useAtom} from 'jotai';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {Searchbar} from 'react-native-paper';
+import {licenceApplicationAtom} from '../../atoms/licence';
+import {DateFormat} from '../../enums/date';
+import {useSearch} from '../../providers/search';
 import AccordionShared from '../shared/Accordion';
-import { Text } from '../Themed';
+import {Text} from '../Themed';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
 import PayForApplication from './actions/pay';
@@ -66,7 +66,7 @@ const LicenceApplicationsComponent: FC<{
 
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-	const snapPoints = useMemo(() => ['25%', '50%'], []);
+	const snapPoints = useMemo(() => ['50%', '75%'], []);
 
 	const handlePresentModal = useCallback(() => {
 		bottomSheetModalRef.current?.present();

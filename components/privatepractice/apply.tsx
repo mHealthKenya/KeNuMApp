@@ -129,7 +129,7 @@ const ApplyPrivateComponent: FC<{
 			style={{
 				flex: 1,
 			}}>
-			<KeyboardAvoidingView behavior='position' style={{flex: 1}}>
+			<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1 p-2'>
 				<ScrollView
 					nestedScrollEnabled={true}
 					style={{

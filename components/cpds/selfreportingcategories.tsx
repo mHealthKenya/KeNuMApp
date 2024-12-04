@@ -1,19 +1,14 @@
 import {FlashList} from '@shopify/flash-list';
 import {useRouter} from 'expo-router';
 import React, {FC} from 'react';
-import {Pressable, View, useWindowDimensions} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {Icon} from 'react-native-paper';
 import {CPDCategory} from '../../models/cpdcategory';
 import {useCPDCategoryFetched} from '../../providers/cpdcategories';
-import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
 import {Text} from '../Themed';
 
 const Category: FC<{category: CPDCategory}> = ({category}) => {
-	const {width, height} = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
-
 	const {handleCategoryId} = useCPDCategoryFetched();
 
 	const router = useRouter();
@@ -25,19 +20,15 @@ const Category: FC<{category: CPDCategory}> = ({category}) => {
 
 	return (
 		<Pressable className='bg-white m-2 p-3 rounded-lg' onPress={() => handlePush(category)}>
-			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-				<View
-					style={[
-						globalStyles.column,
-						{
-							width: usableWidth * 0.8,
-						},
-					]}>
+			<View className='flex flex-1 flex-row gap-2'>
+				<View className='flex flex-1'>
 					<View>
 						<Text className='text-lg'>{category.category}</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' />
+				<View className='flex justify-center items-center'>
+					<Icon size={30} source='chevron-right' />
+				</View>
 			</View>
 		</Pressable>
 	);

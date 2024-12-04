@@ -6,7 +6,6 @@ import {Searchbar} from 'react-native-paper';
 import {County} from '../../models/counties';
 import {useSearch} from '../../providers/search';
 import {useWorkStationFetched} from '../../providers/workstations';
-import globalStyles from '../../styles/global';
 import EmptyList from '../shared/EmptyList';
 import ContentBox from './contentbox';
 
@@ -36,7 +35,7 @@ const CountiesComponent: FC<{
 	);
 
 	return (
-		<View style={globalStyles.container}>
+		<View className='flex flex-1'>
 			<Searchbar placeholder='Search county' onChangeText={handleSearch} value={search} style={styles.searchBar} />
 			<FlashList
 				data={filtered}

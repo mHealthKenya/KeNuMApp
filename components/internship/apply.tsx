@@ -89,6 +89,11 @@ const InternshipApplyComponent: FC<{
 			multiple: false,
 			type: ['application/pdf'],
 		});
+
+		if (result.canceled) {
+			return;
+		}
+
 		setSelectedDegree(result);
 	};
 
@@ -97,6 +102,9 @@ const InternshipApplyComponent: FC<{
 			multiple: false,
 			type: ['application/pdf'],
 		});
+		if (result.canceled) {
+			return;
+		}
 		setSelectedFile(result);
 	};
 

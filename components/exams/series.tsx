@@ -68,25 +68,21 @@ const SeriesComponent: FC<{serie: Series[]}> = ({serie}) => {
 	const {height, width} = useWindowDimensions();
 	return (
 		<ScrollView style={globalStyles.container}>
-			<View
-				style={{
-					height: height * 0.4,
-					justifyContent: 'center',
-					alignItems: 'center',
-				}}>
+			<View className='flex flex-1 items-center justify-center'>
 				<Image
 					source={require('../../assets/images/examlarge.png')}
 					style={{
 						width: width * 0.9,
 						height: height * 0.3,
 					}}
+					contentFit='contain'
 				/>
 			</View>
 
 			{serie?.length === 0 ? (
 				<InfoAlert message='No active series found in your account' />
 			) : (
-				serie?.map((item) => <SeriesBox series={item} key={item.student_series_id} />)
+				serie?.map((item) => <SeriesBox series={item} key={item.student_series_id + new Date().getTime()} />)
 			)}
 		</ScrollView>
 	);

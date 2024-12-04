@@ -3,7 +3,7 @@ import {Image} from 'expo-image';
 import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import React, {FC, useEffect, useMemo, useState} from 'react';
-import {KeyboardAvoidingView, Platform, Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {ActivityIndicator} from 'react-native-paper';
 import {diasporaAtom} from '../../atoms/diaporaatom';
@@ -13,17 +13,16 @@ import {useAuth} from '../../providers/auth';
 import useLicenceApply from '../../services/licence/apply';
 import {Text} from '../Themed';
 import LicenceApplyBox, {Item} from './licencebox';
+import {useDimensions} from '../../providers/dimensions';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
 	county: Item;
 	workstation: Item;
 }> = ({employers, county, workstation}) => {
-	const {width, height} = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
-
 	const [selected, setSelected] = useState(null);
+
+	const {portrait} = useDimensions();
 
 	const [dropDown, setDropDown] = useState(false);
 
@@ -68,15 +67,16 @@ const LicenceApplicationComponent: FC<{
 
 	return (
 		<View className='flex flex-1'>
-			<View className='p-3'>
-				<KeyboardAvoidingView behavior='position'>
-					<View className='flex items-center justify-center h-[50%]'>
+			<ScrollView className='flex flex-1'>
+				<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1 p-2'>
+					<View className='flex items-center justify-center'>
 						<Image
 							source={require('../../assets/images/licencelarge.png')}
 							style={{
-								height: height * 0.36,
-								width: (usableWidth * 5) / 6,
+								height: 200,
+								width: 200,
 							}}
+							contentFit='contain'
 						/>
 					</View>
 					<View className='flex w-full'>
@@ -101,6 +101,8 @@ const LicenceApplicationComponent: FC<{
 								}}
 								searchable
 								setOpen={setDropDown}
+								listMode='SCROLLVIEW'
+								dropDownDirection={portrait ? 'AUTO' : 'TOP'}
 							/>
 						)}
 
@@ -128,7 +130,7 @@ const LicenceApplicationComponent: FC<{
 						</Pressable>
 					</View>
 				</KeyboardAvoidingView>
-			</View>
+			</ScrollView>
 		</View>
 	);
 };

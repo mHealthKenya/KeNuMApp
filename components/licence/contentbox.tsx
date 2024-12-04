@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {Icon} from 'react-native-paper';
 import globalStyles from '../../styles/global';
 import {Text} from '../Themed';
@@ -13,68 +13,20 @@ const ContentBox: FC<{
 	box: ContentBoxProps;
 	action: (item: ContentBoxProps) => void;
 }> = ({box, action}) => {
-	const {width, height} = useWindowDimensions();
-	const actualWidth = Math.min(width, height);
-	const usableWidth = actualWidth - 20;
-
 	return (
-		<Pressable
-			style={[
-				styles.box,
-				{
-					width: usableWidth,
-					backgroundColor: '#FFFFFF',
-					flex: 1,
-				},
-			]}
-			onPress={() => action(box)}>
+		<Pressable className='bg-[#FFFFFF] p-3 mx-2 my-1 rounded-xl' onPress={() => action(box)}>
 			<View style={[globalStyles.row, {justifyContent: 'space-between', alignItems: 'center'}]}>
-				<View
-					style={[
-						globalStyles.column,
-						{
-							width: usableWidth * 0.8,
-						},
-					]}>
-					<View
-						style={{
-							padding: 10,
-						}}>
+				<View className='flex flex-col'>
+					<View className='p-2'>
 						<Text className='text-lg'>{box.title}</Text>
 					</View>
 				</View>
-				<Icon size={30} source='chevron-right' />
+				<View className='flex items-center justify-center'>
+					<Icon size={30} source='chevron-right' />
+				</View>
 			</View>
 		</Pressable>
 	);
 };
 
 export default ContentBox;
-
-const styles = StyleSheet.create({
-	box: {
-		marginHorizontal: 10,
-		marginVertical: 3,
-		padding: 20,
-		borderRadius: 10,
-		justifyContent: 'center',
-	},
-
-	fullSize: {
-		justifyContent: 'space-evenly',
-	},
-
-	titleText: {
-		fontSize: 16,
-		fontWeight: 'bold',
-		textTransform: 'capitalize',
-		letterSpacing: 2,
-	},
-
-	contentText: {
-		color: 'black',
-		letterSpacing: 2,
-		fontSize: 16,
-		textTransform: 'capitalize',
-	},
-});

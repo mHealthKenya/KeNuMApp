@@ -7,11 +7,11 @@ import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 
 const items: KnowBox[] = [
-	{
-		title: 'Policies and Manuals',
-		content: 'Streamlining Procedures for Consistency and Effective Action',
-		url: '/allknowledge',
-	},
+	// {
+	// 	title: 'Policies and Manuals',
+	// 	content: 'Streamlining Procedures for Consistency and Effective Action',
+	// 	url: '/allknowledge',
+	// },
 
 	{
 		title: 'Research Papers',
@@ -24,11 +24,11 @@ const items: KnowBox[] = [
 		content: 'Ensuring Competence and Compliance in Professional Practice',
 		url: '/allscope',
 	},
-	{
-		title: 'Policy Briefs',
-		content: 'Ensuring Competence and Compliance in Professional Practice',
-		url: '/policy_brief',
-	},
+	// {
+	// 	title: 'Policy Briefs',
+	// 	content: 'Ensuring Competence and Compliance in Professional Practice',
+	// 	url: '/policy_brief',
+	// },
 ];
 
 const KnowledgeComponent: FC<{

@@ -53,6 +53,10 @@ const ApplyOutComponent: FC<{
 	const pickDocument = async () => {
 		let result = await DocumentPicker.getDocumentAsync();
 		setSelectedFile(result);
+
+		if (result.canceled) {
+			return;
+		}
 	};
 
 	const textInputProps: TextInputProps = {

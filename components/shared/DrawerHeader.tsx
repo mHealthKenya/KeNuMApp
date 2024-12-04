@@ -8,6 +8,7 @@ import globalStyles from '../../styles/global';
 import {useRouter} from 'expo-router';
 import useAuthenticatedUser from '../../services/auth/authenticated';
 import {Text} from '../Themed';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const DrawerHeader = () => {
 	const {height, width} = useWindowDimensions();
@@ -31,15 +32,7 @@ const DrawerHeader = () => {
 
 	const blurhash = 'LSLE1vRj^-xu^,bFE0jb_4t7?]NF';
 	return (
-		<View
-			style={[
-				styles.box,
-				{
-					width: '100%',
-					height: height * 0.3,
-					borderBottomRightRadius: 10,
-				},
-			]}>
+		<SafeAreaView className={`flex items-center justify-center bg-[${primaryColor}]`}>
 			{imageError && !isPending ? (
 				<View
 					style={[
@@ -75,7 +68,7 @@ const DrawerHeader = () => {
 			<View style={{marginTop: 10}}>
 				<Text style={styles.nameText}>{user?.Name}</Text>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 };
 

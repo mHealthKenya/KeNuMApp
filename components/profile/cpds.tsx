@@ -4,33 +4,28 @@ import {Divider} from 'react-native-paper';
 import {User} from '../../models/user';
 import globalStyles from '../../styles/global';
 import ProfileHeader from './header';
-import { Text } from '../Themed';
+import {Text} from '../Themed';
 
 const CPDsComponent: FC<{user: User | undefined}> = ({user}) => {
 	return (
-		<View style={styles.container}>
-			<ScrollView
-				style={{
-					flex: 1,
-				}}>
-				<ProfileHeader user={user} backgroundColor='#eaf2fa' textColor='#0445b5' />
-				<View style={[{marginHorizontal: 10}, styles.card]}>
-					{user?.cpd?.map((item, index) => (
-						<View style={[globalStyles.column]} key={index}>
-							<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
-								<Text style={styles.headerText}>Required Points</Text>
-								<Text style={styles.contentText}>{item?.cpd_requirement}</Text>
-							</View>
-							<Divider />
-							<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
-								<Text style={styles.headerText}>Current Points</Text>
-								<Text style={styles.contentText}>{item?.current_points}</Text>
-							</View>
+		<ScrollView className='flex flex-1'>
+			<ProfileHeader user={user} backgroundColor='#eaf2fa' textColor='#0445b5' />
+			<View className='p-2 bg-[#FFFFFF] m-2 rounded-xl'>
+				{user?.cpd?.map((item, index) => (
+					<View style={[globalStyles.column]} key={index}>
+						<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
+							<Text style={styles.headerText}>Required Points</Text>
+							<Text style={styles.contentText}>{item?.cpd_requirement}</Text>
 						</View>
-					))}
-				</View>
-			</ScrollView>
-		</View>
+						<Divider />
+						<View style={[globalStyles.column, {gap: 10, padding: 20}]}>
+							<Text style={styles.headerText}>Current Points</Text>
+							<Text style={styles.contentText}>{item?.current_points}</Text>
+						</View>
+					</View>
+				))}
+			</View>
+		</ScrollView>
 	);
 };
 

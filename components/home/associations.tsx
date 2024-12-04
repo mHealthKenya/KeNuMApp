@@ -5,40 +5,31 @@ import {Pressable, View} from 'react-native';
 import {Icon} from 'react-native-paper';
 import {Text} from '../Themed';
 
-interface Item {
-	width: number;
-	height: number;
-}
-
-interface Association extends Item {
+interface Association {
 	source: ImageSource;
 	title: string;
 	subtitle: string;
 }
 
-const AssociationItem: FC<{item: Association}> = ({item: {width, height, source, title, subtitle}}) => {
+const AssociationItem: FC<{item: Association}> = ({item: {source, title, subtitle}}) => {
 	return (
-		<View className='flex flex-col p-2 my-2 bg-slate-50 rounded-xl'>
-			<View
-				className='p-2 flex flex-row'
-				style={{
-					height: 'auto',
-					width: 'auto',
-				}}>
+		<View className='flex flex-1 flex-col p-2 my-2 bg-slate-50 rounded-xl'>
+			<View className='p-2 flex flex-1  flex-row'>
 				<View className='mr-4'>
 					<Image
 						source={source}
 						style={{
-							width: width * 0.1,
-							height: height * 0.05,
-							borderRadius: (height * 0.05) / 2,
+							height: 50,
+							width: 50,
+							borderRadius: 25,
 						}}
+						contentFit='contain'
 					/>
 				</View>
 
-				<View className='flex flex-col justify-center'>
-					<View>
-						<Text className='tracking-wide' bold>
+				<View className='flex flex-1 flex-col justify-center'>
+					<View style={{flexDirection: 'row'}}>
+						<Text className='flex flex-wrap tracking-widest antialiased' bold>
 							{title}
 						</Text>
 					</View>
@@ -56,14 +47,14 @@ const AssociationItem: FC<{item: Association}> = ({item: {width, height, source,
 	);
 };
 
-const Associations: FC<{item: Item}> = ({item: {width, height}}) => {
+const Associations = () => {
 	return (
 		<View
 			style={{
 				height: 'auto',
 				backgroundColor: '#e7e8ea',
 			}}
-			className='m-2 rounded-xl shadow-lg'>
+			className='flex flex-1 m-2 rounded-xl'>
 			<View className='p-2 my-3'>
 				<Text className='text-xl tracking-widest' bold>
 					Professional Associations
@@ -85,13 +76,11 @@ const Associations: FC<{item: Item}> = ({item: {width, height}}) => {
 				</View>
 			</View>
 
-			<View className='flex flex-col justify-between p-2'>
+			<View className='flex flex-1 flex-col justify-between p-2'>
 				<Link asChild href='/kpna'>
 					<Pressable>
 						<AssociationItem
 							item={{
-								width,
-								height,
 								source: require('../../assets/images/kpna.png'),
 								title: 'Kenya Progressive Nurses Association',
 								subtitle: 'Harmony In Nursing the Professional Cure',
@@ -100,12 +89,10 @@ const Associations: FC<{item: Item}> = ({item: {width, height}}) => {
 					</Pressable>
 				</Link>
 
-				<Link asChild href='/mak'>
+				<Link asChild href='/mak' className='flex-1'>
 					<Pressable>
 						<AssociationItem
 							item={{
-								width,
-								height,
 								source: require('../../assets/images/mak.jpg'),
 								title: 'Midwives Association of Kenya',
 								subtitle: 'Revitalising the midwifery and its future profession in the country',
@@ -118,8 +105,6 @@ const Associations: FC<{item: Item}> = ({item: {width, height}}) => {
 					<Pressable>
 						<AssociationItem
 							item={{
-								width,
-								height,
 								source: require('../../assets/images/nnak.png'),
 								title: 'National Nurses Association of Kenya',
 								subtitle: 'Voice of the nursing profession',

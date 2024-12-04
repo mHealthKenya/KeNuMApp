@@ -1,18 +1,14 @@
 import React from 'react';
-import {ScrollView, View, useWindowDimensions} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import Associations from './associations';
 import NursesAltComponent from './nursesalt';
 
 const StudentsHome = () => {
-	const {height, width} = useWindowDimensions();
-
 	return (
 		<View className='flex flex-1'>
 			<ScrollView showsVerticalScrollIndicator={false} scrollEventThrottle={16}>
 				<NursesAltComponent
 					item={{
-						width,
-						height,
 						title: "Student's Module",
 						actionTitle: 'View All',
 						more: '/studentshome',
@@ -28,22 +24,14 @@ const StudentsHome = () => {
 								source: require('../../assets/images/examalt.png'),
 								href: '/examall',
 							},
-                            
 						],
 					}}
 				/>
 
-				<Associations
-					item={{
-						width,
-						height,
-					}}
-				/>
+				<Associations />
 
 				<NursesAltComponent
 					item={{
-						width,
-						height,
 						title: 'General',
 						items: [
 							{
