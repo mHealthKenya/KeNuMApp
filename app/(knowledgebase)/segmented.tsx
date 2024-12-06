@@ -18,17 +18,16 @@ const items: KnowBox[] = [
 		content: 'Advancing Knowledge through Rigorous and Innovative Research Studies',
 		url: '/research',
 	},
-
 	{
 		title: 'Scopes of Practice',
 		content: 'Ensuring Competence and Compliance in Professional Practice',
 		url: '/allscope',
 	},
-	// {
-	// 	title: 'Policy Briefs',
-	// 	content: 'Ensuring Competence and Compliance in Professional Practice',
-	// 	url: '/policy_brief',
-	// },
+	{
+		title: 'Policy Briefs',
+		content: 'Ensuring Competence and Compliance in Professional Practice',
+		url: '/policy_brief',
+	},
 ];
 
 const KnowledgeComponent: FC<{
