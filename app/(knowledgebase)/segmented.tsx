@@ -19,16 +19,16 @@ const items: KnowBox[] = [
 		url: '/research',
 	},
 
-	{
-		title: 'Scopes of Practice',
-		content: 'Ensuring Competence and Compliance in Professional Practice',
-		url: '/allscope',
-	},
 	// {
-	// 	title: 'Policy Briefs',
+	// 	title: 'Scopes of Practice',
 	// 	content: 'Ensuring Competence and Compliance in Professional Practice',
-	// 	url: '/policy_brief',
+	// 	url: '/allscope',
 	// },
+	{
+		title: 'Policy Briefs',
+		content: 'Ensuring Competence and Compliance in Professional Practice',
+		url: '/policy_brief',
+	},
 ];
 
 const KnowledgeComponent: FC<{
