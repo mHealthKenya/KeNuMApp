@@ -11,8 +11,8 @@ const PayExamHist = () => {
 		<PayComponent
 			pay={{
 				title: 'Pay for Exam',
-				acc_no: '' + exam?.invoice_no,
-				amount: exam ? +exam?.amount_due : 0,
+				acc_no: '' + exam?.invoice_details?.invoice_number,
+				amount: exam ? +exam?.invoice_details?.amount_due : 0,
 				subtitle: 'Exam series ' + exam?.exams_series,
 				transaction: Transactions.Exam,
 				redirectPath: '/examapplications',

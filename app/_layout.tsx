@@ -60,9 +60,9 @@ const RootLayout = () => {
 		'San-Italic': require('../assets/fonts/italic.otf'),
 		'Space-Regular': require('../assets/fonts/SpaceMono-Regular.ttf'),
 		'SF-Pro': require('../assets/fonts/SF-Pro.ttf'),
-		normal: require('../assets/fonts/RobotoMono-Regular.ttf'),
-		bold: require('../assets/fonts/RobotoMono-Bold.ttf'),
-		italic: require('../assets/fonts/RobotoMono-Italic.ttf'),
+		normal: require('../assets/fonts/sans.ttf'),
+		bold: require('../assets/fonts/sans-bold.ttf'),
+		italic: require('../assets/fonts/sans-italic.ttf'),
 	});
 
 	useEffect(() => {

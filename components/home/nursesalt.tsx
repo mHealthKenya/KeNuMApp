@@ -28,15 +28,15 @@ const ModuleItem: FC<{item: Item}> = ({item}) => {
 					<Image
 						source={item.source}
 						style={{
-							height: 50,
-							width: 50,
-							borderRadius: 25,
+							height: 30,
+							width: 30,
+							borderRadius: 15,
 						}}
 					/>
 				</View>
 				{/* Text Section */}
 				<View style={{flex: 1}}>
-					<Text className='text-lg text-[clamp(1rem, 2vw, 2rem)]' style={{textAlign: 'left'}}>
+					<Text className='text-lg text-[clamp(1rem, 5vw, 3rem)]' style={{textAlign: 'left'}} adjustsFontSizeToFit>
 						{item.title}
 					</Text>
 				</View>

@@ -79,7 +79,10 @@
 						"./assets/fonts/Roboto-Italic.ttf",
 						"./assets/fonts/SourceCodePro-Regular.ttf",
 						"./assets/fonts/SourceCodePro-Italic.ttf",
-						"./assets/fonts/SourceCodePro-Bold.ttf"
+						"./assets/fonts/SourceCodePro-Bold.ttf",
+						"./assets/fonts/sans.ttf",
+						"./assets/fonts/sans-italic.ttf",
+						"./assets/fonts/sans-bold.ttf"
 					]
 				}
 			],

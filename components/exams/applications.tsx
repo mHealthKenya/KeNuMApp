@@ -16,8 +16,8 @@ import AccordionShared from '../shared/Accordion';
 import EmptyList from '../shared/EmptyList';
 import DownloadInvoice from './actions/downloadinvoice';
 import DownloadReceipt from './actions/downloadreceipt';
-import PayForApplication from './actions/pay';
 import {Text} from '../Themed';
+import PayForApplication from './actions/pay';
 
 const Application: FC<{
 	application: ExamApplication;
@@ -34,17 +34,17 @@ const Application: FC<{
 				<InternshipItemDouble
 					title='Invoice'
 					subtitle='Invoice Number'
-					content={application.invoice_no}
+					content={application?.invoice_details?.invoice_number}
 					subtitle1='Amount'
-					content1={currencyFormatter.format(+application.amount_due)}
+					content1={currencyFormatter.format(+application?.invoice_details?.amount_due)}
 				/>
 
 				<InternshipItemDouble
 					title='Amount'
 					subtitle='Amount Paid'
-					content={currencyFormatter.format(+application.amount_paid)}
+					content={currencyFormatter.format(+application?.invoice_details?.amount_paid)}
 					subtitle1='Balance Due'
-					content1={currencyFormatter.format(+application.balance_due)}
+					content1={currencyFormatter.format(+application?.invoice_details.balance_due)}
 				/>
 			</View>
 		</Pressable>
@@ -93,7 +93,7 @@ const ExamApplicationsComponent: FC<{
 					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
 						<View style={styles.bottomSheet}>
 							<BottomSheetView style={[styles.contentContainer]}>
-								<PayForApplication item={item} />
+								<PayForApplication item={item || null} />
 							</BottomSheetView>
 
 							<View style={[styles.contentContainer]}>

@@ -4,8 +4,9 @@ import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
-import {examAtom} from '../../../atoms/exam';
+import {internshipPayAtom} from '../../../atoms/internship';
 import {ExamApplication} from '../../../models/examapplications';
+import {Pay} from '../../../models/pay';
 import globalStyles from '../../../styles/global';
 
 const PayForApplication: FC<{
@@ -13,12 +14,29 @@ const PayForApplication: FC<{
 }> = ({item}) => {
 	const router = useRouter();
 	const {dismiss} = useBottomSheetModal();
+	const [_, setPay] = useAtom(internshipPayAtom);
 
-	const [_, handleApplication] = useAtom(examAtom);
 	const handlePay = async (item: ExamApplication | null) => {
-		await handleApplication(item!);
+		const data: Pay = {
+			secureHash: item?.invoice_details.secureHash || '',
+			apiClientID: item?.invoice_details.apiClientID || '',
+			serviceID: parseInt(item?.invoice_details.serviceID || '0'),
+			notificationURL: item?.invoice_details.notificationURL || '',
+			pictureURL: item?.invoice_details.pictureURL || '',
+			callBackURLOnSuccess: item?.invoice_details.callBackURLOnSuccess || '',
+			billRefNumber: item?.invoice_details.billRefNumber || '',
+			currency: item?.invoice_details.currency || '',
+			amountExpected: parseInt(item?.invoice_details.amountExpected || '0'),
+			billDesc: item?.invoice_details.billDesc || '',
+			clientMSISDN: item?.invoice_details.clientMSISDN || '',
+			clientIDNumber: item?.invoice_details.clientIDNumber || '',
+			clientEmail: item?.invoice_details.clientEmail || '',
+			clientName: item?.invoice_details.clientName || '',
+		};
+
+		await setPay(data);
 		await dismiss();
-		router.push('/payexamhist');
+		router.push('/ecitizen');
 	};
 
 	return (
@@ -47,7 +65,7 @@ const PayForApplication: FC<{
 			</View>
 
 			<View style={{justifyContent: 'center'}}>
-				<Text style={styles.text}>Pay For Exam</Text>
+				<Text style={styles.text}>Pay For Licence</Text>
 			</View>
 		</Pressable>
 	);
