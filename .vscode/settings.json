@@ -106,6 +106,7 @@
 		"transferhist",
 		"transferreasons",
 		"transfersmall",
+		"verif",
 		"verifyotp"
 	]
 }

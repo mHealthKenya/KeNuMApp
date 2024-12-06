@@ -5,7 +5,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {KeyboardAwareScrollView, KeyboardToolbar} from 'react-native-keyboard-controller';
-import {Button, Icon, TextInput, TextInputProps} from 'react-native-paper';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import {employmentAtom} from '../../../atoms/employment';
 import {outmigrationAtom} from '../../../atoms/outmigration';
 import {personalDetailsAtom} from '../../../atoms/personaldetails';
@@ -100,7 +100,7 @@ const OutmigrationStepComponent = () => {
 		() =>
 			user?.education?.map((item) => ({
 				label: item?.cadre_text,
-				value: item?.cadre_text,
+				value: item?.education_id,
 			})),
 		[user]
 	);
@@ -270,7 +270,7 @@ const OutmigrationStepComponent = () => {
 						/>
 					</View>
 
-					<View className='p-2'>
+					{/* <View className='p-2'>
 						{educVal?.map((item) => (
 							<View className='flex flex-row space-x-3' key={item}>
 								<View className='justify-center'>
@@ -282,7 +282,7 @@ const OutmigrationStepComponent = () => {
 								</View>
 							</View>
 						))}
-					</View>
+					</View> */}
 
 					<View className='p-2'>
 						<Pressable onPress={() => pickDocument()}>
