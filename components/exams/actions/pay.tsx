@@ -20,7 +20,6 @@ const PayForApplication: FC<{
 		await dismiss();
 		router.push('/payexamhist');
 	};
-
 	return (
 		<Pressable
 			style={[
@@ -45,7 +44,6 @@ const PayForApplication: FC<{
 					}}
 				/>
 			</View>
-
 			<View style={{justifyContent: 'center'}}>
 				<Text style={styles.text}>Pay For Exam</Text>
 			</View>

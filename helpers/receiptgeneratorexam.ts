@@ -17,7 +17,7 @@ export const examReceiptGen = (
         <html lang="en">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-            <title>Invoice ${item.invoice_no}</title>
+            <title>Invoice ${item.invoice_details.invoice_number}</title>
 
             <style>
                 html,
@@ -101,7 +101,7 @@ export const examReceiptGen = (
                             <h2 class="text-start">Nursing Council of Kenya</h2>
                         </th>
                         <th width="50%" colspan="2" class="text-end company-data">
-                            <span>Invoice Id: ${item.invoice_no}</span> <br>
+                            <span>Invoice Id: ${item.invoice_details.invoice_number}</span> <br>
                             <span>Date: ${dayjs(new Date()).format(
 															'DD-MM-YYYY'
 														)}</span> <br>
@@ -118,7 +118,7 @@ export const examReceiptGen = (
                 <tbody>
                     <tr>
                         <td>Invoice Number:</td>
-                        <td>${item.invoice_no}</td>
+                        <td>${item.invoice_details.invoice_number}</td>
 
                         <td>Full Name:</td>
                         <td>${user?.Name}</td>
@@ -175,17 +175,17 @@ export const examReceiptGen = (
                             Cadre ${item.cadre}
                         </td>
                         <td width="10%">${currencyFormatter.format(
-													+item.balance_due
+													+item.invoice_details.balance_due
 												)}</td>
                         <td width="10%">1</td>
                         <td width="15%" class="fw-bold">${currencyFormatter.format(
-													+item.balance_due
+													+item.invoice_details.balance_due
 												)}</td>
                     </tr>
                     <tr>
                         <td colspan="4" class="total-heading">Total Amount - <small>Inc. all vat/tax</small> :</td>
                         <td colspan="1" class="total-heading">${currencyFormatter.format(
-													+item.balance_due
+													+item.invoice_details.balance_due
 												)}</td>
                     </tr>
                 </tbody>

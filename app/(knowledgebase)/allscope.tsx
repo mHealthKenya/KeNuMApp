@@ -62,7 +62,7 @@ const Items: Scope[] = [
 	},
 	{
 		title: 'Oncology Nursing Scope of Practice',
-		content: 'Oncology SoP for nurses and Midwives in Kenya',
+		content: 'Oncology SoP for Nurses and Midwives in Kenya',
 		url: '/oncology',
 	},
 	{
