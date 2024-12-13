@@ -6,16 +6,20 @@ import { InternshipApplication } from '../../models/internshipapplications';
 
 const applications = async (index_id: string) => {
 	const token = await secureStore.getItemAsync('token').then((data) => data);
+
 	axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 	const url = baseUrl + 'api/internship/get/test?index_id=' + index_id;
 
 	const config: AxiosRequestConfig = {
 		method: 'GET',
 		url,
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
 	};
 
 	const response = await axios(config).then((res) => {
-		const data: InternshipApplication[] = res.data.internship_applications;
+		const data: InternshipApplication[] = res.data
 
 		data.sort((a, b) => {
 			const dateA = new Date(a.application_date);

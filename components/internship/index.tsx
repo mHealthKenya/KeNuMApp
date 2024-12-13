@@ -11,11 +11,11 @@ import CenterLoad from '../shared/CenterLoad';
 const InternshipComponent = () => {
 	const {user} = useAuth();
 
-	const index_id = user?.IndexNo || '';
+	const index_id = user?.id || '';
 
 	const {data: internships = [], isLoading} = useInternshipApplications(index_id);
 
-	const active = internships.some((item) => item.invoice_details.amount_due === 0);
+	const active = internships.some((item) => +item.invoice_details.balance_due === 0);
 
 	const [item, setActiveInternship] = useAtom(activeInternshipAtom);
 

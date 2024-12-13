@@ -6,10 +6,12 @@ import useAuthenticatedUser from '../../services/auth/authenticated';
 import globalStyles from '../../styles/global';
 import ProfileHeader from './header';
 import ProfileItem from './item';
+import {Href} from 'expo-router';
 
-interface Profile {
+export interface Profile {
 	title: string;
-	path: any;
+	path: Href;
+	auth?: boolean;
 }
 
 const profileItems: Profile[] = [
@@ -36,6 +38,12 @@ const profileItems: Profile[] = [
 		title: 'CPDs',
 		path: '/cpds',
 	},
+
+	{
+		title: 'Logout',
+		path: '/login',
+		auth: true,
+	},
 ];
 
 const ProfileComponent = () => {
@@ -55,7 +63,7 @@ const ProfileComponent = () => {
 			<View className='flex'>
 				{profileItems.map((item, index) => (
 					<View key={index}>
-						<ProfileItem title={item.title} path={item.path} />
+						<ProfileItem title={item.title} path={item.path} auth={item.auth} />
 						{index !== profileItems.length - 1 && <Divider />}
 					</View>
 				))}

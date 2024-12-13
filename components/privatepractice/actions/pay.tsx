@@ -66,7 +66,7 @@ const PayForApplication: FC<{
 			</View>
 
 			<View style={{justifyContent: 'center'}}>
-				<Text style={styles.text}>Pay For Licence</Text>
+				<Text style={styles.text}>Pay For Private Practice</Text>
 			</View>
 		</Pressable>
 	);

@@ -57,11 +57,12 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 	const [can, setCan] = useState(false);
 
 	useEffect(() => {
-		const newCan = !(hasActiveLicence && hasPendingApplications && hasRequisiteCPD);
-		if (newCan !== can) {
-			setCan(newCan);
+		if (!hasActiveLicence && hasRequisiteCPD && !hasPendingApplications) {
+			setCan(true);
+		} else {
+			setCan(false);
 		}
-	}, [hasActiveLicence, hasPendingApplications, hasRequisiteCPD, can]);
+	}, [hasActiveLicence, hasRequisiteCPD, hasPendingApplications]);
 
 	if (isLoading) {
 		return <CenterLoad />;
