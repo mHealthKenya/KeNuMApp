@@ -2,11 +2,11 @@ import {StatusBar} from 'expo-status-bar';
 import React from 'react';
 import ExamApplicationsComponent from '../../components/exams/applications';
 import CenterLoad from '../../components/shared/CenterLoad';
-import {useAuth} from '../../providers/auth';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useExamApplications from '../../services/exams/applications';
 
 const ExamApplications = () => {
-	const {user, isLoading: loadingUser} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
 	const {data = [], isLoading, refetch, isRefetching} = useExamApplications(user?.IndexNo || '');
 

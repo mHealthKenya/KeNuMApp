@@ -1,57 +1,77 @@
 import dayjs from 'dayjs';
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import React, {FC, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {LicenceApplication} from '../../models/licenceapplications';
 import globalStyles from '../../styles/global';
 import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
 import EmptyList from '../shared/EmptyList';
 // import ActionBottomLicence from './actionbottomlicence';
-import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
+import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Searchbar} from 'react-native-paper';
-import {licenceApplicationAtom} from '../../atoms/licence';
+import {internshipPayAtom} from '../../atoms/internship';
 import {DateFormat} from '../../enums/date';
+import {Pay} from '../../models/pay';
 import {useSearch} from '../../providers/search';
 import AccordionShared from '../shared/Accordion';
+import PayButton from '../shared/PayButton';
 import {Text} from '../Themed';
-import DownloadInvoice from './actions/downloadinvoice';
-import DownloadReceipt from './actions/downloadreceipt';
-import PayForApplication from './actions/pay';
 
 const Application: FC<{
 	application: LicenceApplication;
-	action: (application: LicenceApplication) => void;
-}> = ({application, action}) => {
+}> = ({application}) => {
+	const [_, setPay] = useAtom(internshipPayAtom);
+	const router = useRouter();
+	const handlePay = async () => {
+		const data: Pay = {
+			secureHash: application?.invoice_details.secureHash || '',
+			apiClientID: application?.invoice_details.apiClientID || '',
+			serviceID: parseInt(application?.invoice_details.serviceID || '0'),
+			notificationURL: application?.invoice_details.notificationURL || '',
+			pictureURL: application?.invoice_details.pictureURL || '',
+			callBackURLOnSuccess: application?.invoice_details.callBackURLOnSuccess || '',
+			billRefNumber: application?.invoice_details.billRefNumber || '',
+			currency: application?.invoice_details.currency || '',
+			amountExpected: parseInt(application?.invoice_details.amountExpected || '0'),
+			billDesc: application?.invoice_details.billDesc || '',
+			clientMSISDN: application?.invoice_details.clientMSISDN || '',
+			clientIDNumber: application?.invoice_details.clientIDNumber || '',
+			clientEmail: application?.invoice_details.clientEmail || '',
+			clientName: application?.invoice_details.clientName || '',
+		};
+
+		await setPay(data);
+		router.push('/ecitizen');
+	};
+
 	return (
-		<Pressable onPress={() => action(application)}>
-			<View style={[globalStyles.column]}>
-				{application?.workstation_name !== 'DIASPORA' && <InternshipItem title='County' content={application.County} />}
-				<InternshipItem title='Station' content={application.workstation_name} />
+		<View style={[globalStyles.column]}>
+			{application?.workstation_name !== 'DIASPORA' && <InternshipItem title='County' content={application.County} />}
+			<InternshipItem title='Station' content={application.workstation_name} />
 
-				{application?.workstation_name !== 'DIASPORA' && <InternshipItem title='Employer' content={application.employer} />}
+			{application?.workstation_name !== 'DIASPORA' && <InternshipItem title='Employer' content={application.employer} />}
 
-				<InternshipItem title='Date' content={dayjs(new Date(application.renewal_date)).format(DateFormat.WITH_DAY)} />
+			<InternshipItem title='Date' content={dayjs(new Date(application.renewal_date)).format(DateFormat.WITH_DAY)} />
 
-				<InternshipItemDouble
-					title='Invoice'
-					subtitle='Invoice'
-					content={application.invoice_details.invoice_number}
-					subtitle1='Amount'
-					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-				/>
+			<InternshipItemDouble
+				title='Invoice'
+				subtitle='Invoice'
+				content={application.invoice_details.invoice_number}
+				subtitle1='Amount'
+				content1={currencyFormatter.format(+application.invoice_details.amount_due)}
+			/>
 
-				<InternshipItemDouble
-					title='Amount'
-					subtitle='Amount Paid'
-					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
-					subtitle1='Balance Due'
-					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-				/>
-			</View>
-		</Pressable>
+			<InternshipItemDouble
+				title='Amount'
+				subtitle='Amount Paid'
+				content={currencyFormatter.format(+application.invoice_details.amount_paid)}
+				subtitle1='Balance Due'
+				content1={currencyFormatter.format(+application.invoice_details.balance_due)}
+			/>
+			{+application.invoice_details.balance_due > 0 && <PayButton handlePay={handlePay} />}
+		</View>
 	);
 };
 
@@ -60,35 +80,11 @@ const LicenceApplicationsComponent: FC<{
 	refetch: () => void;
 	isRefetching: boolean;
 }> = ({applications, refetch, isRefetching}) => {
-	const [show, setShow] = useState(false);
-
-	const [item, setItem] = useAtom(licenceApplicationAtom);
-
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-	const snapPoints = useMemo(() => ['50%', '75%'], []);
-
-	const handlePresentModal = useCallback(() => {
-		bottomSheetModalRef.current?.present();
-	}, []);
-
-	const handleItem = (item: LicenceApplication) => {
-		setItem(item);
-		setShow(!show);
-		handlePresentModal();
-	};
-
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log('handle sheet changes', index);
-	}, []);
-
 	const {search, handleSearch} = useSearch();
 
 	const sortedApplications = applications.sort((a, b) => {
 		return new Date(b.renewal_date).getTime() - new Date(a.renewal_date).getTime();
 	});
-
-	const latestApplicationId = sortedApplications[0]?.application_id;
 
 	const items = useMemo(
 		() =>
@@ -102,48 +98,30 @@ const LicenceApplicationsComponent: FC<{
 	);
 
 	return (
-		<GestureHandlerRootView style={{flex: 1}}>
+		<View style={{flex: 1}}>
 			<Searchbar
 				placeholder='Search by workstation employer or date'
 				onChangeText={handleSearch}
 				value={search}
 				style={styles.searchBar}
 			/>
-			<BottomSheetModalProvider>
-				<View style={globalStyles.container}>
-					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
-						<View style={styles.bottomSheet}>
-							{item?.application_id === latestApplicationId && (
-								<BottomSheetView style={[styles.contentContainer]}>
-									<PayForApplication item={item || null} />
-								</BottomSheetView>
-							)}
 
-							<View style={[styles.contentContainer]}>
-								<DownloadInvoice item={item || null} />
-							</View>
-
-							<BottomSheetView style={[styles.contentContainer]}>
-								<DownloadReceipt item={item || null} />
-							</BottomSheetView>
-						</View>
-					</BottomSheetModal>
-					<FlashList
-						data={items}
-						renderItem={({item}) => (
-							<AccordionShared title={<Title item={item} />}>
-								<Application application={item} action={() => handleItem(item)} />
-							</AccordionShared>
-						)}
-						onRefresh={refetch}
-						refreshing={isRefetching}
-						keyExtractor={(_, index) => String(index)}
-						estimatedItemSize={150}
-						ListEmptyComponent={<EmptyList message='Could not find any licence applications in your account' />}
-					/>
-				</View>
-			</BottomSheetModalProvider>
-		</GestureHandlerRootView>
+			<View style={globalStyles.container}>
+				<FlashList
+					data={items}
+					renderItem={({item}) => (
+						<AccordionShared title={<Title item={item} />}>
+							<Application application={item} />
+						</AccordionShared>
+					)}
+					onRefresh={refetch}
+					refreshing={isRefetching}
+					keyExtractor={(_, index) => String(index)}
+					estimatedItemSize={150}
+					ListEmptyComponent={<EmptyList message='Could not find any licence applications in your account' />}
+				/>
+			</View>
+		</View>
 	);
 };
 

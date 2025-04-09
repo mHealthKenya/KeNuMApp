@@ -21,7 +21,7 @@ const examSeries = async (index_id: string) => {
 
 const useExamSeries = (index_id: string) =>
 	useQuery({
-		queryKey: ['checkin-hist'],
+		queryKey: ['exam-series'],
 		queryFn: () => examSeries(index_id),
 	});
 

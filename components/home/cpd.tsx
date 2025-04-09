@@ -3,11 +3,11 @@ import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import {View} from 'react-native';
 import {Button, Icon} from 'react-native-paper';
-import {useAuth} from '../../providers/auth';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import {Text} from '../Themed';
 
 const CPDHome = () => {
-	const {user} = useAuth();
+	const {data: user} = useAuthenticatedUser();
 	const router = useRouter();
 
 	return (

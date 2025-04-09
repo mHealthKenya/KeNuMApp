@@ -9,11 +9,12 @@ import {ActivityIndicator} from 'react-native-paper';
 import {diasporaAtom} from '../../atoms/diaporaatom';
 import {primaryColor} from '../../constants/Colors';
 import {Employer} from '../../models/employers';
-import {useAuth} from '../../providers/auth';
+import {useDimensions} from '../../providers/dimensions';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useLicenceApply from '../../services/licence/apply';
+import CenterLoad from '../shared/CenterLoad';
 import {Text} from '../Themed';
 import LicenceApplyBox, {Item} from './licencebox';
-import {useDimensions} from '../../providers/dimensions';
 
 const LicenceApplicationComponent: FC<{
 	employers: Employer[];
@@ -45,7 +46,7 @@ const LicenceApplicationComponent: FC<{
 
 	const {mutate, isPending} = useLicenceApply(successFn);
 
-	const {user} = useAuth();
+	const {data: user, isLoading} = useAuthenticatedUser();
 
 	const handleSubmit = () => {
 		mutate({
@@ -64,6 +65,10 @@ const LicenceApplicationComponent: FC<{
 	useEffect(() => {
 		setDisabled(() => (!selected && !diaspora) || !checked);
 	}, [diaspora, checked, selected]);
+
+	if (isLoading) {
+		return <CenterLoad />;
+	}
 
 	return (
 		<View className='flex flex-1'>

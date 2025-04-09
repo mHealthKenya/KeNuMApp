@@ -3,13 +3,13 @@ import {useAtom} from 'jotai';
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {activeInternshipAtom} from '../../atoms/internshipcheck';
-import {useAuth} from '../../providers/auth';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useInternshipApplications from '../../services/internship/applications';
 import BoxImage, {InternBox} from '../shared/BoxImage';
 import CenterLoad from '../shared/CenterLoad';
 
 const InternshipComponent = () => {
-	const {user} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
 	const index_id = user?.id || '';
 
@@ -82,7 +82,7 @@ const InternshipComponent = () => {
 		},
 	];
 
-	if (isLoading) {
+	if (isLoading || loadingUser) {
 		return <CenterLoad />;
 	}
 

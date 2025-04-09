@@ -1,20 +1,21 @@
-import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {useRouter} from 'expo-router';
+import {useAtom} from 'jotai';
+import React, {FC, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Divider, Searchbar} from 'react-native-paper';
+import {internshipPayAtom} from '../../../atoms/internship';
 import {InternshipApplication} from '../../../models/internshipapplications';
-import {useInternshipFetched} from '../../../providers/internship';
+import {Pay} from '../../../models/pay';
 import {useSearch} from '../../../providers/search';
 import globalStyles from '../../../styles/global';
 import AccordionShared from '../../shared/Accordion';
 import EmptyList from '../../shared/EmptyList';
+import PayButton from '../../shared/PayButton';
 import {Text} from '../../Themed';
-import DownloadInvoice from './actions/downloadinvoice';
-import DownloadReceipt from './actions/downloadreceipt';
-import PayForApplication from './actions/pay';
 
 export const currencyFormatter = new Intl.NumberFormat('en-KE', {
 	style: 'currency',
@@ -101,38 +102,63 @@ export const InternshipItemDouble: FC<{
 
 const Application: FC<{
 	application: InternshipApplication;
-	action: (item: InternshipApplication) => void;
-}> = ({application, action}) => {
+}> = ({application}) => {
+	const [_, setPay] = useAtom(internshipPayAtom);
+
+	const router = useRouter();
+
+	const handlePay = async () => {
+		const data: Pay = {
+			secureHash: application.invoice_details.secureHash || '',
+			apiClientID: application.invoice_details.apiClientID || '',
+			serviceID: parseInt(application.invoice_details.serviceID || '0'),
+			notificationURL: application.invoice_details.notificationURL || '',
+			pictureURL: application.invoice_details.pictureURL || '',
+			callBackURLOnSuccess: application.invoice_details.callBackURLOnSuccess || '',
+			billRefNumber: application.invoice_details.billRefNumber || '',
+			currency: application.invoice_details.currency || '',
+			amountExpected: parseInt(application.invoice_details.amountExpected || '0'),
+			billDesc: application.invoice_details.billDesc || '',
+			clientMSISDN: application.invoice_details.clientMSISDN || '',
+			clientIDNumber: application.invoice_details.clientIDNumber || '',
+			clientEmail: application.invoice_details.clientEmail || '',
+			clientName: application.invoice_details.clientName || '',
+		};
+
+		await setPay(data);
+
+		router.push('/ecitizen');
+	};
+
 	return (
-		<Pressable onPress={() => action(application)}>
-			<View style={[globalStyles.column]}>
-				<InternshipItem title='Center' content={application.internship_center} />
-				<InternshipItem title='Cadre' content={application.cadre_desc} />
-				<InternshipItemDouble
-					title='Date'
-					subtitle='Start Date'
-					content={dayjs(new Date(application.start_date)).format('DD/MM/YYYY')}
-					subtitle1='Application Date'
-					content1={dayjs(new Date(application.application_date)).format('DD/MM/YYYY')}
-				/>
+		<View style={[globalStyles.column]}>
+			<InternshipItem title='Center' content={application.internship_center} />
+			<InternshipItem title='Cadre' content={application.cadre_desc} />
+			<InternshipItemDouble
+				title='Date'
+				subtitle='Start Date'
+				content={dayjs(new Date(application.start_date)).format('DD/MM/YYYY')}
+				subtitle1='Application Date'
+				content1={dayjs(new Date(application.application_date)).format('DD/MM/YYYY')}
+			/>
 
-				<InternshipItemDouble
-					title='Invoice'
-					subtitle='Invoice'
-					content={application.invoice_details.invoice_number}
-					subtitle1='Amount'
-					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-				/>
+			<InternshipItemDouble
+				title='Invoice'
+				subtitle='Invoice'
+				content={application.invoice_details.invoice_number}
+				subtitle1='Amount'
+				content1={currencyFormatter.format(+application.invoice_details.amount_due)}
+			/>
 
-				<InternshipItemDouble
-					title='Amount'
-					subtitle='Amount Paid'
-					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
-					subtitle1='Balance Due'
-					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-				/>
-			</View>
-		</Pressable>
+			<InternshipItemDouble
+				title='Amount'
+				subtitle='Amount Paid'
+				content={currencyFormatter.format(+application.invoice_details.amount_paid)}
+				subtitle1='Balance Due'
+				content1={currencyFormatter.format(+application.invoice_details.balance_due)}
+			/>
+			<View>{+application?.invoice_details?.balance_due > 0 && <PayButton handlePay={handlePay} />}</View>
+		</View>
 	);
 };
 
@@ -141,29 +167,7 @@ const InternshipApplicationsComponent: FC<{
 	refresh: () => void;
 	isRefreshing: boolean;
 }> = ({applications, refresh, isRefreshing}) => {
-	const {handleApplication} = useInternshipFetched();
-
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-	const snapPoints = useMemo(() => ['25%', '50%'], []);
-
-	const handlePresentModal = useCallback(() => {
-		bottomSheetModalRef.current?.present();
-	}, []);
-
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log('handle sheet changes', index);
-	}, []);
-
 	const {search, handleSearch} = useSearch();
-
-	const [item, setItem] = useState<InternshipApplication | null>(null);
-
-	const handleItem = (item: InternshipApplication) => {
-		setItem(item);
-		handleApplication(item);
-		handlePresentModal();
-	};
 
 	const sortedApplications = useMemo(
 		() => applications.sort((a, b) => new Date(b.application_date).getTime() - new Date(a.application_date).getTime()),
@@ -181,29 +185,10 @@ const InternshipApplicationsComponent: FC<{
 		return <EmptyList message='Could not find any internship applications in your account' />;
 	}
 
-	const latestApplicationId = latestApplication?.internship_id;
-
 	return (
 		<GestureHandlerRootView style={{flex: 1}}>
 			<BottomSheetModalProvider>
 				<View style={[globalStyles.container]}>
-					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
-						<View style={styles.bottomSheet}>
-							{item?.internship_id === latestApplicationId && (
-								<BottomSheetView style={[styles.contentContainer]}>
-									<PayForApplication item={item} />
-								</BottomSheetView>
-							)}
-
-							<View style={[styles.contentContainer]}>
-								<DownloadInvoice item={item} />
-							</View>
-
-							<BottomSheetView style={[styles.contentContainer]}>
-								<DownloadReceipt item={item} />
-							</BottomSheetView>
-						</View>
-					</BottomSheetModal>
 					<Searchbar
 						placeholder='Search by internship center'
 						onChangeText={handleSearch}
@@ -214,7 +199,7 @@ const InternshipApplicationsComponent: FC<{
 						data={filtered}
 						renderItem={({item}) => (
 							<AccordionShared title={<Title item={item} />}>
-								<Application application={item} action={() => handleItem(item)} />
+								<Application application={item} />
 							</AccordionShared>
 						)}
 						keyExtractor={(item) => item.internship_id}

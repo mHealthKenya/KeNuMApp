@@ -9,9 +9,10 @@ import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import {primaryColor} from '../../constants/Colors';
-import {useAuth} from '../../providers/auth';
 import {useError} from '../../providers/error';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useRegistrationApplication from '../../services/registration/apply';
+import CenterLoad from '../shared/CenterLoad';
 
 const RegistrationApplicationComponent = () => {
 	interface UserImage {
@@ -66,7 +67,7 @@ const RegistrationApplicationComponent = () => {
 
 	const {mutate, isPending} = useRegistrationApplication(successFn);
 
-	const {user} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
 	const handleSubmit = () => {
 		if (user?.education !== undefined) {
@@ -94,6 +95,10 @@ const RegistrationApplicationComponent = () => {
 			showToast();
 		}
 	}, [error, showToast]);
+
+	if (loadingUser) {
+		return <CenterLoad />;
+	}
 
 	return (
 		<ScrollView className='flex flex-1'>

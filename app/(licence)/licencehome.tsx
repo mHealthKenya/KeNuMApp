@@ -1,22 +1,16 @@
 import {StatusBar} from 'expo-status-bar';
 import React from 'react';
 import LicenceHomeComponent from '../../components/licence';
-import {useAuth} from '../../providers/auth';
+import CenterLoad from '../../components/shared/CenterLoad';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useLicenceApplications from '../../services/licence/applications';
-import {ActivityIndicator} from 'react-native-paper';
-import {primaryColor} from '../../constants/Colors';
-import { View } from 'react-native';
 
 const LicenceHome = () => {
-	const {user} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 	const {data = [], isLoading} = useLicenceApplications(user?.id || '');
 
-	if (isLoading) {
-		return (
-			<View className='flex flex-1 items-center justify-center'>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingUser) {
+		return <CenterLoad />;
 	}
 	return (
 		<>

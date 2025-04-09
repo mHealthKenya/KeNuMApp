@@ -1,26 +1,19 @@
 import React from 'react';
-import {View} from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
 import InternshipApplicationsComponent from '../../components/internship/history/applications';
-import {primaryColor} from '../../constants/Colors';
 import useInternshipApplications from '../../services/internship/applications';
-import globalStyles from '../../styles/global';
 // import {internshipPlaceholder} from '../../data/internshhips';
-import {useAuth} from '../../providers/auth';
+import CenterLoad from '../../components/shared/CenterLoad';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 
 const InternshipHistory = () => {
-	const {user} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
-	const index_id = user?.IndexNo || '';
+	const index_id = user?.id || '';
 
 	const {data = [], isLoading, refetch, isRefetching} = useInternshipApplications(index_id);
 
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingUser) {
+		return <CenterLoad />;
 	}
 	return <InternshipApplicationsComponent applications={data} refresh={() => refetch()} isRefreshing={isRefetching} />;
 };

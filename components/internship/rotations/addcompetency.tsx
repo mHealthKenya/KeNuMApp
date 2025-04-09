@@ -7,12 +7,13 @@ import {Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSh
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
-import {useAuth} from '../../../providers/auth';
 import {useFetchedCompetency} from '../../../providers/competency';
 import {useError} from '../../../providers/error';
+import useAuthenticatedUser from '../../../services/auth/authenticated';
 import useAddCompetency from '../../../services/internship/addcompetency';
 import useInternshipApplications from '../../../services/internship/applications';
 import globalStyles from '../../../styles/global';
+import CenterLoad from '../../shared/CenterLoad';
 import DateModal from '../../shared/DateModal';
 import CompetencyInformationBox from './competencyinformationbox';
 
@@ -65,9 +66,9 @@ const AddCompetencyComponent = () => {
 		setDate(new Date());
 	};
 
-	const {user} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
-	const index_id = user?.IndexNo || '';
+	const index_id = user?.id || '';
 
 	const {data: internship = [], isLoading} = useInternshipApplications(index_id);
 
@@ -127,6 +128,11 @@ const AddCompetencyComponent = () => {
 		outlineColor: '#f9f9f9',
 		activeOutlineColor: '#0445b5',
 	};
+
+	if (loadingUser) {
+		return <CenterLoad />;
+	}
+
 	return (
 		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1 p-2'>
 			<ScrollView style={[globalStyles.container, {gap: 10}]}>

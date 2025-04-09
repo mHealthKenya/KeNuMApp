@@ -1,53 +1,75 @@
-import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
+import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
-import React, {FC, useCallback, useMemo, useRef} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import React, {FC, useMemo} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {Searchbar} from 'react-native-paper';
-import {examAtom} from '../../atoms/exam';
+import {internshipPayAtom} from '../../atoms/internship';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {ExamApplication} from '../../models/examapplications';
+import {Pay} from '../../models/pay';
 import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
 import AccordionShared from '../shared/Accordion';
 import EmptyList from '../shared/EmptyList';
-import DownloadInvoice from './actions/downloadinvoice';
-import DownloadReceipt from './actions/downloadreceipt';
+import PayButton from '../shared/PayButton';
 import {Text} from '../Themed';
-import PayForApplication from './actions/pay';
 
 const Application: FC<{
 	application: ExamApplication;
-	action: (application: ExamApplication) => void;
-}> = ({application, action}) => {
+}> = ({application}) => {
+	const router = useRouter();
+
+	const [_, setPay] = useAtom(internshipPayAtom);
+
+	const handlePay = async () => {
+		const data: Pay = {
+			secureHash: application.invoice_details.secureHash || '',
+			apiClientID: application.invoice_details.apiClientID || '',
+			serviceID: parseInt(application.invoice_details.serviceID || '0'),
+			notificationURL: application.invoice_details.notificationURL || '',
+			pictureURL: application.invoice_details.pictureURL || '',
+			callBackURLOnSuccess: application.invoice_details.callBackURLOnSuccess || '',
+			billRefNumber: application.invoice_details.billRefNumber || '',
+			currency: application.invoice_details.currency || '',
+			amountExpected: parseInt(application.invoice_details.amountExpected || '0'),
+			billDesc: application.invoice_details.billDesc || '',
+			clientMSISDN: application.invoice_details.clientMSISDN || '',
+			clientIDNumber: application.invoice_details.clientIDNumber || '',
+			clientEmail: application.invoice_details.clientEmail || '',
+			clientName: application.invoice_details.clientName || '',
+		};
+
+		await setPay(data);
+		router.push('/ecitizen');
+	};
+
 	return (
-		<Pressable onPress={() => action(application)}>
-			<View style={[globalStyles.column]}>
-				<InternshipItem title='Exam Series' content={application.exams_series} />
-				<InternshipItem title='Cadre' content={application.cadre} />
+		<View style={[globalStyles.column]}>
+			<InternshipItem title='Exam Series' content={application.exams_series} />
+			<InternshipItem title='Cadre' content={application.cadre} />
 
-				<InternshipItem title='Date' content={dayjs(new Date(application.application_date)).format('YYYY-MM-DD')} />
+			<InternshipItem title='Date' content={dayjs(new Date(application.application_date)).format('YYYY-MM-DD')} />
 
-				<InternshipItemDouble
-					title='Invoice'
-					subtitle='Invoice Number'
-					content={application?.invoice_details?.invoice_number}
-					subtitle1='Amount'
-					content1={currencyFormatter.format(+application?.invoice_details?.amount_due)}
-				/>
+			<InternshipItemDouble
+				title='Invoice'
+				subtitle='Invoice Number'
+				content={application?.invoice_details?.invoice_number}
+				subtitle1='Amount'
+				content1={currencyFormatter.format(+application?.invoice_details?.amount_due)}
+			/>
 
-				<InternshipItemDouble
-					title='Amount'
-					subtitle='Amount Paid'
-					content={currencyFormatter.format(+application?.invoice_details?.amount_paid)}
-					subtitle1='Balance Due'
-					content1={currencyFormatter.format(+application?.invoice_details.balance_due)}
-				/>
-			</View>
-		</Pressable>
+			<InternshipItemDouble
+				title='Amount'
+				subtitle='Amount Paid'
+				content={currencyFormatter.format(+application?.invoice_details?.amount_paid)}
+				subtitle1='Balance Due'
+				content1={currencyFormatter.format(+application?.invoice_details.balance_due)}
+			/>
+			<View>{+application.invoice_details?.balance_due > 0 && <PayButton handlePay={handlePay} />}</View>
+		</View>
 	);
 };
 
@@ -56,20 +78,7 @@ const ExamApplicationsComponent: FC<{
 	refetch: () => void;
 	isRefetching: boolean;
 }> = ({applications, refetch, isRefetching}) => {
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
 	const {search, handleSearch} = useSearch();
-	const snapPoints = useMemo(() => ['50%', '75%'], []);
-
-	const handlePresentModal = useCallback(() => {
-		bottomSheetModalRef.current?.present();
-	}, []);
-
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log('handle sheet changes', index);
-	}, []);
-
-	const [item, setItem] = useAtom(examAtom);
 
 	const items = useMemo(
 		() =>
@@ -81,46 +90,24 @@ const ExamApplicationsComponent: FC<{
 		[search, applications]
 	);
 
-	const handleItem = (item: ExamApplication) => {
-		setItem(item);
-		handlePresentModal();
-	};
 	return (
-		<GestureHandlerRootView style={{flex: 1}}>
-			<BottomSheetModalProvider>
-				<View style={globalStyles.container}>
-					<Searchbar placeholder='Search by cadre' onChangeText={handleSearch} value={search} style={styles.searchBar} />
-					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
-						<View style={styles.bottomSheet}>
-							<BottomSheetView style={[styles.contentContainer]}>
-								<PayForApplication item={item || null} />
-							</BottomSheetView>
+		<View style={globalStyles.container}>
+			<Searchbar placeholder='Search by cadre' onChangeText={handleSearch} value={search} style={styles.searchBar} />
 
-							<View style={[styles.contentContainer]}>
-								<DownloadInvoice item={item} />
-							</View>
-
-							<BottomSheetView style={[styles.contentContainer]}>
-								<DownloadReceipt item={item} />
-							</BottomSheetView>
-						</View>
-					</BottomSheetModal>
-					<FlashList
-						data={items}
-						renderItem={({item}) => (
-							<AccordionShared title={<Title item={item} />}>
-								<Application application={item} action={() => handleItem(item)} />
-							</AccordionShared>
-						)}
-						keyExtractor={(_, index) => String(index)}
-						onRefresh={refetch}
-						refreshing={isRefetching}
-						estimatedItemSize={150}
-						ListEmptyComponent={<EmptyList message='Could not find any exam applications for your account' />}
-					/>
-				</View>
-			</BottomSheetModalProvider>
-		</GestureHandlerRootView>
+			<FlashList
+				data={items}
+				renderItem={({item}) => (
+					<AccordionShared title={<Title item={item} />}>
+						<Application application={item} />
+					</AccordionShared>
+				)}
+				keyExtractor={(_, index) => String(index)}
+				onRefresh={refetch}
+				refreshing={isRefetching}
+				estimatedItemSize={150}
+				ListEmptyComponent={<EmptyList message='Could not find any exam applications for your account' />}
+			/>
+		</View>
 	);
 };
 

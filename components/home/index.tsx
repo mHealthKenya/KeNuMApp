@@ -1,7 +1,7 @@
-import dayjs, {Dayjs} from 'dayjs';
-import React, {useEffect, useState} from 'react';
-import {ScrollView, View} from 'react-native';
-import {useAuth} from '../../providers/auth';
+import dayjs, { Dayjs } from 'dayjs';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, View } from 'react-native';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import Associations from './associations';
 import CPDHome from './cpd';
 import InvalidLicenceComponent from './licence/invalid';
@@ -9,7 +9,7 @@ import HomeLicenceComponent from './licence/licence';
 import NursesAltComponent from './nursesalt';
 
 const Home = () => {
-	const {user} = useAuth();
+	const {data: user} = useAuthenticatedUser();
 
 	const [endDate, setEndDate] = useState<Dayjs>();
 

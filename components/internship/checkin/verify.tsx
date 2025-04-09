@@ -1,14 +1,15 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {useLocalSearchParams, useRouter} from 'expo-router';
 import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { KeyboardAvoidingView, StyleSheet, Text, View } from 'react-native';
-import { Button, TextInput, TextInputProps } from 'react-native-paper';
+import {Controller, useForm} from 'react-hook-form';
+import {KeyboardAvoidingView, StyleSheet, Text, View} from 'react-native';
+import {Button, TextInput, TextInputProps} from 'react-native-paper';
 import * as Yup from 'yup';
-import { primaryColor } from '../../../constants/Colors';
-import { useAuth } from '../../../providers/auth';
+import {primaryColor} from '../../../constants/Colors';
+import useAuthenticatedUser from '../../../services/auth/authenticated';
 import useVerifyOTP from '../../../services/internship/verifyotp';
 import globalStyles from '../../../styles/global';
+import CenterLoad from '../../shared/CenterLoad';
 
 interface Code {
 	code: string;
@@ -31,14 +32,14 @@ const VerifyOTPComponent = () => {
 	};
 	const {
 		control,
-		formState: { errors },
+		formState: {errors},
 		handleSubmit,
 	} = useForm<Code>({
 		resolver: yupResolver(validationSchema),
 		mode: 'onChange',
 	});
 
-	const { user } = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
 	const router = useRouter();
 
@@ -46,9 +47,9 @@ const VerifyOTPComponent = () => {
 		router.replace('/internshiphistory');
 	};
 
-	const { mutate, isPending } = useVerifyOTP(successFn);
+	const {mutate, isPending} = useVerifyOTP(successFn);
 
-	const { mobile_no } = useLocalSearchParams();
+	const {mobile_no} = useLocalSearchParams();
 
 	const onSubmit = (data: Code) => {
 		mutate({
@@ -58,6 +59,10 @@ const VerifyOTPComponent = () => {
 			mobile_no: '' + mobile_no,
 		});
 	};
+
+	if (loadingUser) {
+		return <CenterLoad />;
+	}
 
 	return (
 		<KeyboardAvoidingView style={globalStyles.container}>
@@ -74,7 +79,7 @@ const VerifyOTPComponent = () => {
 						rules={{
 							required: true,
 						}}
-						render={({ field: { onChange, onBlur, value } }) => (
+						render={({field: {onChange, onBlur, value}}) => (
 							<TextInput
 								label='Enter OTP  to verify checkin'
 								left={<TextInput.Icon icon='numeric' />}
@@ -89,16 +94,10 @@ const VerifyOTPComponent = () => {
 						name='code'
 					/>
 
-					{!!errors?.code?.message && (
-						<Text style={styles.errorText}>{errors?.code?.message}</Text>
-					)}
+					{!!errors?.code?.message && <Text style={styles.errorText}>{errors?.code?.message}</Text>}
 				</View>
 				<View>
-					<Button
-						mode='contained'
-						style={styles.button}
-						onPress={handleSubmit(onSubmit)}
-						loading={isPending}>
+					<Button mode='contained' style={styles.button} onPress={handleSubmit(onSubmit)} loading={isPending}>
 						Verify
 					</Button>
 				</View>

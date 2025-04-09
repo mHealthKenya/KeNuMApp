@@ -6,13 +6,14 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View, useWindowDimensions} from 'react-native';
 import {Button, TextInput, TextInputProps} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
 import {primaryColor} from '../../../constants/Colors';
-import {useAuth} from '../../../providers/auth';
+import {useError} from '../../../providers/error';
+import useAuthenticatedUser from '../../../services/auth/authenticated';
 import useInternshipApplications from '../../../services/internship/applications';
 import useInternshipCheckin from '../../../services/internship/checkin';
-import {useError} from '../../../providers/error';
-import Toast from 'react-native-toast-message';
+import CenterLoad from '../../shared/CenterLoad';
 
 interface Form {
 	nurse_officer_incharge: string;
@@ -57,7 +58,7 @@ const AddCheckinComponent = () => {
 		mode: 'onChange',
 	});
 
-	const {user} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 	const index_id = user?.IndexNo || '';
 
 	const {data: internships, isError, isLoading} = useInternshipApplications(index_id);
@@ -102,6 +103,10 @@ const AddCheckinComponent = () => {
 			internship_id,
 		});
 	};
+
+	if (loadingUser) {
+		return <CenterLoad />;
+	}
 
 	return (
 		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1'>

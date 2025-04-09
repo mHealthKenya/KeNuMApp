@@ -88,8 +88,9 @@ const LicenceHomeComponent: FC<Props> = ({applications}) => {
 							content: statements({hasActiveLicence, hasPendingApplications, hasRequisiteCPD}),
 							backgroundColor: '#984b4b',
 							path: require('../../assets/images/licencesmall.png'),
-							route: '/',
+							route: hasPendingApplications ? '/licenceapplications' : '/',
 							danger: true,
+							pay: hasPendingApplications,
 						}}
 					/>
 				)}

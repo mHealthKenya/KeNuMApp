@@ -1,28 +1,24 @@
 import {Redirect, Stack} from 'expo-router';
 import {Drawer} from 'expo-router/drawer';
 import React from 'react';
-import {Image, View} from 'react-native';
+import {Image} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import {ActivityIndicator} from 'react-native-paper';
 import Greeting from '../../components/home/greeting';
 import ProfileHeaderLeft from '../../components/profile/HeaderLeft';
+import CenterLoad from '../../components/shared/CenterLoad';
 import CustomDrawer from '../../components/shared/Drawer';
-import {primaryColor} from '../../constants/Colors';
 import {useAuth} from '../../providers/auth';
 import {useDimensions} from '../../providers/dimensions';
-import globalStyles from '../../styles/global';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 
 const AppLayout = () => {
 	const {isAuthenticated, isLoading} = useAuth();
+	const {isLoading: loadingAuth} = useAuthenticatedUser();
 
 	const {portrait} = useDimensions();
 
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingAuth) {
+		return <CenterLoad />;
 	}
 
 	if (!isAuthenticated) {

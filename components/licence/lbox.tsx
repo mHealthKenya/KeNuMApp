@@ -2,8 +2,9 @@ import {Image, ImageSource} from 'expo-image';
 import {Href, useRouter} from 'expo-router';
 import React, {FC} from 'react';
 import {Pressable, View} from 'react-native';
-import {Divider, Icon} from 'react-native-paper';
+import {Button, Divider, Icon} from 'react-native-paper';
 import {Text} from '../Themed';
+import {primaryColor} from '../../constants/Colors';
 
 export interface LicenceBox {
 	title: string;
@@ -13,6 +14,7 @@ export interface LicenceBox {
 	route: Href;
 	action?: () => void;
 	danger?: boolean;
+	pay?: boolean;
 }
 
 const LBox: FC<{box: LicenceBox}> = ({box}) => {
@@ -45,7 +47,7 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 					/>
 				</View>
 
-				<View className='flex flex-1'>
+				<View className='flex flex-1 flex-col'>
 					<View className='p-2'>
 						<Text
 							style={[
@@ -76,6 +78,18 @@ const LBox: FC<{box: LicenceBox}> = ({box}) => {
 							className='text-lg'>
 							{box.content}
 						</Text>
+						{box.pay && (
+							<View className='my-2'>
+								<Button
+									mode='contained'
+									style={{
+										backgroundColor: primaryColor,
+										borderRadius: 5,
+									}}>
+									Pay Now
+								</Button>
+							</View>
+						)}
 					</View>
 				</View>
 				<View className='flex justify-center items-center'>

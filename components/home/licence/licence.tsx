@@ -4,11 +4,11 @@ import * as Print from 'expo-print';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Button} from 'react-native-paper';
+import {DateFormat} from '../../../enums/date';
 import {licenceGenerator} from '../../../helpers/licencegenerator';
 import {useAuth} from '../../../providers/auth';
-import {Text} from '../../Themed';
-import {DateFormat} from '../../../enums/date';
 import {useDimensions} from '../../../providers/dimensions';
+import {Text} from '../../Themed';
 
 const HomeLicenceComponent = () => {
 	const {user} = useAuth();

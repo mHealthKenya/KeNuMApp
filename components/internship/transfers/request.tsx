@@ -20,10 +20,11 @@ import * as Yup from 'yup';
 import {primaryColor} from '../../../constants/Colors';
 import {InternshipCenter} from '../../../models/internshipcenters';
 import {TransferReason} from '../../../models/transferreasons';
-import {useAuth} from '../../../providers/auth';
 import {useError} from '../../../providers/error';
+import useAuthenticatedUser from '../../../services/auth/authenticated';
 import useInternshipApplications from '../../../services/internship/applications';
 import useInternshipTransfer from '../../../services/internship/transfer';
+import CenterLoad from '../../shared/CenterLoad';
 
 interface Transfer {
 	transfer_request_desc: string;
@@ -91,9 +92,9 @@ const RequestTransferComponent: FC<{
 
 	const {mutate, isPending} = useInternshipTransfer(successFn);
 
-	const {user} = useAuth();
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
 
-	const index_id = user?.IndexNo || '';
+	const index_id = user?.id || '';
 
 	const {data: internships, isLoading, isError} = useInternshipApplications(index_id);
 
@@ -124,6 +125,10 @@ const RequestTransferComponent: FC<{
 			showToast();
 		}
 	}, [error, showToast]);
+
+	if (loadingUser) {
+		return <CenterLoad />;
+	}
 
 	return (
 		<KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className='flex flex-1 p-2'>

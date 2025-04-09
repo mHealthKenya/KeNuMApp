@@ -1,22 +1,20 @@
-import {BottomSheetModal, BottomSheetModalProvider, BottomSheetView} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import dayjs from 'dayjs';
+import {useRouter} from 'expo-router';
 import {useAtom} from 'jotai';
-import React, {FC, useCallback, useMemo, useRef, useState} from 'react';
-import {Pressable, StyleSheet, View, useWindowDimensions} from 'react-native';
+import React, {FC, useMemo, useState} from 'react';
+import {StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Divider, List, Searchbar} from 'react-native-paper';
-import {outmigrationGenAtom} from '../../atoms/outmigration';
+import {internshipPayAtom} from '../../atoms/internship';
 import {currencyFormatter} from '../../helpers/currency-formatter';
 import {OutmigrationApplication} from '../../models/outmigrations';
+import {Pay} from '../../models/pay';
+import {useSearch} from '../../providers/search';
 import globalStyles from '../../styles/global';
 import {InternshipItem, InternshipItemDouble} from '../internship/history/applications';
-import EmptyList from '../shared/EmptyList';
-import DownloadInvoice from './actions/downloadinvoice';
-import DownloadReceipt from './actions/downloadreceipt';
-import PayForApplication from './actions/pay';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import AccordionShared from '../shared/Accordion';
-import {useSearch} from '../../providers/search';
+import EmptyList from '../shared/EmptyList';
+import PayButton from '../shared/PayButton';
 import {Text} from '../Themed';
 
 const extractor = (t: string) => {
@@ -112,34 +110,58 @@ export const CustomDrop: FC<{
 
 const Application: FC<{
 	application: OutmigrationApplication;
-	action: (application: OutmigrationApplication) => void;
-}> = ({application, action}) => {
+}> = ({application}) => {
+	const [_, setPay] = useAtom(internshipPayAtom);
+
+	const router = useRouter();
+
+	const handlePay = async () => {
+		const data: Pay = {
+			secureHash: application.invoice_details.secureHash || '',
+			apiClientID: application.invoice_details.apiClientID || '',
+			serviceID: parseInt(application.invoice_details.serviceID || '0'),
+			notificationURL: application.invoice_details.notificationURL || '',
+			pictureURL: application.invoice_details.pictureURL || '',
+			callBackURLOnSuccess: application.invoice_details.callBackURLOnSuccess || '',
+			billRefNumber: application.invoice_details.billRefNumber || '',
+			currency: application.invoice_details.currency || '',
+			amountExpected: parseInt(application.invoice_details.amountExpected || '0'),
+			billDesc: application.invoice_details.billDesc || '',
+			clientMSISDN: application.invoice_details.clientMSISDN || '',
+			clientIDNumber: application.invoice_details.clientIDNumber || '',
+			clientEmail: application.invoice_details.clientEmail || '',
+			clientName: application.invoice_details.clientName || '',
+		};
+
+		await setPay(data);
+		router.push('/ecitizen');
+	};
+
 	return (
-		<Pressable onPress={() => action(application)}>
-			<View style={[globalStyles.column]}>
-				<InternshipItem title='Country' content={application.country_name} />
+		<View style={[globalStyles.column]}>
+			<InternshipItem title='Country' content={application.country_name} />
 
-				<InternshipItem title='Work Station' content={application.application_status} />
+			<InternshipItem title='Work Station' content={application.application_status} />
 
-				<InternshipItem title='Date' content={dayjs(new Date(application.application_date)).format('DD/MM/YYYY')} />
+			<InternshipItem title='Date' content={dayjs(new Date(application.application_date)).format('DD/MM/YYYY')} />
 
-				<InternshipItemDouble
-					title='Invoice'
-					subtitle='Invoice Number'
-					content={application.invoice_details.invoice_number}
-					subtitle1='Amount'
-					content1={currencyFormatter.format(+application.invoice_details.amount_due)}
-				/>
+			<InternshipItemDouble
+				title='Invoice'
+				subtitle='Invoice Number'
+				content={application.invoice_details.invoice_number}
+				subtitle1='Amount'
+				content1={currencyFormatter.format(+application.invoice_details.amount_due)}
+			/>
 
-				<InternshipItemDouble
-					title='Amount'
-					subtitle='Amount Paid'
-					content={currencyFormatter.format(+application.invoice_details.amount_paid)}
-					subtitle1='Balance Due'
-					content1={currencyFormatter.format(+application.invoice_details.balance_due)}
-				/>
-			</View>
-		</Pressable>
+			<InternshipItemDouble
+				title='Amount'
+				subtitle='Amount Paid'
+				content={currencyFormatter.format(+application.invoice_details.amount_paid)}
+				subtitle1='Balance Due'
+				content1={currencyFormatter.format(+application.invoice_details.balance_due)}
+			/>
+			<View>{+application.invoice_details.balance_due > 0 && <PayButton handlePay={handlePay} />}</View>
+		</View>
 	);
 };
 
@@ -148,36 +170,12 @@ const OutmigrationApplicationsComponent: FC<{
 	refetch: () => void;
 	isRefetching: boolean;
 }> = ({applications, refetch, isRefetching}) => {
-	const [show, setShow] = useState(false);
-
-	const [item, setItem] = useAtom(outmigrationGenAtom);
-
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-
-	const snapPoints = useMemo(() => ['25%', '50%'], []);
-
 	const {search, handleSearch} = useSearch();
-
-	const handlePresentModal = useCallback(() => {
-		bottomSheetModalRef.current?.present();
-	}, []);
-
-	const handleItem = (item: OutmigrationApplication) => {
-		setItem(item);
-		setShow(!show);
-		handlePresentModal();
-	};
-
-	const handleSheetChanges = useCallback((index: number) => {
-		console.log('handle sheet changes', index);
-	}, []);
 
 	const sortedApplications = useMemo(
 		() => applications.sort((a, b) => new Date(b.application_date).getTime() - new Date(a.application_date).getTime()),
 		[applications]
 	);
-
-	const latestApplicationId = sortedApplications[0]?.application_id;
 
 	const items = useMemo(
 		() => sortedApplications.filter((item) => item.country_name.toLowerCase().includes(search.toLowerCase())),
@@ -185,48 +183,30 @@ const OutmigrationApplicationsComponent: FC<{
 	);
 
 	return (
-		<GestureHandlerRootView style={{flex: 1}}>
+		<View style={{flex: 1}}>
 			<Searchbar
 				placeholder='Search by country name'
 				onChangeText={handleSearch}
 				value={search}
 				style={styles.searchBar}
 			/>
-			<BottomSheetModalProvider>
-				<View style={globalStyles.container}>
-					<BottomSheetModal ref={bottomSheetModalRef} index={1} snapPoints={snapPoints} onChange={handleSheetChanges}>
-						<View style={styles.bottomSheet}>
-							{item?.application_id === latestApplicationId && (
-								<BottomSheetView style={[styles.contentContainer]}>
-									<PayForApplication item={item || null} />
-								</BottomSheetView>
-							)}
 
-							<View style={[styles.contentContainer]}>
-								<DownloadInvoice item={item || null} />
-							</View>
-
-							<BottomSheetView style={[styles.contentContainer]}>
-								<DownloadReceipt item={item || null} />
-							</BottomSheetView>
-						</View>
-					</BottomSheetModal>
-					<FlashList
-						data={items}
-						renderItem={({item}) => (
-							<AccordionShared title={<Title item={item} />}>
-								<Application application={item} action={() => handleItem(item)} />
-							</AccordionShared>
-						)}
-						onRefresh={refetch}
-						refreshing={isRefetching}
-						keyExtractor={(_, index) => String(index)}
-						estimatedItemSize={150}
-						ListEmptyComponent={<EmptyList message='Could not find any private practice applications in your account' />}
-					/>
-				</View>
-			</BottomSheetModalProvider>
-		</GestureHandlerRootView>
+			<View style={globalStyles.container}>
+				<FlashList
+					data={items}
+					renderItem={({item}) => (
+						<AccordionShared title={<Title item={item} />}>
+							<Application application={item} />
+						</AccordionShared>
+					)}
+					onRefresh={refetch}
+					refreshing={isRefetching}
+					keyExtractor={(_, index) => String(index)}
+					estimatedItemSize={150}
+					ListEmptyComponent={<EmptyList message='Could not find any private practice applications in your account' />}
+				/>
+			</View>
+		</View>
 	);
 };
 

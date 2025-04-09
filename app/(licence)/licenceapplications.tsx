@@ -1,37 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import { View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 import LicenceApplicationsComponent from '../../components/licence/applications';
-import { primaryColor } from '../../constants/Colors';
-import { useAuth } from '../../providers/auth';
+import CenterLoad from '../../components/shared/CenterLoad';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useLicenceApplications from '../../services/licence/applications';
-import globalStyles from '../../styles/global';
 
 const LicenceApplications = () => {
-	const { user } = useAuth();
-	const {
-		data = [],
-		isLoading,
-		isRefetching,
-		refetch,
-	} = useLicenceApplications(user?.id || '');
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
+	const {data = [], isLoading, isRefetching, refetch} = useLicenceApplications(user?.id || '');
 
-	if (isLoading) {
-		return (
-			<View style={[globalStyles.container, globalStyles.center]}>
-				<ActivityIndicator size='large' color={primaryColor} />
-			</View>
-		);
+	if (isLoading || loadingUser) {
+		return <CenterLoad />;
 	}
 
 	return (
 		<>
-			<LicenceApplicationsComponent
-				applications={data}
-				refetch={refetch}
-				isRefetching={isRefetching}
-			/>
+			<LicenceApplicationsComponent applications={data} refetch={refetch} isRefetching={isRefetching} />
 			<StatusBar style='light' />
 		</>
 	);

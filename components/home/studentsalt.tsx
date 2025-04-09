@@ -10,8 +10,8 @@ const StudentsHome = () => {
 				<NursesAltComponent
 					item={{
 						title: "Student's Module",
-						actionTitle: 'View All',
-						more: '/studentshome',
+						// actionTitle: 'View All',
+						// more: '/studentshome',
 						items: [
 							{
 								title: 'Internships',
@@ -23,6 +23,11 @@ const StudentsHome = () => {
 								title: 'Exams',
 								source: require('../../assets/images/examalt.png'),
 								href: '/examall',
+							},
+							{
+								title: 'Registration',
+								source: require('../../assets/images/register.png'),
+								href: '/registrationhome',
 							},
 						],
 					}}

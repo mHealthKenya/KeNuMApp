@@ -1,5 +1,5 @@
 import {Image, ImageSource} from 'expo-image';
-import {useRouter} from 'expo-router';
+import {Href, useRouter} from 'expo-router';
 import React, {FC} from 'react';
 import {Pressable, ScrollView, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {Series} from '../../models/series';
@@ -12,7 +12,7 @@ export interface InternBox {
 	content: string;
 	backgroundColor: string;
 	path: ImageSource;
-	route: any;
+	route: Href;
 }
 
 const SeriesBox: FC<{series: Series}> = ({series}) => {

@@ -1,30 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import React from 'react';
 import CPDEventsComponent from '../../components/cpds/events';
 import CenterLoad from '../../components/shared/CenterLoad';
-import { useAuth } from '../../providers/auth';
+import useAuthenticatedUser from '../../services/auth/authenticated';
 import useCPDEvents from '../../services/cpds/events';
 
 const CPDEvents = () => {
-	const { user } = useAuth();
-	const {
-		isLoading,
-		data: events = [],
-		refetch,
-		isRefetching,
-	} = useCPDEvents(user?.id);
+	const {data: user, isLoading: loadingUser} = useAuthenticatedUser();
+	const {isLoading, data: events = [], refetch, isRefetching} = useCPDEvents(user?.id);
 
-	if (isLoading) {
+	if (isLoading || loadingUser) {
 		return <CenterLoad />;
 	}
 
 	return (
 		<>
-			<CPDEventsComponent
-				events={events}
-				refresh={refetch}
-				isRefetching={isRefetching}
-			/>
+			<CPDEventsComponent events={events} refresh={refetch} isRefetching={isRefetching} />
 			<StatusBar style='light' />
 		</>
 	);
