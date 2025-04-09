@@ -17,7 +17,11 @@ export const examReceiptGen = (
         <html lang="en">
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<<<<<<< HEAD
             <title>Invoice ${item.invoice_details?.invoice_number}</title>
+=======
+            <title>Invoice ${item.invoice_details.invoice_number}</title>
+>>>>>>> ca5fadbed54b7b6436239ade9a6bef2e72c8a49b
 
             <style>
                 html,
@@ -101,7 +105,11 @@ export const examReceiptGen = (
                             <h2 class="text-start">Nursing Council of Kenya</h2>
                         </th>
                         <th width="50%" colspan="2" class="text-end company-data">
+<<<<<<< HEAD
                             <span>Invoice Id: ${item.invoice_details?.invoice_number}</span> <br>
+=======
+                            <span>Invoice Id: ${item.invoice_details.invoice_number}</span> <br>
+>>>>>>> ca5fadbed54b7b6436239ade9a6bef2e72c8a49b
                             <span>Date: ${dayjs(new Date()).format(
         'DD-MM-YYYY'
     )}</span> <br>
@@ -118,7 +126,11 @@ export const examReceiptGen = (
                 <tbody>
                     <tr>
                         <td>Invoice Number:</td>
+<<<<<<< HEAD
                         <td>${item?.invoice_details?.invoice_number}</td>
+=======
+                        <td>${item.invoice_details.invoice_number}</td>
+>>>>>>> ca5fadbed54b7b6436239ade9a6bef2e72c8a49b
 
                         <td>Full Name:</td>
                         <td>${user?.Name}</td>

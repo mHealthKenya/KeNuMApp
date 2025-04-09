@@ -5,9 +5,9 @@ import {useAtom} from 'jotai';
 import React, {FC} from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 import {internshipPayAtom} from '../../../atoms/internship';
-import {ExamApplication} from '../../../models/examapplications';
 import {Pay} from '../../../models/pay';
 import globalStyles from '../../../styles/global';
+import { ExamApplication } from '../../../models/examapplications';
 
 const PayForApplication: FC<{
 	item: ExamApplication | null;
@@ -38,7 +38,6 @@ const PayForApplication: FC<{
 		await dismiss();
 		router.push('/ecitizen');
 	};
-
 	return (
 		<Pressable
 			style={[
@@ -63,7 +62,6 @@ const PayForApplication: FC<{
 					}}
 				/>
 			</View>
-
 			<View style={{justifyContent: 'center'}}>
 				<Text style={styles.text}>Pay For Exams</Text>
 			</View>
